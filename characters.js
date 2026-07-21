@@ -17,52 +17,62 @@ var ARCHETYPES = {
   'ES|E': {name:'Xotirjam Yetakchi', fam:'lead',
     lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.',
            'Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz.'],
-    strength:'bosim ostida toʻgʻri qaror qabul qilish.'},
+    strength:'bosim ostida toʻgʻri qaror qabul qilish.',
+    figure:{who:'Bahouddin Naqshband', years:'1318–1389', why:'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'}},
 
   'E|C':  {name:'Gʻayratli Tashkilotchi', fam:'lead',
     lines:['Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
            'Atrofdagilarni ham harakatga sola olasiz.'],
-    strength:'gʻoyani haqiqatga aylantirish.'},
+    strength:'gʻoyani haqiqatga aylantirish.',
+    figure:{who:'Amir Temur', years:'1336–1405', why:'Rejani gapda qoldirmagan — uni shaharlarga aylantirgan.'}},
 
   'ES|O': {name:'Xotirjam Kashfiyotchi', fam:'crea',
     lines:['Yangi narsa sizni qoʻrqitmaydi — qiziqtiradi.',
            'Lekin sarguzashtga koʻzni yumib emas, sovuqqonlik bilan kirasiz.'],
-    strength:'notanish yoʻlni xotirjam tekshirib koʻrish.'},
+    strength:'notanish yoʻlni xotirjam tekshirib koʻrish.',
+    figure:{who:'Abu Rayhon Beruniy', years:'973–1048', why:'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'}},
 
   'E|O':  {name:'Gʻayratli Ijodkor', fam:'crea',
     lines:['Gʻoyalaringiz tugamaydi va ularni odamlarga gapirib berishni yaxshi koʻrasiz.',
            'Ishtiyoqingiz atrofdagilarga ham yuqadi.'],
-    strength:'yangi gʻoyani odamlarga yuqtirish.'},
+    strength:'yangi gʻoyani odamlarga yuqtirish.',
+    figure:{who:'Zahiriddin Muhammad Bobur', years:'1483–1530', why:'Sheʼr ham yozgan, davlat ham qurgan — hech qayerda toʻxtab qolmagan.'}},
 
   'O|C':  {name:'Ijodkor Strateg', fam:'crea',
     lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
            'Koʻpchilik faqat oʻylab qoladi, siz qilib ham qoʻyasiz.'],
-    strength:'gʻoyani aniq tizimga solish.'},
+    strength:'gʻoyani aniq tizimga solish.',
+    figure:{who:'Mirzo Ulugʻbek', years:'1394–1449', why:'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'}},
 
   'ES|A': {name:'Ishonchli Doʻst', fam:'care',
     lines:['Odamlar sizga sirini aytadi, chunki yoningizda oʻzini xavfsiz his qiladi.',
            'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
-    strength:'boshqalarni tinchlantira olish.'},
+    strength:'boshqalarni tinchlantira olish.',
+    figure:{who:'Abu Ali ibn Sino', years:'980–1037', why:'Bemorni tinglashni davolashning birinchi qadami deb bilgan.'}},
 
   'E|A':  {name:'Jamoaning Yuragi', fam:'care',
     lines:['Siz boʻlgan davra jonlanadi.',
            'Chetda qolgan odamni sezasiz va yoningizga chaqirasiz.'],
-    strength:'odamlarni birlashtirish.'},
+    strength:'odamlarni birlashtirish.',
+    figure:{who:'Alisher Navoiy', years:'1441–1501', why:'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'}},
 
   'O|A':  {name:'Ijodkor Insonparvar', fam:'care',
     lines:['Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.',
            'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
-    strength:'foydali va insoniy yechim topish.'},
+    strength:'foydali va insoniy yechim topish.',
+    figure:{who:'Nodirabegim', years:'1792–1842', why:'Sheʼr yozgan va shu bilan birga maktab va madrasalar qurdirgan.'}},
 
   'ES|C': {name:'Barqaror Strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
            'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
-    strength:'uzoq masofaga chidash.'},
+    strength:'uzoq masofaga chidash.',
+    figure:{who:'Muhammad al-Xorazmiy', years:'783–850', why:'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'}},
 
   'A|C':  {name:'Ishonchli Tayanch', fam:'base',
     lines:['Vaʼda bersangiz — bajarasiz. Har safar.',
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
-    strength:'soʻzida turish.'}
+    strength:'soʻzida turish.',
+    figure:{who:'Imom al-Buxoriy', years:'810–870', why:'Oʻn olti yil davomida har bir rivoyatni qayta-qayta tekshirib chiqqan.'}}
 };
 
 // ---------- Character illustrations ----------

@@ -155,6 +155,12 @@
   .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
             font-size:15px;line-height:1.45}
   .strength b{color:var(--fam)}
+  .figure{margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);text-align:left}
+  .figlbl{font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+          color:var(--muted);margin-bottom:6px}
+  .figwho{font-family:var(--display);font-weight:700;font-size:18px;color:var(--fam)}
+  .figyr{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-left:6px}
+  .figwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
   /* ---- start screen: show what they can get before asking for anything ---- */
   .teaser{display:grid;grid-template-columns:repeat(5,1fr);gap:0 2px;margin:2px 0 8px;
           background:linear-gradient(180deg,#EAF1F3,#F8FBFB);border-radius:12px;padding:12px 8px 4px}
@@ -211,7 +217,7 @@
   </header>
   <div class="weave" aria-hidden="true"></div>
   <main id="app"></main>
-  <footer class="foot">TestMind · sinov versiyasi · 2026 · <a href="privacy.html">Maxfiylik</a></footer>
+  <footer class="foot">© 2026 <a href="index.html">TestMind</a> · <a href="privacy.html">Maxfiylik</a></footer>
 </div>
 
 <script src="characters.js"></script>
@@ -309,7 +315,7 @@ var TEXTS = {
      yuqori:'Rejali va intizomli ishlaysiz, boshlagan ishni oxiriga yetkazasiz. Bu deyarli har qanday sohada muvaffaqiyatning asosiy omili.'}
 };
 
-var DISCLAIMER = 'TestMind sinov versiyasi. Bu natijalar maslahat xarakteriga ega, hukm emas. Kasb tanlashda natijalar bilan birga qiziqishlaringiz va imkoniyatlaringizni ham hisobga oling.';
+var DISCLAIMER = 'Bu natija maslahat xarakteriga ega, hukm emas. Kasb yoki yoʻnalish tanlashda uni qiziqishlaringiz va imkoniyatlaringiz bilan birga hisobga oling.';
 
 // FAMILIES + ARCHETYPES and the character artwork now live in characters.js,
 // which is loaded before this script.
@@ -781,6 +787,14 @@ function renderReport(){
           arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
         '</ul>' +
         '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
+        // A real Uzbek figure known for the same quality. Deliberately worded as
+        // "who had this strength", never "you are this person".
+        '<div class="figure">' +
+          '<div class="figlbl">Shu xususiyat kimda kuchli boʻlgan</div>' +
+          '<div class="figwho">' + arch.figure.who +
+            '<span class="figyr">' + arch.figure.years + '</span></div>' +
+          '<p class="figwhy">' + arch.figure.why + '</p>' +
+        '</div>' +
       '</div>' +
     '</div>' +
     '<div class="actions">' +
