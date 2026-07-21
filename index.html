@@ -5,9 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>TestMind · Shaxsiy xususiyatlar soʻrovnomasi</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <style>
+  /* Self-hosted so the page makes NO third-party request and renders on a slow
+     school connection without waiting on fonts.googleapis.com. Both are variable
+     fonts: one file per family covers every weight we use.
+     Latin subset only — it is the subset that contains U+02BB, the ʻ in oʻ / gʻ. */
+  @font-face{font-family:'Bitter';src:url('fonts/bitter.woff2') format('woff2');
+             font-weight:100 900;font-style:normal;font-display:swap}
+  @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
+             font-weight:100 900;font-style:normal;font-display:swap}
   :root{
     --lazur:#0F6E8C;      /* Registan tile teal */
     --lazur-deep:#0A4F66;
@@ -21,7 +28,7 @@
     --lazur-soft:#A8CBD6;
     --muted:#5B7078;
     --display:'Bitter', Georgia, serif;
-    --body:'Rubik', 'Segoe UI', system-ui, sans-serif;
+    --body:'Inter', 'Segoe UI', system-ui, sans-serif;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -148,6 +155,18 @@
   .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
             font-size:15px;line-height:1.45}
   .strength b{color:var(--fam)}
+  /* ---- start screen: show what they can get before asking for anything ---- */
+  .teaser{display:grid;grid-template-columns:repeat(5,1fr);gap:0 2px;margin:2px 0 8px;
+          background:linear-gradient(180deg,#EAF1F3,#F8FBFB);border-radius:12px;padding:12px 8px 4px}
+  .teaser svg{display:block;width:100%;height:auto}
+  .teasercap{text-align:center;font-size:13.5px;color:var(--muted);margin:0 0 22px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chipbtn{font:inherit;font-size:15px;padding:9px 16px;border-radius:99px;border:1px solid var(--line);
+           background:#FBFDFD;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .chipbtn:hover{border-color:var(--lazur)}
+  .chipbtn.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
+  .chipbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .hint{font-size:12.5px;color:var(--muted);margin:7px 0 0}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -155,8 +174,13 @@
   .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
                 border-radius:9px;background:#FBFDFD;color:var(--ink)}
   .caprow input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
-  /* On a phone the field and button never fit side by side — stack them full width. */
-  @media (max-width:520px){ .caprow{flex-direction:column} .caprow .btn{width:100%} }
+  /* On a phone the field and button never fit side by side — stack them full width.
+     flex-basis must be reset here: in a column container it would size the HEIGHT. */
+  @media (max-width:520px){
+    .caprow{flex-direction:column}
+    .caprow input{flex:0 0 auto;width:100%}
+    .caprow .btn{width:100%}
+  }
   .capnote{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.45}
   .capmsg{font-size:14px;margin:10px 0 0;min-height:1px}
   .capmsg.err{color:#8A3B1F}
@@ -647,28 +671,78 @@ document.addEventListener('visibilitychange', function(){
   if (document.visibilityState === 'hidden') sendStats('abandoned');
 });
 
+var AGE_CHIPS = ['12', '13', '14', '15', '16', '17', '18+'];
+
 function renderStart(){
+  // The ten characters are the hook, so they go BEFORE the form — but with no names
+  // and no trait labels, so seeing them can't teach anyone how to game their answers.
+  var teaser = Object.keys(TM_ART).map(function(k){ return charSvg(k); }).join('');
+
   app.innerHTML =
     '<div class="card">' +
-      '<span class="badge">SINOV VERSIYASI</span>' +
-      '<h1>Shaxsiy xususiyatlar soʻrovnomasi</h1>' +
-      '<p class="lede">Qanchalik kirishimli, ijodkor va masʼuliyatli ekaningizni bilib oling.</p>' +
-      '<ul class="meta">' +
-        '<li>50 savol</li><li>~7 daqiqa</li><li>Anonim</li>' +
-      '</ul>' +
-      '<div class="field"><label for="f-name">Ismingiz</label><input id="f-name" type="text" autocomplete="off"></div>' +
-      '<div class="field"><label for="f-age">Yoshingiz</label><input id="f-age" type="number" min="10" max="99" inputmode="numeric"></div>' +
+      '<h1>Siz qaysi obrazsiz?</h1>' +
+      '<p class="lede">50 ta savol, taxminan 7 daqiqa. Yakunida quyidagi oʻn obrazdan ' +
+        'bittasi sizniki boʻladi.</p>' +
+      '<div class="teaser" aria-hidden="true">' + teaser + '</div>' +
+      '<p class="teasercap">Qaysi biri sizniki ekanini bilib oling.</p>' +
+      '<div class="field">' +
+        '<label for="f-name">Ismingiz</label>' +
+        '<input id="f-name" type="text" autocomplete="off" enterkeyhint="next">' +
+        '<p class="hint">Ismingiz shu qurilmadan chiqmaydi — u faqat natijangizda koʻrsatiladi.</p>' +
+      '</div>' +
+      '<div class="field">' +
+        '<label id="ageLbl">Yoshingiz</label>' +
+        '<div class="chips" id="ageChips" role="group" aria-labelledby="ageLbl">' +
+          AGE_CHIPS.map(function(a){
+            return '<button type="button" class="chipbtn" data-age="' + a + '">' + a + '</button>';
+          }).join('') +
+          '<button type="button" class="chipbtn" id="ageOther">Boshqa</button>' +
+        '</div>' +
+        '<input id="f-age" type="number" min="10" max="99" inputmode="numeric" ' +
+          'style="display:none;margin-top:10px" aria-label="Yoshingiz">' +
+      '</div>' +
       '<button class="btn" id="startBtn">Boshlash</button>' +
       '<p class="muted" id="startMsg" style="margin-top:10px"></p>' +
+      '<ul class="meta" style="margin:18px 0 0"><li>Anonim</li><li>Bepul</li>' +
+        '<li>Roʻyxatdan oʻtish shart emas</li></ul>' +
     '</div>';
+
+  var chipBox = document.getElementById('ageChips');
+  var ageInput = document.getElementById('f-age');
+  var chosenAge = '';
+
+  function clearChips(){
+    var all = chipBox.querySelectorAll('.chipbtn');
+    for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
+  }
+  chipBox.onclick = function(e){
+    var b = e.target.closest ? e.target.closest('.chipbtn') : null;
+    if (!b) return;
+    clearChips(); b.classList.add('on');
+    if (b.id === 'ageOther'){
+      ageInput.style.display = 'block'; ageInput.focus(); chosenAge = '';
+    } else {
+      ageInput.style.display = 'none'; ageInput.value = '';
+      chosenAge = b.getAttribute('data-age');
+    }
+    document.getElementById('startMsg').textContent = '';
+  };
+
   document.getElementById('startBtn').onclick = function(){
     var n = document.getElementById('f-name').value.trim();
-    var a = document.getElementById('f-age').value.trim();
-    if (!n || !a){ document.getElementById('startMsg').textContent = 'Ism va yoshni kiriting.'; return; }
+    var a = chosenAge || ageInput.value.trim();
+    var msg = document.getElementById('startMsg');
+    if (!n){ msg.textContent = 'Ismingizni kiriting.'; document.getElementById('f-name').focus(); return; }
+    if (!a){ msg.textContent = 'Yoshingizni tanlang.'; return; }
+    var num = parseInt(a, 10);
+    if (a !== '18+' && (isNaN(num) || num < 10 || num > 99)){
+      msg.textContent = 'Yoshni 10 dan 99 gacha kiriting.'; ageInput.focus(); return;
+    }
     state.name = n; state.age = a; state.page = 0;
     saveDraft();
     renderPage();
   };
+  document.getElementById('f-name').focus();
 }
 
 function answeredOnPage(p){
@@ -887,7 +961,7 @@ function buildShareCard(s, arch, key, cb){
   g.fillStyle = fam.c; g.font = '700 46px Bitter, Georgia, serif';
   g.fillText('TestMind', M, 96);
   g.textAlign = 'right';
-  g.fillStyle = '#5B7078'; g.font = '500 30px Rubik, "Segoe UI", sans-serif';
+  g.fillStyle = '#5B7078'; g.font = '500 30px Inter, "Segoe UI", sans-serif';
   g.fillText(fam.name, W - M, 96);
 
   function finish(){
@@ -895,22 +969,22 @@ function buildShareCard(s, arch, key, cb){
     g.fillStyle = fam.c; g.font = '700 74px Bitter, Georgia, serif';
     var y = wrapText(g, arch.name, W / 2, 806, W - M * 2, 84, 2);
 
-    g.fillStyle = '#5B7078'; g.font = '400 29px Rubik, "Segoe UI", sans-serif';
+    g.fillStyle = '#5B7078'; g.font = '400 29px Inter, "Segoe UI", sans-serif';
     g.fillText(state.name + ' · ' + state.age + ' yosh', W / 2, y + 20);
 
-    g.fillStyle = '#152730'; g.font = '400 34px Rubik, "Segoe UI", sans-serif';
+    g.fillStyle = '#152730'; g.font = '400 34px Inter, "Segoe UI", sans-serif';
     y = wrapText(g, arch.lines[0], W / 2, y + 84, W - M * 2, 48, 3);
 
     // Sit the strength box low enough to fill the card, but always clear of the text.
     var boxTop = Math.min(Math.max(y + 40, 1046), 1168);
     g.fillStyle = fam.soft; g.fillRect(M, boxTop, W - M * 2, 122);
-    g.fillStyle = fam.c; g.font = '600 30px Rubik, "Segoe UI", sans-serif';
+    g.fillStyle = fam.c; g.font = '600 30px Inter, "Segoe UI", sans-serif';
     g.fillText('KUCHLI TOMONIM', W / 2, boxTop + 46);
-    g.fillStyle = '#152730'; g.font = '500 33px Rubik, "Segoe UI", sans-serif';
+    g.fillStyle = '#152730'; g.font = '500 33px Inter, "Segoe UI", sans-serif';
     var str = arch.strength.charAt(0).toUpperCase() + arch.strength.slice(1);
     wrapText(g, str, W / 2, boxTop + 92, W - M * 2 - 60, 42, 1);
 
-    g.fillStyle = '#5B7078'; g.font = '400 27px Rubik, "Segoe UI", sans-serif';
+    g.fillStyle = '#5B7078'; g.font = '400 27px Inter, "Segoe UI", sans-serif';
     g.fillText('testmind-minis.netlify.app', W / 2, H - 48);
     cb(c);
   }
