@@ -148,6 +148,21 @@
   .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
             font-size:15px;line-height:1.45}
   .strength b{color:var(--fam)}
+  .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+  .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
+  .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
+  .caprow{display:flex;gap:10px;flex-wrap:wrap}
+  .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
+                border-radius:9px;background:#FBFDFD;color:var(--ink)}
+  .caprow input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
+  /* On a phone the field and button never fit side by side — stack them full width. */
+  @media (max-width:520px){ .caprow{flex-direction:column} .caprow .btn{width:100%} }
+  .capnote{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.45}
+  .capmsg{font-size:14px;margin:10px 0 0;min-height:1px}
+  .capmsg.err{color:#8A3B1F}
+  .capdone{display:flex;gap:10px;align-items:flex-start}
+  .capdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;color:#fff;
+                 display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
   .deep{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:16px}
   .deep>summary{cursor:pointer;font-weight:600;color:var(--lazur-deep);list-style:none}
   .deep>summary::-webkit-details-marker{display:none}
@@ -159,7 +174,7 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   @media print{
     body{background:#fff}
-    .btn,.nav,.foot,.weave{display:none !important}
+    .btn,.nav,.actions,.capture,.foot,.weave{display:none !important}
     .card{border:0;padding:0}
   }
 </style>
@@ -605,6 +620,27 @@ function sendStats(status, s, arch){
   } catch (e) {}
 }
 
+// ---------- Optional email capture ----------
+// Separate from sendStats: this row is NOT anonymous, so it is only ever sent when
+// the student deliberately types an address and taps the button. Nothing is sent
+// on page load, and never their name or their individual answers.
+var leadSent = false;
+function sendLead(email, archName, done){
+  if (!SHEET_URL){ done(false); return; }
+  var payload = {
+    id: anonId(), status: 'lead', age: state.age,
+    email: email, archetype: archName, v: TM_VERSION
+  };
+  try {
+    fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors', keepalive: true,
+      headers: {'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify(payload)
+    }).then(function(){ leadSent = true; done(true); })['catch'](function(){ done(false); });
+  } catch (e) { done(false); }
+}
+// Deliberately permissive: it only has to catch typos, not police the address.
+function looksLikeEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
 // Capture drop-off: report an unfinished attempt when the page is closed/hidden.
 window.addEventListener('pagehide', function(){ sendStats('abandoned'); });
 document.addEventListener('visibilitychange', function(){
@@ -918,6 +954,20 @@ function renderReport(){
       '<button class="btn ghost" id="againBtn">Qaytadan</button>' +
     '</div>' +
     '<div id="shareBox" class="sharebox"></div>' +
+    '<div class="capture" id="capture">' +
+      '<h3>Toʻliq tahlilni olasizmi?</h3>' +
+      '<p class="caplede">«' + arch.name + '» uchun batafsil qoʻllanma: kuchli tomonlaringiz, ' +
+        'oʻsish nuqtalaringiz va sizga mos yoʻnalishlar.</p>' +
+      '<div class="caprow">' +
+        '<input type="email" id="capEmail" placeholder="email@example.com" ' +
+          'autocomplete="email" inputmode="email" aria-label="Email manzilingiz">' +
+        '<button class="btn" id="capBtn">Yuborish</button>' +
+      '</div>' +
+      '<p class="capmsg" id="capMsg" role="status"></p>' +
+      '<p class="capnote">Qoʻllanma hozir tayyorlanmoqda — tayyor boʻlishi bilan birinchilardan ' +
+        'boʻlib sizga yuboramiz. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
+        '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
+    '</div>' +
     '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>' +
       boardHtml(s);
   ['ES','E','O','A','C'].forEach(function(k){
@@ -939,9 +989,41 @@ function renderReport(){
   document.getElementById('againBtn').onclick = function(){
     clearDraft();
     state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false;   // a new attempt gets its own row + new id
+    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
     renderStart();
   };
+  var capBtn = document.getElementById('capBtn');
+  capBtn.onclick = function(){
+    var input = document.getElementById('capEmail');
+    var msg = document.getElementById('capMsg');
+    var email = input.value.trim();
+    if (!looksLikeEmail(email)){
+      msg.className = 'capmsg err';
+      msg.textContent = 'Email manzilini tekshirib qayta kiriting.';
+      input.focus();
+      return;
+    }
+    capBtn.disabled = true; capBtn.textContent = 'Yuborilmoqda…';
+    msg.className = 'capmsg'; msg.textContent = '';
+    sendLead(email, arch.name, function(okSent){
+      if (okSent){
+        document.getElementById('capture').innerHTML =
+          '<div class="capdone"><span class="tick" aria-hidden="true">✓</span><div>' +
+            '<h3 style="margin:0 0 4px">Qabul qilindi</h3>' +
+            '<p class="caplede" style="margin:0">Qoʻllanma tayyor boʻlishi bilan ' + esc(email) +
+            ' manziliga yuboramiz.</p>' +
+          '</div></div>';
+      } else {
+        capBtn.disabled = false; capBtn.textContent = 'Yuborish';
+        msg.className = 'capmsg err';
+        msg.textContent = 'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.';
+      }
+    });
+  };
+  document.getElementById('capEmail').onkeydown = function(e){
+    if (e.key === 'Enter'){ e.preventDefault(); capBtn.click(); }
+  };
+
   document.getElementById('printBtn').onclick = function(){
     // A closed <details> prints empty, so open the full breakdown before printing.
     var d = document.querySelector('details.deep'); if (d) d.open = true;
@@ -988,7 +1070,7 @@ function renderResume(d){
   document.getElementById('freshBtn').onclick = function(){
     clearDraft();
     state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false;   // a new attempt gets its own row + new id
+    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
     renderStart();
   };
 }
