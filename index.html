@@ -3,1159 +3,382 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TestMind · Shaxsiy xususiyatlar soʻrovnomasi</title>
+<title>TestMind — Siz qaysi obrazsiz?</title>
+<meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.">
+<meta property="og:title" content="TestMind — Siz qaysi obrazsiz?">
+<meta property="og:description" content="Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa.">
+<meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <style>
-  /* Self-hosted so the page makes NO third-party request and renders on a slow
-     school connection without waiting on fonts.googleapis.com. Both are variable
-     fonts: one file per family covers every weight we use.
-     Latin subset only — it is the subset that contains U+02BB, the ʻ in oʻ / gʻ. */
   @font-face{font-family:'Bitter';src:url('fonts/bitter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
   @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
   :root{
-    --lazur:#0F6E8C;      /* Registan tile teal */
-    --lazur-deep:#0A4F66;
-    --ink:#152730;        /* dark blue slate text */
-    --paper:#F1F6F7;      /* cool paper background */
-    --card:#FFFFFF;
-    --line:#D7E2E4;
-    --zar:#C08A2E;        /* ochre accent, used sparingly */
-    --viol:#8A6BC1;       /* violet — disagree side of scale */
-    --viol-soft:#DCD2EE;
-    --lazur-soft:#A8CBD6;
-    --muted:#5B7078;
-    --display:'Bitter', Georgia, serif;
-    --body:'Inter', 'Segoe UI', system-ui, sans-serif;
+    --lazur:#0F6E8C; --lazur-deep:#0A4F66; --ink:#152730; --paper:#F1F6F7;
+    --card:#FFFFFF; --line:#D7E2E4; --zar:#C08A2E; --muted:#5B7078;
+    --display:'Bitter', Georgia, serif; --body:'Inter','Segoe UI',system-ui,sans-serif;
   }
   *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
-  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
-  .masthead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
-  .mark{font-family:var(--display);font-weight:700;font-size:26px;letter-spacing:.2px;color:var(--lazur-deep)}
-  .tag{font-size:13px;color:var(--muted)}
-  .weave{height:6px;margin:0 0 26px;background:repeating-linear-gradient(135deg,var(--lazur) 0 7px,transparent 7px 14px);opacity:.55;border-radius:3px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 24px;margin-bottom:18px}
-  h1{font-family:var(--display);font-weight:700;font-size:30px;line-height:1.2;margin:0 0 14px}
-  h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 6px}
-  p{margin:0 0 12px}
-  .muted{color:var(--muted);font-size:14px}
-  .field{margin:16px 0}
-  .field label{display:block;font-weight:500;margin-bottom:6px}
-  .field input{width:100%;max-width:340px;padding:11px 12px;font:inherit;border:1px solid var(--line);border-radius:9px;background:#FBFDFD;color:var(--ink)}
-  .field input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
-  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:#fff}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--card);color:var(--ink);font-family:var(--body);
+       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
+  a{color:var(--lazur-deep)}
+
+  /* ---------- nav ---------- */
+  .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
+       backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
+  .navin{display:flex;align-items:center;gap:18px;height:62px}
+  .brand{font-family:var(--display);font-weight:700;font-size:23px;color:var(--lazur-deep);
+         text-decoration:none;white-space:nowrap}
+  .navlinks{display:flex;gap:22px;margin-left:auto}
+  .navlinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap}
+  .navlinks a:hover{color:var(--lazur-deep)}
+  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;
+       font-weight:600;cursor:pointer;background:var(--lazur);color:#fff;text-decoration:none;
+       transition:background .15s ease,transform .12s ease}
   .btn:hover{background:var(--lazur-deep)}
+  .btn:active{transform:translateY(1px)}
   .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .btn[disabled]{background:#B8C9CE;cursor:not-allowed}
   .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
-  .btn.ghost:hover{border-color:var(--lazur)}
-  .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
-  .navr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-  .sharebox{margin-bottom:16px;text-align:center}
-  .shareimg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
-  .pcount{font-size:14px;color:var(--muted);white-space:nowrap}
-  .ptrack{height:10px;background:#E2EBEC;border-radius:5px;overflow:hidden;margin:8px 0 6px}
-  .pfill{height:100%;background:linear-gradient(90deg,var(--lazur),var(--zar));width:0%;transition:width .3s ease;border-radius:5px}
-  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
-  .cheer{font-family:var(--display);font-weight:600;font-size:18px;margin:0;color:var(--lazur-deep)}
-  .cheer.pop{animation:cheerpop .45s ease}
-  @keyframes cheerpop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
-  .partlbl{font-size:12.5px;margin:0 0 16px}
-  .item{padding:18px 0;border-bottom:1px solid var(--line)}
-  .item:last-of-type{border-bottom:0}
-  .item.warn .qtext{color:#8A3B1F}
-  .qtext{font-weight:500;margin-bottom:4px}
-  .qnum{color:var(--lazur-deep);font-weight:600;margin-right:6px}
-  .qhelp{font-size:13.5px;color:var(--muted);margin:0 0 10px}
-  /* ---- 5-point circle scale: Qoʻshilmayman -> Qoʻshilaman ---- */
-  .scale{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px}
-  .slab{font-size:13px;line-height:1.25;color:var(--muted);flex:0 0 auto;max-width:104px}
-  .slab.l{text-align:right}
-  .slab.r{text-align:left}
-  .dots{display:flex;align-items:center;gap:clamp(6px,2vw,12px)}
-  .opt{position:relative;display:flex;align-items:center;justify-content:center;
-       padding:5px;cursor:pointer;border-radius:50%;user-select:none;
-       -webkit-tap-highlight-color:transparent}
-  .opt input{position:absolute;opacity:0;pointer-events:none}
-  .dot{display:block;border-radius:50%;background:transparent;border:2px solid var(--line);
-       transition:background .15s ease,border-color .15s ease,transform .12s ease}
-  .opt.s1 .dot,.opt.s5 .dot{width:clamp(38px,10.5vw,46px);height:clamp(38px,10.5vw,46px)}
-  .opt.s2 .dot,.opt.s4 .dot{width:clamp(33px,9vw,39px);height:clamp(33px,9vw,39px)}
-  .opt.s3 .dot{width:clamp(28px,7.5vw,32px);height:clamp(28px,7.5vw,32px)}
-  /* resting ring colours: warm on the disagree side, teal on the agree side */
-  .opt.s1 .dot,.opt.s2 .dot{border-color:var(--viol-soft)}
-  .opt.s4 .dot,.opt.s5 .dot{border-color:var(--lazur-soft)}
-  .opt.s3 .dot{border-color:var(--line)}
-  .opt:hover .dot{transform:scale(1.08)}
-  .opt.s1:hover .dot,.opt.s2:hover .dot{border-color:var(--viol)}
-  .opt.s3:hover .dot{border-color:var(--muted)}
-  .opt.s4:hover .dot,.opt.s5:hover .dot{border-color:var(--lazur)}
-  /* selected = filled (shape change, not colour alone) */
-  .opt.sel.s1 .dot,.opt.sel.s2 .dot{background:var(--viol);border-color:var(--viol)}
-  .opt.sel.s3 .dot{background:var(--muted);border-color:var(--muted)}
-  .opt.sel.s4 .dot,.opt.sel.s5 .dot{background:var(--lazur);border-color:var(--lazur)}
-  .opt.sel .dot{box-shadow:0 0 0 3px rgba(15,110,140,.14)}
-  .opt.sel.s1 .dot,.opt.sel.s2 .dot{box-shadow:0 0 0 3px rgba(138,107,193,.16)}
-  .opt input:focus-visible + .dot{outline:3px solid var(--zar);outline-offset:2px}
-  .item.warn .dot{border-color:#C79A3F}
-  @media (max-width:560px){
-    .scale{flex-wrap:wrap;gap:8px}
-    .slab{max-width:none;font-size:12.5px}
-    .slab.l{order:1;flex:1 1 40%;text-align:left}
-    .slab.r{order:2;flex:1 1 40%;text-align:right}
-    .dots{order:3;flex:1 1 100%;justify-content:space-between;gap:4px;margin-top:2px}
-  }
-  .trait{padding:18px 0;border-bottom:1px solid var(--line)}
-  .trait:last-of-type{border-bottom:0}
-  .trow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
-  .tname{font-family:var(--display);font-weight:600;font-size:18px}
-  .tmeta{display:flex;align-items:center;gap:10px}
-  .score{font-weight:600;color:var(--lazur-deep)}
-  .chip{font-size:12.5px;font-weight:500;border:1px solid var(--line);border-radius:99px;padding:3px 10px;color:var(--muted)}
-  .chip.hi{border-color:var(--zar);color:var(--zar)}
-  .board{display:flex;gap:10px;justify-content:space-between;margin:20px 0 26px}
-  .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
-  .cval{font-weight:600;font-size:14px;color:var(--lazur-deep)}
-  .vtrack{display:flex;flex-direction:column;gap:3px}
-  .vseg{width:15px;height:9px;background:#E2EBEC;transform:skewX(-16deg);border-radius:2px}
-  .vseg.on{background:var(--lazur)}
-  .clab{font-size:12px;text-align:center;color:var(--muted);line-height:1.25;min-height:32px}
-  .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;color:var(--zar);border:1px solid var(--zar);border-radius:99px;padding:3px 10px;margin-bottom:12px}
-  .lede{font-size:17px;line-height:1.5;margin:0 0 16px}
-  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
-  .meta li{font-size:13px;color:var(--lazur-deep);background:#E7EFF1;border-radius:99px;padding:5px 12px}
-  .more{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
-  .more summary{cursor:pointer;font-size:14px;font-weight:500;color:var(--lazur-deep);list-style:none}
-  .more summary::-webkit-details-marker{display:none}
-  .more summary::after{content:' ▼'}
-  .more[open] summary::after{content:' ▲'}
-  .more summary:focus-visible{outline:2px solid var(--zar);outline-offset:2px;border-radius:4px}
-  .more p{font-size:13.5px;color:var(--muted);margin:10px 0 0}
-  /* ---- result hero: the screenshot moment ---- */
-  .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:16px}
-  .herotop{position:relative;background:var(--famsoft);padding:14px 16px 0;text-align:center}
-  .herotop::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;
-                  background:repeating-linear-gradient(135deg,var(--fam) 0 7px,transparent 7px 14px);opacity:.5}
-  .famtag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
-          color:#fff;background:var(--fam);border-radius:99px;padding:4px 13px}
-  .herotop svg{display:block;width:236px;max-width:68vw;height:auto;margin:2px auto 0}
-  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-  .actions .btn{width:100%}
-  .actions .wide{grid-column:1 / -1}
-  .herobody{padding:20px 22px 22px;text-align:center}
-  .archname{font-family:var(--display);font-weight:700;font-size:clamp(26px,7vw,34px);line-height:1.15;
-            color:var(--fam);margin:0 0 4px}
-  .archwho{font-size:13px;color:var(--muted);margin:0 0 14px}
-  .archlines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
-  .archlines li{font-size:15.5px;line-height:1.5}
-  .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
-            font-size:15px;line-height:1.45}
-  .strength b{color:var(--fam)}
-  /* ---- start screen: show what they can get before asking for anything ---- */
-  .teaser{display:grid;grid-template-columns:repeat(5,1fr);gap:0 2px;margin:2px 0 8px;
-          background:linear-gradient(180deg,#EAF1F3,#F8FBFB);border-radius:12px;padding:12px 8px 4px}
-  .teaser svg{display:block;width:100%;height:auto}
-  .teasercap{text-align:center;font-size:13.5px;color:var(--muted);margin:0 0 22px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chipbtn{font:inherit;font-size:15px;padding:9px 16px;border-radius:99px;border:1px solid var(--line);
-           background:#FBFDFD;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .chipbtn:hover{border-color:var(--lazur)}
-  .chipbtn.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
-  .chipbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .hint{font-size:12.5px;color:var(--muted);margin:7px 0 0}
-  .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
-  .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
-  .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
-  .caprow{display:flex;gap:10px;flex-wrap:wrap}
-  .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
-                border-radius:9px;background:#FBFDFD;color:var(--ink)}
-  .caprow input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
-  /* On a phone the field and button never fit side by side — stack them full width.
-     flex-basis must be reset here: in a column container it would size the HEIGHT. */
-  @media (max-width:520px){
-    .caprow{flex-direction:column}
-    .caprow input{flex:0 0 auto;width:100%}
-    .caprow .btn{width:100%}
-  }
-  .capnote{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.45}
-  .capmsg{font-size:14px;margin:10px 0 0;min-height:1px}
-  .capmsg.err{color:#8A3B1F}
-  .capdone{display:flex;gap:10px;align-items:flex-start}
-  .capdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;color:#fff;
-                 display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
-  .deep{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:16px}
-  .deep>summary{cursor:pointer;font-weight:600;color:var(--lazur-deep);list-style:none}
-  .deep>summary::-webkit-details-marker{display:none}
-  .deep>summary::after{content:' ▼';font-weight:400;font-size:12px}
-  .deep[open]>summary::after{content:' ▲'}
-  .deep>summary:focus-visible{outline:2px solid var(--zar);outline-offset:3px;border-radius:4px}
-  .foot{margin-top:30px;font-size:12.5px;color:var(--muted);text-align:center}
+  .btn.ghost:hover{background:#EDF4F5;border-color:var(--lazur)}
+  .btn.sm{padding:9px 16px;font-size:14.5px}
+  .btn.big{padding:16px 34px;font-size:18px;border-radius:12px}
+  @media (max-width:760px){ .navlinks{display:none} .navin{gap:12px} .navin .btn{margin-left:auto} }
+
+  /* ---------- hero ---------- */
+  .hero{background:linear-gradient(180deg,#EAF3F5 0%,#F1F6F7 100%);overflow:hidden;
+        border-bottom:1px solid var(--line)}
+  .herotext{text-align:center;padding:56px 20px 30px;max-width:760px;margin:0 auto}
+  h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,6.2vw,52px);
+     line-height:1.12;margin:0 0 16px;letter-spacing:-.4px}
+  .sub{font-size:clamp(16px,2.4vw,19px);color:var(--muted);margin:0 0 26px;line-height:1.5}
+  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+  .trust{margin:16px 0 0;font-size:13.5px;color:var(--muted)}
+  .scene{width:100%;height:clamp(244px,40vw,520px);margin-bottom:-4px}
+  .scene svg{display:block;width:100%;height:100%}
+
+  /* ---------- sections ---------- */
+  section{padding:64px 0}
+  .alt{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,34px);
+     margin:0 0 10px;line-height:1.2}
+  .lead{color:var(--muted);margin:0 0 34px;font-size:17px;max-width:620px}
+  .center{text-align:center}
+  .center .lead{margin-left:auto;margin-right:auto}
+
+  /* ---------- character gallery ---------- */
+  .fam{margin-bottom:38px}
+  .famhead{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;
+           padding-bottom:10px;border-bottom:2px solid var(--famc)}
+  .famname{font-family:var(--display);font-weight:700;font-size:21px;color:var(--famc);margin:0}
+  .famnote{font-size:14px;color:var(--muted)}
+  /* two per row on a phone — one column made the gallery a 3000px scroll */
+  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:14px}
+  .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;
+         overflow:hidden;transition:transform .16s ease,box-shadow .16s ease}
+  .ccard:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(15,110,140,.10)}
+  .cart{background:var(--famsoft);padding:14px 10px 0}
+  .cart svg{display:block;width:clamp(92px,44%,118px);max-width:100%;height:auto;margin:0 auto}
+  .cbody{padding:13px 15px 17px}
+  .cname{font-family:var(--display);font-weight:700;font-size:clamp(15px,3.6vw,17px);
+         color:var(--famc);margin:0 0 5px;line-height:1.25}
+  .cstr{font-size:13.5px;color:var(--muted);margin:0;line-height:1.45}
+
+  /* ---------- steps ---------- */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
+  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
+  .stepn{width:38px;height:38px;border-radius:50%;background:var(--lazur);color:#fff;
+         display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;
+         margin-bottom:14px}
+  .step h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
+  .step p{margin:0;color:var(--muted);font-size:15px}
+
+  /* ---------- why ---------- */
+  .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+  .wcard{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--card)}
+  .wcard h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0 0 6px;color:var(--lazur-deep)}
+  .wcard p{margin:0;font-size:14.5px;color:var(--muted)}
+
+  /* ---------- faq ---------- */
+  .faq{max-width:760px}
+  .faq details{border:1px solid var(--line);border-radius:12px;background:var(--card);
+               padding:16px 20px;margin-bottom:10px}
+  .faq summary{cursor:pointer;font-weight:600;list-style:none;font-size:16px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:'+';float:right;color:var(--lazur);font-weight:700;font-size:20px;line-height:1}
+  .faq details[open] summary::after{content:'−'}
+  .faq summary:focus-visible{outline:2px solid var(--zar);outline-offset:3px;border-radius:4px}
+  .faq p{margin:12px 0 0;color:var(--muted);font-size:15px}
+
+  /* ---------- closing + footer ---------- */
+  .close{text-align:center;background:var(--lazur-deep);color:#fff;padding:64px 20px}
+  .close h2{color:#fff;margin-bottom:12px}
+  .close p{color:#C9DEE6;margin:0 0 26px;font-size:17px}
+  .close .btn{background:#fff;color:var(--lazur-deep)}
+  .close .btn:hover{background:#E7F1F4}
+  .foot{padding:26px 20px 34px;text-align:center;font-size:13px;color:var(--muted)}
   .foot a{color:var(--zar)}
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
-  @media print{
-    body{background:#fff}
-    .btn,.nav,.actions,.capture,.foot,.weave{display:none !important}
-    .card{border:0;padding:0}
-  }
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} html{scroll-behavior:auto} }
 </style>
 </head>
 <body>
-<div class="wrap">
-  <header class="masthead">
-    <div class="mark">TestMind</div>
-    <div class="tag">Shaxsiy xususiyatlar soʻrovnomasi</div>
-  </header>
-  <div class="weave" aria-hidden="true"></div>
-  <main id="app"></main>
-  <footer class="foot">TestMind · sinov versiyasi · 2026 · <a href="privacy.html">Maxfiylik</a></footer>
-</div>
 
-<script id="tm-logic">
-// ---------- TestMind v1.0 logic (frozen items + draft key) ----------
-var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
+<nav class="nav"><div class="wrap navin">
+  <a class="brand" href="#top">TestMind</a>
+  <div class="navlinks">
+    <a href="#obrazlar">Obrazlar</a>
+    <a href="#qanday">Qanday ishlaydi</a>
+    <a href="#savollar">Savollar</a>
+  </div>
+  <a class="btn sm" href="test.html" id="navCta">Testni boshlash</a>
+</div></nav>
 
-var ITEMS = [
-  {d:'E',r:0,t:'Yangi doʻstlar orttirish men uchun juda oson.'},
-  {d:'O',r:0,t:'Tasavvurim juda kuchli.'},
-  {d:'A',r:0,t:'Odamlarga osongina ishonaman.'},
-  {d:'N',r:0,t:'Arzimas narsalarga ham koʻp xavotirlanaman.'},
-  {d:'C',r:0,t:'Menga topshirilgan ishlarni koʻngildagidek uddalayman.'},
-  {d:'N',r:0,t:'Sal narsaga ham jahlim chiqib ketadi.'},
-  {d:'E',r:0,t:'Odam koʻp yigʻilgan gavjum joylarda boʻlishni yoqtiraman.'},
-  {d:'O',r:0,t:'Sanʼat va ijod hayotimda muhim oʻrin tutadi.'},
-  {d:'A',r:1,t:'Oʻz manfaatim uchun baʼzan boshqalardan foydalanib qolaman.'},
-  {d:'C',r:0,t:'Xonam va xonadonimni ozoda, yigʻishtirilgan tutaman.'},
-  {d:'N',r:0,t:'Tez-tez kayfiyatim tushib, gʻamgin boʻlib qolaman.'},
-  {d:'A',r:0,t:'Men boshqalarga yordam berishni yaxshi koʻraman.'},
-  {d:'C',r:0,t:'Har doim soʻzimda turaman va vaʼdamni bajaraman.'},
-  {d:'O',r:0,t:'Men bir xillikdan koʻra xilma-xillikni afzal koʻraman.'},
-  {d:'O',r:0,t:'Chuqur va fikrlashga majbur qiladigan kitoblarni yoqtiraman.'},
-  {d:'C',r:0,t:'Har bir ishni boshlashdan oldin puxta reja tuzaman.'},
-  {d:'E',r:1,t:'Odamlarga birdan ochilib ketmayman, ichki dunyoyimni sir tutaman.'},
-  {d:'A',r:1,t:'Boshqalarning nimani his qilayotgani menga unchalik qiziq emas.'},
-  {d:'A',r:0,t:'Har qanday vaziyatda ham haqiqatni gapiraman.'},
-  {d:'E',r:1,t:'Hayotim bir xil va biroz zerikarli kechayotgandek tuyuladi.'},
-  {d:'A',r:1,t:'Oʻz fikrimni yetkazish uchun boshqalarning fikriga qarshi chiqaman.'},
-  {d:'C',r:0,t:'Mendan kutilganidan ham koʻproq natija koʻrsatishga harakat qilaman.'},
-  {d:'N',r:0,t:'Oʻzimdan va shaxsimdan koʻpincha qoniqmayman.'},
-  {d:'O',r:0,t:'Dunyo faqat "fakt" yoki "xato"dan emas, balki turli qarashlardan iborat deb bilaman.'},
-  {d:'N',r:1,t:'Avariya yoki mushkul ahvolda ham xotirjam qolaman.'},
-  {d:'E',r:1,t:'Oʻzim birinchi boʻlib qadam tashlamay, boshqalarning harakatini kutaman.'},
-  {d:'O',r:1,t:'Sheʼr oʻqish yoki eshitish menga unchalik zavq bagʻishlamaydi.'},
-  {d:'C',r:1,t:'Xonam va shaxsiy buyumlarimni sochib, betartib qoldiraman.'},
-  {d:'N',r:1,t:'Men kamdan-kam asabiylashaman.'},
-  {d:'C',r:1,t:'Jamiyatda oʻrnatilgan tartib va qoidalarni chetlab oʻtaman.'},
-  {d:'E',r:0,t:'Guruhda va jamoada yetakchilikni oʻz zimmamga olaman.'},
-  {d:'O',r:1,t:'Amaliy boʻlmagan, nazariy va falsafiy fikrlarni tushunish menga qiyin.'},
-  {d:'O',r:1,t:'Nomaʼlum tajribalardan koʻra sinovdan oʻtgan eski usullarga tayanaman.'},
-  {d:'A',r:0,t:'Qiyin ahvoldagi insonlarga chin dildan achinaman va hamdard boʻlaman.'},
-  {d:'C',r:1,t:'Yetti oʻlchab bir kesmay, tavakkaliga ish tutaman.'},
-  {d:'N',r:1,t:'Kayfiyatim tushishi va xafa boʻlib yurishim juda kam uchraydi.'},
-  {d:'E',r:0,t:'Yangi va tavakkalchilikka boy sarguzashtlarni yoqtiraman.'},
-  {d:'E',r:0,t:'Hayotdan va har bir kundan chinakam zavq olaman.'},
-  {d:'N',r:1,t:'Noqulay vaziyatlarda ham xijolat boʻlib, tortinib oʻtirmayman.'},
-  {d:'O',r:1,t:'Haddan tashqari taʼsirchan va hissiyotga beriluvchan odamlarni tushunishim qiyin.'},
-  {d:'A',r:1,t:'Odamlarning harakati ortida doim yashirin bir manfaat bor deb shubhalanaman.'},
-  {d:'C',r:1,t:'Bergan soʻzimda va vaʼdamda tura olmayman.'},
-  {d:'E',r:1,t:'Odam koʻp va shovqin-suronli tadbirlarni yoqtirmayman.'},
-  {d:'N',r:0,t:'Muammolarim haqida oʻylayverib, uzoq vaqt ulardan chiqolmay qolaman.'},
-  {d:'E',r:1,t:'Ishlarga katta gʻayrat va yuqori ishtiyoq bilan kirishmayman.'},
-  {d:'A',r:1,t:'Jahlim chiqqanda boshqalarga ogʻir va haqoratli gaplar gapirib qoʻyaman.'},
-  {d:'N',r:1,t:'Toʻsiqlar va hayotiy qiyinchiliklarni yengib oʻtish men uchun qiyin emas.'},
-  {d:'O',r:1,t:'Kattalar va rahbarlarning qarorlariga soʻzsiz hurmat bilan qarash kerak deb bilaman.'},
-  {d:'A',r:0,t:'Oʻzaro musobaqalashishdan koʻra ahillik bilan hamkorlik qilishni afzal bilaman.'},
-  {d:'C',r:1,t:'Ishlarni shoshma-shosharlik bilan bajaraman.'}
-];
+<header class="hero" id="top">
+  <div class="herotext">
+    <h1>Siz qaysi obrazsiz?</h1>
+    <p class="sub">50 ta savol, taxminan 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki
+       boʻladi — kuchli tomonlaringiz bilan birga.</p>
+    <div class="cta">
+      <a class="btn big" href="test.html" id="heroCta">Testni boshlash</a>
+      <a class="btn big ghost" href="#obrazlar">Obrazlarni koʻrish</a>
+    </div>
+    <p class="trust">Bepul · Anonim · Roʻyxatdan oʻtish shart emas</p>
+  </div>
+  <div class="scene" id="scene" aria-hidden="true"></div>
+</header>
 
-// answers: array of values in 1..5 (0 = unanswered).
-// Each item carries its own trait (d) and reverse flag (r), so questions can be
-// added, removed or reordered without breaking the scoring.
-function scoreAnswers(answers){
-  var sums = {N:0,E:0,O:0,A:0,C:0}, counts = {N:0,E:0,O:0,A:0,C:0};
-  for (var i = 0; i < ITEMS.length; i++){
-    var v = answers[i];
-    if (!v) continue;
-    var it = ITEMS[i];
-    if (it.r) v = 6 - v;
-    sums[it.d] += v; counts[it.d]++;
-  }
-  function m(d){ return counts[d] ? sums[d]/counts[d] : 0; }
-  // ES is inverted Neuroticism; with no N answers it must stay 0, not 6.
-  return { ES: counts.N ? 6 - m('N') : 0, E: m('E'), O: m('O'), A: m('A'), C: m('C') };
-}
+<section id="obrazlar" class="alt">
+  <div class="wrap">
+    <div class="center">
+      <h2>Oʻnta obraz</h2>
+      <p class="lead">Har bir obraz — oʻziga xos kuchli tomonlar toʻplami.
+         Ular orasida «yomoni» yoʻq: shunchaki bir-biridan farq qiladi.</p>
+    </div>
+    <div id="gallery"></div>
+  </div>
+</section>
 
-var TRAITS = {ES:'Hissiy barqarorlik', E:'Kirishimlilik', O:'Yangilikka ochiqlik', A:'Kelishuvchanlik', C:'Masʼuliyatlilik'};
+<section id="qanday">
+  <div class="wrap">
+    <h2>Qanday ishlaydi</h2>
+    <p class="lead">Uch qadam, ettita daqiqa.</p>
+    <div class="steps">
+      <div class="step"><div class="stepn">1</div>
+        <h3>Savollarga javob bering</h3>
+        <p>50 ta jumla. Har biriga qanchalik qoʻshilishingizni beshta doiradan birini
+           bosib belgilaysiz. Toʻgʻri yoki notoʻgʻri javob yoʻq.</p></div>
+      <div class="step"><div class="stepn">2</div>
+        <h3>Obrazingizni koʻring</h3>
+        <p>Darhol ekranda: obrazingiz, uning tavsifi va eng kuchli tomoningiz.
+           Rasm qilib saqlab, doʻstlaringizga yuborishingiz mumkin.</p></div>
+      <div class="step"><div class="stepn">3</div>
+        <h3>Batafsil tahlilni oling</h3>
+        <p>Xohlasangiz, email qoldiring — obrazingiz boʻyicha toʻliq qoʻllanmani
+           tayyor boʻlishi bilan yuboramiz.</p></div>
+    </div>
+  </div>
+</section>
 
-var TEXTS = {
-  ES:{past:'Hissiyotlarni boshqalardan kuchliroq his qilishingiz mumkin. Bu kamchilik emas: bunday odamlar koʻpincha sezgir va ehtiyotkor boʻladi. Oʻzingizga qulay ish muhitini tanlash muhim.',
-      orta:'Koʻp odamlar kabi baʼzi vaziyatlarda xavotirlanasiz, boshqalarida xotirjamsiz. Bu tabiiy holat.',
-      yuqori:'Stressli vaziyatlarda ham xotirjamlikni saqlay olasiz. Bosim ostida ishlash talab qilinadigan yoʻnalishlar sizga mos kelishi mumkin.'},
-  E:{past:'Mustaqil va chuqur ishlashni afzal koʻrasiz. Tahlil, dasturlash, tadqiqot kabi diqqat talab yoʻnalishlar kuchli tomoningiz boʻlishi mumkin.',
-     orta:'Ham jamoada, ham mustaqil ishlay olasiz. Bu moslashuvchanlik koʻp kasblarda qoʻl keladi.',
-     yuqori:'Odamlar bilan ishlash sizga quvvat beradi. Jamoaviy loyihalar, mijozlar bilan muloqot, yetakchilik yoʻnalishlarini koʻrib chiqing.'},
-  O:{past:'Aniq qoidalar va sinalgan usullar bilan ishlash sizga qulay. Aniqlik va barqarorlik talab qilinadigan sohalarda bu muhim sifat.',
-     orta:'Yangilikka ham, sinalgan usullarga ham ochiqsiz. Vaziyatga qarab tanlaysiz.',
-     yuqori:'Yangi gʻoyalar va nostandart yechimlar sizni tortadi. Ijodiy va tadqiqot yoʻnalishlarida bu katta ustunlik.'},
-  A:{past:'Oʻz fikringizni ochiq aytasiz va raqobatdan qochmaysiz. Muzokara, tanqidiy tahlil, raqobatli muhitlar sizga mos kelishi mumkin.',
-     orta:'Hamkorlik ham, oʻz fikringizni himoya qilish ham qoʻlingizdan keladi.',
-     yuqori:'Odamlarga yordam berish va hamkorlik siz uchun tabiiy. Taʼlim, tibbiyot, xizmat sohalarida bu katta kuch.'},
-  C:{past:'Erkin va moslashuvchan ish uslubini afzal koʻrasiz. Qatʼiy jadvaldan koʻra natijaga qaraydigan muhitlar sizga qulayroq. Reja tuzish koʻnikmasini rivojlantirish foydali boʻladi.',
-     orta:'Muhim ishlarda oʻzingizni yigʻib olasiz, qolganlarida erkinroq yondashasiz.',
-     yuqori:'Rejali va intizomli ishlaysiz, boshlagan ishni oxiriga yetkazasiz. Bu deyarli har qanday sohada muvaffaqiyatning asosiy omili.'}
-};
+<section class="alt">
+  <div class="wrap">
+    <h2>Nega TestMind?</h2>
+    <p class="lead">Oʻzbek oʻsmirlari uchun, oʻzbek tilida.</p>
+    <div class="why">
+      <div class="wcard"><h3>Ilmiy modelga asoslangan</h3>
+        <p>Savollar psixologiyada eng koʻp tekshirilgan «Katta beshlik» (Big Five)
+           modelidan olingan. Bu tibbiy tashxis emas, lekin taxmin ham emas.</p></div>
+      <div class="wcard"><h3>Tabiiy oʻzbek tilida</h3>
+        <p>Savollar tarjima emas — oʻsmirlar kundalik hayotda ishlatadigan tilda
+           yozilgan.</p></div>
+      <div class="wcard"><h3>Anonim</h3>
+        <p>Ismingiz va alohida javoblaringiz serverga yuborilmaydi. Javoblar test
+           tugashi bilan qurilmangizdan oʻchiriladi.</p></div>
+      <div class="wcard"><h3>Butunlay bepul</h3>
+        <p>Toʻlov yoʻq, obuna yoʻq, roʻyxatdan oʻtish shart emas. Telefonda ham
+           bemalol ishlaydi.</p></div>
+    </div>
+  </div>
+</section>
 
-var DISCLAIMER = 'TestMind sinov versiyasi. Bu natijalar maslahat xarakteriga ega, hukm emas. Kasb tanlashda natijalar bilan birga qiziqishlaringiz va imkoniyatlaringizni ham hisobga oling.';
+<section id="savollar">
+  <div class="wrap">
+    <h2>Koʻp beriladigan savollar</h2>
+    <p class="lead">Qisqa javoblar.</p>
+    <div class="faq">
+      <details><summary>Test qancha vaqt oladi?</summary>
+        <p>50 ta savol, taxminan 7 daqiqa. Yarmida toʻxtasangiz, javoblaringiz shu
+           qurilmada saqlanadi va keyin davom ettira olasiz.</p></details>
+      <details><summary>Natijam kimgadir koʻrinadimi?</summary>
+        <p>Yoʻq. Ismingiz hech qayerga yuborilmaydi, har bir savolga bergan javoblaringiz
+           ham. Faqat anonim umumiy natija saqlanadi — testni yaxshilash uchun.
+           Batafsil: <a href="privacy.html">Maxfiylik</a>.</p></details>
+      <details><summary>Bu test ilmiymi?</summary>
+        <p>Savollar «Katta beshlik» modeliga asoslangan — bu psixologiyada eng keng
+           tarqalgan va eng koʻp tekshirilgan shaxsiyat modeli. Lekin TestMind sinov
+           versiyasi va tibbiy yoki psixologik tashxis emas. Natijani maslahat sifatida
+           qabul qiling.</p></details>
+      <details><summary>Necha yoshdan boshlab topshirsa boʻladi?</summary>
+        <p>Test asosan 14–16 yoshdagi oʻsmirlar uchun moʻljallangan. 18 yoshga
+           toʻlmagan boʻlsangiz, natijani ota-onangiz yoki oʻqituvchingiz bilan
+           muhokama qilish tavsiya etiladi.</p></details>
+      <details><summary>Natija haqiqatga qanchalik yaqin?</summary>
+        <p>Bu butunlay siz qanday javob berishingizga bogʻliq. «Qanday boʻlishni
+           xohlayman» emas, «hozir qandayman» deb javob bersangiz, natija ancha
+           aniqroq chiqadi. Barcha doiralarni bir xil bosib chiqsangiz, natija
+           hech narsani koʻrsatmaydi.</p></details>
+      <details><summary>Obrazim keyin oʻzgarishi mumkinmi?</summary>
+        <p>Ha. 14–16 yoshda shaxsiyat hali shakllanmoqda. Bu natija — hukm emas,
+           bugungi holatingizning surati.</p></details>
+    </div>
+  </div>
+</section>
 
-// ---------- Shareable archetype ----------
-// Derived from the user's two STRONGEST traits, so every one of the 10 results is
-// something a teenager is happy to post. No combination produces a negative label.
-// The ten are grouped into four families purely for colour + a sense of belonging.
-var FAMILIES = {
-  lead: {name:'Yetakchilar',  c:'#0F6E8C', soft:'#E1EEF2'},
-  crea: {name:'Ijodkorlar',   c:'#6B4FA8', soft:'#EDE7F7'},
-  care: {name:'Gʻamxoʻrlar',  c:'#237A5E', soft:'#E2F1EC'},
-  base: {name:'Tayanchlar',   c:'#A2731F', soft:'#F6EEDC'}
-};
+<section class="close">
+  <h2>Tayyormisiz?</h2>
+  <p>7 daqiqa. Oʻnta obrazdan qaysi biri sizniki?</p>
+  <a class="btn big" href="test.html" id="closeCta">Testni boshlash</a>
+</section>
 
-var ARCHETYPES = {
-  'ES|E': {name:'Xotirjam Yetakchi', fam:'lead',
-    lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.',
-           'Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz.'],
-    strength:'bosim ostida toʻgʻri qaror qabul qilish.'},
+<footer class="foot">
+  TestMind · sinov versiyasi · 2026 · <a href="privacy.html">Maxfiylik</a> ·
+  <a href="mailto:raximovrahim1@gmail.com">Bogʻlanish</a>
+</footer>
 
-  'E|C':  {name:'Gʻayratli Tashkilotchi', fam:'lead',
-    lines:['Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
-           'Atrofdagilarni ham harakatga sola olasiz.'],
-    strength:'gʻoyani haqiqatga aylantirish.'},
-
-  'ES|O': {name:'Xotirjam Kashfiyotchi', fam:'crea',
-    lines:['Yangi narsa sizni qoʻrqitmaydi — qiziqtiradi.',
-           'Lekin sarguzashtga koʻzni yumib emas, sovuqqonlik bilan kirasiz.'],
-    strength:'notanish yoʻlni xotirjam tekshirib koʻrish.'},
-
-  'E|O':  {name:'Gʻayratli Ijodkor', fam:'crea',
-    lines:['Gʻoyalaringiz tugamaydi va ularni odamlarga gapirib berishni yaxshi koʻrasiz.',
-           'Ishtiyoqingiz atrofdagilarga ham yuqadi.'],
-    strength:'yangi gʻoyani odamlarga yuqtirish.'},
-
-  'O|C':  {name:'Ijodkor Strateg', fam:'crea',
-    lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
-           'Koʻpchilik faqat oʻylab qoladi, siz qilib ham qoʻyasiz.'],
-    strength:'gʻoyani aniq tizimga solish.'},
-
-  'ES|A': {name:'Ishonchli Doʻst', fam:'care',
-    lines:['Odamlar sizga sirini aytadi, chunki yoningizda oʻzini xavfsiz his qiladi.',
-           'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
-    strength:'boshqalarni tinchlantira olish.'},
-
-  'E|A':  {name:'Jamoaning Yuragi', fam:'care',
-    lines:['Siz boʻlgan davra jonlanadi.',
-           'Chetda qolgan odamni sezasiz va yoningizga chaqirasiz.'],
-    strength:'odamlarni birlashtirish.'},
-
-  'O|A':  {name:'Ijodkor Insonparvar', fam:'care',
-    lines:['Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.',
-           'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
-    strength:'foydali va insoniy yechim topish.'},
-
-  'ES|C': {name:'Barqaror Strateg', fam:'base',
-    lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
-           'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
-    strength:'uzoq masofaga chidash.'},
-
-  'A|C':  {name:'Ishonchli Tayanch', fam:'base',
-    lines:['Vaʼda bersangiz — bajarasiz. Har safar.',
-           'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
-    strength:'soʻzida turish.'}
-};
-var TRAIT_ORDER = ['ES','E','O','A','C'];
-function archetypeKeyOf(s){
-  var ranked = TRAIT_ORDER.slice().sort(function(a,b){
-    return (s[b] - s[a]) || (TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b)); // stable on ties
-  });
-  var pair = [ranked[0], ranked[1]].sort(function(a,b){
-    return TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b); // canonical key order
-  });
-  return pair[0] + '|' + pair[1];
-}
-function archetypeOf(s){ return ARCHETYPES[archetypeKeyOf(s)]; }
-
-function levelOf(mean){ if (mean <= 2.4) return 'Past'; if (mean >= 3.6) return 'Yuqori'; return 'Oʻrta'; }
-function textKey(level){ return level === 'Past' ? 'past' : (level === 'Yuqori' ? 'yuqori' : 'orta'); }
-
-// ---------- Character illustrations ----------
-// Flat vector, Uzbek dress (doʻppi, chopon, belbogʻ, roʻmol). All ten are built from
-// one body so the set reads as a family; only colours, headwear and the held object
-// change. Drawn inline as SVG so the page stays a single file with no image requests.
-var INK = '#2B2733';
-
-function tmFigure(o){
-  var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
-  var robe = o.robe, robeD = o.robeD, sleeve = o.sleeve || o.robeD, sash = o.sash;
-  var s = '';
-
-  s += '<ellipse cx="100" cy="241" rx="52" ry="7" fill="#0B2027" opacity=".10"/>';
-  s += '<rect x="83" y="186" width="15" height="46" rx="7" fill="#3C4C55"/>'
-     + '<rect x="102" y="186" width="15" height="46" rx="7" fill="#3C4C55"/>';
-  s += '<rect x="73" y="225" width="27" height="13" rx="6.5" fill="#28363D"/>'
-     + '<rect x="100" y="225" width="27" height="13" rx="6.5" fill="#28363D"/>';
-
-  if (o.head === 'hair'){
-    s += '<path d="M64 60 Q64 20 100 20 Q136 20 136 60 V110 Q136 118 128 116 L124 60 H76 L72 116 Q64 118 64 110 Z" fill="'+(o.hair||'#332D38')+'"/>';
-  }
-
-  s += '<path d="M90 72 h20 v24 q-10 6 -20 0 z" fill="'+skinD+'"/>';
-  s += '<path d="M68 94 Q100 84 132 94 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+robe+'"/>';
-  s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+skinD+'"/>';
-  s += '<path d="M97 112 h6 l5 97 h-16 z" fill="'+robeD+'"/>';
-  s += '<path d="M86 90 Q100 82 114 90 L110 95 Q100 88 90 95 Z" fill="'+robeD+'"/>';
-  s += '<path d="M60 150 H140 L143 170 H57 Z" fill="'+sash+'"/>';
-  s += '<path d="M58 165 H142 L143 170 H57 Z" fill="#0B2027" opacity=".13"/>';
-
-  s += '<g transform="rotate(10 78 100)"><rect x="69" y="100" width="18" height="64" rx="9" fill="'+sleeve+'"/>'
-     + '<rect x="69" y="144" width="18" height="7" fill="'+robe+'"/></g>';
-  s += '<g transform="rotate(-10 122 100)"><rect x="113" y="100" width="18" height="64" rx="9" fill="'+sleeve+'"/>'
-     + '<rect x="113" y="144" width="18" height="7" fill="'+robe+'"/></g>';
-  s += '<circle cx="67" cy="161" r="9.5" fill="'+skin+'"/><circle cx="133" cy="161" r="9.5" fill="'+skin+'"/>';
-
-  s += '<circle cx="71" cy="60" r="6.5" fill="'+skinD+'"/><circle cx="129" cy="60" r="6.5" fill="'+skinD+'"/>';
-  s += '<rect x="71" y="30" width="58" height="56" rx="23" fill="'+skin+'"/>';
-
-  if (o.head === 'doppi'){
-    var cap = o.cap || '#1A2748', capD = o.capD || '#101C38';
-    s += '<path d="M68 46 Q68 12 100 12 Q132 12 132 46 Z" fill="'+cap+'"/>';
-    s += '<g fill="#F4F7F8" opacity=".92"><path d="M100 17 q5.5 8 0 15 q-5.5 -7 0 -15z"/>'
-       + '<path d="M82 25 q5.5 8 0 14 q-5.5 -6 0 -14z"/><path d="M118 25 q5.5 8 0 14 q-5.5 -6 0 -14z"/></g>';
-    s += '<rect x="65" y="40" width="70" height="13" rx="4" fill="'+capD+'"/>';
-    s += '<path d="M69 49 l5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6" '
-       + 'stroke="#F4F7F8" stroke-width="1.7" fill="none" opacity=".85" stroke-linejoin="round"/>';
-  } else if (o.head === 'romol'){
-    s += '<path d="M62 104 V60 Q62 18 100 18 Q138 18 138 60 V104 Q129 109 122 102 V60 Q122 40 100 40 Q78 40 78 60 V102 Q71 109 62 104 Z" fill="'+o.scarf+'"/>';
-    s += '<path d="M78 60 Q78 40 100 40 Q122 40 122 60" stroke="'+o.scarfD+'" stroke-width="4.5" fill="none"/>';
-    s += '<g fill="#FFFFFF" opacity=".26"><circle cx="70" cy="74" r="2.7"/><circle cx="70" cy="92" r="2.7"/>'
-       + '<circle cx="130" cy="74" r="2.7"/><circle cx="130" cy="92" r="2.7"/><circle cx="100" cy="26" r="2.7"/>'
-       + '<circle cx="85" cy="30" r="2.7"/><circle cx="115" cy="30" r="2.7"/></g>';
-  } else {
-    s += '<path d="M69 56 Q70 26 100 26 Q130 26 131 56 Q124 40 100 40 Q76 40 69 56 Z" fill="'+(o.hair||'#332D38')+'"/>';
-    if (o.band) s += '<path d="M68 46 Q100 34 132 46 L132 52 Q100 40 68 52 Z" fill="'+o.band+'"/>';
-  }
-
-  s += '<circle cx="88" cy="59" r="3.5" fill="'+INK+'"/><circle cx="112" cy="59" r="3.5" fill="'+INK+'"/>';
-  s += '<path d="M82.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
-     + '<path d="M106.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
-  s += '<path d="M92 71 q8 6.5 16 0" stroke="'+INK+'" stroke-width="2.8" fill="none" stroke-linecap="round"/>';
-  s += '<ellipse cx="80" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>'
-     + '<ellipse cx="120" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>';
-  if (o.glasses){
-    s += '<g fill="none" stroke="#3A3340" stroke-width="2.6" stroke-linecap="round">'
-       + '<circle cx="88" cy="59" r="10.5"/><circle cx="112" cy="59" r="10.5"/>'
-       + '<path d="M98.5 59 h3"/><path d="M77.5 56 l-6 -2"/><path d="M122.5 56 l6 -2"/></g>';
-  }
-  // Props are nudged down so the held object sits below the belbogʻ rather than on it.
-  return s + (o.prop ? '<g transform="translate(0,12)">' + o.prop + '</g>' : '');
-}
-
-// Held objects. Three are deliberately Uzbek: the piyola, the doira and the non.
-var TM_PROPS = {
-  compass:
-    '<g transform="translate(137,154)"><circle r="20" fill="#F4F7F8" stroke="#C08A2E" stroke-width="4"/>'
-    + '<circle r="13.5" fill="#E3EFF3"/><path d="M0 -11 L5 0 L0 4 L-5 0 Z" fill="#C0392B"/>'
-    + '<path d="M0 11 L5 0 L0 -4 L-5 0 Z" fill="#8FA3AB"/><circle r="2.6" fill="'+INK+'"/></g>',
-
-  clipboard:
-    '<g transform="translate(137,150) rotate(6)">'
-    + '<rect x="-17" y="-23" width="34" height="46" rx="4" fill="#F4F7F8" stroke="#8FA3AB" stroke-width="2"/>'
-    + '<rect x="-9" y="-28" width="18" height="9" rx="3.5" fill="#C08A2E"/>'
-    + '<path d="M-10 -8 l4 4 8 -9" stroke="#2E8B6B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
-    + '<path d="M-10 4 l4 4 8 -9" stroke="#2E8B6B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
-    + '<path d="M-10 16 h20" stroke="#C6D3D8" stroke-width="3" stroke-linecap="round"/></g>',
-
-  telescope:
-    '<g fill="#E8C25A"><path d="M174 92 l2.8 6.6 6.6 2.8 -6.6 2.8 -2.8 6.6 -2.8 -6.6 -6.6 -2.8 6.6 -2.8z"/>'
-    + '<path d="M189 66 l2.2 5 5 2.2 -5 2.2 -2.2 5 -2.2 -5 -5 -2.2 5 -2.2z"/></g>'
-    + '<g transform="translate(141,156) rotate(35) scale(1.2)">'
-    + '<path d="M-7.5 14 L7.5 14 L11.5 -32 L-11.5 -32 Z" fill="#33456E"/>'
-    + '<rect x="-14" y="-40" width="28" height="12" rx="4" fill="#E8C25A"/>'
-    + '<rect x="-9.5" y="9" width="19" height="10" rx="3" fill="#E8C25A"/>'
-    + '<path d="M-9.5 -8 h19" stroke="#5B71A8" stroke-width="4"/></g>',
-
-  palette:
-    '<g transform="translate(135,154)"><ellipse rx="22" ry="17" fill="#EEDCBC" stroke="#B99B6E" stroke-width="2"/>'
-    + '<circle cx="10" cy="7" r="4.5" fill="#F1F6F7"/><circle cx="-11" cy="-6" r="4" fill="#C0392B"/>'
-    + '<circle cx="0" cy="-9" r="4" fill="#2E8B6B"/><circle cx="11" cy="-5" r="4" fill="#0F6E8C"/>'
-    + '<circle cx="-13" cy="5" r="4" fill="#C08A2E"/></g>'
-    + '<g transform="translate(158,116) rotate(28)"><rect x="-2.6" y="-26" width="5.2" height="30" rx="2" fill="#B98E4A"/>'
-    + '<path d="M-4 4 h8 l-2 9 h-4z" fill="#7E5FB8"/></g>',
-
-  book:
-    '<g transform="translate(152,44)"><circle r="12.5" fill="#F2D479"/>'
-    + '<rect x="-5" y="10" width="10" height="8" rx="2.5" fill="#B98E4A"/>'
-    + '<g stroke="#C08A2E" stroke-width="2.6" stroke-linecap="round">'
-    + '<path d="M-13 -14 l-5 -5"/><path d="M13 -14 l5 -5"/><path d="M0 -19 v-7"/></g></g>'
-    + '<g transform="translate(137,154) scale(1.12)">'
-    + '<path d="M-23 -14 q11.5 -6 23 0 q11.5 -6 23 0 v30 q-11.5 -6 -23 0 q-11.5 -6 -23 0z" fill="#B23A48"/>'
-    + '<path d="M-19.5 -11 q9.75 -5 19.5 0 q9.75 -5 19.5 0 v25 q-9.75 -5 -19.5 0 q-9.75 -5 -19.5 0z" '
-    + 'fill="#F8FAFB" stroke="#8FA3AB" stroke-width="1.6" stroke-linejoin="round"/>'
-    + '<path d="M0 -11 v25" stroke="#8FA3AB" stroke-width="2"/>'
-    + '<g stroke="#C6D3D8" stroke-width="1.8" stroke-linecap="round">'
-    + '<path d="M-15 -1 h11"/><path d="M-15 5 h11"/><path d="M4 -1 h11"/><path d="M4 5 h11"/></g></g>',
-
-  piyola:
-    '<g transform="translate(136,148) scale(1.35)">'
-    + '<g stroke="#8FA3AB" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round">'
-    + '<path d="M-7 -14 q5 -7 0 -13"/><path d="M7 -14 q5 -7 0 -13"/></g>'
-    + '<path d="M-18 -4 a18 17 0 0 0 36 0z" fill="#F8FAFB" stroke="#0F6E8C" stroke-width="2.2"/>'
-    + '<g fill="#0F6E8C"><circle cx="-7" cy="3" r="2.6"/><circle cx="4" cy="5" r="2.6"/></g>'
-    + '<ellipse cy="-4" rx="18" ry="5.5" fill="#E3EFF3" stroke="#0F6E8C" stroke-width="2.2"/>'
-    + '<ellipse cy="15" rx="13" ry="4" fill="#E3EFF3" stroke="#0F6E8C" stroke-width="2.2"/></g>',
-
-  doira:
-    '<g transform="translate(139,148) rotate(-12)"><circle r="27" fill="#C9A227" stroke="#8F6520" stroke-width="5"/>'
-    + '<circle r="21.5" fill="#F0E2C4"/><circle r="21.5" fill="none" stroke="#DCC69C" stroke-width="2"/>'
-    + '<g fill="none" stroke="#8F6520" stroke-width="2"><circle cx="0" cy="-30" r="4"/><circle cx="26" cy="-15" r="4"/>'
-    + '<circle cx="26" cy="15" r="4"/><circle cx="0" cy="30" r="4"/><circle cx="-26" cy="15" r="4"/>'
-    + '<circle cx="-26" cy="-15" r="4"/></g></g>',
-
-  sprout:
-    '<g transform="translate(136,154) scale(1.25)">'
-    + '<path d="M0 -6 v-20" stroke="#2E8B6B" stroke-width="3.2" stroke-linecap="round"/>'
-    + '<path d="M0 -15 q-13 -2 -14 -13 q13 0 14 13z" fill="#43A582"/>'
-    + '<path d="M0 -21 q13 -2 14 -13 q-13 0 -14 13z" fill="#2E8B6B"/>'
-    + '<path d="M-14 -2 h28 l-4 22 h-20z" fill="#C08A2E"/>'
-    + '<rect x="-16" y="-8" width="32" height="8" rx="2.5" fill="#A8762A"/></g>',
-
-  rook:
-    '<g transform="translate(136,152) scale(1.12)">'
-    + '<path d="M-15 -22 v10 h4 v14 l-5 16 h32 l-5 -16 v-14 h4 v-10 h-6 v5 h-6 v-5 h-6 v5 h-6 v-5z" '
-    + 'fill="#F8FAFB" stroke="#2F4550" stroke-width="3" stroke-linejoin="round"/>'
-    + '<path d="M-11 2 h22" stroke="#2F4550" stroke-width="3"/>'
-    + '<path d="M4 -12 h7 v14 l5 16 h-9 l-4 -16z" fill="#2F4550" opacity=".13"/></g>',
-
-  non:
-    '<g transform="translate(136,152)"><circle r="25" fill="#E2BC7A" stroke="#B98E4A" stroke-width="3"/>'
-    + '<circle r="13" fill="#CFA25C"/>'
-    + '<g fill="#A8763C"><circle r="2.2"/><circle cx="-6" cy="-5" r="1.9"/><circle cx="6" cy="-5" r="1.9"/>'
-    + '<circle cx="-6" cy="5" r="1.9"/><circle cx="6" cy="5" r="1.9"/></g>'
-    + '<g fill="#F4E3C4"><circle cx="-18" cy="-6" r="1.7"/><circle cx="-12" cy="-15" r="1.7"/>'
-    + '<circle cx="0" cy="-19" r="1.7"/><circle cx="12" cy="-15" r="1.7"/><circle cx="18" cy="-6" r="1.7"/>'
-    + '<circle cx="18" cy="7" r="1.7"/><circle cx="8" cy="17" r="1.7"/><circle cx="-8" cy="17" r="1.7"/>'
-    + '<circle cx="-18" cy="7" r="1.7"/></g></g>'
-};
-
-var TM_ART = {
-  'ES|E': {head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
-  'E|C':  {head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
-  'ES|O': {head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
-  'O|C':  {head:'doppi', cap:'#2B2049', capD:'#1E1636', glasses:1, robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
-  'ES|A': {head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
-  'O|A':  {head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
-  'ES|C': {head:'doppi', cap:'#143F4E', capD:'#0C2F3C', glasses:1, robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', prop:'rook'},
-  'A|C':  {head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', prop:'non'}
-};
-
-// width/height are required for the canvas share card to rasterise this in Firefox.
-function charSvg(key, alt){
-  var o = TM_ART[key]; if (!o) return '';
-  var a = {}; for (var k in o) a[k] = o[k];
-  a.prop = TM_PROPS[o.prop] || '';
-  return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
-       + 'role="img" aria-label="' + (alt || '') + '">' + tmFigure(a) + '</svg>';
-}
-</script>
-
+<script src="characters.js"></script>
 <script>
-// ---------- UI ----------
-var PAGE_SIZE = 5;
-var PAGES = Math.ceil(ITEMS.length / PAGE_SIZE);
-var state = { name:'', age:'', answers: new Array(ITEMS.length).fill(0), page: 0 };
-var app = document.getElementById('app');
+// ---------- hero scene: Registan-inspired skyline with the cast in front ----------
+var TILE='#2E8FA8', TILE_D='#1F6B80', STONE='#EADFC4', STONE_D='#D8C9A6';
+var FOOT = 238;   // y of the feet inside a character's own 200x250 viewBox
 
-function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function inner(k){ return charSvg(k).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, ''); }
 
-// ---------- Local draft save (this device only; wrapped so a blocked/full
-//            localStorage never breaks the test — it just runs without saving) ----------
-var SAVE_KEY = 'testmind_draft_v1';
-function saveDraft(){
+// Every piece takes the GROUND y and is built upward from it.
+function dome(x, g, s){
+  return '<g transform="translate('+x+','+g+') scale('+s+')">'
+    + '<rect x="-32" y="-54" width="64" height="54" fill="'+STONE+'"/>'
+    + '<rect x="-32" y="-54" width="64" height="9" fill="'+STONE_D+'"/>'
+    + '<path d="M-44 -52 C-44 -88 -18 -106 0 -130 C18 -106 44 -88 44 -52 Z" fill="'+TILE+'"/>'
+    + '<g stroke="'+TILE_D+'" stroke-width="2" fill="none" opacity=".5">'
+    + '<path d="M0 -130 V-52"/><path d="M-22 -112 C-27 -88 -29 -70 -29 -52"/>'
+    + '<path d="M22 -112 C27 -88 29 -70 29 -52"/></g>'
+    + '<path d="M0 -130 v-13" stroke="#C08A2E" stroke-width="4" stroke-linecap="round"/>'
+    + '<circle cy="-147" r="5" fill="#C08A2E"/></g>';
+}
+function minaret(x, g, h, s){
+  return '<g transform="translate('+x+','+g+') scale('+s+')">'
+    + '<path d="M-15 0 L-10 '+(-h)+' h20 L15 0 Z" fill="'+STONE+'"/>'
+    + '<g fill="'+TILE+'" opacity=".75">'
+    + '<rect x="-13.6" y="'+(-h*0.40)+'" width="27" height="11"/>'
+    + '<rect x="-12.2" y="'+(-h*0.70)+'" width="24" height="11"/></g>'
+    + '<rect x="-18" y="'+(-h-15)+'" width="36" height="15" rx="3" fill="'+TILE_D+'"/>'
+    + '<path d="M-12 '+(-h-15)+' C-12 '+(-h-34)+' 0 '+(-h-42)+' 0 '+(-h-56)
+    + ' C0 '+(-h-42)+' 12 '+(-h-34)+' 12 '+(-h-15)+' Z" fill="'+TILE+'"/>'
+    + '<path d="M0 '+(-h-56)+' v-10" stroke="#C08A2E" stroke-width="3" stroke-linecap="round"/></g>';
+}
+function pishtoq(x, g, s){
+  return '<g transform="translate('+x+','+g+') scale('+s+')">'
+    + '<rect x="-96" y="-158" width="192" height="158" fill="'+STONE+'"/>'
+    + '<rect x="-96" y="-158" width="192" height="15" fill="'+STONE_D+'"/>'
+    + '<path d="M-58 0 V-62 Q-58 -132 0 -144 Q58 -132 58 -62 V0 Z" fill="'+TILE_D+'"/>'
+    + '<path d="M-44 0 V-62 Q-44 -118 0 -128 Q44 -118 44 -62 V0 Z" fill="#17505F"/>'
+    + '<g fill="'+TILE+'" opacity=".85">'
+    + '<rect x="-90" y="-153" width="15" height="15"/><rect x="-64" y="-153" width="15" height="15"/>'
+    + '<rect x="49" y="-153" width="15" height="15"/><rect x="75" y="-153" width="15" height="15"/></g>'
+    + '<g fill="#C08A2E" opacity=".65">'
+    + '<rect x="-89" y="-124" width="11" height="11"/><rect x="78" y="-124" width="11" height="11"/>'
+    + '<rect x="-89" y="-98" width="11" height="11"/><rect x="78" y="-98" width="11" height="11"/>'
+    + '<rect x="-89" y="-72" width="11" height="11"/><rect x="78" y="-72" width="11" height="11"/></g></g>';
+}
+function cypress(x, g, hh){
+  return '<g transform="translate('+x+','+g+')">'
+    + '<rect x="-3" y="'+(-hh*0.12)+'" width="6" height="'+(hh*0.12)+'" fill="#7A5C3A"/>'
+    + '<path d="M0 '+(-hh)+' C'+(hh*0.20)+' '+(-hh*0.62)+' '+(hh*0.16)+' '+(-hh*0.20)+' 0 '+(-hh*0.09)
+    + ' C'+(-hh*0.16)+' '+(-hh*0.20)+' '+(-hh*0.20)+' '+(-hh*0.62)+' 0 '+(-hh)+' Z" fill="#2F7A5E"/></g>';
+}
+
+function buildScene(){
+  var W=1200, H=520, GY=330, s='';
+  s += '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
+     + '<stop offset="0" stop-color="#D3E9F1"/><stop offset="1" stop-color="#F1F6F7"/></linearGradient>'
+     + '<linearGradient id="grnd" x1="0" y1="0" x2="0" y2="1">'
+     + '<stop offset="0" stop-color="#EBF3F0"/><stop offset="1" stop-color="#DFEDE8"/></linearGradient></defs>';
+  s += '<rect width="'+W+'" height="'+H+'" fill="url(#sky)"/>';
+  s += '<path d="M0 '+GY+' L150 196 L268 268 L372 182 L520 '+GY+' Z" fill="#B7D3DF" opacity=".7"/>';
+  s += '<path d="M690 '+GY+' L836 186 L952 260 L1064 172 L1200 288 L1200 '+GY+' Z" fill="#B7D3DF" opacity=".7"/>';
+  s += '<path d="M0 '+GY+' L128 248 L262 314 L410 232 L580 '+GY+' Z" fill="#A2C5D5" opacity=".55"/>';
+  s += minaret(206, GY, 198, 1) + dome(348, GY, 0.92) + pishtoq(600, GY, 1)
+     + dome(852, GY, 0.92) + minaret(994, GY, 198, 1);
+  s += cypress(150, GY, 120) + cypress(1052, GY, 108) + cypress(1086, GY, 78);
+  s += '<path d="M0 '+GY+' Q300 '+(GY-16)+' 600 '+GY+' Q900 '+(GY+16)+' 1200 '+(GY-4)
+     + ' L1200 '+H+' L0 '+H+' Z" fill="url(#grnd)"/>';
+  s += '<path d="M0 '+(GY+22)+' Q300 '+(GY+6)+' 600 '+(GY+24)+' Q900 '+(GY+40)+' 1200 '+(GY+18)
+     + '" stroke="#CCE1DA" stroke-width="3" fill="none"/>';
+  // [key, centreX, footY, scale] — smaller and higher reads as further back
+  var cast = [['ES|O',286,356,0.58], ['A|C',918,358,0.60],
+              ['E|A',408,420,0.80],  ['O|C',796,422,0.80],
+              ['ES|E',542,488,1.02], ['E|O',664,492,1.00]];
+  for (var i=0;i<cast.length;i++){
+    var c=cast[i], sc=c[3];
+    s += '<g transform="translate('+(c[1]-100*sc)+','+(c[2]-FOOT*sc)+') scale('+sc+')">'+inner(c[0])+'</g>';
+  }
+  // slice keeps the characters large on a phone by cropping the sides instead of shrinking
+  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMax slice" '
+       + 'xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
+}
+
+// ---------- character gallery, grouped by family ----------
+function buildGallery(){
+  var order = ['lead','crea','care','base'];
+  var notes = {
+    lead:'Odamlarni ortidan ergashtiradiganlar',
+    crea:'Yangi gʻoya va yechim topadiganlar',
+    care:'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
+    base:'Vaʼdasida turadigan, ishonchli odamlar'
+  };
+  var byFam = {};
+  for (var k in ARCHETYPES){
+    var a = ARCHETYPES[k];
+    (byFam[a.fam] = byFam[a.fam] || []).push(k);
+  }
+  var html = '';
+  for (var i=0;i<order.length;i++){
+    var f = order[i], fam = FAMILIES[f], keys = byFam[f] || [];
+    html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
+          + '<div class="famhead"><h3 class="famname">'+fam.name+'</h3>'
+          + '<span class="famnote">'+notes[f]+'</span></div><div class="cards">';
+    for (var j=0;j<keys.length;j++){
+      var a = ARCHETYPES[keys[j]];
+      html += '<article class="ccard">'
+            + '<div class="cart">'+charSvg(keys[j], a.name)+'</div>'
+            + '<div class="cbody"><h4 class="cname">'+a.name+'</h4>'
+            + '<p class="cstr">Kuchli tomoni: '+a.strength+'</p></div></article>';
+    }
+    html += '</div></div>';
+  }
+  return html;
+}
+
+document.getElementById('scene').innerHTML = buildScene();
+document.getElementById('gallery').innerHTML = buildGallery();
+
+// If there is an unfinished test on this device, say so on the buttons.
+(function(){
   try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      name: state.name, age: state.age, answers: state.answers, page: state.page,
-      aid: state.aid || '', ts: Date.now()
-    }));
+    var d = JSON.parse(localStorage.getItem('testmind_draft_v1'));
+    if (!d || !d.answers) return;
+    var done = 0;
+    for (var i=0;i<d.answers.length;i++) if (d.answers[i] > 0) done++;
+    if (!done) return;
+    var ids = ['navCta','heroCta','closeCta'];
+    for (var j=0;j<ids.length;j++){
+      var el = document.getElementById(ids[j]);
+      if (el) el.textContent = 'Testni davom ettirish';
+    }
   } catch (e) {}
-}
-function clearDraft(){ try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
-function loadDraft(){
-  try {
-    var d = JSON.parse(localStorage.getItem(SAVE_KEY));
-    if (!d || !Array.isArray(d.answers) || d.answers.length !== ITEMS.length) return null;
-    d.answers = d.answers.map(function(v){ v = parseInt(v, 10); return (v >= 1 && v <= 5) ? v : 0; });
-    return d;
-  } catch (e) { return null; }
-}
-
-// ---------- Anonymous usage stats (Google Sheet via Apps Script) ----------
-// Sends NO name and NO individual answers — only anonymous totals, so a child can
-// never be identified from the sheet. Leave SHEET_URL empty to disable entirely;
-// the test then behaves exactly as before and the privacy text adjusts itself.
-var SHEET_URL  = 'https://script.google.com/macros/s/AKfycbykz3hl6NJllpdhipaj1Xt9LwE3i7t8wG_cH5xW_1aoh21BZGolo9HnjmKuIRkmY-kQ-g/exec';
-var TM_VERSION = '1.0';
-var statsSent = false, abandonSent = false;
-
-function anonId(){
-  if (!state.aid) state.aid = 'tm-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10);
-  return state.aid;
-}
-
-function sendStats(status, s, arch){
-  if (!SHEET_URL || statsSent) return;
-  var answered = state.answers.filter(function(v){ return v > 0; }).length;
-  if (!answered) return;                                   // nothing worth reporting
-  if (status === 'abandoned'){ if (abandonSent) return; abandonSent = true; }
-  if (status === 'completed') statsSent = true;
-
-  var r1 = function(x){ return Math.round(x * 10) / 10; };
-  var payload = {
-    id: anonId(), status: status, age: state.age,
-    answered: answered, total: ITEMS.length,
-    durationSec: sessionStart ? Math.round((Date.now() - sessionStart) / 1000) : '',
-    device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-    v: TM_VERSION
-  };
-  if (s){ payload.ES = r1(s.ES); payload.E = r1(s.E); payload.O = r1(s.O); payload.A = r1(s.A); payload.C = r1(s.C); }
-  if (arch) payload.archetype = arch.name;
-
-  // Fire-and-forget. Wrapped so a failed request can NEVER block the result screen.
-  try {
-    var body = JSON.stringify(payload);
-    if (status === 'abandoned' && navigator.sendBeacon){
-      navigator.sendBeacon(SHEET_URL, new Blob([body], {type:'text/plain;charset=UTF-8'}));
-    } else {
-      fetch(SHEET_URL, {
-        method: 'POST', mode: 'no-cors', keepalive: true,
-        headers: {'Content-Type':'text/plain;charset=UTF-8'}, body: body
-      })['catch'](function(){});
-    }
-  } catch (e) {}
-}
-
-// ---------- Optional email capture ----------
-// Separate from sendStats: this row is NOT anonymous, so it is only ever sent when
-// the student deliberately types an address and taps the button. Nothing is sent
-// on page load, and never their name or their individual answers.
-var leadSent = false;
-function sendLead(email, archName, done){
-  if (!SHEET_URL){ done(false); return; }
-  var payload = {
-    id: anonId(), status: 'lead', age: state.age,
-    email: email, archetype: archName, v: TM_VERSION
-  };
-  try {
-    fetch(SHEET_URL, {
-      method: 'POST', mode: 'no-cors', keepalive: true,
-      headers: {'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify(payload)
-    }).then(function(){ leadSent = true; done(true); })['catch'](function(){ done(false); });
-  } catch (e) { done(false); }
-}
-// Deliberately permissive: it only has to catch typos, not police the address.
-function looksLikeEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
-
-// Capture drop-off: report an unfinished attempt when the page is closed/hidden.
-window.addEventListener('pagehide', function(){ sendStats('abandoned'); });
-document.addEventListener('visibilitychange', function(){
-  if (document.visibilityState === 'hidden') sendStats('abandoned');
-});
-
-var AGE_CHIPS = ['12', '13', '14', '15', '16', '17', '18+'];
-
-function renderStart(){
-  // The ten characters are the hook, so they go BEFORE the form — but with no names
-  // and no trait labels, so seeing them can't teach anyone how to game their answers.
-  var teaser = Object.keys(TM_ART).map(function(k){ return charSvg(k); }).join('');
-
-  app.innerHTML =
-    '<div class="card">' +
-      '<h1>Siz qaysi obrazsiz?</h1>' +
-      '<p class="lede">50 ta savol, taxminan 7 daqiqa. Yakunida quyidagi oʻn obrazdan ' +
-        'bittasi sizniki boʻladi.</p>' +
-      '<div class="teaser" aria-hidden="true">' + teaser + '</div>' +
-      '<p class="teasercap">Qaysi biri sizniki ekanini bilib oling.</p>' +
-      '<div class="field">' +
-        '<label for="f-name">Ismingiz</label>' +
-        '<input id="f-name" type="text" autocomplete="off" enterkeyhint="next">' +
-        '<p class="hint">Ismingiz shu qurilmadan chiqmaydi — u faqat natijangizda koʻrsatiladi.</p>' +
-      '</div>' +
-      '<div class="field">' +
-        '<label id="ageLbl">Yoshingiz</label>' +
-        '<div class="chips" id="ageChips" role="group" aria-labelledby="ageLbl">' +
-          AGE_CHIPS.map(function(a){
-            return '<button type="button" class="chipbtn" data-age="' + a + '">' + a + '</button>';
-          }).join('') +
-          '<button type="button" class="chipbtn" id="ageOther">Boshqa</button>' +
-        '</div>' +
-        '<input id="f-age" type="number" min="10" max="99" inputmode="numeric" ' +
-          'style="display:none;margin-top:10px" aria-label="Yoshingiz">' +
-      '</div>' +
-      '<button class="btn" id="startBtn">Boshlash</button>' +
-      '<p class="muted" id="startMsg" style="margin-top:10px"></p>' +
-      '<ul class="meta" style="margin:18px 0 0"><li>Anonim</li><li>Bepul</li>' +
-        '<li>Roʻyxatdan oʻtish shart emas</li></ul>' +
-    '</div>';
-
-  var chipBox = document.getElementById('ageChips');
-  var ageInput = document.getElementById('f-age');
-  var chosenAge = '';
-
-  function clearChips(){
-    var all = chipBox.querySelectorAll('.chipbtn');
-    for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
-  }
-  chipBox.onclick = function(e){
-    var b = e.target.closest ? e.target.closest('.chipbtn') : null;
-    if (!b) return;
-    clearChips(); b.classList.add('on');
-    if (b.id === 'ageOther'){
-      ageInput.style.display = 'block'; ageInput.focus(); chosenAge = '';
-    } else {
-      ageInput.style.display = 'none'; ageInput.value = '';
-      chosenAge = b.getAttribute('data-age');
-    }
-    document.getElementById('startMsg').textContent = '';
-  };
-
-  document.getElementById('startBtn').onclick = function(){
-    var n = document.getElementById('f-name').value.trim();
-    var a = chosenAge || ageInput.value.trim();
-    var msg = document.getElementById('startMsg');
-    if (!n){ msg.textContent = 'Ismingizni kiriting.'; document.getElementById('f-name').focus(); return; }
-    if (!a){ msg.textContent = 'Yoshingizni tanlang.'; return; }
-    var num = parseInt(a, 10);
-    if (a !== '18+' && (isNaN(num) || num < 10 || num > 99)){
-      msg.textContent = 'Yoshni 10 dan 99 gacha kiriting.'; ageInput.focus(); return;
-    }
-    state.name = n; state.age = a; state.page = 0;
-    saveDraft();
-    renderPage();
-  };
-  document.getElementById('f-name').focus();
-}
-
-function answeredOnPage(p){
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, ITEMS.length), c = 0;
-  for (var i = from; i < to; i++) if (state.answers[i]) c++;
-  return { done: c, total: to - from };
-}
-
-function renderPage(){
-  var p = state.page;
-  saveDraft();
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, ITEMS.length);
-  var answeredTotal = state.answers.filter(function(v){ return v > 0; }).length;
-  if (!sessionStart){ sessionStart = Date.now(); sessionStartAnswered = answeredTotal; }
-  // Was this page already finished when it opened? If so we must NOT auto-advance —
-  // otherwise editing an answer on a completed page would yank the page away.
-  var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
-  var html =
-    '<div class="qhead">' +
-      '<h2 class="cheer" id="cheer">' + cheerText(answeredTotal) + '</h2>' +
-      '<span class="pcount" id="pageCount">' + answeredTotal + ' / ' + ITEMS.length + '</span>' +
-    '</div>' +
-    '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + Math.round(answeredTotal / ITEMS.length * 100) + '%"></div></div>' +
-    '<div class="partlbl muted" id="partlbl" data-base="Savollar ' + (from+1) + '–' + to + '">' +
-      'Savollar ' + (from+1) + '–' + to + timeLeftText() + '</div>' +
-    '<div class="card">';
-  for (var i = from; i < to; i++){
-    var it = ITEMS[i];
-    html += '<div class="item" id="item-' + i + '">' +
-      '<div class="qtext"><span class="qnum">' + (i+1) + '.</span>' + esc(it.t) + '</div>' +
-      (it.h ? '<p class="qhelp">' + esc(it.h) + '</p>' : '') +
-      '<div class="scale" role="radiogroup" aria-label="' + (i+1) + '-savol">' +
-        '<span class="slab l" aria-hidden="true">' + LABELS[0] + '</span>' +
-        '<div class="dots">';
-    for (var v = 1; v <= 5; v++){
-      var sel = state.answers[i] === v ? ' sel' : '';
-      html += '<label class="opt s' + v + sel + '" title="' + LABELS[v-1] + '">' +
-              '<input type="radio" name="q' + i + '" value="' + v + '" aria-label="' + LABELS[v-1] + '"' +
-              (state.answers[i] === v ? ' checked' : '') + '><span class="dot"></span></label>';
-    }
-    html += '</div><span class="slab r" aria-hidden="true">' + LABELS[4] + '</span></div></div>';
-  }
-  html += '</div>' +
-    '<div class="nav">' +
-      (p > 0 ? '<button class="btn ghost" id="prevBtn">Orqaga</button>' : '<span></span>') +
-      '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? 'Natijani koʻrish' : 'Keyingi') + '</button>' +
-    '</div>';
-  app.innerHTML = html;
-  window.scrollTo({top:0, behavior:'auto'});
-
-  updateCount();
-
-  // Repaint one item from state (0 = unanswered, so nothing is highlighted).
-  function paintItem(idx){
-    var itemEl = document.getElementById('item-' + idx);
-    if (!itemEl) return;
-    itemEl.classList.remove('warn');
-    var labels = itemEl.querySelectorAll('.opt');
-    for (var k = 0; k < labels.length; k++) labels[k].classList.remove('sel');
-    var v = state.answers[idx];
-    if (v){
-      var chosen = itemEl.querySelector('.opt.s' + v);
-      if (chosen) chosen.classList.add('sel');
-    }
-  }
-
-  // Gentle auto-advance: only the first time this page becomes complete, and
-  // never on the last page (seeing the result should be a deliberate tap).
-  function tryAutoAdvance(){
-    if (pageWasComplete || p >= PAGES - 1) return;
-    var ap = answeredOnPage(p);
-    if (ap.done === ap.total){
-      pageWasComplete = true;
-      setTimeout(function(){
-        if (state.page === p){ state.page = p + 1; renderPage(); }
-      }, 450);
-    }
-  }
-
-  function applyAnswer(idx, val, mayAdvance){
-    state.answers[idx] = val;
-    paintItem(idx);
-    updateCount();
-    saveDraft();
-    if (val && mayAdvance) tryAutoAdvance();
-  }
-
-  var radios = app.querySelectorAll('input[type=radio]');
-  for (var r = 0; r < radios.length; r++){
-    // Pointer taps. Tapping the circle that is already chosen CLEARS the answer.
-    // (A checked radio fires 'click' but never 'change', so this must live here.)
-    radios[r].onclick = function(){
-      var idx = parseInt(this.name.slice(1), 10);
-      var val = parseInt(this.value, 10);
-      if (state.answers[idx] === val){
-        this.checked = false;
-        applyAnswer(idx, 0, false);      // cleared -> must not auto-advance
-      } else {
-        applyAnswer(idx, val, true);
-      }
-    };
-    // Keyboard arrow-key navigation fires 'change' without 'click'.
-    radios[r].onchange = function(){
-      var idx = parseInt(this.name.slice(1), 10);
-      var val = parseInt(this.value, 10);
-      if (state.answers[idx] !== val) applyAnswer(idx, val, true);
-    };
-  }
-  if (p > 0) document.getElementById('prevBtn').onclick = function(){ state.page--; renderPage(); };
-  document.getElementById('nextBtn').onclick = function(){
-    var a = answeredOnPage(p);
-    if (a.done < a.total){
-      for (var i = from; i < to; i++){
-        if (!state.answers[i]){ document.getElementById('item-' + i).classList.add('warn'); }
-      }
-      var first = app.querySelector('.item.warn');
-      if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
-      updateCount(true);
-      return;
-    }
-    if (p === PAGES - 1) renderReport(); else { state.page++; renderPage(); }
-  };
-}
-
-// Encouraging heading that changes as the overall progress crosses milestones.
-function cheerText(answered){
-  var total = ITEMS.length;
-  if (answered <= 0) return 'Boshladik 💫';
-  if (answered >= total) return 'Profilingiz tayyor 🎯';
-  var pct = answered / total;
-  if (pct >= 0.75) return 'Deyarli marradamiz 🚀';
-  if (pct >= 0.5)  return 'Shaxsingizning yarmi ochildi 🔓';
-  if (pct >= 0.25) return 'Miyangizni tahlil qilyapmiz 🧠';
-  return 'Yaxshi boshlandi 👌';
-}
-
-// Live time estimate from the user's own pace in THIS session (so a resumed
-// draft doesn't count the hours they were away). Hidden until the pace is stable.
-var sessionStart = 0, sessionStartAnswered = 0;
-function timeLeftText(){
-  var answered = state.answers.filter(function(v){ return v > 0; }).length;
-  var doneNow = answered - sessionStartAnswered;
-  if (!sessionStart || doneNow < 5) return '';
-  var left = (ITEMS.length - answered) * ((Date.now() - sessionStart) / doneNow);
-  if (left <= 0) return '';
-  var mins = Math.round(left / 60000);
-  return ' · ' + (mins <= 1 ? 'oz qoldi' : '~' + mins + ' daqiqa qoldi');
-}
-
-function updateCount(missing){
-  var answered = state.answers.filter(function(v){ return v > 0; }).length;
-  var fill = document.getElementById('pfill');
-  if (fill) fill.style.width = Math.round(answered / ITEMS.length * 100) + '%';
-  var cheer = document.getElementById('cheer');
-  if (cheer){
-    var t = cheerText(answered);
-    if (cheer.textContent !== t){        // milestone reached -> update + little pop
-      cheer.textContent = t;
-      cheer.classList.remove('pop'); void cheer.offsetWidth; cheer.classList.add('pop');
-    }
-  }
-  var el = document.getElementById('pageCount');
-  if (el){
-    var a = answeredOnPage(state.page);
-    el.textContent = answered + ' / ' + ITEMS.length + (missing && a.done < a.total ? ' · qolgan savollarga javob bering' : '');
-  }
-  var pl = document.getElementById('partlbl');
-  if (pl) pl.textContent = pl.getAttribute('data-base') + timeLeftText();
-}
-
-function vbarHtml(mean){
-  var on = Math.round(mean * 3), h = '<div class="vtrack" aria-hidden="true">';
-  for (var i = 15; i >= 1; i--) h += '<span class="vseg' + (i <= on ? ' on' : '') + '"></span>';
-  return h + '</div>';
-}
-function boardHtml(s){
-  var h = '<div class="board">';
-  ['ES','E','O','A','C'].forEach(function(k){
-    h += '<div class="col"><span class="cval">' + (Math.round(s[k]*10)/10).toFixed(1) + '</span>' +
-         vbarHtml(s[k]) +
-         '<span class="clab">' + TRAITS[k] + '</span></div>';
-  });
-  return h + '</div>';
-}
-
-// ---------- Shareable result image (1080x1350, drawn locally, no server) ----------
-function wrapText(g, text, x, y, maxW, lineH, maxLines){
-  var words = String(text).split(' '), line = '', lines = [];
-  for (var i = 0; i < words.length; i++){
-    var test = line ? line + ' ' + words[i] : words[i];
-    if (g.measureText(test).width > maxW && line){ lines.push(line); line = words[i]; }
-    else line = test;
-  }
-  if (line) lines.push(line);
-  if (maxLines) lines = lines.slice(0, maxLines);
-  for (var j = 0; j < lines.length; j++) g.fillText(lines[j], x, y + j * lineH);
-  return y + lines.length * lineH;
-}
-
-// Portrait card for Telegram/Instagram. The character is rasterised from the same
-// inline SVG the page uses, via a data: URI — no network request, so the canvas
-// stays untainted and toBlob() keeps working. If it ever fails to decode we still
-// return a usable card without the figure rather than no card at all.
-function buildShareCard(s, arch, key, cb){
-  var W = 1080, H = 1350, M = 80;
-  var fam = FAMILIES[arch.fam];
-  var c = document.createElement('canvas'); c.width = W; c.height = H;
-  var g = c.getContext('2d');
-
-  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, W, H);
-  g.fillStyle = fam.soft;  g.fillRect(0, 0, W, 716);
-  g.fillStyle = fam.c;     g.fillRect(0, 708, W, 8);
-  g.textBaseline = 'alphabetic';
-
-  g.textAlign = 'left';
-  g.fillStyle = fam.c; g.font = '700 46px Bitter, Georgia, serif';
-  g.fillText('TestMind', M, 96);
-  g.textAlign = 'right';
-  g.fillStyle = '#5B7078'; g.font = '500 30px Inter, "Segoe UI", sans-serif';
-  g.fillText(fam.name, W - M, 96);
-
-  function finish(){
-    g.textAlign = 'center';
-    g.fillStyle = fam.c; g.font = '700 74px Bitter, Georgia, serif';
-    var y = wrapText(g, arch.name, W / 2, 806, W - M * 2, 84, 2);
-
-    g.fillStyle = '#5B7078'; g.font = '400 29px Inter, "Segoe UI", sans-serif';
-    g.fillText(state.name + ' · ' + state.age + ' yosh', W / 2, y + 20);
-
-    g.fillStyle = '#152730'; g.font = '400 34px Inter, "Segoe UI", sans-serif';
-    y = wrapText(g, arch.lines[0], W / 2, y + 84, W - M * 2, 48, 3);
-
-    // Sit the strength box low enough to fill the card, but always clear of the text.
-    var boxTop = Math.min(Math.max(y + 40, 1046), 1168);
-    g.fillStyle = fam.soft; g.fillRect(M, boxTop, W - M * 2, 122);
-    g.fillStyle = fam.c; g.font = '600 30px Inter, "Segoe UI", sans-serif';
-    g.fillText('KUCHLI TOMONIM', W / 2, boxTop + 46);
-    g.fillStyle = '#152730'; g.font = '500 33px Inter, "Segoe UI", sans-serif';
-    var str = arch.strength.charAt(0).toUpperCase() + arch.strength.slice(1);
-    wrapText(g, str, W / 2, boxTop + 92, W - M * 2 - 60, 42, 1);
-
-    g.fillStyle = '#5B7078'; g.font = '400 27px Inter, "Segoe UI", sans-serif';
-    g.fillText('testmind-minis.netlify.app', W / 2, H - 48);
-    cb(c);
-  }
-
-  var img = new Image();
-  img.onload = function(){ g.drawImage(img, (W - 432) / 2, 140, 432, 540); finish(); };
-  img.onerror = finish;
-  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(charSvg(key));
-}
-
-function renderReport(){
-  clearDraft(); // test finished — remove the saved answers from this device
-  var s = scoreAnswers(state.answers);
-  var arch = archetypeOf(s);
-  sendStats('completed', s, arch);
-  var today = new Date();
-  var dateStr = ('0'+today.getDate()).slice(-2) + '.' + ('0'+(today.getMonth()+1)).slice(-2) + '.' + today.getFullYear();
-  var fam = FAMILIES[arch.fam];
-  var archKey = archetypeKeyOf(s);
-
-  // The hero comes first and carries no numbers: a teenager should see who they are
-  // before they see any score. The five scores live one tap away, under «Batafsil».
-  var html =
-    '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft + '">' +
-      '<div class="herotop">' +
-        '<span class="famtag">' + fam.name + '</span>' +
-        charSvg(archKey, arch.name) +
-      '</div>' +
-      '<div class="herobody">' +
-        '<h1 class="archname">' + arch.name + '</h1>' +
-        '<p class="archwho">' + esc(state.name) + ' · ' + esc(state.age) + ' yosh · ' + dateStr + '</p>' +
-        '<ul class="archlines">' +
-          arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
-        '</ul>' +
-        '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
-      '</div>' +
-    '</div>' +
-    '<div class="actions">' +
-      '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
-      '<button class="btn ghost" id="printBtn">Chop etish</button>' +
-      '<button class="btn ghost" id="againBtn">Qaytadan</button>' +
-    '</div>' +
-    '<div id="shareBox" class="sharebox"></div>' +
-    '<div class="capture" id="capture">' +
-      '<h3>Toʻliq tahlilni olasizmi?</h3>' +
-      '<p class="caplede">«' + arch.name + '» uchun batafsil qoʻllanma: kuchli tomonlaringiz, ' +
-        'oʻsish nuqtalaringiz va sizga mos yoʻnalishlar.</p>' +
-      '<div class="caprow">' +
-        '<input type="email" id="capEmail" placeholder="email@example.com" ' +
-          'autocomplete="email" inputmode="email" aria-label="Email manzilingiz">' +
-        '<button class="btn" id="capBtn">Yuborish</button>' +
-      '</div>' +
-      '<p class="capmsg" id="capMsg" role="status"></p>' +
-      '<p class="capnote">Qoʻllanma hozir tayyorlanmoqda — tayyor boʻlishi bilan birinchilardan ' +
-        'boʻlib sizga yuboramiz. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
-        '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
-    '</div>' +
-    '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>' +
-      boardHtml(s);
-  ['ES','E','O','A','C'].forEach(function(k){
-    var mean = s[k], lvl = levelOf(mean);
-    html += '<div class="trait">' +
-      '<div class="trow"><span class="tname">' + TRAITS[k] + '</span>' +
-      '<span class="tmeta"><span class="score">' + (Math.round(mean*10)/10).toFixed(1) + ' / 5</span>' +
-      '<span class="chip' + (lvl === 'Yuqori' ? ' hi' : '') + '">' + lvl + '</span></span></div>' +
-      '<p>' + TEXTS[k][textKey(lvl)] + '</p>' +
-      '</div>';
-  });
-  html += '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
-      '<p class="muted" style="margin-top:8px">Javoblaringiz shu qurilmadan oʻchirildi.</p>' +
-    '</div></details>' +
-    // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
-    '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
-  app.innerHTML = html;
-  window.scrollTo({top:0, behavior:'auto'});
-  document.getElementById('againBtn').onclick = function(){
-    clearDraft();
-    state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
-    renderStart();
-  };
-  var capBtn = document.getElementById('capBtn');
-  capBtn.onclick = function(){
-    var input = document.getElementById('capEmail');
-    var msg = document.getElementById('capMsg');
-    var email = input.value.trim();
-    if (!looksLikeEmail(email)){
-      msg.className = 'capmsg err';
-      msg.textContent = 'Email manzilini tekshirib qayta kiriting.';
-      input.focus();
-      return;
-    }
-    capBtn.disabled = true; capBtn.textContent = 'Yuborilmoqda…';
-    msg.className = 'capmsg'; msg.textContent = '';
-    sendLead(email, arch.name, function(okSent){
-      if (okSent){
-        document.getElementById('capture').innerHTML =
-          '<div class="capdone"><span class="tick" aria-hidden="true">✓</span><div>' +
-            '<h3 style="margin:0 0 4px">Qabul qilindi</h3>' +
-            '<p class="caplede" style="margin:0">Qoʻllanma tayyor boʻlishi bilan ' + esc(email) +
-            ' manziliga yuboramiz.</p>' +
-          '</div></div>';
-      } else {
-        capBtn.disabled = false; capBtn.textContent = 'Yuborish';
-        msg.className = 'capmsg err';
-        msg.textContent = 'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.';
-      }
-    });
-  };
-  document.getElementById('capEmail').onkeydown = function(e){
-    if (e.key === 'Enter'){ e.preventDefault(); capBtn.click(); }
-  };
-
-  document.getElementById('printBtn').onclick = function(){
-    // A closed <details> prints empty, so open the full breakdown before printing.
-    var d = document.querySelector('details.deep'); if (d) d.open = true;
-    window.print();
-  };
-  document.getElementById('shareBtn').onclick = function(){
-    var btn = this, box = document.getElementById('shareBox');
-    btn.disabled = true; btn.textContent = 'Tayyorlanmoqda…';
-    function show(url){
-      btn.disabled = false; btn.textContent = 'Rasm qilib saqlash';
-      box.innerHTML =
-        '<img class="shareimg" src="' + url + '" alt="TestMind natija kartasi">' +
-        '<p class="muted">Telefonda saqlash uchun rasmni bosib turing, yoki tugmani bosing.</p>' +
-        '<a class="btn" download="testmind-natija.png" href="' + url + '">Yuklab olish</a>';
-      box.scrollIntoView({behavior:'smooth', block:'nearest'});
-    }
-    buildShareCard(s, arch, archKey, function(canvas){
-      if (canvas.toBlob) canvas.toBlob(function(b){ show(URL.createObjectURL(b)); }, 'image/png');
-      else show(canvas.toDataURL('image/png'));
-    });
-  };
-}
-
-// Offer to continue an unfinished test found on this device.
-function renderResume(d){
-  var answered = d.answers.filter(function(v){ return v > 0; }).length;
-  app.innerHTML =
-    '<div class="card">' +
-      '<h1>Yarim qolgan test</h1>' +
-      '<p>Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?</p>' +
-      '<p class="muted">' + esc(d.name) + ' · ' + answered + ' / ' + ITEMS.length + ' savolga javob berilgan.</p>' +
-      '<div class="nav" style="margin-top:18px">' +
-        '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
-        '<button class="btn" id="resumeBtn">Davom etish</button>' +
-      '</div>' +
-    '</div>';
-  document.getElementById('resumeBtn').onclick = function(){
-    state.name = d.name; state.age = d.age;
-    state.answers = d.answers.slice();
-    state.page = Math.min(d.page || 0, PAGES - 1);
-    state.aid = d.aid || '';          // keep one id across abandon -> resume -> finish
-    renderPage();
-  };
-  document.getElementById('freshBtn').onclick = function(){
-    clearDraft();
-    state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
-    renderStart();
-  };
-}
-
-function boot(){
-  var d = loadDraft();
-  if (d && d.name && d.answers.some(function(v){ return v > 0; })) renderResume(d);
-  else renderStart();
-}
-
-boot();
+})();
 </script>
 </body>
 </html>
