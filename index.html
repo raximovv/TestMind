@@ -6,429 +6,145 @@
 <title>TestMind — Siz qaysi obrazsiz?</title>
 <meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.">
 <meta property="og:title" content="TestMind — Siz qaysi obrazsiz?">
-<meta property="og:description" content="Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa.">
+<meta property="og:description" content="Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-  @font-face{font-family:'Bitter';src:url('fonts/bitter.woff2') format('woff2');
-             font-weight:100 900;font-style:normal;font-display:swap}
-  @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
-             font-weight:100 900;font-style:normal;font-display:swap}
-  :root{
-    --lazur:#0F6E8C; --lazur-deep:#0A4F66; --ink:#152730; --paper:#F1F6F7;
-    --card:#FFFFFF; --line:#D7E2E4; --zar:#C08A2E; --muted:#5B7078;
-    --display:'Bitter', Georgia, serif; --body:'Inter','Segoe UI',system-ui,sans-serif;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{margin:0;background:var(--card);color:var(--ink);font-family:var(--body);
-       font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
-  .wrap{max-width:1060px;margin:0 auto;padding:0 20px}
-  a{color:var(--lazur-deep)}
-
-  /* ---------- nav ---------- */
-  .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.92);
-       backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
-  .navin{display:flex;align-items:center;gap:18px;height:62px}
-  .brand{font-family:var(--display);font-weight:700;font-size:23px;color:var(--lazur-deep);
-         text-decoration:none;white-space:nowrap}
-  .navlinks{display:flex;gap:22px;margin-left:auto}
-  .navlinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap}
-  .navlinks a:hover{color:var(--lazur-deep)}
-  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;
-       font-weight:600;cursor:pointer;background:var(--lazur);color:#fff;text-decoration:none;
-       transition:background .15s ease,transform .12s ease}
-  .btn:hover{background:var(--lazur-deep)}
-  .btn:active{transform:translateY(1px)}
-  .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
-  .btn.ghost:hover{background:#EDF4F5;border-color:var(--lazur)}
-  .btn.sm{padding:9px 16px;font-size:14.5px}
-  .btn.big{padding:16px 34px;font-size:18px;border-radius:12px}
-  @media (max-width:760px){ .navlinks{display:none} .navin{gap:12px} .navin .btn{margin-left:auto} }
-
-  /* ---------- hero ---------- */
-  .hero{background:linear-gradient(180deg,#EAF3F5 0%,#F1F6F7 100%);overflow:hidden;
-        border-bottom:1px solid var(--line)}
-  .herotext{text-align:center;padding:56px 20px 30px;max-width:760px;margin:0 auto}
-  h1{font-family:var(--display);font-weight:700;font-size:clamp(30px,6.2vw,52px);
-     line-height:1.12;margin:0 0 16px;letter-spacing:-.4px}
-  .sub{font-size:clamp(16px,2.4vw,19px);color:var(--muted);margin:0 0 26px;line-height:1.5}
-  .cta{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
-  .trust{margin:16px 0 0;font-size:13.5px;color:var(--muted)}
-  .scene{width:100%;height:clamp(244px,40vw,520px);margin-bottom:-4px}
-  .scene svg{display:block;width:100%;height:100%}
-  .scenecap{margin:0;padding:10px 20px 16px;text-align:center;font-size:12.5px;
-            letter-spacing:.3px;color:var(--muted);background:#E3EDEA}
-
-  /* ---------- sections ---------- */
-  section{padding:64px 0}
-  .alt{background:var(--paper);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  h2{font-family:var(--display);font-weight:700;font-size:clamp(24px,4vw,34px);
-     margin:0 0 10px;line-height:1.2}
-  .lead{color:var(--muted);margin:0 0 34px;font-size:17px;max-width:620px}
-  .center{text-align:center}
-  .center .lead{margin-left:auto;margin-right:auto}
-
-  /* ---------- character gallery ---------- */
-  .fam{margin-bottom:38px}
-  .famhead{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;
-           padding-bottom:10px;border-bottom:2px solid var(--famc)}
-  .famname{font-family:var(--display);font-weight:700;font-size:21px;color:var(--famc);margin:0}
-  .famnote{font-size:14px;color:var(--muted)}
-  /* two per row on a phone — one column made the gallery a 3000px scroll */
-  .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:14px}
-  .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;
-         overflow:hidden;transition:transform .16s ease,box-shadow .16s ease}
-  .ccard:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(15,110,140,.10)}
-  .cart{background:var(--famsoft);padding:14px 10px 0}
-  .cart svg{display:block;width:clamp(92px,44%,118px);max-width:100%;height:auto;margin:0 auto}
-  .cbody{padding:13px 15px 17px}
-  .cname{font-family:var(--display);font-weight:700;font-size:clamp(15px,3.6vw,17px);
-         color:var(--famc);margin:0 0 5px;line-height:1.25}
-  .cstr{font-size:13.5px;color:var(--muted);margin:0;line-height:1.45}
-  .cfig{font-size:12.5px;color:var(--muted);margin:9px 0 0;padding-top:9px;
-        border-top:1px solid var(--line)}
-  .cfig b{color:var(--famc);font-weight:600}
-
-  /* ---------- steps ---------- */
-  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
-  .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
-  .stepn{width:38px;height:38px;border-radius:50%;background:var(--lazur);color:#fff;
-         display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;
-         margin-bottom:14px}
-  .step h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
-  .step p{margin:0;color:var(--muted);font-size:15px}
-
-  /* ---------- why ---------- */
-  .why{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
-  .wcard{border:1px solid var(--line);border-radius:14px;padding:20px;background:var(--card)}
-  .wcard h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0 0 6px;color:var(--lazur-deep)}
-  .wcard p{margin:0;font-size:14.5px;color:var(--muted)}
-
-  /* ---------- faq ---------- */
-  .faq{max-width:760px}
-  .faq details{border:1px solid var(--line);border-radius:12px;background:var(--card);
-               padding:16px 20px;margin-bottom:10px}
-  .faq summary{cursor:pointer;font-weight:600;list-style:none;font-size:16px}
-  .faq summary::-webkit-details-marker{display:none}
-  .faq summary::after{content:'+';float:right;color:var(--lazur);font-weight:700;font-size:20px;line-height:1}
-  .faq details[open] summary::after{content:'−'}
-  .faq summary:focus-visible{outline:2px solid var(--zar);outline-offset:3px;border-radius:4px}
-  .faq p{margin:12px 0 0;color:var(--muted);font-size:15px}
-
-  /* ---------- closing + footer ---------- */
-  .close{text-align:center;background:var(--lazur-deep);color:#fff;padding:64px 20px}
-  .close h2{color:#fff;margin-bottom:12px}
-  .close p{color:#C9DEE6;margin:0 0 26px;font-size:17px}
-  .close .btn{background:#fff;color:var(--lazur-deep)}
-  .close .btn:hover{background:#E7F1F4}
-  .foot{padding:26px 20px 34px;text-align:center;font-size:13px;color:var(--muted)}
-  .foot a{color:var(--zar)}
-  @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} html{scroll-behavior:auto} }
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-
 <nav class="nav"><div class="wrap navin">
-  <a class="brand" href="#top">TestMind</a>
+  <a class="brand" href="index.html">TestMind</a>
   <div class="navlinks">
-    <a href="#obrazlar">Obrazlar</a>
-    <a href="#qanday">Qanday ishlaydi</a>
-    <a href="#savollar">Savollar</a>
+    <a href="index.html" aria-current="page">Bosh sahifa</a>
+    <a href="obrazlar.html">Obrazlar</a>
+    <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
+    <a href="savollar.html">Savollar</a>
   </div>
-  <a class="btn sm" href="test.html" id="navCta">Testni boshlash</a>
+  <a class="btn sm" href="test.html" data-cta>Testni boshlash</a>
 </div></nav>
-
-<header class="hero" id="top">
-  <div class="herotext">
+<header class="hero" id="top" style="background:linear-gradient(180deg,#EAF3F5 0%,#F1F6F7 100%);border-bottom:1px solid var(--line)">
+  <div style="text-align:center;padding:52px 20px 28px;max-width:760px;margin:0 auto">
     <h1>Siz qaysi obrazsiz?</h1>
-    <p class="sub">50 ta savol, taxminan 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki
-       boʻladi — kuchli tomonlaringiz bilan birga.</p>
-    <div class="cta">
-      <a class="btn big" href="test.html" id="heroCta">Testni boshlash</a>
-      <a class="btn big ghost" href="#obrazlar">Obrazlarni koʻrish</a>
+    <p class="lead" style="font-size:clamp(16px,2.4vw,19px);margin-bottom:26px">
+      50 ta savol, taxminan 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi —
+      kuchli tomonlaringiz bilan birga.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn big" href="test.html" data-cta>Testni boshlash</a>
+      <a class="btn big ghost" href="obrazlar.html">Obrazlarni koʻrish</a>
     </div>
-    <p class="trust">Bepul · Anonim · Roʻyxatdan oʻtish shart emas</p>
+    <p style="margin:16px 0 0;font-size:13.5px;color:var(--muted)">
+      Bepul · Anonim · Roʻyxatdan oʻtish shart emas</p>
   </div>
-  <div class="scene" id="scene" aria-hidden="true"></div>
-  <p class="scenecap">Registon maydoni · Samarqand</p>
+  <div id="scene" aria-hidden="true"
+       style="width:100%;height:clamp(244px,40vw,520px);margin-bottom:-4px"></div>
+  <p style="margin:0;padding:10px 20px 16px;text-align:center;font-size:12.5px;
+            letter-spacing:.3px;color:var(--muted);background:#E3EDEA">
+    Registon maydoni · Samarqand</p>
 </header>
 
-<section id="obrazlar" class="alt">
+<section class="alt">
   <div class="wrap">
-    <div class="center">
-      <h2>Oʻnta obraz</h2>
-      <p class="lead">Har bir obraz — oʻziga xos kuchli tomonlar toʻplami.
-         Ular orasida «yomoni» yoʻq: shunchaki bir-biridan farq qiladi.</p>
+    <div class="center"><h2>TestMind nima?</h2>
+      <p class="lead">Oʻzbek tilidagi bepul shaxsiyat testi. U sizga tashxis qoʻymaydi —
+        oʻzingizni tanishga yordam beradi.</p></div>
+    <div class="facts">
+      <div class="fact"><div class="factn">50</div><div class="factl">ta savol</div></div>
+      <div class="fact"><div class="factn">~7</div><div class="factl">daqiqa vaqt</div></div>
+      <div class="fact"><div class="factn">10</div><div class="factl">ta obraz</div></div>
+      <div class="fact"><div class="factn">5</div><div class="factl">ta xususiyat oʻlchanadi</div></div>
     </div>
-    <div id="gallery"></div>
   </div>
 </section>
 
-<section id="qanday">
+<section>
   <div class="wrap">
-    <h2>Qanday ishlaydi</h2>
-    <p class="lead">Uch qadam, ettita daqiqa.</p>
-    <div class="steps">
-      <div class="step"><div class="stepn">1</div>
-        <h3>Savollarga javob bering</h3>
-        <p>50 ta jumla. Har biriga qanchalik qoʻshilishingizni beshta doiradan birini
-           bosib belgilaysiz. Toʻgʻri yoki notoʻgʻri javob yoʻq.</p></div>
-      <div class="step"><div class="stepn">2</div>
-        <h3>Obrazingizni koʻring</h3>
-        <p>Darhol ekranda: obrazingiz, uning tavsifi va eng kuchli tomoningiz.
-           Rasm qilib saqlab, doʻstlaringizga yuborishingiz mumkin.</p></div>
-      <div class="step"><div class="stepn">3</div>
-        <h3>Batafsil tahlilni oling</h3>
-        <p>Xohlasangiz, email qoldiring — obrazingiz boʻyicha toʻliq qoʻllanmani
-           tayyor boʻlishi bilan yuboramiz.</p></div>
+    <div class="panel">
+      <div class="ptext">
+        <span class="ptag">Oʻzingizni tushuning</span>
+        <h2>Nega ayrim ishlar sizga oson, ayrimlari qiyin?</h2>
+        <p>Test yakunida qandaydir ball emas, aniq bir obraz olasiz: siz qanday odamsiz,
+           nima sizga kuch beradi va qaysi tomoningiz eng kuchli. Uni rasm qilib saqlab,
+           doʻstlaringizga yuborishingiz mumkin.</p>
+        <a class="btn" href="test.html" data-cta>Testni boshlash</a>
+      </div>
+      <div class="part" id="vg-result"></div>
+    </div>
+
+    <div class="panel flip">
+      <div class="ptext">
+        <span class="ptag">Boshqalarni tushuning</span>
+        <h2>Doʻstingiz nega sizdan butunlay boshqacha?</h2>
+        <p>Oʻnta obrazning hech biri boshqasidan yaxshi emas. Kimdir davrani jonlantiradi,
+           kimdir jimgina eng yaxshi yechimni topadi. Buni bilsangiz, sinfdoshlaringiz bilan
+           ham osonroq til topasiz.</p>
+        <a class="btn ghost" href="obrazlar.html">Oʻnta obrazni koʻrish</a>
+      </div>
+      <div class="part" id="vg-others"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptext">
+        <span class="ptag">Kelajagingizni tanlang</span>
+        <h2>Qaysi yoʻnalish sizga mos kelishi mumkin?</h2>
+        <p>14–16 yosh — fan, yoʻnalish va kasb haqida oʻylay boshlaydigan payt.
+           TestMind sizga javobni aytib bermaydi, lekin qaysi muhitda oʻzingizni
+           erkin his qilishingizni koʻrsatadi.</p>
+        <a class="btn ghost" href="qanday-ishlaydi.html">Qanday ishlaydi</a>
+      </div>
+      <div class="part" id="vg-future"></div>
     </div>
   </div>
 </section>
 
 <section class="alt">
   <div class="wrap">
-    <h2>Nega TestMind?</h2>
-    <p class="lead">Oʻzbek oʻsmirlari uchun, oʻzbek tilida.</p>
+    <div class="center"><h2>Nega TestMind?</h2>
+      <p class="lead">Oʻzbek oʻsmirlari uchun, oʻzbek tilida.</p></div>
     <div class="why">
       <div class="wcard"><h3>Ilmiy modelga asoslangan</h3>
         <p>Savollar psixologiyada eng koʻp tekshirilgan «Katta beshlik» (Big Five)
-           modelidan olingan. Bu tibbiy tashxis emas, lekin taxmin ham emas.</p></div>
+           modelidan olingan.</p></div>
       <div class="wcard"><h3>Tabiiy oʻzbek tilida</h3>
         <p>Savollar tarjima emas — oʻsmirlar kundalik hayotda ishlatadigan tilda
            yozilgan.</p></div>
       <div class="wcard"><h3>Anonim</h3>
-        <p>Ismingiz va alohida javoblaringiz serverga yuborilmaydi. Javoblar test
-           tugashi bilan qurilmangizdan oʻchiriladi.</p></div>
+        <p>Ismingiz va alohida javoblaringiz serverga yuborilmaydi.</p></div>
       <div class="wcard"><h3>Butunlay bepul</h3>
-        <p>Toʻlov yoʻq, obuna yoʻq, roʻyxatdan oʻtish shart emas. Telefonda ham
-           bemalol ishlaydi.</p></div>
+        <p>Toʻlov yoʻq, obuna yoʻq, roʻyxatdan oʻtish shart emas.</p></div>
     </div>
   </div>
 </section>
-
-<section id="savollar">
-  <div class="wrap">
-    <h2>Koʻp beriladigan savollar</h2>
-    <p class="lead">Qisqa javoblar.</p>
-    <div class="faq">
-      <details><summary>Test qancha vaqt oladi?</summary>
-        <p>50 ta savol, taxminan 7 daqiqa. Yarmida toʻxtasangiz, javoblaringiz shu
-           qurilmada saqlanadi va keyin davom ettira olasiz.</p></details>
-      <details><summary>Natijam kimgadir koʻrinadimi?</summary>
-        <p>Yoʻq. Ismingiz hech qayerga yuborilmaydi, har bir savolga bergan javoblaringiz
-           ham. Faqat anonim umumiy natija saqlanadi — testni yaxshilash uchun.
-           Batafsil: <a href="privacy.html">Maxfiylik</a>.</p></details>
-      <details><summary>Bu test ilmiymi?</summary>
-        <p>Savollar «Katta beshlik» modeliga asoslangan — bu psixologiyada eng keng
-           tarqalgan va eng koʻp tekshirilgan shaxsiyat modeli. Lekin TestMind sinov
-           versiyasi va tibbiy yoki psixologik tashxis emas. Natijani maslahat sifatida
-           qabul qiling.</p></details>
-      <details><summary>Necha yoshdan boshlab topshirsa boʻladi?</summary>
-        <p>Test asosan 14–16 yoshdagi oʻsmirlar uchun moʻljallangan. 18 yoshga
-           toʻlmagan boʻlsangiz, natijani ota-onangiz yoki oʻqituvchingiz bilan
-           muhokama qilish tavsiya etiladi.</p></details>
-      <details><summary>Natija haqiqatga qanchalik yaqin?</summary>
-        <p>Bu butunlay siz qanday javob berishingizga bogʻliq. «Qanday boʻlishni
-           xohlayman» emas, «hozir qandayman» deb javob bersangiz, natija ancha
-           aniqroq chiqadi. Barcha doiralarni bir xil bosib chiqsangiz, natija
-           hech narsani koʻrsatmaydi.</p></details>
-      <details><summary>Obrazim keyin oʻzgarishi mumkinmi?</summary>
-        <p>Ha. 14–16 yoshda shaxsiyat hali shakllanmoqda. Bu natija — hukm emas,
-           bugungi holatingizning surati.</p></details>
-    </div>
-  </div>
-</section>
-
 <section class="close">
   <h2>Tayyormisiz?</h2>
   <p>7 daqiqa. Oʻnta obrazdan qaysi biri sizniki?</p>
-  <a class="btn big" href="test.html" id="closeCta">Testni boshlash</a>
+  <a class="btn big" href="test.html" data-cta>Testni boshlash</a>
 </section>
-
-<footer class="foot">
-  © 2026 TestMind · <a href="privacy.html">Maxfiylik</a> ·
-  <a href="mailto:raximovrahim1@gmail.com">Bogʻlanish</a>
-</footer>
-
+<footer class="foot"><div class="wrap">
+  <div class="footgrid">
+    <div class="footcol"><h4>TestMind</h4><ul>
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="obrazlar.html">Oʻnta obraz</a></li>
+      <li><a href="qanday-ishlaydi.html">Qanday ishlaydi</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Test</h4><ul>
+      <li><a href="test.html" data-cta>Testni boshlash</a></li>
+      <li><a href="savollar.html">Koʻp beriladigan savollar</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Maʼlumot</h4><ul>
+      <li><a href="privacy.html">Maxfiylik</a></li>
+      <li><a href="qanday-ishlaydi.html#model">Test qaysi modelga asoslangan</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Bogʻlanish</h4><ul>
+      <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
+    </ul></div>
+  </div>
+  <div class="footbar">
+    <span>© 2026 TestMind</span>
+    <span>Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.</span>
+  </div>
+</div></footer>
 <script src="characters.js"></script>
-<script>
-// ---------- hero scene: the Registan ensemble, Samarqand ----------
-// Ulugʻbek (left), Tillakori (centre) and Sherdor (right) madrasas, with the
-// characters standing in the square. ES5 string concat on purpose: plenty of
-// school phones here still run an old Android browser.
-var TILE='#2E8FA8', TILE_D='#1F6B80';
-var STONE='#E8DCC0', STONE_D='#D5C6A2', STONE_L='#F2E9D5';
-var GOLD='#C08A2E', DEEP='#16505F';
-var FOOT = 238;   // y of the feet inside a character's own 200x250 viewBox
-
-function inner(k){ return charSvg(k).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, ''); }
-
-function finial(x, y){
-  return '<path d="M'+x+' '+y+' v-14" stroke="'+GOLD+'" stroke-width="3.5" stroke-linecap="round"/>'
-       + '<circle cx="'+x+'" cy="'+(y-18)+'" r="4.5" fill="'+GOLD+'"/>';
-}
-
-// Ribbed melon dome on a drum; y is the bottom of the drum.
-function ribbedDome(x, y, r){
-  var dh = r*1.68, drum = r*0.78, i, f;
-  var s = '<g transform="translate('+x+','+y+')">'
-    + '<rect x="'+(-r*0.66)+'" y="'+(-drum)+'" width="'+(r*1.32)+'" height="'+drum+'" fill="'+STONE+'"/>'
-    + '<rect x="'+(-r*0.66)+'" y="'+(-drum)+'" width="'+(r*1.32)+'" height="9" fill="'+STONE_D+'"/>'
-    + '<path d="M'+(-r)+' '+(-drum)+' C'+(-r)+' '+(-drum-r*0.85)+' '+(-r*0.44)+' '+(-drum-dh*0.72)
-    + ' 0 '+(-drum-dh)+' C'+(r*0.44)+' '+(-drum-dh*0.72)+' '+r+' '+(-drum-r*0.85)+' '+r+' '+(-drum)
-    + ' Z" fill="'+TILE+'"/><g stroke="'+TILE_D+'" stroke-width="1.8" fill="none" opacity=".45">';
-  for (i = -2; i <= 2; i++){
-    if (!i){ s += '<path d="M0 '+(-drum-dh)+' V'+(-drum)+'"/>'; continue; }
-    f = i/2.6;
-    s += '<path d="M'+(f*r*0.5)+' '+(-drum-dh*0.86)+' C'+(f*r*0.8)+' '+(-drum-dh*0.5)
-       + ' '+(f*r)+' '+(-drum-dh*0.24)+' '+(f*r)+' '+(-drum)+'"/>';
-  }
-  return s + '</g>' + finial(0, -drum-dh) + '</g>';
-}
-
-function minaret(x, g, h){
-  return '<g transform="translate('+x+','+g+')">'
-    + '<path d="M-14 0 L-9.5 '+(-h)+' h19 L14 0 Z" fill="'+STONE+'"/>'
-    + '<g fill="'+TILE+'" opacity=".7">'
-    + '<rect x="-12.6" y="'+(-h*0.34)+'" width="25" height="10"/>'
-    + '<rect x="-11.4" y="'+(-h*0.60)+'" width="23" height="10"/>'
-    + '<rect x="-10.4" y="'+(-h*0.84)+'" width="21" height="10"/></g>'
-    + '<rect x="-17" y="'+(-h-14)+'" width="34" height="14" rx="3" fill="'+TILE_D+'"/>'
-    + '<path d="M-11 '+(-h-14)+' C-11 '+(-h-32)+' 0 '+(-h-39)+' 0 '+(-h-52)
-    + ' C0 '+(-h-39)+' 11 '+(-h-32)+' 11 '+(-h-14)+' Z" fill="'+TILE+'"/>'
-    + finial(0, -h-52) + '</g>';
-}
-
-// Sherdor's sun. The real mosaic is a lion with a human-faced sun rising behind it;
-// the lion does not survive being drawn this small, the sun does.
-function sherMotif(x, y, sc, flip){
-  return '<g transform="translate('+x+','+y+') scale('+(flip?-sc:sc)+','+sc+')">'
-    + '<g stroke="'+GOLD+'" stroke-width="2.4" stroke-linecap="round">'
-    + '<path d="M0 -17 v-6"/><path d="M12 -12 l4.5 -4.5"/><path d="M17 0 h6"/>'
-    + '<path d="M12 12 l4.5 4.5"/><path d="M0 17 v6"/><path d="M-12 12 l-4.5 4.5"/>'
-    + '<path d="M-17 0 h-6"/><path d="M-12 -12 l-4.5 -4.5"/></g>'
-    + '<circle r="12" fill="'+GOLD+'"/>'
-    + '<g fill="#6B4A12"><circle cx="-4" cy="-2" r="1.5"/><circle cx="4" cy="-2" r="1.5"/></g>'
-    + '<path d="M-4.5 3.5 q4.5 4 9 0" stroke="#6B4A12" stroke-width="1.6" fill="none" '
-    + 'stroke-linecap="round"/></g>';
-}
-
-// A madrasa: arcaded wings, a tall central pishtoq, optional domes and minarets.
-function madrasa(cx, g, w, h, o){
-  o = o || {};
-  var pw = w*0.40, wingH = h*0.60, s = '', i, side, nx, nw = 26, gap = 14;
-  if (o.domes) for (i = 0; i < o.domes.length; i++)
-    s += ribbedDome(cx + o.domes[i][0], g - wingH + 6, o.domes[i][1]);
-  s += '<g transform="translate('+cx+','+g+')">'
-     + '<rect x="'+(-w/2)+'" y="'+(-wingH)+'" width="'+w+'" height="'+wingH+'" fill="'+STONE+'"/>'
-     + '<rect x="'+(-w/2)+'" y="'+(-wingH)+'" width="'+w+'" height="12" fill="'+STONE_D+'"/>';
-  for (side = -1; side <= 1; side += 2){
-    for (i = 0; i < 3; i++){
-      nx = side*(pw/2 + 16 + i*(nw+gap)) - (side < 0 ? nw : 0);
-      s += '<path d="M'+nx+' -8 v'+(-wingH*0.44)+' q0 -20 '+(nw/2)+' -20 q'+(nw/2)+' 0 '+(nw/2)
-         + ' 20 v'+(wingH*0.44)+' Z" fill="'+DEEP+'" opacity=".82"/>';
-    }
-  }
-  s += '<rect x="'+(-pw/2)+'" y="'+(-h)+'" width="'+pw+'" height="'+h+'" fill="'+STONE_L+'"/>'
-     + '<rect x="'+(-pw/2)+'" y="'+(-h)+'" width="'+pw+'" height="14" fill="'+STONE_D+'"/>'
-     + '<path d="M'+(-pw*0.32)+' 0 V'+(-h*0.52)+' Q'+(-pw*0.32)+' '+(-h*0.86)+' 0 '+(-h*0.90)
-     + ' Q'+(pw*0.32)+' '+(-h*0.86)+' '+(pw*0.32)+' '+(-h*0.52)+' V0 Z" fill="'+TILE_D+'"/>'
-     + '<path d="M'+(-pw*0.24)+' 0 V'+(-h*0.52)+' Q'+(-pw*0.24)+' '+(-h*0.80)+' 0 '+(-h*0.84)
-     + ' Q'+(pw*0.24)+' '+(-h*0.80)+' '+(pw*0.24)+' '+(-h*0.52)+' V0 Z" fill="'+DEEP+'"/>'
-     + '<g fill="'+TILE+'" opacity=".8">';
-  for (i = 0; i < 4; i++){
-    s += '<rect x="'+(-pw/2+5)+'" y="'+(-h+22+i*20)+'" width="9" height="9"/>'
-       + '<rect x="'+(pw/2-14)+'" y="'+(-h+22+i*20)+'" width="9" height="9"/>';
-  }
-  s += '</g>';
-  if (o.sher){
-    s += sherMotif(-pw*0.34, -h*0.76, 1.15, false) + sherMotif(pw*0.34, -h*0.76, 1.15, true);
-  }
-  s += '</g>';
-  if (o.minarets) s += minaret(cx - w/2 - 4, g, o.minarets) + minaret(cx + w/2 + 4, g, o.minarets);
-  return s;
-}
-
-function buildScene(){
-  var W = 1200, H = 530, GY = 390, s = '', i;
-  s += '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
-     + '<stop offset="0" stop-color="#CFE7F0"/><stop offset="1" stop-color="#F1F6F7"/></linearGradient>'
-     + '<linearGradient id="grnd" x1="0" y1="0" x2="0" y2="1">'
-     + '<stop offset="0" stop-color="#EDF2EF"/><stop offset="1" stop-color="#E0EBE6"/></linearGradient></defs>'
-     + '<rect width="'+W+'" height="'+H+'" fill="url(#sky)"/>'
-     + '<path d="M0 '+GY+' L140 268 L262 336 L360 254 L510 '+GY+' Z" fill="#B4D2DF" opacity=".55"/>'
-     + '<path d="M700 '+GY+' L840 262 L960 330 L1070 248 L1200 340 L1200 '+GY+' Z" fill="#B4D2DF" opacity=".55"/>';
-  s += madrasa(196, GY, 300, 238, {minarets:250});
-  s += madrasa(600, GY, 344, 222, {domes:[[0,68]], minarets:180});
-  s += madrasa(1004, GY, 300, 238, {domes:[[-88,32],[88,32]], minarets:250, sher:true});
-  s += '<path d="M0 '+GY+' H'+W+' V'+H+' H0 Z" fill="url(#grnd)"/>'
-     + '<path d="M0 '+(GY+26)+' H'+W+'" stroke="#CFE2DB" stroke-width="3"/>';
-  var cast = [['ES|O',300,418,0.56], ['A|C',906,420,0.58],
-              ['E|A',420,462,0.76],  ['O|C',786,464,0.76],
-              ['ES|E',548,514,0.96], ['E|O',664,518,0.94]];
-  for (i = 0; i < cast.length; i++){
-    var c = cast[i], sc = c[3];
-    s += '<g transform="translate('+(c[1]-100*sc)+','+(c[2]-FOOT*sc)+') scale('+sc+')">'+inner(c[0])+'</g>';
-  }
-  // slice keeps the characters large on a phone by cropping the sides instead of shrinking
-  return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMax slice" '
-       + 'xmlns="http://www.w3.org/2000/svg">'+s+'</svg>';
-}
-
-// ---------- character gallery, grouped by family ----------
-function buildGallery(){
-  var order = ['lead','crea','care','base'];
-  var notes = {
-    lead:'Odamlarni ortidan ergashtiradiganlar',
-    crea:'Yangi gʻoya va yechim topadiganlar',
-    care:'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
-    base:'Vaʼdasida turadigan, ishonchli odamlar'
-  };
-  var byFam = {};
-  for (var k in ARCHETYPES){
-    var a = ARCHETYPES[k];
-    (byFam[a.fam] = byFam[a.fam] || []).push(k);
-  }
-  var html = '';
-  for (var i=0;i<order.length;i++){
-    var f = order[i], fam = FAMILIES[f], keys = byFam[f] || [];
-    html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
-          + '<div class="famhead"><h3 class="famname">'+fam.name+'</h3>'
-          + '<span class="famnote">'+notes[f]+'</span></div><div class="cards">';
-    for (var j=0;j<keys.length;j++){
-      var a = ARCHETYPES[keys[j]];
-      html += '<article class="ccard">'
-            + '<div class="cart">'+charSvg(keys[j], a.name)+'</div>'
-            + '<div class="cbody"><h4 class="cname">'+a.name+'</h4>'
-            + '<p class="cstr">Kuchli tomoni: '+a.strength+'</p>'
-            + '<p class="cfig">Tarixdan: <b>'+a.figure.who+'</b></p></div></article>';
-    }
-    html += '</div></div>';
-  }
-  return html;
-}
-
-document.getElementById('scene').innerHTML = buildScene();
-document.getElementById('gallery').innerHTML = buildGallery();
-
-// If there is an unfinished test on this device, say so on the buttons.
-(function(){
-  try {
-    var d = JSON.parse(localStorage.getItem('testmind_draft_v1'));
-    if (!d || !d.answers) return;
-    var done = 0;
-    for (var i=0;i<d.answers.length;i++) if (d.answers[i] > 0) done++;
-    if (!done) return;
-    var ids = ['navCta','heroCta','closeCta'];
-    for (var j=0;j<ids.length;j++){
-      var el = document.getElementById(ids[j]);
-      if (el) el.textContent = 'Testni davom ettirish';
-    }
-  } catch (e) {}
-})();
-</script>
+<script src="site.js"></script>
 </body>
 </html>

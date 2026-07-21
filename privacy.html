@@ -3,87 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Maxfiylik · TestMind</title>
+<title>Maxfiylik — TestMind</title>
+<meta name="description" content="TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa izoh.">
+<meta property="og:title" content="Maxfiylik — TestMind">
+<meta property="og:description" content="TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa izoh.">
+<meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-  @font-face{font-family:'Bitter';src:url('fonts/bitter.woff2') format('woff2');
-             font-weight:100 900;font-style:normal;font-display:swap}
-  @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
-             font-weight:100 900;font-style:normal;font-display:swap}
-  :root{
-    --lazur:#0F6E8C; --lazur-deep:#0A4F66; --ink:#152730; --paper:#F1F6F7;
-    --card:#FFFFFF; --line:#D7E2E4; --zar:#C08A2E; --muted:#5B7078;
-    --display:'Bitter', Georgia, serif; --body:'Inter','Segoe UI',system-ui,sans-serif;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0}
-  body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.6}
-  .wrap{max-width:760px;margin:0 auto;padding:28px 18px 60px}
-  .masthead{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:10px}
-  .mark{font-family:var(--display);font-weight:700;font-size:26px;color:var(--lazur-deep);text-decoration:none}
-  .tag{font-size:13px;color:var(--muted)}
-  .weave{height:6px;margin:0 0 26px;background:repeating-linear-gradient(135deg,var(--lazur) 0 7px,transparent 7px 14px);opacity:.55;border-radius:3px}
-  h1{font-family:var(--display);font-weight:700;font-size:30px;margin:0 0 8px}
-  .lede{color:var(--muted);margin:0 0 20px}
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
-  h2{font-family:var(--display);font-weight:600;font-size:19px;margin:22px 0 6px}
-  h2:first-of-type{margin-top:0}
-  p{margin:0 0 12px}
-  a{color:var(--zar)}
-  .foot{margin-top:30px;font-size:12.5px;color:var(--muted);text-align:center}
-  .foot a{color:var(--zar)}
-</style>
+<link rel="stylesheet" href="site.css">
 </head>
 <body>
-<div class="wrap">
-  <header class="masthead">
-    <a class="mark" href="index.html">TestMind</a>
-    <div class="tag">Maxfiylik</div>
-  </header>
-  <div class="weave" aria-hidden="true"></div>
-
-  <h1>Maxfiylik</h1>
-  <p class="lede">TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa va sodda izoh.</p>
-
-  <div class="card">
-    <h2>Nima saqlanadi</h2>
-    <p>Test yakunlanganda faqat anonim maʼlumot saqlanadi: yoshingiz, 5 ta umumiy ball,
-       natija nomi, testga ketgan vaqt va qurilma turi (telefon yoki kompyuter).
-       Bu maʼlumotlar yopiq jadvalda saqlanadi va faqat testni yaxshilash uchun ishlatiladi.</p>
-
-    <h2>Nima saqlanmaydi</h2>
-    <p>Ismingiz hech qayerga yuborilmaydi. Har bir savolga bergan alohida javoblaringiz ham
-       yuborilmaydi.</p>
-
-    <h2>Email qoldirsangiz</h2>
-    <p>Natija sahifasida email manzilingizni qoldirish — ixtiyoriy. Uni faqat oʻzingiz yozib,
-       tugmani bosgandagina yuboriladi; sahifani ochganingizda hech narsa yuborilmaydi.</p>
-    <p>Email qoldirsangiz, u natijangiz nomi va yoshingiz bilan birga saqlanadi — shu sababli
-       bu maʼlumot anonim boʻlmaydi. Undan faqat sizga soʻralgan qoʻllanmani yuborish uchun
-       foydalanamiz. Emailingizni hech kimga bermaymiz va sotmaymiz.</p>
-    <p>Istalgan vaqtda oʻchirishimizni soʻrashingiz mumkin — quyidagi manzilga yozing.
-       18 yoshga toʻlmagan boʻlsangiz, email qoldirishdan oldin ota-onangiz yoki
-       oʻqituvchingiz bilan maslahatlashing.</p>
-
-    <h2>Qurilmangizda</h2>
-    <p>Testni yarmida toʻxtatsangiz, keyin davom ettirishingiz uchun javoblaringiz vaqtincha
-       shu qurilmaning brauzer xotirasida saqlanadi. Natija chiqishi bilan ular avtomatik oʻchiriladi.</p>
-
-    <h2>Natija haqida</h2>
-    <p>Natija maslahat xarakteriga ega, tibbiy yoki ilmiy xulosa emas.
-       Kasb yoki yoʻnalish tanlashda uni yagona asos qilib olmang.</p>
-
-    <h2>Yosh</h2>
-    <p>Test asosan 14–16 yoshdagi oʻsmirlar uchun moʻljallangan. 18 yoshga toʻlmaganlarga
-       ota-onasi yoki oʻqituvchisi bilan maslahatlashgan holda foydalanish tavsiya etiladi.</p>
-
-    <h2>Savollar</h2>
-    <p>Savol yoki maʼlumotingizni oʻchirish boʻyicha murojaat:
-       <a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a>.</p>
+<nav class="nav"><div class="wrap navin">
+  <a class="brand" href="index.html">TestMind</a>
+  <div class="navlinks">
+    <a href="index.html">Bosh sahifa</a>
+    <a href="obrazlar.html">Obrazlar</a>
+    <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
+    <a href="savollar.html">Savollar</a>
   </div>
+  <a class="btn sm" href="test.html" data-cta>Testni boshlash</a>
+</div></nav>
+<header class="phead"><div class="wrap">
+  <h1>Maxfiylik</h1>
+  <p class="lead">TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa va sodda izoh.</p>
+</div></header>
 
-  <footer class="foot"><a href="index.html">← Bosh sahifa</a> · <a href="test.html">Testni boshlash</a></footer>
-</div>
+<section><div class="wrap" style="max-width:780px">
+  <h2>Nima saqlanadi</h2>
+  <p>Test yakunlanganda faqat anonim maʼlumot saqlanadi: yoshingiz, 5 ta umumiy ball,
+     natija nomi, testga ketgan vaqt va qurilma turi (telefon yoki kompyuter).
+     Bu maʼlumotlar yopiq jadvalda saqlanadi va faqat testni yaxshilash uchun ishlatiladi.</p>
+
+  <h2>Nima saqlanmaydi</h2>
+  <p>Ismingiz hech qayerga yuborilmaydi. Har bir savolga bergan alohida javoblaringiz ham
+     yuborilmaydi.</p>
+
+  <h2>Email qoldirsangiz</h2>
+  <p>Natija sahifasida email manzilingizni qoldirish — ixtiyoriy. Uni faqat oʻzingiz yozib,
+     tugmani bosgandagina yuboriladi; sahifani ochganingizda hech narsa yuborilmaydi.</p>
+  <p>Email qoldirsangiz, u natijangiz nomi va yoshingiz bilan birga saqlanadi — shu sababli
+     bu maʼlumot anonim boʻlmaydi. Undan faqat sizga soʻralgan qoʻllanmani yuborish uchun
+     foydalanamiz. Emailingizni hech kimga bermaymiz va sotmaymiz.</p>
+  <p>Istalgan vaqtda oʻchirishimizni soʻrashingiz mumkin — quyidagi manzilga yozing.
+     18 yoshga toʻlmagan boʻlsangiz, email qoldirishdan oldin ota-onangiz yoki
+     oʻqituvchingiz bilan maslahatlashing.</p>
+
+  <h2>Qurilmangizda</h2>
+  <p>Testni yarmida toʻxtatsangiz, keyin davom ettirishingiz uchun javoblaringiz vaqtincha
+     shu qurilmaning brauzer xotirasida saqlanadi. Natija chiqishi bilan ular avtomatik
+     oʻchiriladi.</p>
+
+  <h2>Boshqa saytlar</h2>
+  <p>TestMind hech qanday tashqi xizmatga soʻrov yubormaydi: reklama, kuzatuv skriptlari
+     va tashqi shriftlar ishlatilmaydi.</p>
+
+  <h2>Natija haqida</h2>
+  <p>Natija maslahat xarakteriga ega, tibbiy yoki ilmiy xulosa emas. Kasb yoki yoʻnalish
+     tanlashda uni yagona asos qilib olmang.</p>
+
+  <h2>Yosh</h2>
+  <p>Test asosan 14–16 yoshdagi oʻsmirlar uchun moʻljallangan. 18 yoshga toʻlmaganlarga
+     ota-onasi yoki oʻqituvchisi bilan maslahatlashgan holda foydalanish tavsiya etiladi.</p>
+
+  <h2>Savollar</h2>
+  <p>Savol yoki maʼlumotingizni oʻchirish boʻyicha murojaat:
+     <a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a>.</p>
+</div></section>
+<footer class="foot"><div class="wrap">
+  <div class="footgrid">
+    <div class="footcol"><h4>TestMind</h4><ul>
+      <li><a href="index.html">Bosh sahifa</a></li>
+      <li><a href="obrazlar.html">Oʻnta obraz</a></li>
+      <li><a href="qanday-ishlaydi.html">Qanday ishlaydi</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Test</h4><ul>
+      <li><a href="test.html" data-cta>Testni boshlash</a></li>
+      <li><a href="savollar.html">Koʻp beriladigan savollar</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Maʼlumot</h4><ul>
+      <li><a href="privacy.html">Maxfiylik</a></li>
+      <li><a href="qanday-ishlaydi.html#model">Test qaysi modelga asoslangan</a></li>
+    </ul></div>
+    <div class="footcol"><h4>Bogʻlanish</h4><ul>
+      <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
+    </ul></div>
+  </div>
+  <div class="footbar">
+    <span>© 2026 TestMind</span>
+    <span>Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.</span>
+  </div>
+</div></footer>
+<script src="characters.js"></script>
+<script src="site.js"></script>
 </body>
 </html>
