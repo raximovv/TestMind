@@ -47,11 +47,7 @@
   .btn.ghost:hover{border-color:var(--lazur)}
   .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
   .navr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-  .arch{text-align:center;padding:16px 10px 14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:14px 0 4px}
-  .archemo{font-size:54px;line-height:1.1}
-  .archname{font-family:var(--display);font-weight:700;font-size:27px;color:var(--lazur-deep);margin-top:4px}
-  .archdesc{color:var(--muted);font-size:15px;margin-top:6px}
-  .sharebox{margin-top:14px;text-align:center}
+  .sharebox{margin-bottom:16px;text-align:center}
   .shareimg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
   .pcount{font-size:14px;color:var(--muted);white-space:nowrap}
   .ptrack{height:10px;background:#E2EBEC;border-radius:5px;overflow:hidden;margin:8px 0 6px}
@@ -131,6 +127,32 @@
   .more[open] summary::after{content:' ▲'}
   .more summary:focus-visible{outline:2px solid var(--zar);outline-offset:2px;border-radius:4px}
   .more p{font-size:13.5px;color:var(--muted);margin:10px 0 0}
+  /* ---- result hero: the screenshot moment ---- */
+  .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:16px}
+  .herotop{position:relative;background:var(--famsoft);padding:14px 16px 0;text-align:center}
+  .herotop::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;
+                  background:repeating-linear-gradient(135deg,var(--fam) 0 7px,transparent 7px 14px);opacity:.5}
+  .famtag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+          color:#fff;background:var(--fam);border-radius:99px;padding:4px 13px}
+  .herotop svg{display:block;width:236px;max-width:68vw;height:auto;margin:2px auto 0}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+  .actions .btn{width:100%}
+  .actions .wide{grid-column:1 / -1}
+  .herobody{padding:20px 22px 22px;text-align:center}
+  .archname{font-family:var(--display);font-weight:700;font-size:clamp(26px,7vw,34px);line-height:1.15;
+            color:var(--fam);margin:0 0 4px}
+  .archwho{font-size:13px;color:var(--muted);margin:0 0 14px}
+  .archlines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
+  .archlines li{font-size:15.5px;line-height:1.5}
+  .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
+            font-size:15px;line-height:1.45}
+  .strength b{color:var(--fam)}
+  .deep{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:16px}
+  .deep>summary{cursor:pointer;font-weight:600;color:var(--lazur-deep);list-style:none}
+  .deep>summary::-webkit-details-marker{display:none}
+  .deep>summary::after{content:' ▼';font-weight:400;font-size:12px}
+  .deep[open]>summary::after{content:' ▲'}
+  .deep>summary:focus-visible{outline:2px solid var(--zar);outline-offset:3px;border-radius:4px}
   .foot{margin-top:30px;font-size:12.5px;color:var(--muted);text-align:center}
   .foot a{color:var(--zar)}
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
@@ -251,31 +273,260 @@ var DISCLAIMER = 'TestMind sinov versiyasi. Bu natijalar maslahat xarakteriga eg
 // ---------- Shareable archetype ----------
 // Derived from the user's two STRONGEST traits, so every one of the 10 results is
 // something a teenager is happy to post. No combination produces a negative label.
+// The ten are grouped into four families purely for colour + a sense of belonging.
+var FAMILIES = {
+  lead: {name:'Yetakchilar',  c:'#0F6E8C', soft:'#E1EEF2'},
+  crea: {name:'Ijodkorlar',   c:'#6B4FA8', soft:'#EDE7F7'},
+  care: {name:'Gʻamxoʻrlar',  c:'#237A5E', soft:'#E2F1EC'},
+  base: {name:'Tayanchlar',   c:'#A2731F', soft:'#F6EEDC'}
+};
+
 var ARCHETYPES = {
-  'ES|E': {name:'Xotirjam Yetakchi',    emoji:'🧭', desc:'Bosim ostida ham xotirjamsiz va odamlarni ortingizdan ergashtira olasiz.'},
-  'ES|O': {name:'Xotirjam Kashfiyotchi', emoji:'🌌', desc:'Yangilikdan qoʻrqmaysiz, lekin shoshqaloqlik ham qilmaysiz.'},
-  'ES|A': {name:'Ishonchli Doʻst',       emoji:'🤝', desc:'Yoningizda boʻlish osoyishta. Odamlar sizga sirini ishonadi.'},
-  'ES|C': {name:'Barqaror Strateg',      emoji:'♟️', desc:'Reja tuzasiz va rejadan chalgʻimaysiz. Uzoq masofaga chidaysiz.'},
-  'E|O':  {name:'Gʻayratli Ijodkor',     emoji:'✨', desc:'Gʻoyalaringiz tugamaydi va ularni odamlarga yuqtira olasiz.'},
-  'E|A':  {name:'Jamoaning Yuragi',      emoji:'💛', desc:'Siz boʻlgan joyda muhit isiydi. Odamlarni birlashtirasiz.'},
-  'E|C':  {name:'Gʻayratli Tashkilotchi',emoji:'🚀', desc:'Gapdan ishga tez oʻtasiz va atrofdagilarni ham harakatga solasiz.'},
-  'O|A':  {name:'Ijodkor Insonparvar',   emoji:'🌱', desc:'Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.'},
-  'O|C':  {name:'Ijodkor Strateg',       emoji:'🧠', desc:'Yangi yechim topasiz va uni oxiriga yetkazasiz.'},
-  'A|C':  {name:'Ishonchli Tayanch',     emoji:'🛡️', desc:'Vaʼda bersangiz — bajarasiz. Odamlar sizga suyanadi.'}
+  'ES|E': {name:'Xotirjam Yetakchi', fam:'lead',
+    lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.',
+           'Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz.'],
+    strength:'bosim ostida toʻgʻri qaror qabul qilish.'},
+
+  'E|C':  {name:'Gʻayratli Tashkilotchi', fam:'lead',
+    lines:['Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
+           'Atrofdagilarni ham harakatga sola olasiz.'],
+    strength:'gʻoyani haqiqatga aylantirish.'},
+
+  'ES|O': {name:'Xotirjam Kashfiyotchi', fam:'crea',
+    lines:['Yangi narsa sizni qoʻrqitmaydi — qiziqtiradi.',
+           'Lekin sarguzashtga koʻzni yumib emas, sovuqqonlik bilan kirasiz.'],
+    strength:'notanish yoʻlni xotirjam tekshirib koʻrish.'},
+
+  'E|O':  {name:'Gʻayratli Ijodkor', fam:'crea',
+    lines:['Gʻoyalaringiz tugamaydi va ularni odamlarga gapirib berishni yaxshi koʻrasiz.',
+           'Ishtiyoqingiz atrofdagilarga ham yuqadi.'],
+    strength:'yangi gʻoyani odamlarga yuqtirish.'},
+
+  'O|C':  {name:'Ijodkor Strateg', fam:'crea',
+    lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
+           'Koʻpchilik faqat oʻylab qoladi, siz qilib ham qoʻyasiz.'],
+    strength:'gʻoyani aniq tizimga solish.'},
+
+  'ES|A': {name:'Ishonchli Doʻst', fam:'care',
+    lines:['Odamlar sizga sirini aytadi, chunki yoningizda oʻzini xavfsiz his qiladi.',
+           'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
+    strength:'boshqalarni tinchlantira olish.'},
+
+  'E|A':  {name:'Jamoaning Yuragi', fam:'care',
+    lines:['Siz boʻlgan davra jonlanadi.',
+           'Chetda qolgan odamni sezasiz va yoningizga chaqirasiz.'],
+    strength:'odamlarni birlashtirish.'},
+
+  'O|A':  {name:'Ijodkor Insonparvar', fam:'care',
+    lines:['Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.',
+           'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
+    strength:'foydali va insoniy yechim topish.'},
+
+  'ES|C': {name:'Barqaror Strateg', fam:'base',
+    lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
+           'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
+    strength:'uzoq masofaga chidash.'},
+
+  'A|C':  {name:'Ishonchli Tayanch', fam:'base',
+    lines:['Vaʼda bersangiz — bajarasiz. Har safar.',
+           'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
+    strength:'soʻzida turish.'}
 };
 var TRAIT_ORDER = ['ES','E','O','A','C'];
-function archetypeOf(s){
+function archetypeKeyOf(s){
   var ranked = TRAIT_ORDER.slice().sort(function(a,b){
     return (s[b] - s[a]) || (TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b)); // stable on ties
   });
   var pair = [ranked[0], ranked[1]].sort(function(a,b){
     return TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b); // canonical key order
   });
-  return ARCHETYPES[pair[0] + '|' + pair[1]];
+  return pair[0] + '|' + pair[1];
 }
+function archetypeOf(s){ return ARCHETYPES[archetypeKeyOf(s)]; }
 
 function levelOf(mean){ if (mean <= 2.4) return 'Past'; if (mean >= 3.6) return 'Yuqori'; return 'Oʻrta'; }
 function textKey(level){ return level === 'Past' ? 'past' : (level === 'Yuqori' ? 'yuqori' : 'orta'); }
+
+// ---------- Character illustrations ----------
+// Flat vector, Uzbek dress (doʻppi, chopon, belbogʻ, roʻmol). All ten are built from
+// one body so the set reads as a family; only colours, headwear and the held object
+// change. Drawn inline as SVG so the page stays a single file with no image requests.
+var INK = '#2B2733';
+
+function tmFigure(o){
+  var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
+  var robe = o.robe, robeD = o.robeD, sleeve = o.sleeve || o.robeD, sash = o.sash;
+  var s = '';
+
+  s += '<ellipse cx="100" cy="241" rx="52" ry="7" fill="#0B2027" opacity=".10"/>';
+  s += '<rect x="83" y="186" width="15" height="46" rx="7" fill="#3C4C55"/>'
+     + '<rect x="102" y="186" width="15" height="46" rx="7" fill="#3C4C55"/>';
+  s += '<rect x="73" y="225" width="27" height="13" rx="6.5" fill="#28363D"/>'
+     + '<rect x="100" y="225" width="27" height="13" rx="6.5" fill="#28363D"/>';
+
+  if (o.head === 'hair'){
+    s += '<path d="M64 60 Q64 20 100 20 Q136 20 136 60 V110 Q136 118 128 116 L124 60 H76 L72 116 Q64 118 64 110 Z" fill="'+(o.hair||'#332D38')+'"/>';
+  }
+
+  s += '<path d="M90 72 h20 v24 q-10 6 -20 0 z" fill="'+skinD+'"/>';
+  s += '<path d="M68 94 Q100 84 132 94 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+robe+'"/>';
+  s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+skinD+'"/>';
+  s += '<path d="M97 112 h6 l5 97 h-16 z" fill="'+robeD+'"/>';
+  s += '<path d="M86 90 Q100 82 114 90 L110 95 Q100 88 90 95 Z" fill="'+robeD+'"/>';
+  s += '<path d="M60 150 H140 L143 170 H57 Z" fill="'+sash+'"/>';
+  s += '<path d="M58 165 H142 L143 170 H57 Z" fill="#0B2027" opacity=".13"/>';
+
+  s += '<g transform="rotate(10 78 100)"><rect x="69" y="100" width="18" height="64" rx="9" fill="'+sleeve+'"/>'
+     + '<rect x="69" y="144" width="18" height="7" fill="'+robe+'"/></g>';
+  s += '<g transform="rotate(-10 122 100)"><rect x="113" y="100" width="18" height="64" rx="9" fill="'+sleeve+'"/>'
+     + '<rect x="113" y="144" width="18" height="7" fill="'+robe+'"/></g>';
+  s += '<circle cx="67" cy="161" r="9.5" fill="'+skin+'"/><circle cx="133" cy="161" r="9.5" fill="'+skin+'"/>';
+
+  s += '<circle cx="71" cy="60" r="6.5" fill="'+skinD+'"/><circle cx="129" cy="60" r="6.5" fill="'+skinD+'"/>';
+  s += '<rect x="71" y="30" width="58" height="56" rx="23" fill="'+skin+'"/>';
+
+  if (o.head === 'doppi'){
+    var cap = o.cap || '#1A2748', capD = o.capD || '#101C38';
+    s += '<path d="M68 46 Q68 12 100 12 Q132 12 132 46 Z" fill="'+cap+'"/>';
+    s += '<g fill="#F4F7F8" opacity=".92"><path d="M100 17 q5.5 8 0 15 q-5.5 -7 0 -15z"/>'
+       + '<path d="M82 25 q5.5 8 0 14 q-5.5 -6 0 -14z"/><path d="M118 25 q5.5 8 0 14 q-5.5 -6 0 -14z"/></g>';
+    s += '<rect x="65" y="40" width="70" height="13" rx="4" fill="'+capD+'"/>';
+    s += '<path d="M69 49 l5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6 5 -6 5 6" '
+       + 'stroke="#F4F7F8" stroke-width="1.7" fill="none" opacity=".85" stroke-linejoin="round"/>';
+  } else if (o.head === 'romol'){
+    s += '<path d="M62 104 V60 Q62 18 100 18 Q138 18 138 60 V104 Q129 109 122 102 V60 Q122 40 100 40 Q78 40 78 60 V102 Q71 109 62 104 Z" fill="'+o.scarf+'"/>';
+    s += '<path d="M78 60 Q78 40 100 40 Q122 40 122 60" stroke="'+o.scarfD+'" stroke-width="4.5" fill="none"/>';
+    s += '<g fill="#FFFFFF" opacity=".26"><circle cx="70" cy="74" r="2.7"/><circle cx="70" cy="92" r="2.7"/>'
+       + '<circle cx="130" cy="74" r="2.7"/><circle cx="130" cy="92" r="2.7"/><circle cx="100" cy="26" r="2.7"/>'
+       + '<circle cx="85" cy="30" r="2.7"/><circle cx="115" cy="30" r="2.7"/></g>';
+  } else {
+    s += '<path d="M69 56 Q70 26 100 26 Q130 26 131 56 Q124 40 100 40 Q76 40 69 56 Z" fill="'+(o.hair||'#332D38')+'"/>';
+    if (o.band) s += '<path d="M68 46 Q100 34 132 46 L132 52 Q100 40 68 52 Z" fill="'+o.band+'"/>';
+  }
+
+  s += '<circle cx="88" cy="59" r="3.5" fill="'+INK+'"/><circle cx="112" cy="59" r="3.5" fill="'+INK+'"/>';
+  s += '<path d="M82.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
+     + '<path d="M106.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
+  s += '<path d="M92 71 q8 6.5 16 0" stroke="'+INK+'" stroke-width="2.8" fill="none" stroke-linecap="round"/>';
+  s += '<ellipse cx="80" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>'
+     + '<ellipse cx="120" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>';
+  if (o.glasses){
+    s += '<g fill="none" stroke="#3A3340" stroke-width="2.6" stroke-linecap="round">'
+       + '<circle cx="88" cy="59" r="10.5"/><circle cx="112" cy="59" r="10.5"/>'
+       + '<path d="M98.5 59 h3"/><path d="M77.5 56 l-6 -2"/><path d="M122.5 56 l6 -2"/></g>';
+  }
+  // Props are nudged down so the held object sits below the belbogʻ rather than on it.
+  return s + (o.prop ? '<g transform="translate(0,12)">' + o.prop + '</g>' : '');
+}
+
+// Held objects. Three are deliberately Uzbek: the piyola, the doira and the non.
+var TM_PROPS = {
+  compass:
+    '<g transform="translate(137,154)"><circle r="20" fill="#F4F7F8" stroke="#C08A2E" stroke-width="4"/>'
+    + '<circle r="13.5" fill="#E3EFF3"/><path d="M0 -11 L5 0 L0 4 L-5 0 Z" fill="#C0392B"/>'
+    + '<path d="M0 11 L5 0 L0 -4 L-5 0 Z" fill="#8FA3AB"/><circle r="2.6" fill="'+INK+'"/></g>',
+
+  clipboard:
+    '<g transform="translate(137,150) rotate(6)">'
+    + '<rect x="-17" y="-23" width="34" height="46" rx="4" fill="#F4F7F8" stroke="#8FA3AB" stroke-width="2"/>'
+    + '<rect x="-9" y="-28" width="18" height="9" rx="3.5" fill="#C08A2E"/>'
+    + '<path d="M-10 -8 l4 4 8 -9" stroke="#2E8B6B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<path d="M-10 4 l4 4 8 -9" stroke="#2E8B6B" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
+    + '<path d="M-10 16 h20" stroke="#C6D3D8" stroke-width="3" stroke-linecap="round"/></g>',
+
+  telescope:
+    '<g fill="#E8C25A"><path d="M174 92 l2.8 6.6 6.6 2.8 -6.6 2.8 -2.8 6.6 -2.8 -6.6 -6.6 -2.8 6.6 -2.8z"/>'
+    + '<path d="M189 66 l2.2 5 5 2.2 -5 2.2 -2.2 5 -2.2 -5 -5 -2.2 5 -2.2z"/></g>'
+    + '<g transform="translate(141,156) rotate(35) scale(1.2)">'
+    + '<path d="M-7.5 14 L7.5 14 L11.5 -32 L-11.5 -32 Z" fill="#33456E"/>'
+    + '<rect x="-14" y="-40" width="28" height="12" rx="4" fill="#E8C25A"/>'
+    + '<rect x="-9.5" y="9" width="19" height="10" rx="3" fill="#E8C25A"/>'
+    + '<path d="M-9.5 -8 h19" stroke="#5B71A8" stroke-width="4"/></g>',
+
+  palette:
+    '<g transform="translate(135,154)"><ellipse rx="22" ry="17" fill="#EEDCBC" stroke="#B99B6E" stroke-width="2"/>'
+    + '<circle cx="10" cy="7" r="4.5" fill="#F1F6F7"/><circle cx="-11" cy="-6" r="4" fill="#C0392B"/>'
+    + '<circle cx="0" cy="-9" r="4" fill="#2E8B6B"/><circle cx="11" cy="-5" r="4" fill="#0F6E8C"/>'
+    + '<circle cx="-13" cy="5" r="4" fill="#C08A2E"/></g>'
+    + '<g transform="translate(158,116) rotate(28)"><rect x="-2.6" y="-26" width="5.2" height="30" rx="2" fill="#B98E4A"/>'
+    + '<path d="M-4 4 h8 l-2 9 h-4z" fill="#7E5FB8"/></g>',
+
+  book:
+    '<g transform="translate(152,44)"><circle r="12.5" fill="#F2D479"/>'
+    + '<rect x="-5" y="10" width="10" height="8" rx="2.5" fill="#B98E4A"/>'
+    + '<g stroke="#C08A2E" stroke-width="2.6" stroke-linecap="round">'
+    + '<path d="M-13 -14 l-5 -5"/><path d="M13 -14 l5 -5"/><path d="M0 -19 v-7"/></g></g>'
+    + '<g transform="translate(137,154) scale(1.12)">'
+    + '<path d="M-23 -14 q11.5 -6 23 0 q11.5 -6 23 0 v30 q-11.5 -6 -23 0 q-11.5 -6 -23 0z" fill="#B23A48"/>'
+    + '<path d="M-19.5 -11 q9.75 -5 19.5 0 q9.75 -5 19.5 0 v25 q-9.75 -5 -19.5 0 q-9.75 -5 -19.5 0z" '
+    + 'fill="#F8FAFB" stroke="#8FA3AB" stroke-width="1.6" stroke-linejoin="round"/>'
+    + '<path d="M0 -11 v25" stroke="#8FA3AB" stroke-width="2"/>'
+    + '<g stroke="#C6D3D8" stroke-width="1.8" stroke-linecap="round">'
+    + '<path d="M-15 -1 h11"/><path d="M-15 5 h11"/><path d="M4 -1 h11"/><path d="M4 5 h11"/></g></g>',
+
+  piyola:
+    '<g transform="translate(136,148) scale(1.35)">'
+    + '<g stroke="#8FA3AB" stroke-width="2" fill="none" opacity=".6" stroke-linecap="round">'
+    + '<path d="M-7 -14 q5 -7 0 -13"/><path d="M7 -14 q5 -7 0 -13"/></g>'
+    + '<path d="M-18 -4 a18 17 0 0 0 36 0z" fill="#F8FAFB" stroke="#0F6E8C" stroke-width="2.2"/>'
+    + '<g fill="#0F6E8C"><circle cx="-7" cy="3" r="2.6"/><circle cx="4" cy="5" r="2.6"/></g>'
+    + '<ellipse cy="-4" rx="18" ry="5.5" fill="#E3EFF3" stroke="#0F6E8C" stroke-width="2.2"/>'
+    + '<ellipse cy="15" rx="13" ry="4" fill="#E3EFF3" stroke="#0F6E8C" stroke-width="2.2"/></g>',
+
+  doira:
+    '<g transform="translate(139,148) rotate(-12)"><circle r="27" fill="#C9A227" stroke="#8F6520" stroke-width="5"/>'
+    + '<circle r="21.5" fill="#F0E2C4"/><circle r="21.5" fill="none" stroke="#DCC69C" stroke-width="2"/>'
+    + '<g fill="none" stroke="#8F6520" stroke-width="2"><circle cx="0" cy="-30" r="4"/><circle cx="26" cy="-15" r="4"/>'
+    + '<circle cx="26" cy="15" r="4"/><circle cx="0" cy="30" r="4"/><circle cx="-26" cy="15" r="4"/>'
+    + '<circle cx="-26" cy="-15" r="4"/></g></g>',
+
+  sprout:
+    '<g transform="translate(136,154) scale(1.25)">'
+    + '<path d="M0 -6 v-20" stroke="#2E8B6B" stroke-width="3.2" stroke-linecap="round"/>'
+    + '<path d="M0 -15 q-13 -2 -14 -13 q13 0 14 13z" fill="#43A582"/>'
+    + '<path d="M0 -21 q13 -2 14 -13 q-13 0 -14 13z" fill="#2E8B6B"/>'
+    + '<path d="M-14 -2 h28 l-4 22 h-20z" fill="#C08A2E"/>'
+    + '<rect x="-16" y="-8" width="32" height="8" rx="2.5" fill="#A8762A"/></g>',
+
+  rook:
+    '<g transform="translate(136,152) scale(1.12)">'
+    + '<path d="M-15 -22 v10 h4 v14 l-5 16 h32 l-5 -16 v-14 h4 v-10 h-6 v5 h-6 v-5 h-6 v5 h-6 v-5z" '
+    + 'fill="#F8FAFB" stroke="#2F4550" stroke-width="3" stroke-linejoin="round"/>'
+    + '<path d="M-11 2 h22" stroke="#2F4550" stroke-width="3"/>'
+    + '<path d="M4 -12 h7 v14 l5 16 h-9 l-4 -16z" fill="#2F4550" opacity=".13"/></g>',
+
+  non:
+    '<g transform="translate(136,152)"><circle r="25" fill="#E2BC7A" stroke="#B98E4A" stroke-width="3"/>'
+    + '<circle r="13" fill="#CFA25C"/>'
+    + '<g fill="#A8763C"><circle r="2.2"/><circle cx="-6" cy="-5" r="1.9"/><circle cx="6" cy="-5" r="1.9"/>'
+    + '<circle cx="-6" cy="5" r="1.9"/><circle cx="6" cy="5" r="1.9"/></g>'
+    + '<g fill="#F4E3C4"><circle cx="-18" cy="-6" r="1.7"/><circle cx="-12" cy="-15" r="1.7"/>'
+    + '<circle cx="0" cy="-19" r="1.7"/><circle cx="12" cy="-15" r="1.7"/><circle cx="18" cy="-6" r="1.7"/>'
+    + '<circle cx="18" cy="7" r="1.7"/><circle cx="8" cy="17" r="1.7"/><circle cx="-8" cy="17" r="1.7"/>'
+    + '<circle cx="-18" cy="7" r="1.7"/></g></g>'
+};
+
+var TM_ART = {
+  'ES|E': {head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'E|C':  {head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
+  'ES|O': {head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
+  'E|O':  {head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'O|C':  {head:'doppi', cap:'#2B2049', capD:'#1E1636', glasses:1, robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
+  'ES|A': {head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
+  'E|A':  {head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'O|A':  {head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
+  'ES|C': {head:'doppi', cap:'#143F4E', capD:'#0C2F3C', glasses:1, robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', prop:'rook'},
+  'A|C':  {head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', prop:'non'}
+};
+
+// width/height are required for the canvas share card to rasterise this in Firefox.
+function charSvg(key, alt){
+  var o = TM_ART[key]; if (!o) return '';
+  var a = {}; for (var k in o) a[k] = o[k];
+  a.prop = TM_PROPS[o.prop] || '';
+  return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
+       + 'role="img" aria-label="' + (alt || '') + '">' + tmFigure(a) + '</svg>';
+}
 </script>
 
 <script>
@@ -580,46 +831,57 @@ function wrapText(g, text, x, y, maxW, lineH, maxLines){
   return y + lines.length * lineH;
 }
 
-function buildShareCard(s, arch){
+// Portrait card for Telegram/Instagram. The character is rasterised from the same
+// inline SVG the page uses, via a data: URI — no network request, so the canvas
+// stays untainted and toBlob() keeps working. If it ever fails to decode we still
+// return a usable card without the figure rather than no card at all.
+function buildShareCard(s, arch, key, cb){
   var W = 1080, H = 1350, M = 80;
+  var fam = FAMILIES[arch.fam];
   var c = document.createElement('canvas'); c.width = W; c.height = H;
   var g = c.getContext('2d');
-  g.fillStyle = '#F1F6F7'; g.fillRect(0, 0, W, H);
-  g.fillStyle = '#0F6E8C'; g.fillRect(0, 0, W, 20);
-  g.textAlign = 'left'; g.textBaseline = 'alphabetic';
 
-  g.fillStyle = '#0A4F66'; g.font = '700 46px Bitter, Georgia, serif';
-  g.fillText('TestMind', M, 132);
-  g.fillStyle = '#5B7078'; g.font = '400 30px Rubik, "Segoe UI", sans-serif';
-  g.fillText('Shaxsiy xususiyatlar natijasi', M, 180);
+  g.fillStyle = '#FFFFFF'; g.fillRect(0, 0, W, H);
+  g.fillStyle = fam.soft;  g.fillRect(0, 0, W, 716);
+  g.fillStyle = fam.c;     g.fillRect(0, 708, W, 8);
+  g.textBaseline = 'alphabetic';
 
-  g.font = '110px "Segoe UI Emoji", "Noto Color Emoji", serif';
-  g.fillText(arch.emoji, M, 320);
-  g.fillStyle = '#152730'; g.font = '700 72px Bitter, Georgia, serif';
-  var y = wrapText(g, arch.name, M, 430, W - M * 2, 84, 2);
-  g.fillStyle = '#5B7078'; g.font = '400 32px Rubik, "Segoe UI", sans-serif';
-  y = wrapText(g, arch.desc, M, y + 34, W - M * 2, 46, 3);
+  g.textAlign = 'left';
+  g.fillStyle = fam.c; g.font = '700 46px Bitter, Georgia, serif';
+  g.fillText('TestMind', M, 96);
+  g.textAlign = 'right';
+  g.fillStyle = '#5B7078'; g.font = '500 30px Rubik, "Segoe UI", sans-serif';
+  g.fillText(fam.name, W - M, 96);
 
-  var by = Math.max(y + 60, 740);
-  TRAIT_ORDER.forEach(function(k, i){
-    var ty = by + i * 92;
-    g.textAlign = 'left'; g.fillStyle = '#152730';
-    g.font = '500 32px Rubik, "Segoe UI", sans-serif';
-    g.fillText(TRAITS[k], M, ty);
-    g.textAlign = 'right'; g.fillStyle = '#0A4F66';
-    g.font = '600 32px Rubik, "Segoe UI", sans-serif';
-    g.fillText((Math.round(s[k] * 10) / 10).toFixed(1), W - M, ty);
-    g.textAlign = 'left';
-    g.fillStyle = '#E2EBEC'; g.fillRect(M, ty + 16, W - M * 2, 18);
-    var grad = g.createLinearGradient(M, 0, W - M, 0);
-    grad.addColorStop(0, '#0F6E8C'); grad.addColorStop(1, '#C08A2E');
-    g.fillStyle = grad;
-    g.fillRect(M, ty + 16, (W - M * 2) * Math.max(0, Math.min(1, s[k] / 5)), 18);
-  });
+  function finish(){
+    g.textAlign = 'center';
+    g.fillStyle = fam.c; g.font = '700 74px Bitter, Georgia, serif';
+    var y = wrapText(g, arch.name, W / 2, 806, W - M * 2, 84, 2);
 
-  g.fillStyle = '#5B7078'; g.font = '400 26px Rubik, "Segoe UI", sans-serif';
-  g.fillText('TestMind · sinov versiyasi · natija maslahat xarakteriga ega', M, H - 58);
-  return c;
+    g.fillStyle = '#5B7078'; g.font = '400 29px Rubik, "Segoe UI", sans-serif';
+    g.fillText(state.name + ' · ' + state.age + ' yosh', W / 2, y + 20);
+
+    g.fillStyle = '#152730'; g.font = '400 34px Rubik, "Segoe UI", sans-serif';
+    y = wrapText(g, arch.lines[0], W / 2, y + 84, W - M * 2, 48, 3);
+
+    // Sit the strength box low enough to fill the card, but always clear of the text.
+    var boxTop = Math.min(Math.max(y + 40, 1046), 1168);
+    g.fillStyle = fam.soft; g.fillRect(M, boxTop, W - M * 2, 122);
+    g.fillStyle = fam.c; g.font = '600 30px Rubik, "Segoe UI", sans-serif';
+    g.fillText('KUCHLI TOMONIM', W / 2, boxTop + 46);
+    g.fillStyle = '#152730'; g.font = '500 33px Rubik, "Segoe UI", sans-serif';
+    var str = arch.strength.charAt(0).toUpperCase() + arch.strength.slice(1);
+    wrapText(g, str, W / 2, boxTop + 92, W - M * 2 - 60, 42, 1);
+
+    g.fillStyle = '#5B7078'; g.font = '400 27px Rubik, "Segoe UI", sans-serif';
+    g.fillText('testmind-minis.netlify.app', W / 2, H - 48);
+    cb(c);
+  }
+
+  var img = new Image();
+  img.onload = function(){ g.drawImage(img, (W - 432) / 2, 140, 432, 540); finish(); };
+  img.onerror = finish;
+  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(charSvg(key));
 }
 
 function renderReport(){
@@ -629,16 +891,33 @@ function renderReport(){
   sendStats('completed', s, arch);
   var today = new Date();
   var dateStr = ('0'+today.getDate()).slice(-2) + '.' + ('0'+(today.getMonth()+1)).slice(-2) + '.' + today.getFullYear();
+  var fam = FAMILIES[arch.fam];
+  var archKey = archetypeKeyOf(s);
+
+  // The hero comes first and carries no numbers: a teenager should see who they are
+  // before they see any score. The five scores live one tap away, under «Batafsil».
   var html =
-    '<div class="card">' +
-      '<span class="badge">SINOV VERSIYASI</span>' +
-      '<h1>Natijalar</h1>' +
-      '<p class="muted">' + esc(state.name) + ' · ' + esc(state.age) + ' yosh · ' + dateStr + '</p>' +
-      '<div class="arch">' +
-        '<div class="archemo" aria-hidden="true">' + arch.emoji + '</div>' +
-        '<div class="archname">' + arch.name + '</div>' +
-        '<div class="archdesc">' + arch.desc + '</div>' +
+    '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft + '">' +
+      '<div class="herotop">' +
+        '<span class="famtag">' + fam.name + '</span>' +
+        charSvg(archKey, arch.name) +
       '</div>' +
+      '<div class="herobody">' +
+        '<h1 class="archname">' + arch.name + '</h1>' +
+        '<p class="archwho">' + esc(state.name) + ' · ' + esc(state.age) + ' yosh · ' + dateStr + '</p>' +
+        '<ul class="archlines">' +
+          arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
+        '</ul>' +
+        '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="actions">' +
+      '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
+      '<button class="btn ghost" id="printBtn">Chop etish</button>' +
+      '<button class="btn ghost" id="againBtn">Qaytadan</button>' +
+    '</div>' +
+    '<div id="shareBox" class="sharebox"></div>' +
+    '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>' +
       boardHtml(s);
   ['ES','E','O','A','C'].forEach(function(k){
     var mean = s[k], lvl = levelOf(mean);
@@ -650,16 +929,10 @@ function renderReport(){
       '</div>';
   });
   html += '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
-      '<p class="muted" style="margin-top:8px">Javoblaringiz shu qurilmadan oʻchirildi. Natijani saqlash uchun «Chop etish» tugmasidan foydalaning.</p>' +
-    '</div>' +
-    '<div id="shareBox" class="sharebox"></div>' +
-    '<div class="nav">' +
-      '<button class="btn ghost" id="againBtn">Qaytadan boshlash</button>' +
-      '<span class="navr">' +
-        '<button class="btn ghost" id="printBtn">Chop etish</button>' +
-        '<button class="btn" id="shareBtn">Rasm qilib saqlash</button>' +
-      '</span>' +
-    '</div>';
+      '<p class="muted" style="margin-top:8px">Javoblaringiz shu qurilmadan oʻchirildi.</p>' +
+    '</div></details>' +
+    // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
+    '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
   app.innerHTML = html;
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
@@ -668,19 +941,26 @@ function renderReport(){
     statsSent = false; abandonSent = false;   // a new attempt gets its own row + new id
     renderStart();
   };
-  document.getElementById('printBtn').onclick = function(){ window.print(); };
+  document.getElementById('printBtn').onclick = function(){
+    // A closed <details> prints empty, so open the full breakdown before printing.
+    var d = document.querySelector('details.deep'); if (d) d.open = true;
+    window.print();
+  };
   document.getElementById('shareBtn').onclick = function(){
-    var box = document.getElementById('shareBox');
-    var canvas = buildShareCard(s, arch);
+    var btn = this, box = document.getElementById('shareBox');
+    btn.disabled = true; btn.textContent = 'Tayyorlanmoqda…';
     function show(url){
+      btn.disabled = false; btn.textContent = 'Rasm qilib saqlash';
       box.innerHTML =
         '<img class="shareimg" src="' + url + '" alt="TestMind natija kartasi">' +
         '<p class="muted">Telefonda saqlash uchun rasmni bosib turing, yoki tugmani bosing.</p>' +
         '<a class="btn" download="testmind-natija.png" href="' + url + '">Yuklab olish</a>';
       box.scrollIntoView({behavior:'smooth', block:'nearest'});
     }
-    if (canvas.toBlob) canvas.toBlob(function(b){ show(URL.createObjectURL(b)); }, 'image/png');
-    else show(canvas.toDataURL('image/png'));
+    buildShareCard(s, arch, archKey, function(canvas){
+      if (canvas.toBlob) canvas.toBlob(function(b){ show(URL.createObjectURL(b)); }, 'image/png');
+      else show(canvas.toDataURL('image/png'));
+    });
   };
 }
 
