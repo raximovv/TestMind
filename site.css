@@ -215,3 +215,20 @@ section{padding:60px 0}
          font-size:14.5px;color:var(--fam)}
 /* gallery cards become links */
 a.ccard{display:block;text-decoration:none;color:inherit}
+
+/* ---------- open-data tables ---------- */
+.tblwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0 18px;
+         border:1px solid var(--line);border-radius:12px}
+table.dt{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
+table.dt th{text-align:left;background:var(--paper);font-weight:600;font-size:13px;
+            letter-spacing:.3px;text-transform:uppercase;color:var(--muted);
+            padding:10px 14px;border-bottom:1px solid var(--line)}
+table.dt td{padding:9px 14px;border-bottom:1px solid #EDF3F4;vertical-align:top}
+table.dt tr:last-child td{border-bottom:0}
+table.dt td.num{color:var(--muted);width:44px;font-variant-numeric:tabular-nums}
+table.dt td.tr{white-space:nowrap;width:150px}
+table.dt td.tr b{color:var(--lazur-deep)}
+.rev{display:inline-block;font-size:11.5px;background:#F3E7D4;color:#8A6520;
+     border-radius:99px;padding:2px 8px;margin-left:4px}
+code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
+     padding:1px 6px;font-size:14px}
