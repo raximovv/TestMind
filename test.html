@@ -184,6 +184,13 @@
   .chipbtn.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
   .chipbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   .hint{font-size:12.5px;color:var(--muted);margin:7px 0 0}
+  .rsch{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
+  .rsch h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0 0 6px}
+  .rsch p{margin:0 0 14px;font-size:14.5px;color:var(--muted);line-height:1.5}
+  .rschbtns{display:flex;gap:10px;flex-wrap:wrap}
+  .rschdone{display:flex;gap:10px;align-items:flex-start}
+  .rschdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;
+                  color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -414,6 +421,9 @@ function loadDraft(){
 // the test then behaves exactly as before and the privacy text adjusts itself.
 var SHEET_URL  = 'https://script.google.com/macros/s/AKfycbykz3hl6NJllpdhipaj1Xt9LwE3i7t8wG_cH5xW_1aoh21BZGolo9HnjmKuIRkmY-kQ-g/exec';
 var TM_VERSION = '1.0';
+// The only place the public address appears. Change this one line when the
+// .uz domain is ready and the share card follows automatically.
+var SITE_HOST = 'testmind-minis.netlify.app';
 var statsSent = false, abandonSent = false;
 
 function anonId(){
@@ -473,6 +483,28 @@ function sendLead(email, archName, done){
 }
 // Deliberately permissive: it only has to catch typos, not police the address.
 function looksLikeEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
+
+// ---------- optional research donation ----------
+// Item-level answers, sent ONLY when the student taps yes, and only after they have
+// already seen their result so the ask cannot influence how they answered.
+// Deliberately uses a FRESH random id, unrelated to state.aid: if it reused the
+// attempt id, these answers could be joined to the row that carries an email
+// address, and they would stop being anonymous.
+var researchSent = false;
+function sendResearch(done){
+  if (!SHEET_URL || researchSent){ done(false); return; }
+  var payload = {
+    id: 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
+    status: 'research', age: state.age, v: TM_VERSION,
+    answers: state.answers.join('')
+  };
+  try {
+    fetch(SHEET_URL, {
+      method: 'POST', mode: 'no-cors', keepalive: true,
+      headers: {'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify(payload)
+    }).then(function(){ researchSent = true; done(true); })['catch'](function(){ done(false); });
+  } catch (e) { done(false); }
+}
 
 // Capture drop-off: report an unfinished attempt when the page is closed/hidden.
 window.addEventListener('pagehide', function(){ sendStats('abandoned'); });
@@ -780,7 +812,7 @@ function buildShareCard(s, arch, key, cb){
     wrapText(g, str, W / 2, boxTop + 92, W - M * 2 - 60, 42, 1);
 
     g.fillStyle = '#5B7078'; g.font = '400 27px Inter, "Segoe UI", sans-serif';
-    g.fillText('testmind-minis.netlify.app', W / 2, H - 48);
+    g.fillText(SITE_HOST, W / 2, H - 48);
     cb(c);
   }
 
@@ -880,6 +912,19 @@ function renderReport(){
   html += '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
       '<p class="muted" style="margin-top:8px">Javoblaringiz shu qurilmadan oʻchirildi.</p>' +
     '</div></details>' +
+    '<div class="rsch" id="rsch">' +
+      '<h3>Javoblaringiz bilan yordam berasizmi?</h3>' +
+      '<p>TestMind hali oʻzbek oʻsmirlarida tekshirilmagan. Buni faqat real javoblar ' +
+      'yordamida tekshirish mumkin. Ruxsat bersangiz, javoblaringiz <b>ismsiz va ' +
+      'emailsiz</b>, sizga bogʻlab boʻlmaydigan holda saqlanadi va faqat testni ' +
+      'yaxshilash uchun ishlatiladi. Bu majburiy emas — «Yoʻq» desangiz ham natijangiz ' +
+      'oʻzgarmaydi.</p>' +
+      '<div class="rschbtns">' +
+        '<button class="btn" id="rschYes">Ha, ruxsat beraman</button>' +
+        '<button class="btn ghost" id="rschNo">Yoʻq</button>' +
+      '</div>' +
+      '<p class="capmsg" id="rschMsg" role="status" style="margin-top:10px"></p>' +
+    '</div>' +
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
     '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
   app.innerHTML = html;
@@ -887,9 +932,32 @@ function renderReport(){
   document.getElementById('againBtn').onclick = function(){
     clearDraft();
     state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
+    statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderStart();
   };
+  var rschBox = document.getElementById('rsch');
+  document.getElementById('rschNo').onclick = function(){
+    rschBox.innerHTML = '<div class="rschdone"><span class="tick" aria-hidden="true">✓</span><div>'
+      + '<h3 style="margin:0 0 4px">Tushunarli</h3>'
+      + '<p style="margin:0">Javoblaringiz hech qayerga yuborilmadi.</p></div></div>';
+  };
+  document.getElementById('rschYes').onclick = function(){
+    var y = this, n = document.getElementById('rschNo'), msg = document.getElementById('rschMsg');
+    y.disabled = true; n.disabled = true; y.textContent = 'Yuborilmoqda…';
+    sendResearch(function(okSent){
+      if (okSent){
+        rschBox.innerHTML = '<div class="rschdone"><span class="tick" aria-hidden="true">✓</span><div>'
+          + '<h3 style="margin:0 0 4px">Rahmat!</h3>'
+          + '<p style="margin:0">Javoblaringiz ismsiz saqlandi. Shu yordam bilan test '
+          + 'oʻzbek oʻsmirlari uchun aniqroq boʻladi.</p></div></div>';
+      } else {
+        y.disabled = false; n.disabled = false; y.textContent = 'Ha, ruxsat beraman';
+        msg.className = 'capmsg err';
+        msg.textContent = 'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.';
+      }
+    });
+  };
+
   var capBtn = document.getElementById('capBtn');
   capBtn.onclick = function(){
     var input = document.getElementById('capEmail');
@@ -968,7 +1036,7 @@ function renderResume(d){
   document.getElementById('freshBtn').onclick = function(){
     clearDraft();
     state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
-    statsSent = false; abandonSent = false; leadSent = false;  // new attempt = new row + new id
+    statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderStart();
   };
 }

@@ -156,7 +156,7 @@ section{padding:60px 0}
 /* ---------- footer ---------- */
 .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}
 .footgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
-.footcol h4{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 12px;
+.footcol h2{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 12px;line-height:1.3;
             color:var(--ink)}
 .footcol ul{list-style:none;margin:0;padding:0}
 .footcol li{margin-bottom:4px}
@@ -232,3 +232,32 @@ table.dt td.tr b{color:var(--lazur-deep)}
      border-radius:99px;padding:2px 8px;margin-left:4px}
 code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
      padding:1px 6px;font-size:14px}
+
+/* ---------- research consent (asked once, after the result) ---------- */
+.rsch{background:var(--card);border:1px solid var(--line);border-radius:14px;
+      padding:20px;margin-bottom:16px}
+.rsch h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0 0 6px}
+.rsch p{margin:0 0 14px;font-size:14.5px;color:var(--muted);line-height:1.5}
+.rschbtns{display:flex;gap:10px;flex-wrap:wrap}
+.rschdone{display:flex;gap:10px;align-items:flex-start}
+.rschdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;
+                color:#fff;display:flex;align-items:center;justify-content:center;
+                font-size:15px;font-weight:700}
+
+/* ---------- printable parent letter ---------- */
+.letter{background:var(--card);border:1px solid var(--line);border-radius:14px;
+        padding:34px 38px;font-size:15.5px;line-height:1.7}
+.letter p{margin:0 0 14px}
+.lt-to{font-weight:600}
+.lt-sign{display:flex;gap:40px;flex-wrap:wrap;margin:26px 0 6px;font-size:14px;color:var(--muted)}
+.lt-line{display:block;width:190px;border-bottom:1px solid #9FB3BA;margin-bottom:5px;height:22px}
+.lt-hr{border:0;border-top:1px dashed #B9CBD1;margin:26px 0 18px}
+.lt-small{font-size:14.5px}
+@media print{
+  .noprint,.nav,.foot,.close{display:none !important}
+  body{background:#fff;font-size:12pt}
+  section{padding:0}
+  .wrap{max-width:none;padding:0}
+  .letter{border:0;border-radius:0;padding:0;font-size:12pt;line-height:1.55}
+  .lt-line{border-bottom:1px solid #444}
+}

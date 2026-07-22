@@ -238,3 +238,7 @@ function mountPage(){
   markResumeCtas();
 }
 mountPage();
+
+// Parent-letter page: the button prints only the letter (print CSS hides the rest).
+var _pl = document.getElementById('printLetter');
+if (_pl) _pl.onclick = function(){ window.print(); };
