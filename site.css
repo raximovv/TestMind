@@ -261,3 +261,14 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
   .letter{border:0;border-radius:0;padding:0;font-size:12pt;line-height:1.55}
   .lt-line{border-bottom:1px solid #444}
 }
+
+/* ---------- rovoq: arch-topped cards ---------- */
+/* A shallow arch on the top edge of a card, echoing the pishtoq of a madrasa.
+   Applied only to the card families, so it reads as a motif and not as noise. */
+.ccard{border-radius:26px 26px 14px 14px;border-top:3px solid var(--famc)}
+.step,.wcard{border-radius:24px 24px 14px 14px;border-top:3px solid var(--lazur)}
+.fact{border-radius:22px 22px 12px 12px}
+.faq details{border-radius:20px 20px 12px 12px}
+.letter{border-radius:26px 26px 14px 14px;border-top:3px solid var(--lazur)}
+.abox{border-radius:20px 20px 12px 12px}
+.sib{border-radius:22px 22px 12px 12px;border-top:3px solid var(--fam)}
