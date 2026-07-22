@@ -48,10 +48,6 @@
   h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 6px}
   p{margin:0 0 12px}
   .muted{color:var(--muted);font-size:14px}
-  .field{margin:16px 0}
-  .field label{display:block;font-weight:500;margin-bottom:6px}
-  .field input{width:100%;max-width:340px;padding:11px 12px;font:inherit;border:1px solid var(--line);border-radius:9px;background:#FBFDFD;color:var(--ink)}
-  .field input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
   .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:#fff}
   .btn:hover{background:var(--lazur-deep)}
   .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
@@ -186,13 +182,23 @@
           background:linear-gradient(180deg,#EAF1F3,#F8FBFB);border-radius:12px;padding:12px 8px 4px}
   .teaser svg{display:block;width:100%;height:auto}
   .teasercap{text-align:center;font-size:13.5px;color:var(--muted);margin:0 0 22px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px}
-  .chipbtn{font:inherit;font-size:15px;padding:9px 16px;border-radius:99px;border:1px solid var(--line);
-           background:#FBFDFD;color:var(--ink);cursor:pointer;-webkit-tap-highlight-color:transparent}
-  .chipbtn:hover{border-color:var(--lazur)}
-  .chipbtn.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
-  .chipbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .hint{font-size:12.5px;color:var(--muted);margin:7px 0 0}
+  /* ---- start screen: three steps, then the button. No form. ---- */
+  .starthead{text-align:center;margin:6px 0 26px}
+  .startmark{display:block;width:58px;height:58px;margin:0 auto 14px}
+  .starthead h1{font-size:clamp(27px,7vw,40px);margin:0 0 8px}
+  .startsub{color:var(--muted);font-size:15.5px;margin:0}
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:0 0 26px}
+  .step{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--sc);
+        border-radius:20px 20px 14px 14px;padding:16px 18px 20px;display:flex;flex-direction:column}
+  .stepart{background:var(--ss);border-radius:14px;padding:10px 8px;margin:0 0 14px}
+  .stepart svg{display:block;width:100%;max-width:176px;height:auto;margin:0 auto}
+  .stepnum{align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.09em;
+           color:var(--sc);background:var(--ss);border-radius:99px;padding:4px 11px;margin:0 0 9px}
+  .step h2{font-size:18px;margin:0 0 6px;color:var(--ink)}
+  .step p{font-size:14.5px;color:var(--muted);margin:0}
+  .startcta{text-align:center;margin:0 0 26px}
+  .startcta .btn{font-size:17px;padding:14px 36px;border-radius:12px}
+  .startcta .meta{justify-content:center;margin:14px 0 0}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -391,10 +397,17 @@ function textKey(level){ return level === 'Past' ? 'past' : (level === 'Yuqori' 
 // ---------- UI ----------
 var PAGE_SIZE = 5;
 var PAGES = Math.ceil(ITEMS.length / PAGE_SIZE);
-var state = { name:'', age:'', answers: new Array(ITEMS.length).fill(0), page: 0 };
+// No name and no age: the test never asks for either, so there is nothing here
+// that could identify the student even before anything is sent.
+var state = { answers: new Array(ITEMS.length).fill(0), page: 0 };
 var app = document.getElementById('app');
 
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+function todayStr(){
+  var d = new Date();
+  return ('0'+d.getDate()).slice(-2) + '.' + ('0'+(d.getMonth()+1)).slice(-2) + '.' + d.getFullYear();
+}
 
 // ---------- Local draft save (this device only; wrapped so a blocked/full
 //            localStorage never breaks the test — it just runs without saving) ----------
@@ -402,8 +415,7 @@ var SAVE_KEY = 'testmind_draft_v1';
 function saveDraft(){
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
-      name: state.name, age: state.age, answers: state.answers, page: state.page,
-      aid: state.aid || '', ts: Date.now()
+      answers: state.answers, page: state.page, aid: state.aid || '', ts: Date.now()
     }));
   } catch (e) {}
 }
@@ -418,8 +430,8 @@ function loadDraft(){
 }
 
 // ---------- Anonymous usage stats (Google Sheet via Apps Script) ----------
-// Sends NO name and NO individual answers — only anonymous totals, so a child can
-// never be identified from the sheet. Leave SHEET_URL empty to disable entirely;
+// Sends NO name, NO age and NO individual answers — only anonymous totals, so a
+// child can never be identified from the sheet. Leave SHEET_URL empty to disable;
 // the test then behaves exactly as before and the privacy text adjusts itself.
 var SHEET_URL  = 'https://script.google.com/macros/s/AKfycbykz3hl6NJllpdhipaj1Xt9LwE3i7t8wG_cH5xW_1aoh21BZGolo9HnjmKuIRkmY-kQ-g/exec';
 var TM_VERSION = '1.0';
@@ -442,7 +454,7 @@ function sendStats(status, s, arch){
 
   var r1 = function(x){ return Math.round(x * 10) / 10; };
   var payload = {
-    id: anonId(), status: status, age: state.age,
+    id: anonId(), status: status,
     answered: answered, total: ITEMS.length,
     durationSec: sessionStart ? Math.round((Date.now() - sessionStart) / 1000) : '',
     device: /Mobi|Android|iPhone|iPad/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
@@ -473,7 +485,7 @@ var leadSent = false;
 function sendLead(email, archName, done){
   if (!SHEET_URL){ done(false); return; }
   var payload = {
-    id: anonId(), status: 'lead', age: state.age,
+    id: anonId(), status: 'lead',
     email: email, archetype: archName, v: TM_VERSION
   };
   try {
@@ -498,7 +510,7 @@ function sendResearch(done){
   if (!SHEET_URL || researchSent){ done(false); return; }
   var payload = {
     id: 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
-    status: 'research', age: state.age, v: TM_VERSION,
+    status: 'research', v: TM_VERSION,
     answers: state.answers.join('')
   };
   try {
@@ -515,7 +527,76 @@ document.addEventListener('visibilitychange', function(){
   if (document.visibilityState === 'hidden') sendStats('abandoned');
 });
 
-var AGE_CHIPS = ['12', '13', '14', '15', '16', '17', '18+'];
+// ---------- start screen artwork ----------
+// Drawn inline rather than loaded: the start screen must paint on the first frame
+// over a school connection, and the page makes no third-party request.
+var BRAND_MARK =
+  '<svg class="startmark" viewBox="0 0 64 64" aria-hidden="true">' +
+    '<rect width="64" height="64" rx="16" fill="#0F6E8C"/>' +
+    '<path d="M15 34 Q15 11 32 11 Q49 11 49 34 Z" fill="#fff"/>' +
+    '<rect x="13" y="38" width="38" height="11" rx="3.5" fill="#fff"/>' +
+    '<path d="M32 16 q4 6 0 11 q-4 -5 0 -11z" fill="#0F6E8C"/>' +
+  '</svg>';
+
+// Step 1: a question sheet showing the real 5-circle scale, so the format is
+// familiar before the first question rather than a surprise.
+function scaleRow(y, sel){
+  var cx = [31, 42.5, 53, 63.5, 75], r = [5, 4, 3, 4, 5], s = '', i;
+  for (i = 0; i < 5; i++){
+    if (i === sel) s += '<circle cx="'+cx[i]+'" cy="'+y+'" r="'+r[i]+'" fill="'+(i < 2 ? '#8A6BC1' : '#0F6E8C')+'"/>';
+    else s += '<circle cx="'+cx[i]+'" cy="'+y+'" r="'+r[i]+'" fill="none" stroke="#D7E2E4" stroke-width="2"/>';
+  }
+  return s;
+}
+var ART_TEST =
+  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
+    '<rect x="34" y="14" width="62" height="78" rx="9" fill="#D6E4E8"/>' +
+    '<rect x="22" y="8" width="62" height="78" rx="9" fill="#fff" stroke="#0F6E8C" stroke-width="2.5"/>' +
+    '<rect x="31" y="19" width="34" height="5" rx="2.5" fill="#0F6E8C"/>' +
+    scaleRow(38, 0) + scaleRow(55, 4) + scaleRow(72, 3) +
+  '</svg>';
+
+var ART_RESULT =
+  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
+    '<rect x="18" y="8" width="84" height="84" rx="12" fill="#fff" stroke="#C08A2E" stroke-width="2.5"/>' +
+    // The same Chust doʻppi the characters wear: domed crown, qalampir, and the
+    // scalloped white arches along the band.
+    '<g transform="translate(60,36)">' +
+      '<circle cx="0" cy="6" r="13" fill="#F5E0C0"/>' +
+      '<path d="M-14 -2 Q-14 -20 0 -20 Q14 -20 14 -2 Z" fill="#0F6E8C"/>' +
+      '<path d="M0 -17 q2.8 4.4 0 8 q-2.8 -3.6 0 -8z" fill="#C08A2E"/>' +
+      '<rect x="-15.5" y="-4" width="31" height="7" rx="2.2" fill="#0A4F66"/>' +
+      '<path d="M-15.5 3 q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 ' +
+        'q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 ' +
+        'q1.94 -3 3.875 0" fill="none" stroke="#fff" stroke-width="1.1"/>' +
+      '<circle cx="-4.5" cy="9" r="1.5" fill="#152730"/>' +
+      '<circle cx="4.5" cy="9" r="1.5" fill="#152730"/>' +
+      '<path d="M-4 14 q4 3.4 8 0" fill="none" stroke="#152730" stroke-width="1.6" stroke-linecap="round"/>' +
+    '</g>' +
+    '<rect x="42" y="62" width="36" height="5" rx="2.5" fill="#C08A2E"/>' +
+    '<rect x="32" y="74" width="56" height="6" rx="3" fill="#F0E2C8"/>' +
+    '<rect x="32" y="74" width="38" height="6" rx="3" fill="#C08A2E"/>' +
+  '</svg>';
+
+var ART_GUIDE =
+  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
+    '<rect x="40" y="8" width="44" height="50" rx="6" fill="#fff" stroke="#8A6BC1" stroke-width="2.5"/>' +
+    '<rect x="48" y="19" width="28" height="4.5" rx="2.25" fill="#8A6BC1"/>' +
+    '<rect x="48" y="29" width="22" height="4" rx="2" fill="#DCD2EE"/>' +
+    '<rect x="48" y="38" width="26" height="4" rx="2" fill="#DCD2EE"/>' +
+    '<rect x="16" y="46" width="88" height="46" rx="9" fill="#8A6BC1"/>' +
+    '<path d="M22 53 L60 78 L98 53" fill="none" stroke="#fff" stroke-width="3" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/>' +
+  '</svg>';
+
+var STEPS = [
+  { c:'#0F6E8C', soft:'#E7EFF1', art:ART_TEST, title:'Testni topshiring',
+    text:'Oʻzingiz boʻling va samimiy javob bering. 50 ta savol, taxminan 7 daqiqa.' },
+  { c:'#C08A2E', soft:'#F8EFDC', art:ART_RESULT, title:'Natijangizni koʻring',
+    text:'Oʻnta obrazdan bittasi sizniki boʻladi — kuchli tomonlaringiz bilan birga, darhol ekranda.' },
+  { c:'#8A6BC1', soft:'#EFE9F8', art:ART_GUIDE, title:'Qoʻllanmangizni oling',
+    text:'Xohlasangiz, oxirida email qoldiring — obrazingiz uchun batafsil qoʻllanmani yuboramiz.' }
+];
 
 // Document-level key handler for the question page. Kept in one variable so it can
 // always be removed again: a leftover handler would still hold the previous page's
@@ -527,75 +608,39 @@ function detachKeys(){
 
 function renderStart(){
   detachKeys();
-  // The ten characters are the hook, so they go BEFORE the form — but with no names
+  // The ten characters are the hook, so they sit under the button — but with no names
   // and no trait labels, so seeing them can't teach anyone how to game their answers.
   var teaser = Object.keys(TM_ART).map(function(k){ return charSvg(k); }).join('');
 
   app.innerHTML =
-    '<div class="card">' +
+    '<div class="starthead">' + BRAND_MARK +
       '<h1>Siz qaysi obrazsiz?</h1>' +
-      '<p class="lede">50 ta savol, taxminan 7 daqiqa. Yakunida quyidagi oʻn obrazdan ' +
-        'bittasi sizniki boʻladi.</p>' +
-      '<div class="teaser" aria-hidden="true">' + teaser + '</div>' +
-      '<p class="teasercap">Qaysi biri sizniki ekanini bilib oling.</p>' +
-      '<div class="field">' +
-        '<label for="f-name">Ismingiz</label>' +
-        '<input id="f-name" type="text" autocomplete="off" enterkeyhint="next">' +
-        '<p class="hint">Ismingiz shu qurilmadan chiqmaydi — u faqat natijangizda koʻrsatiladi.</p>' +
-      '</div>' +
-      '<div class="field">' +
-        '<label id="ageLbl">Yoshingiz</label>' +
-        '<div class="chips" id="ageChips" role="group" aria-labelledby="ageLbl">' +
-          AGE_CHIPS.map(function(a){
-            return '<button type="button" class="chipbtn" data-age="' + a + '">' + a + '</button>';
-          }).join('') +
-          '<button type="button" class="chipbtn" id="ageOther">Boshqa</button>' +
-        '</div>' +
-        '<input id="f-age" type="number" min="10" max="99" inputmode="numeric" ' +
-          'style="display:none;margin-top:10px" aria-label="Yoshingiz">' +
-      '</div>' +
-      '<button class="btn" id="startBtn">Boshlash</button>' +
-      '<p class="muted" id="startMsg" style="margin-top:10px"></p>' +
-      '<ul class="meta" style="margin:18px 0 0"><li>Anonim</li><li>Bepul</li>' +
+      '<p class="startsub">Bepul shaxsiyat testi · 50 ta savol · ~7 daqiqa</p>' +
+    '</div>' +
+    '<div class="steps">' +
+      STEPS.map(function(st, i){
+        return '<section class="step" style="--sc:' + st.c + ';--ss:' + st.soft + '">' +
+          '<div class="stepart">' + st.art + '</div>' +
+          '<span class="stepnum">QADAM ' + (i + 1) + '</span>' +
+          '<h2>' + st.title + '</h2>' +
+          '<p>' + st.text + '</p>' +
+        '</section>';
+      }).join('') +
+    '</div>' +
+    '<div class="startcta">' +
+      '<button class="btn" id="startBtn">Testni boshlash</button>' +
+      '<ul class="meta"><li>Bepul</li><li>Anonim</li>' +
         '<li>Roʻyxatdan oʻtish shart emas</li></ul>' +
-    '</div>';
+    '</div>' +
+    '<div class="teaser" aria-hidden="true">' + teaser + '</div>' +
+    '<p class="teasercap">Oʻnta obrazdan qaysi biri sizniki?</p>';
 
-  var chipBox = document.getElementById('ageChips');
-  var ageInput = document.getElementById('f-age');
-  var chosenAge = '';
-
-  function clearChips(){
-    var all = chipBox.querySelectorAll('.chipbtn');
-    for (var i = 0; i < all.length; i++) all[i].classList.remove('on');
-  }
-  chipBox.onclick = function(e){
-    var b = e.target.closest ? e.target.closest('.chipbtn') : null;
-    if (!b) return;
-    clearChips(); b.classList.add('on');
-    if (b.id === 'ageOther'){
-      ageInput.style.display = 'block'; ageInput.focus(); chosenAge = '';
-    } else {
-      ageInput.style.display = 'none'; ageInput.value = '';
-      chosenAge = b.getAttribute('data-age');
-    }
-    document.getElementById('startMsg').textContent = '';
-  };
-
+  // Nothing to fill in: the first tap is the first question.
   document.getElementById('startBtn').onclick = function(){
-    var n = document.getElementById('f-name').value.trim();
-    var a = chosenAge || ageInput.value.trim();
-    var msg = document.getElementById('startMsg');
-    if (!n){ msg.textContent = 'Ismingizni kiriting.'; document.getElementById('f-name').focus(); return; }
-    if (!a){ msg.textContent = 'Yoshingizni tanlang.'; return; }
-    var num = parseInt(a, 10);
-    if (a !== '18+' && (isNaN(num) || num < 10 || num > 99)){
-      msg.textContent = 'Yoshni 10 dan 99 gacha kiriting.'; ageInput.focus(); return;
-    }
-    state.name = n; state.age = a; state.page = 0;
+    state.page = 0;
     saveDraft();
     renderPage();
   };
-  document.getElementById('f-name').focus();
 }
 
 function answeredOnPage(p){
@@ -848,7 +893,7 @@ function buildShareCard(s, arch, key, cb){
     var y = wrapText(g, arch.name, W / 2, 806, W - M * 2, 84, 2);
 
     g.fillStyle = '#5B7078'; g.font = '400 29px Inter, "Segoe UI", sans-serif';
-    g.fillText(state.name + ' · ' + state.age + ' yosh', W / 2, y + 20);
+    g.fillText(todayStr(), W / 2, y + 20);
 
     g.fillStyle = '#152730'; g.font = '400 34px Inter, "Segoe UI", sans-serif';
     y = wrapText(g, arch.lines[0], W / 2, y + 84, W - M * 2, 48, 3);
@@ -882,8 +927,7 @@ function renderReport(){
   // Anonymous item-level answers, saved automatically. Carries a separate random
   // id so it can never be joined to the row that holds an email address.
   sendResearch(function(){});
-  var today = new Date();
-  var dateStr = ('0'+today.getDate()).slice(-2) + '.' + ('0'+(today.getMonth()+1)).slice(-2) + '.' + today.getFullYear();
+  var dateStr = todayStr();
   var fam = FAMILIES[arch.fam];
   var archKey = archetypeKeyOf(s);
   var tie = nearTieOf(s);
@@ -898,7 +942,7 @@ function renderReport(){
       '</div>' +
       '<div class="herobody">' +
         '<h1 class="archname">' + arch.name + '</h1>' +
-        '<p class="archwho">' + esc(state.name) + ' · ' + esc(state.age) + ' yosh · ' + dateStr + '</p>' +
+        '<p class="archwho">' + dateStr + '</p>' +
         '<ul class="archlines">' +
           arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
         '</ul>' +
@@ -974,7 +1018,7 @@ function renderReport(){
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
     clearDraft();
-    state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
+    state = { answers:new Array(ITEMS.length).fill(0), page:0 };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderStart();
   };
@@ -1068,14 +1112,13 @@ function renderResume(d){
     '<div class="card">' +
       '<h1>Yarim qolgan test</h1>' +
       '<p>Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?</p>' +
-      '<p class="muted">' + esc(d.name) + ' · ' + answered + ' / ' + ITEMS.length + ' savolga javob berilgan.</p>' +
+      '<p class="muted">' + answered + ' / ' + ITEMS.length + ' savolga javob berilgan.</p>' +
       '<div class="nav" style="margin-top:18px">' +
         '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
         '<button class="btn" id="resumeBtn">Davom etish</button>' +
       '</div>' +
     '</div>';
   document.getElementById('resumeBtn').onclick = function(){
-    state.name = d.name; state.age = d.age;
     state.answers = d.answers.slice();
     state.page = Math.min(d.page || 0, PAGES - 1);
     state.aid = d.aid || '';          // keep one id across abandon -> resume -> finish
@@ -1083,7 +1126,7 @@ function renderResume(d){
   };
   document.getElementById('freshBtn').onclick = function(){
     clearDraft();
-    state = { name:'', age:'', answers:new Array(ITEMS.length).fill(0), page:0 };
+    state = { answers:new Array(ITEMS.length).fill(0), page:0 };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderStart();
   };
@@ -1091,7 +1134,7 @@ function renderResume(d){
 
 function boot(){
   var d = loadDraft();
-  if (d && d.name && d.answers.some(function(v){ return v > 0; })) renderResume(d);
+  if (d && d.answers.some(function(v){ return v > 0; })) renderResume(d);
   else renderStart();
 }
 
