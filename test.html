@@ -54,22 +54,39 @@
   .btn[disabled]{background:#B8C9CE;cursor:not-allowed}
   .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
   .btn.ghost:hover{border-color:var(--lazur)}
-  .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:8px;flex-wrap:wrap}
+  .nav{display:flex;justify-content:flex-end;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0 0}
+  .navmsg{margin:0;font-size:14px;color:#8A3B1F}
+  /* ---- step bar: back on the left, progress on the right ---- */
+  .stepbar{margin:0 0 18px}
+  .stepbarin{background:var(--card);border:1px solid var(--line);border-radius:14px;
+             display:flex;align-items:center;justify-content:space-between;gap:16px;padding:11px 18px}
+  .backlink{display:inline-flex;align-items:center;gap:9px;background:none;border:0;padding:7px 4px;
+            font:inherit;font-weight:700;font-size:13px;letter-spacing:.07em;text-transform:uppercase;
+            color:var(--lazur);cursor:pointer;white-space:nowrap}
+  .backlink:hover{color:var(--lazur-deep)}
+  .backlink:focus-visible{outline:3px solid var(--zar);outline-offset:2px;border-radius:7px}
+  .backlink.off{color:#B4C6CB;cursor:default}
+  .stepright{display:flex;align-items:center;gap:14px;flex:1 1 auto;justify-content:flex-end;min-width:0}
+  .stepbar .ptrack{flex:0 1 360px;min-width:60px}
+  .stepcount{font-size:14px;color:var(--muted);white-space:nowrap}
+  @media (max-width:560px){
+    .backlink{font-size:11.5px;gap:6px;letter-spacing:.05em}
+    .stepbarin{gap:10px;padding:10px 13px}
+    .stepright{gap:10px}
+    .stepcount{font-size:13px}
+  }
   .navr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .sharebox{margin-bottom:16px;text-align:center}
   .shareimg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
-  .pcount{font-size:13px;color:var(--muted);white-space:nowrap}
-  .pcount.warn{color:#8A3B1F;font-weight:500}
-  .ppct{font-family:var(--display);font-weight:700;font-size:16px;color:var(--lazur-deep)}
-  .ptrack{height:7px;background:#E2EBEC;border-radius:4px;overflow:hidden;margin:6px 0 22px}
+  .ptrack{height:8px;background:#E2EBEC;border-radius:4px;overflow:hidden}
   .pfill{height:100%;background:linear-gradient(90deg,var(--lazur),var(--zar));width:0%;transition:width .3s ease;border-radius:5px}
-  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:0}
   .item{padding:18px 0;border-bottom:1px solid var(--line);transition:opacity .25s ease}
   .item:last-of-type{border-bottom:0}
   /* Answered questions fade back so the one still to do is the one you look at.
      Hover or keyboard focus brings a faded question back to full strength, so
      changing an earlier answer never means squinting at it. */
   .item.done{opacity:.45}
+  .item{scroll-margin:20px 0}
   .item.done:hover,.item.done:focus-within{opacity:1}
   .item.warn .qtext{color:#8A3B1F}
   .qtext{font-weight:600;font-size:17.5px;line-height:1.35;margin-bottom:6px}
@@ -260,7 +277,7 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   @media print{
     body{background:#fff}
-    .btn,.nav,.actions,.capture,.foot,.weave{display:none !important}
+    .btn,.nav,.actions,.capture,.foot,.weave,.stepbar{display:none !important}
     .card{border:0;padding:0}
   }
 </style>
@@ -657,18 +674,23 @@ function renderPage(){
   var p = state.page;
   saveDraft();
   var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, ITEMS.length);
-  var answeredTotal = state.answers.filter(function(v){ return v > 0; }).length;
-  if (!sessionStart){ sessionStart = Date.now(); sessionStartAnswered = answeredTotal; }
+  if (!sessionStart) sessionStart = Date.now();
   // Was this page already finished when it opened? If so we must NOT auto-advance —
   // otherwise editing an answer on a completed page would yank the page away.
   var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
   var html =
     (p === 0 ? introHtml() : '') +
-    '<div class="qhead">' +
-      '<span class="ppct" id="ppct">' + pctDone() + '%</span>' +
-      '<span class="pcount" id="pageCount">' + timeLeftText() + '</span>' +
-    '</div>' +
-    '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
+    // Sits above the questions and stays put: pinned to the viewport it covered
+    // whatever was at the bottom of the screen and swallowed taps landing there.
+    '<div class="stepbar"><div class="stepbarin">' +
+      (p > 0
+        ? '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> Orqaga</button>'
+        : '<span class="backlink off" aria-hidden="true"><span>←</span> Orqaga</span>') +
+      '<div class="stepright">' +
+        '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
+        '<span class="stepcount">Qadam ' + (p + 1) + ' / ' + PAGES + '</span>' +
+      '</div>' +
+    '</div></div>' +
     '<div class="card">';
   for (var i = from; i < to; i++){
     var it = ITEMS[i];
@@ -688,7 +710,7 @@ function renderPage(){
   }
   html += '</div>' +
     '<div class="nav">' +
-      (p > 0 ? '<button class="btn ghost" id="prevBtn">Orqaga</button>' : '<span></span>') +
+      '<p class="navmsg" id="navMsg" role="status"></p>' +
       '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? 'Natijani koʻrish' : 'Keyingi') + '</button>' +
     '</div>';
   app.innerHTML = html;
@@ -804,31 +826,18 @@ function answeredCount(){
 }
 function pctDone(){ return Math.round(answeredCount() / ITEMS.length * 100); }
 
-// Live time estimate from the user's own pace in THIS session (so a resumed
-// draft doesn't count the hours they were away). Hidden until the pace is stable.
-var sessionStart = 0, sessionStartAnswered = 0;
-function timeLeftText(){
-  var answered = state.answers.filter(function(v){ return v > 0; }).length;
-  var doneNow = answered - sessionStartAnswered;
-  if (!sessionStart || doneNow < 5) return '';
-  var left = (ITEMS.length - answered) * ((Date.now() - sessionStart) / doneNow);
-  if (left <= 0) return '';
-  var mins = Math.round(left / 60000);
-  return mins <= 1 ? 'oz qoldi' : '~' + mins + ' daqiqa qoldi';
-}
+// Still needed for the anonymous durationSec figure, even though the on-screen
+// estimate is gone.
+var sessionStart = 0;
 
 function updateCount(missing){
-  var pct = pctDone();
   var fill = document.getElementById('pfill');
-  if (fill) fill.style.width = pct + '%';
-  var pc = document.getElementById('ppct');
-  if (pc) pc.textContent = pct + '%';
-  var el = document.getElementById('pageCount');
-  if (el){
+  if (fill) fill.style.width = pctDone() + '%';
+  // The nudge belongs next to the button they just pressed, not in the bar.
+  var m = document.getElementById('navMsg');
+  if (m){
     var a = answeredOnPage(state.page);
-    var short = missing && a.done < a.total;
-    el.textContent = short ? 'Qolgan savollarga javob bering' : timeLeftText();
-    el.className = 'pcount' + (short ? ' warn' : '');
+    m.textContent = (missing && a.done < a.total) ? 'Qolgan savollarga javob bering.' : '';
   }
 }
 
