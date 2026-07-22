@@ -193,13 +193,6 @@
   .chipbtn.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
   .chipbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   .hint{font-size:12.5px;color:var(--muted);margin:7px 0 0}
-  .rsch{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
-  .rsch h3{font-family:var(--display);font-weight:600;font-size:17px;margin:0 0 6px}
-  .rsch p{margin:0 0 14px;font-size:14.5px;color:var(--muted);line-height:1.5}
-  .rschbtns{display:flex;gap:10px;flex-wrap:wrap}
-  .rschdone{display:flex;gap:10px;align-items:flex-start}
-  .rschdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;
-                  color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -501,6 +494,7 @@ function looksLikeEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
 // address, and they would stop being anonymous.
 var researchSent = false;
 function sendResearch(done){
+  done = done || function(){};
   if (!SHEET_URL || researchSent){ done(false); return; }
   var payload = {
     id: 'r-' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 10),
@@ -885,6 +879,9 @@ function renderReport(){
   var s = scoreAnswers(state.answers);
   var arch = archetypeOf(s);
   sendStats('completed', s, arch);
+  // Anonymous item-level answers, saved automatically. Carries a separate random
+  // id so it can never be joined to the row that holds an email address.
+  sendResearch(function(){});
   var today = new Date();
   var dateStr = ('0'+today.getDate()).slice(-2) + '.' + ('0'+(today.getMonth()+1)).slice(-2) + '.' + today.getFullYear();
   var fam = FAMILIES[arch.fam];
@@ -971,19 +968,6 @@ function renderReport(){
   html += '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
       '<p class="muted" style="margin-top:8px">Javoblaringiz shu qurilmadan oʻchirildi.</p>' +
     '</div></details>' +
-    '<div class="rsch" id="rsch">' +
-      '<h3>Javoblaringiz bilan yordam berasizmi?</h3>' +
-      '<p>TestMind hali oʻzbek oʻsmirlarida tekshirilmagan. Buni faqat real javoblar ' +
-      'yordamida tekshirish mumkin. Ruxsat bersangiz, javoblaringiz <b>ismsiz va ' +
-      'emailsiz</b>, sizga bogʻlab boʻlmaydigan holda saqlanadi va faqat testni ' +
-      'yaxshilash uchun ishlatiladi. Bu majburiy emas — «Yoʻq» desangiz ham natijangiz ' +
-      'oʻzgarmaydi.</p>' +
-      '<div class="rschbtns">' +
-        '<button class="btn" id="rschYes">Ha, ruxsat beraman</button>' +
-        '<button class="btn ghost" id="rschNo">Yoʻq</button>' +
-      '</div>' +
-      '<p class="capmsg" id="rschMsg" role="status" style="margin-top:10px"></p>' +
-    '</div>' +
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
     '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
   app.innerHTML = html;
@@ -1019,29 +1003,6 @@ function renderReport(){
       document.body.removeChild(ta);
       done(okCopied);
     } catch (e) { done(false); }
-  };
-
-  var rschBox = document.getElementById('rsch');
-  document.getElementById('rschNo').onclick = function(){
-    rschBox.innerHTML = '<div class="rschdone"><span class="tick" aria-hidden="true">✓</span><div>'
-      + '<h3 style="margin:0 0 4px">Tushunarli</h3>'
-      + '<p style="margin:0">Javoblaringiz hech qayerga yuborilmadi.</p></div></div>';
-  };
-  document.getElementById('rschYes').onclick = function(){
-    var y = this, n = document.getElementById('rschNo'), msg = document.getElementById('rschMsg');
-    y.disabled = true; n.disabled = true; y.textContent = 'Yuborilmoqda…';
-    sendResearch(function(okSent){
-      if (okSent){
-        rschBox.innerHTML = '<div class="rschdone"><span class="tick" aria-hidden="true">✓</span><div>'
-          + '<h3 style="margin:0 0 4px">Rahmat!</h3>'
-          + '<p style="margin:0">Javoblaringiz ismsiz saqlandi. Shu yordam bilan test '
-          + 'oʻzbek oʻsmirlari uchun aniqroq boʻladi.</p></div></div>';
-      } else {
-        y.disabled = false; n.disabled = false; y.textContent = 'Ha, ruxsat beraman';
-        msg.className = 'capmsg err';
-        msg.textContent = 'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.';
-      }
-    });
   };
 
   var capBtn = document.getElementById('capBtn');

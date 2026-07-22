@@ -30,7 +30,7 @@ var ARCHETYPES = {
            'Atrofdagilarni ham harakatga sola olasiz.'],
     strength:'gʻoyani haqiqatga aylantirish.',
     watch:'Tez boshlaganingiz uchun baʼzan boshqalarning fikrini soʻrashni unutasiz. Eng yaxshi gʻoya doim sizniki boʻlmasligi mumkin.',
-    figure:{who:'Amir Temur', years:'1336–1405', why:'Rejani gapda qoldirmagan — uni shaharlarga aylantirgan.'}},
+    figure:{who:'Nodirabegim', years:'1792–1842', why:'Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan.'}},
 
   'ES|O': {ikat2:'#563C8C', ikat3:'#E8C25A', name:'Xotirjam Kashfiyotchi', slug:'xotirjam-kashfiyotchi', fam:'crea',
     lines:['Notanish narsani koʻrsangiz avval sinab koʻrasiz, keyin fikr bildirasiz.',
@@ -44,7 +44,7 @@ var ARCHETYPES = {
            'Bir gʻoyani tushuntira boshlasangiz, tinglayotgan odam ham qiziqib qoladi.'],
     strength:'yangi gʻoyani odamlarga yuqtirish.',
     watch:'Gʻoya koʻp, vaqt kam. Hammasini birdan boshlasangiz, hech biri tugamasligi mumkin.',
-    figure:{who:'Zahiriddin Muhammad Bobur', years:'1483–1530', why:'Sheʼr ham yozgan, davlat ham qurgan — hech qayerda toʻxtab qolmagan.'}},
+    figure:{who:'Zebunniso Begim', years:'1638–1702', why:'Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan.'}},
 
   'O|C':  {ikat2:'#463178', ikat3:'#E0C070', name:'Ijodkor Strateg', slug:'ijodkor-strateg', fam:'crea',
     lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
@@ -58,7 +58,7 @@ var ARCHETYPES = {
            'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
     strength:'boshqalarni tinchlantira olish.',
     watch:'Boshqalarga yordam berib, oʻzingizga vaqt qoldirmaslik oson. «Yoʻq» deyishni ham oʻrganing.',
-    figure:{who:'Abu Ali ibn Sino', years:'980–1037', why:'Bemorni tinglashni davolashning birinchi qadami deb bilgan.'}},
+    figure:{who:'Jahonotin Uvaysiy', years:'1781–1845', why:'Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan.'}},
 
   'E|A':  {ikat2:'#19614A', ikat3:'#E8C25A', name:'Jamoaning Yuragi', slug:'jamoaning-yuragi', fam:'care',
     lines:['Siz kirgan xonada suhbat oʻzidan-oʻzi boshlanib ketadi.',
@@ -72,7 +72,7 @@ var ARCHETYPES = {
            'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
     strength:'foydali va insoniy yechim topish.',
     watch:'Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.',
-    figure:{who:'Nodirabegim', years:'1792–1842', why:'Sheʼr yozgan va shu bilan birga maktab va madrasalar qurdirgan.'}},
+    figure:{who:'Anbar Otin', years:'1870–1915', why:'Sheʼrlarida oddiy odamlarning va ayollarning hayoti haqida yozgan.'}},
 
   'ES|C': {ikat2:'#8E621A', ikat3:'#F3E3BE', name:'Barqaror Strateg', slug:'barqaror-strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
@@ -86,7 +86,7 @@ var ARCHETYPES = {
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
     strength:'soʻzida turish.',
     watch:'Hamma ishni oʻz zimmangizga olib, ortiqcha yuk koʻtarib yurasiz. Yordam soʻrash ham kuch.',
-    figure:{who:'Imom al-Buxoriy', years:'810–870', why:'Oʻn olti yil davomida har bir rivoyatni qayta-qayta tekshirib chiqqan.'}}
+    figure:{who:'Dilshod Barno', years:'1800–1905', why:'Ellik yil davomida 891 nafar qizga oʻqish va yozishni oʻrgatgan.'}}
 };
 
 // ---------- Character illustrations ----------
