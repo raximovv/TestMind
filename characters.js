@@ -13,71 +13,75 @@ var FAMILIES = {
   base: {name:'Tayanchlar',   c:'#A2731F', soft:'#F6EEDC'}
 };
 
+// Human-readable trait names, shared by the test and the archetype pages.
+var TRAIT_NAMES = {ES:'Hissiy barqarorlik', E:'Kirishimlilik', O:'Yangilikka ochiqlik',
+                   A:'Kelishuvchanlik', C:'Masʼuliyatlilik'};
+
 var ARCHETYPES = {
-  'ES|E': {name:'Xotirjam Yetakchi', fam:'lead',
+  'ES|E': {name:'Xotirjam Yetakchi', slug:'xotirjam-yetakchi', fam:'lead',
     lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.',
            'Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz.'],
     strength:'bosim ostida toʻgʻri qaror qabul qilish.',
     watch:'Xotirjamligingiz baʼzan befarqlikdek koʻrinadi. Yaqinlaringiz sizdan koʻproq hissiyot kutayotganini sezmay qolmang.',
     figure:{who:'Bahouddin Naqshband', years:'1318–1389', why:'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'}},
 
-  'E|C':  {name:'Gʻayratli Tashkilotchi', fam:'lead',
+  'E|C':  {name:'Gʻayratli Tashkilotchi', slug:'gayratli-tashkilotchi', fam:'lead',
     lines:['Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
            'Atrofdagilarni ham harakatga sola olasiz.'],
     strength:'gʻoyani haqiqatga aylantirish.',
     watch:'Tez boshlaganingiz uchun baʼzan boshqalarning fikrini soʻrashni unutasiz. Eng yaxshi gʻoya doim sizniki boʻlmasligi mumkin.',
     figure:{who:'Amir Temur', years:'1336–1405', why:'Rejani gapda qoldirmagan — uni shaharlarga aylantirgan.'}},
 
-  'ES|O': {name:'Xotirjam Kashfiyotchi', fam:'crea',
+  'ES|O': {name:'Xotirjam Kashfiyotchi', slug:'xotirjam-kashfiyotchi', fam:'crea',
     lines:['Notanish narsani koʻrsangiz avval sinab koʻrasiz, keyin fikr bildirasiz.',
            'Lekin sarguzashtga koʻzni yumib emas, sovuqqonlik bilan kirasiz.'],
     strength:'notanish yoʻlni xotirjam tekshirib koʻrish.',
     watch:'Yangi narsaga tez qiziqib, boshlagan ishingizni yarmida tashlab qoʻyish xavfi bor. Bittasini oxirigacha olib borib koʻring.',
     figure:{who:'Abu Rayhon Beruniy', years:'973–1048', why:'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'}},
 
-  'E|O':  {name:'Gʻayratli Ijodkor', fam:'crea',
+  'E|O':  {name:'Gʻayratli Ijodkor', slug:'gayratli-ijodkor', fam:'crea',
     lines:['Gʻoyalaringiz tugamaydi va ularni odamlarga gapirib berishni yaxshi koʻrasiz.',
            'Bir gʻoyani tushuntira boshlasangiz, tinglayotgan odam ham qiziqib qoladi.'],
     strength:'yangi gʻoyani odamlarga yuqtirish.',
     watch:'Gʻoya koʻp, vaqt kam. Hammasini birdan boshlasangiz, hech biri tugamasligi mumkin.',
     figure:{who:'Zahiriddin Muhammad Bobur', years:'1483–1530', why:'Sheʼr ham yozgan, davlat ham qurgan — hech qayerda toʻxtab qolmagan.'}},
 
-  'O|C':  {name:'Ijodkor Strateg', fam:'crea',
+  'O|C':  {name:'Ijodkor Strateg', slug:'ijodkor-strateg', fam:'crea',
     lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
            'Gʻoyani daftarda qoldirmaysiz — jadvalga, qadamlarga aylantirasiz.'],
     strength:'gʻoyani aniq tizimga solish.',
     watch:'Hammasini mukammal qilishga urinish sizni sekinlashtiradi. Baʼzan «yetarlicha yaxshi» ham haqiqiy natija.',
     figure:{who:'Mirzo Ulugʻbek', years:'1394–1449', why:'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'}},
 
-  'ES|A': {name:'Ishonchli Doʻst', fam:'care',
+  'ES|A': {name:'Ishonchli Doʻst', slug:'ishonchli-dost', fam:'care',
     lines:['Odamlar sizga sirini aytadi, chunki yoningizda oʻzini xavfsiz his qiladi.',
            'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
     strength:'boshqalarni tinchlantira olish.',
     watch:'Boshqalarga yordam berib, oʻzingizga vaqt qoldirmaslik oson. «Yoʻq» deyishni ham oʻrganing.',
     figure:{who:'Abu Ali ibn Sino', years:'980–1037', why:'Bemorni tinglashni davolashning birinchi qadami deb bilgan.'}},
 
-  'E|A':  {name:'Jamoaning Yuragi', fam:'care',
+  'E|A':  {name:'Jamoaning Yuragi', slug:'jamoaning-yuragi', fam:'care',
     lines:['Siz kirgan xonada suhbat oʻzidan-oʻzi boshlanib ketadi.',
            'Chetda qolgan odamni sezasiz va yoningizga chaqirasiz.'],
     strength:'odamlarni birlashtirish.',
     watch:'Hamma bilan yaxshi boʻlishga urinib, oʻz fikringizni aytmay qoʻyishingiz mumkin. Sizning fikringiz ham muhim.',
     figure:{who:'Alisher Navoiy', years:'1441–1501', why:'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'}},
 
-  'O|A':  {name:'Ijodkor Insonparvar', fam:'care',
+  'O|A':  {name:'Ijodkor Insonparvar', slug:'ijodkor-insonparvar', fam:'care',
     lines:['Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.',
            'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
     strength:'foydali va insoniy yechim topish.',
     watch:'Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.',
     figure:{who:'Nodirabegim', years:'1792–1842', why:'Sheʼr yozgan va shu bilan birga maktab va madrasalar qurdirgan.'}},
 
-  'ES|C': {name:'Barqaror Strateg', fam:'base',
+  'ES|C': {name:'Barqaror Strateg', slug:'barqaror-strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
            'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
     strength:'uzoq masofaga chidash.',
     watch:'Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish — magʻlubiyat emas.',
     figure:{who:'Muhammad al-Xorazmiy', years:'783–850', why:'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'}},
 
-  'A|C':  {name:'Ishonchli Tayanch', fam:'base',
+  'A|C':  {name:'Ishonchli Tayanch', slug:'ishonchli-tayanch', fam:'base',
     lines:['Vaʼda berishdan oldin oʻylaysiz — chunki bergan vaʼdangizni bajarasiz.',
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
     strength:'soʻzida turish.',

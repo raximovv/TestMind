@@ -159,9 +159,12 @@ section{padding:60px 0}
 .footcol h4{font-family:var(--display);font-weight:600;font-size:15px;margin:0 0 12px;
             color:var(--ink)}
 .footcol ul{list-style:none;margin:0;padding:0}
-.footcol li{margin-bottom:9px}
-/* the contact address is one 24-character word with no break opportunity */
-.footcol a{font-size:14.5px;color:var(--muted);text-decoration:none;overflow-wrap:anywhere}
+.footcol li{margin-bottom:4px}
+/* The contact address is one 24-character word with no break opportunity.
+   inline-block + padding gives every footer link a >=24px tap target on a phone;
+   at 17px they were below what a thumb reliably hits. */
+.footcol a{display:inline-block;padding:4px 0;font-size:14.5px;color:var(--muted);
+           text-decoration:none;overflow-wrap:anywhere}
 .footcol a:hover{color:var(--lazur-deep);text-decoration:underline}
 .footbar{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
          display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
@@ -172,3 +175,43 @@ section{padding:60px 0}
   *{transition:none !important;animation:none !important}
   html{scroll-behavior:auto}
 }
+
+/* ---------- individual archetype page ---------- */
+.ahero{background:var(--famsoft);border-bottom:1px solid var(--line);padding:34px 0 0}
+.ahin{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:28px;align-items:end}
+.aart svg{display:block;width:100%;max-width:220px;height:auto;margin:0 auto}
+.ameta{padding-bottom:34px}
+.afam{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.6px;
+      text-transform:uppercase;color:#fff;background:var(--fam);border-radius:99px;
+      padding:4px 13px;text-decoration:none;margin-bottom:12px}
+.ameta h1{color:var(--fam);margin:0 0 12px}
+.alead{font-size:16.5px;line-height:1.55;margin:0 0 8px;max-width:56ch}
+@media (max-width:720px){
+  .ahin{grid-template-columns:1fr;gap:6px;text-align:center}
+  .ameta{padding-bottom:26px}
+  .alead{margin-left:auto;margin-right:auto}
+  .aart svg{max-width:180px}
+}
+.abox{border-radius:12px;padding:16px 18px;margin-bottom:12px}
+.abox h2{font-size:13px;letter-spacing:.5px;text-transform:uppercase;margin:0 0 6px;
+         font-family:var(--body);font-weight:700}
+.abox p{margin:0;font-size:16px;line-height:1.5}
+.abox.strong{background:var(--famsoft)}
+.abox.strong h2{color:var(--fam)}
+.abox.warn{background:#FBF3E4;border:1px solid #EBDCBB}
+.abox.warn h2{color:#8A6520}
+.asec{margin:34px 0 10px}
+.amuted{color:var(--muted);font-size:15px}
+.afig{border-left:3px solid var(--fam);padding:4px 0 4px 16px;margin:12px 0 0}
+.afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam)}
+.afigwho span{font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
+.afig p{margin:6px 0 0;color:var(--muted);font-size:15px}
+.sibs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px}
+.sib{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
+     border-radius:12px;padding:12px 10px;text-align:center;transition:transform .16s ease,box-shadow .16s ease}
+.sib:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(15,110,140,.10)}
+.sibart svg{display:block;width:84px;height:auto;margin:0 auto}
+.sibname{display:block;margin-top:8px;font-family:var(--display);font-weight:600;
+         font-size:14.5px;color:var(--fam)}
+/* gallery cards become links */
+a.ccard{display:block;text-decoration:none;color:inherit}

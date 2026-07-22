@@ -191,18 +191,20 @@ function buildGallery(full){
   for (k in ARCHETYPES){ a = ARCHETYPES[k]; (byFam[a.fam] = byFam[a.fam] || []).push(k); }
   for (i = 0; i < FAM_ORDER.length; i++){
     f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
+    // heading levels stay in order: page h1 -> family h2 -> card h3
     html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
-          + '<div class="famhead"><h3 class="famname">'+fam.name+'</h3>'
+          + '<div class="famhead"><h2 class="famname">'+fam.name+'</h2>'
           + '<span class="famnote">'+FAM_NOTES[f]+'</span></div><div class="cards">';
     for (j = 0; j < keys.length; j++){
       a = ARCHETYPES[keys[j]];
-      html += '<article class="ccard"><div class="cart">'+charSvg(keys[j], a.name)+'</div>'
-            + '<div class="cbody"><h4 class="cname">'+a.name+'</h4>'
+      html += '<a class="ccard" href="obraz-'+a.slug+'.html">'
+            + '<div class="cart">'+charSvg(keys[j], a.name)+'</div>'
+            + '<div class="cbody"><h3 class="cname">'+a.name+'</h3>'
             + (full ? '<p class="cline">'+a.lines[0]+'</p>' : '')
             + '<p class="cstr">Kuchli tomoni: '+a.strength+'</p>'
             + (full ? '<p class="cwatch">Eʼtibor bering: '+a.watch+'</p>' : '')
             + '<p class="cfig">Tarixdan: <b>'+a.figure.who+'</b> · '+a.figure.years+'</p>'
-            + '</div></article>';
+            + '</div></a>';
     }
     html += '</div></div>';
   }
