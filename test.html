@@ -58,18 +58,12 @@
   .navr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .sharebox{margin-bottom:16px;text-align:center}
   .shareimg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
-  .pcount{font-size:14px;color:var(--muted);white-space:nowrap}
-  .ptrack{height:10px;background:#E2EBEC;border-radius:5px;overflow:hidden;margin:8px 0 6px}
+  .pcount{font-size:13px;color:var(--muted);white-space:nowrap}
+  .pcount.warn{color:#8A3B1F;font-weight:500}
+  .ppct{font-family:var(--display);font-weight:700;font-size:16px;color:var(--lazur-deep)}
+  .ptrack{height:7px;background:#E2EBEC;border-radius:4px;overflow:hidden;margin:6px 0 22px}
   .pfill{height:100%;background:linear-gradient(90deg,var(--lazur),var(--zar));width:0%;transition:width .3s ease;border-radius:5px}
-  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:4px}
-  .cheer{font-family:var(--display);font-weight:600;font-size:18px;margin:0;color:var(--lazur-deep)}
-  .cheer.pop{animation:cheerpop .45s ease}
-  @keyframes cheerpop{0%{transform:scale(1)}40%{transform:scale(1.14)}100%{transform:scale(1)}}
-  .partlbl{font-size:12.5px;margin:0 0 6px}
-  /* Only worth mentioning where there is a keyboard. */
-  .kbhint{display:none;font-size:12.5px;color:var(--muted);margin:0 0 16px}
-  @media (min-width:820px){ .kbhint{display:block} }
-  .kbhint b{color:var(--lazur-deep)}
+  .qhead{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:0}
   .item{padding:18px 0;border-bottom:1px solid var(--line);transition:opacity .25s ease}
   .item:last-of-type{border-bottom:0}
   /* Answered questions fade back so the one still to do is the one you look at.
@@ -79,7 +73,6 @@
   .item.done:hover,.item.done:focus-within{opacity:1}
   .item.warn .qtext{color:#8A3B1F}
   .qtext{font-weight:600;font-size:17.5px;line-height:1.35;margin-bottom:6px}
-  .qnum{color:var(--lazur-deep);font-weight:600;font-size:.86em;margin-right:7px}
   .qhelp{font-size:14px;color:var(--muted);margin:0 0 10px}
   /* ---- 5-point circle scale: Qoʻshilmayman -> Qoʻshilaman ---- */
   .scale{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px}
@@ -634,14 +627,6 @@ var STEPS = [
     text:'Xohlasangiz, oxirida email qoldiring — obrazingiz uchun batafsil qoʻllanmani yuboramiz.' }
 ];
 
-// Document-level key handler for the question page. Kept in one variable so it can
-// always be removed again: a leftover handler would still hold the previous page's
-// `from`/`to` and would silently write answers on the start and result screens.
-var keyHandler = null;
-function detachKeys(){
-  if (keyHandler){ document.removeEventListener('keydown', keyHandler); keyHandler = null; }
-}
-
 // The opener sits ABOVE the first five questions rather than on a screen of its
 // own: there is no "start" button to press, so the test is already running when
 // the page loads. Only page 0 carries it.
@@ -680,18 +665,15 @@ function renderPage(){
   var html =
     (p === 0 ? introHtml() : '') +
     '<div class="qhead">' +
-      '<h2 class="cheer" id="cheer">' + cheerText(answeredTotal) + '</h2>' +
-      '<span class="pcount" id="pageCount">' + answeredTotal + ' / ' + ITEMS.length + '</span>' +
+      '<span class="ppct" id="ppct">' + pctDone() + '%</span>' +
+      '<span class="pcount" id="pageCount">' + timeLeftText() + '</span>' +
     '</div>' +
-    '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + Math.round(answeredTotal / ITEMS.length * 100) + '%"></div></div>' +
-    '<div class="partlbl muted" id="partlbl" data-base="Savollar ' + (from+1) + '–' + to + '">' +
-      'Savollar ' + (from+1) + '–' + to + timeLeftText() + '</div>' +
-    '<p class="kbhint">Klaviaturada <b>1</b>–<b>5</b> tugmalari bilan ham javob berish mumkin.</p>' +
+    '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
     '<div class="card">';
   for (var i = from; i < to; i++){
     var it = ITEMS[i];
     html += '<div class="item' + (state.answers[i] ? ' done' : '') + '" id="item-' + i + '">' +
-      '<div class="qtext"><span class="qnum">' + (i+1) + '.</span>' + esc(it.t) + '</div>' +
+      '<div class="qtext">' + esc(it.t) + '</div>' +
       (it.h ? '<p class="qhelp">' + esc(it.h) + '</p>' : '') +
       '<div class="scale" role="radiogroup" aria-label="' + (i+1) + '-savol">' +
         '<span class="slab l" aria-hidden="true">' + LABELS[0] + '</span>' +
@@ -774,52 +756,33 @@ function renderPage(){
 
   var radios = app.querySelectorAll('input[type=radio]');
   for (var r = 0; r < radios.length; r++){
-    // Pointer taps. Tapping the circle that is already chosen CLEARS the answer.
-    // (A checked radio fires 'click' but never 'change', so this must live here.)
-    radios[r].onclick = function(){
+    // Tapping the circle that is already chosen CLEARS the answer. (A checked radio
+    // fires 'click' but never 'change', so this must live here.)
+    //
+    // Chrome fires a synthetic 'click' for arrow-key selection too, so 'click' alone
+    // cannot mean "they tapped it". Keyboard-generated clicks report detail 0; only a
+    // real tap toggles an answer off, and only a real tap moves them on — an arrow
+    // key is someone still choosing along the scale.
+    radios[r].onclick = function(e){
       var idx = parseInt(this.name.slice(1), 10);
       var val = parseInt(this.value, 10);
-      if (state.answers[idx] === val){
+      var byPointer = !!(e && e.detail);
+      if (byPointer && state.answers[idx] === val){
         this.checked = false;
         applyAnswer(idx, 0, false);      // cleared -> must not auto-advance
-      } else {
-        applyAnswer(idx, val, true);
+      } else if (state.answers[idx] !== val){
+        applyAnswer(idx, val, byPointer);
       }
     };
-    // Keyboard arrow-key navigation fires 'change' without 'click'.
+    // Native arrow-key navigation inside a radio group fires 'change' without a
+    // 'click'. It records the answer but deliberately does NOT advance: one arrow
+    // press would move them on before they reached the option they wanted.
     radios[r].onchange = function(){
       var idx = parseInt(this.name.slice(1), 10);
       var val = parseInt(this.value, 10);
-      if (state.answers[idx] !== val) applyAnswer(idx, val, true);
+      if (state.answers[idx] !== val) applyAnswer(idx, val, false);
     };
   }
-  // ---- keyboard: 1-5 answers, on desktop ----
-  detachKeys();
-  keyHandler = function(e){
-    if (e.ctrlKey || e.metaKey || e.altKey) return;
-    var el = e.target || {};
-    var tag = (el.tagName || '').toUpperCase();
-    // never steal a keystroke that belongs to a text field
-    if (tag === 'TEXTAREA' || el.isContentEditable) return;
-    if (tag === 'INPUT' && el.type !== 'radio') return;
-    var v = parseInt(e.key, 10);
-    if (!(v >= 1 && v <= 5)) return;
-
-    // answer whichever question is focused; otherwise the first unanswered one
-    var idx = -1, i;
-    if (tag === 'INPUT' && el.name && /^q\d+$/.test(el.name)) idx = parseInt(el.name.slice(1), 10);
-    if (idx < 0 || idx < from || idx >= to){
-      idx = -1;
-      for (i = from; i < to; i++) if (!state.answers[i]){ idx = i; break; }
-    }
-    if (idx < 0) return;                       // page already complete
-    e.preventDefault();
-    // applyAnswer moves on to the next unanswered question, so 3-1-5-2 typing
-    // just works without a second loop here.
-    applyAnswer(idx, v, true);
-  };
-  document.addEventListener('keydown', keyHandler);
-
   if (p > 0) document.getElementById('prevBtn').onclick = function(){ state.page--; renderPage(); };
   document.getElementById('nextBtn').onclick = function(){
     var a = answeredOnPage(p);
@@ -836,17 +799,10 @@ function renderPage(){
   };
 }
 
-// Encouraging heading that changes as the overall progress crosses milestones.
-function cheerText(answered){
-  var total = ITEMS.length;
-  if (answered <= 0) return 'Boshladik 💫';
-  if (answered >= total) return 'Profilingiz tayyor 🎯';
-  var pct = answered / total;
-  if (pct >= 0.75) return 'Deyarli marradamiz 🚀';
-  if (pct >= 0.5)  return 'Shaxsingizning yarmi ochildi 🔓';
-  if (pct >= 0.25) return 'Miyangizni tahlil qilyapmiz 🧠';
-  return 'Yaxshi boshlandi 👌';
+function answeredCount(){
+  return state.answers.filter(function(v){ return v > 0; }).length;
 }
+function pctDone(){ return Math.round(answeredCount() / ITEMS.length * 100); }
 
 // Live time estimate from the user's own pace in THIS session (so a resumed
 // draft doesn't count the hours they were away). Hidden until the pace is stable.
@@ -858,28 +814,22 @@ function timeLeftText(){
   var left = (ITEMS.length - answered) * ((Date.now() - sessionStart) / doneNow);
   if (left <= 0) return '';
   var mins = Math.round(left / 60000);
-  return ' · ' + (mins <= 1 ? 'oz qoldi' : '~' + mins + ' daqiqa qoldi');
+  return mins <= 1 ? 'oz qoldi' : '~' + mins + ' daqiqa qoldi';
 }
 
 function updateCount(missing){
-  var answered = state.answers.filter(function(v){ return v > 0; }).length;
+  var pct = pctDone();
   var fill = document.getElementById('pfill');
-  if (fill) fill.style.width = Math.round(answered / ITEMS.length * 100) + '%';
-  var cheer = document.getElementById('cheer');
-  if (cheer){
-    var t = cheerText(answered);
-    if (cheer.textContent !== t){        // milestone reached -> update + little pop
-      cheer.textContent = t;
-      cheer.classList.remove('pop'); void cheer.offsetWidth; cheer.classList.add('pop');
-    }
-  }
+  if (fill) fill.style.width = pct + '%';
+  var pc = document.getElementById('ppct');
+  if (pc) pc.textContent = pct + '%';
   var el = document.getElementById('pageCount');
   if (el){
     var a = answeredOnPage(state.page);
-    el.textContent = answered + ' / ' + ITEMS.length + (missing && a.done < a.total ? ' · qolgan savollarga javob bering' : '');
+    var short = missing && a.done < a.total;
+    el.textContent = short ? 'Qolgan savollarga javob bering' : timeLeftText();
+    el.className = 'pcount' + (short ? ' warn' : '');
   }
-  var pl = document.getElementById('partlbl');
-  if (pl) pl.textContent = pl.getAttribute('data-base') + timeLeftText();
 }
 
 
@@ -951,7 +901,6 @@ function buildShareCard(s, arch, key, cb){
 }
 
 function renderReport(){
-  detachKeys();
   clearDraft(); // test finished — remove the saved answers from this device
   var s = scoreAnswers(state.answers);
   var arch = archetypeOf(s);
@@ -1138,7 +1087,6 @@ function renderReport(){
 
 // Offer to continue an unfinished test found on this device.
 function renderResume(d){
-  detachKeys();
   var answered = d.answers.filter(function(v){ return v > 0; }).length;
   app.innerHTML =
     '<div class="card">' +
