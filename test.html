@@ -56,6 +56,9 @@
   .btn.ghost:hover{border-color:var(--lazur)}
   .nav{display:flex;justify-content:flex-end;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0 0}
   .navmsg{margin:0;font-size:14px;color:#8A3B1F}
+  /* Scroll room below the questions. The last row on a page has to be able to rise
+     to wherever the pointer is, and the browser will not scroll past the end. */
+  .tailspace{height:48vh}
   /* ---- step bar: back on the left, progress on the right ---- */
   .stepbar{margin:0 0 18px}
   .stepbarin{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -276,7 +279,7 @@
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   @media print{
     body{background:#fff}
-    .btn,.nav,.actions,.capture,.foot,.weave,.stepbar{display:none !important}
+    .btn,.nav,.actions,.capture,.foot,.weave,.stepbar,.tailspace{display:none !important}
     .card{border:0;padding:0}
   }
 </style>
@@ -446,6 +449,11 @@ var PAGES = Math.ceil(ITEMS.length / PAGE_SIZE);
 // that could identify the student even before anything is sent.
 var state = { answers: new Array(ITEMS.length).fill(0), page: 0 };
 var app = document.getElementById('app');
+
+// JS smooth scrolling is not covered by the CSS reduced-motion rule, so ask directly.
+function smoothScroll(){
+  return !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
 
 function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
 
@@ -710,7 +718,8 @@ function renderPage(){
     '<div class="nav">' +
       '<p class="navmsg" id="navMsg" role="status"></p>' +
       '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? 'Natijani koʻrish' : 'Keyingi') + '</button>' +
-    '</div>';
+    '</div>' +
+    '<div class="tailspace" aria-hidden="true"></div>';
   app.innerHTML = html;
   window.scrollTo({top:0, behavior:'auto'});
 
@@ -737,16 +746,36 @@ function renderPage(){
     return -1;
   }
 
-  // Bring the next unanswered question up. Focus AND scroll: the keyboard path
-  // needs the focus, the pointer path needs the scroll.
-  function goToNextUnanswered(){
+  // Vertical middle of a question's row of circles, in viewport coordinates.
+  function rowMid(idx){
+    var el = document.getElementById('item-' + idx);
+    var row = el && el.querySelector('.dots');
+    if (!row) return null;
+    var r = row.getBoundingClientRect();
+    return r.top + r.height / 2;
+  }
+
+  // Bring the next unanswered question up. When they answered with the pointer we
+  // scroll the NEXT row of circles to exactly where the last one was, so the mouse
+  // is already sitting on the next question and never has to travel. Every row has
+  // the same layout, so matching the row also lines up all five circles.
+  function goToNextUnanswered(fromIdx){
     var i = firstUnanswered();
     if (i < 0) return false;
     var el = document.getElementById('item-' + i);
     if (!el) return false;
     var radio = el.querySelector('input[type=radio]');
     if (radio) radio.focus({ preventScroll: true });
-    el.scrollIntoView({behavior:'smooth', block:'center'});
+
+    var anchor = (fromIdx === null || fromIdx === undefined) ? null : rowMid(fromIdx);
+    var nextRow = el.querySelector('.dots');
+    var how = smoothScroll() ? 'smooth' : 'auto';
+    if (anchor !== null && nextRow){
+      var r = nextRow.getBoundingClientRect();
+      window.scrollBy({ top: (r.top + r.height / 2) - anchor, behavior: how });
+    } else {
+      el.scrollIntoView({ behavior: how, block: 'center' });
+    }
     return true;
   }
 
@@ -771,7 +800,7 @@ function renderPage(){
     paintItem(idx);
     updateCount();
     saveDraft();
-    if (val && mayAdvance && wasCurrent && !tryAutoAdvance()) goToNextUnanswered();
+    if (val && mayAdvance && wasCurrent && !tryAutoAdvance()) goToNextUnanswered(idx);
   }
 
   var radios = app.querySelectorAll('input[type=radio]');
