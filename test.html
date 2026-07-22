@@ -197,8 +197,7 @@
   /* ---- the opener, sitting above question 1. No form, no start button. ---- */
   .starthead{text-align:center;margin:6px 0 26px}
   .startmark{display:block;width:58px;height:58px;margin:0 auto 14px}
-  .starthead h1{font-size:clamp(27px,7vw,40px);margin:0 0 8px}
-  .startsub{color:var(--muted);font-size:15.5px;margin:0}
+  .starthead h1{font-size:clamp(27px,7vw,40px);margin:0}
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:0 0 26px}
   .step{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--sc);
         border-radius:20px 20px 14px 14px;padding:16px 18px 20px;display:flex;flex-direction:column}
@@ -650,7 +649,6 @@ var STEPS = [
 function introHtml(){
   return '<div class="starthead">' + BRAND_MARK +
       '<h1>Siz qaysi obrazsiz?</h1>' +
-      '<p class="startsub">Bepul shaxsiyat testi · 50 ta savol · ~7 daqiqa</p>' +
     '</div>' +
     '<div class="steps">' +
       STEPS.map(function(st, i){
