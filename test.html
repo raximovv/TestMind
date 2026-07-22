@@ -109,21 +109,23 @@
     .slab.r{order:2;flex:1 1 40%;text-align:right}
     .dots{order:3;flex:1 1 100%;justify-content:space-between;gap:4px;margin-top:2px}
   }
+  /* A dot on a spectrum, not a verdict. A hard "Yuqori" chip tells a 15-year-old they
+     ARE something; a dot near the middle honestly shows they are near the middle. */
+  .spec{margin:10px 0 12px}
+  .poles{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;
+         color:var(--muted);margin-bottom:7px}
+  .track{position:relative;height:10px;border-radius:5px;
+         background:linear-gradient(90deg,#E7EFF1,#CBDFE6)}
+  .midzone{position:absolute;left:37.5%;width:25%;top:0;bottom:0;background:#FFFFFF;opacity:.5}
+  .knob{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--lazur);
+        border:3px solid #fff;box-shadow:0 1px 5px rgba(11,32,39,.25);transform:translate(-50%,-50%)}
+  .midnote{font-size:12.5px;color:var(--muted);margin:8px 0 0;font-style:italic}
   .trait{padding:18px 0;border-bottom:1px solid var(--line)}
   .trait:last-of-type{border-bottom:0}
   .trow{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
   .tname{font-family:var(--display);font-weight:600;font-size:18px}
   .tmeta{display:flex;align-items:center;gap:10px}
   .score{font-weight:600;color:var(--lazur-deep)}
-  .chip{font-size:12.5px;font-weight:500;border:1px solid var(--line);border-radius:99px;padding:3px 10px;color:var(--muted)}
-  .chip.hi{border-color:var(--zar);color:var(--zar)}
-  .board{display:flex;gap:10px;justify-content:space-between;margin:20px 0 26px}
-  .col{flex:1;display:flex;flex-direction:column;align-items:center;gap:7px;min-width:0}
-  .cval{font-weight:600;font-size:14px;color:var(--lazur-deep)}
-  .vtrack{display:flex;flex-direction:column;gap:3px}
-  .vseg{width:15px;height:9px;background:#E2EBEC;transform:skewX(-16deg);border-radius:2px}
-  .vseg.on{background:var(--lazur)}
-  .clab{font-size:12px;text-align:center;color:var(--muted);line-height:1.25;min-height:32px}
   .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;color:var(--zar);border:1px solid var(--zar);border-radius:99px;padding:3px 10px;margin-bottom:12px}
   .lede{font-size:17px;line-height:1.5;margin:0 0 16px}
   .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
@@ -155,6 +157,15 @@
   .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
             font-size:15px;line-height:1.45}
   .strength b{color:var(--fam)}
+  /* Naming the cost of a strength is what stops the result reading as a horoscope. */
+  .watch{margin:10px 0 0;padding:12px 14px;border-radius:11px;background:#FBF3E4;
+         border:1px solid #EBDCBB;font-size:15px;line-height:1.45;text-align:left}
+  .watch b{color:#8A6520}
+  .note{margin:14px 0 0;padding:13px 15px;border-radius:11px;border:1px dashed #C3D3D8;
+        background:#FBFDFD;text-align:left;font-size:13.5px;color:var(--muted);line-height:1.55}
+  .note b{color:var(--fam)}
+  .note p{margin:0}
+  .note p + p{margin-top:7px}
   .figure{margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);text-align:left}
   .figlbl{font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
           color:var(--muted);margin-bottom:6px}
@@ -297,6 +308,16 @@ function scoreAnswers(answers){
 
 var TRAITS = {ES:'Hissiy barqarorlik', E:'Kirishimlilik', O:'Yangilikka ochiqlik', A:'Kelishuvchanlik', C:'Masʼuliyatlilik'};
 
+// Both ends of every scale get a name a teenager would be content to be. Big Five
+// traits are amounts, not preferences, so without this the low end reads as "worse".
+var POLES = {
+  ES: ['Sezgir', 'Xotirjam'],
+  E:  ['Mulohazali', 'Kirishimli'],
+  O:  ['Amaliy', 'Kashfiyotchi'],
+  A:  ['Mustaqil', 'Hamkor'],
+  C:  ['Moslashuvchan', 'Rejali']
+};
+
 var TEXTS = {
   ES:{past:'Hissiyotlarni boshqalardan kuchliroq his qilishingiz mumkin. Bu kamchilik emas: bunday odamlar koʻpincha sezgir va ehtiyotkor boʻladi. Oʻzingizga qulay ish muhitini tanlash muhim.',
       orta:'Koʻp odamlar kabi baʼzi vaziyatlarda xavotirlanasiz, boshqalarida xotirjamsiz. Bu tabiiy holat.',
@@ -330,6 +351,26 @@ function archetypeKeyOf(s){
   return pair[0] + '|' + pair[1];
 }
 function archetypeOf(s){ return ARCHETYPES[archetypeKeyOf(s)]; }
+
+// The archetype is the two strongest traits, so it hinges entirely on which trait
+// ranks 2nd and which ranks 3rd. When those two are nearly level the result is close
+// to a coin flip, and simulation says that happens to roughly 4 respondents in 10.
+// Rather than round that into false certainty the way most type tests do, we name the
+// runner-up out loud. Returns null when the result is clear-cut.
+var NEAR_TIE_GAP = 0.2;
+function nearTieOf(s){
+  var ranked = TRAIT_ORDER.slice().sort(function(a,b){
+    return (s[b] - s[a]) || (TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b));
+  });
+  var gap = s[ranked[1]] - s[ranked[2]];
+  if (gap > NEAR_TIE_GAP + 1e-9) return null;
+  var pair = [ranked[0], ranked[2]].sort(function(a,b){
+    return TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b);
+  });
+  var key = pair[0] + '|' + pair[1];
+  if (key === archetypeKeyOf(s) || !ARCHETYPES[key]) return null;
+  return { key: key, arch: ARCHETYPES[key], gap: gap };
+}
 
 function levelOf(mean){ if (mean <= 2.4) return 'Past'; if (mean >= 3.6) return 'Yuqori'; return 'Oʻrta'; }
 function textKey(level){ return level === 'Past' ? 'past' : (level === 'Yuqori' ? 'yuqori' : 'orta'); }
@@ -680,20 +721,6 @@ function updateCount(missing){
   if (pl) pl.textContent = pl.getAttribute('data-base') + timeLeftText();
 }
 
-function vbarHtml(mean){
-  var on = Math.round(mean * 3), h = '<div class="vtrack" aria-hidden="true">';
-  for (var i = 15; i >= 1; i--) h += '<span class="vseg' + (i <= on ? ' on' : '') + '"></span>';
-  return h + '</div>';
-}
-function boardHtml(s){
-  var h = '<div class="board">';
-  ['ES','E','O','A','C'].forEach(function(k){
-    h += '<div class="col"><span class="cval">' + (Math.round(s[k]*10)/10).toFixed(1) + '</span>' +
-         vbarHtml(s[k]) +
-         '<span class="clab">' + TRAITS[k] + '</span></div>';
-  });
-  return h + '</div>';
-}
 
 // ---------- Shareable result image (1080x1350, drawn locally, no server) ----------
 function wrapText(g, text, x, y, maxW, lineH, maxLines){
@@ -771,6 +798,7 @@ function renderReport(){
   var dateStr = ('0'+today.getDate()).slice(-2) + '.' + ('0'+(today.getMonth()+1)).slice(-2) + '.' + today.getFullYear();
   var fam = FAMILIES[arch.fam];
   var archKey = archetypeKeyOf(s);
+  var tie = nearTieOf(s);
 
   // The hero comes first and carries no numbers: a teenager should see who they are
   // before they see any score. The five scores live one tap away, under «Batafsil».
@@ -787,6 +815,15 @@ function renderReport(){
           arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
         '</ul>' +
         '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
+        '<p class="watch"><b>Eʼtibor bering:</b> ' + arch.watch + '</p>' +
+        // Honesty block. Most type tests round a borderline result into certainty and
+        // hand a teenager a fixed label; both are things we deliberately do not do.
+        '<div class="note">' +
+          (tie ? '<p>Natijangiz <b>' + tie.arch.name + '</b> obraziga ham juda yaqin — ' +
+                 'bu ikkisi orasidagi farq juda kichik. Ikkala tavsifni ham oʻqib koʻring.</p>' : '') +
+          '<p>Bu — bugungi suratingiz, oʻzgarmas yorliq emas. 14–16 yoshda shaxsiyat hali ' +
+          'shakllanmoqda: bir necha oydan keyin natija boshqacha chiqishi mumkin, va bu normal.</p>' +
+        '</div>' +
         // A real Uzbek figure known for the same quality. Deliberately worded as
         // "who had this strength", never "you are this person".
         '<div class="figure">' +
@@ -817,15 +854,26 @@ function renderReport(){
         'boʻlib sizga yuboramiz. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
         '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
     '</div>' +
-    '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>' +
-      boardHtml(s);
+    '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>';
   ['ES','E','O','A','C'].forEach(function(k){
     var mean = s[k], lvl = levelOf(mean);
+    var pct = Math.max(0, Math.min(100, (mean - 1) / 4 * 100));
+    var middle = lvl === 'Oʻrta';
     html += '<div class="trait">' +
       '<div class="trow"><span class="tname">' + TRAITS[k] + '</span>' +
       '<span class="tmeta"><span class="score">' + (Math.round(mean*10)/10).toFixed(1) + ' / 5</span>' +
-      '<span class="chip' + (lvl === 'Yuqori' ? ' hi' : '') + '">' + lvl + '</span></span></div>' +
+      '</span></div>' +
+      '<div class="spec">' +
+        '<div class="poles"><span>' + POLES[k][0] + '</span><span>' + POLES[k][1] + '</span></div>' +
+        '<div class="track" role="img" aria-label="' + TRAITS[k] + ': ' +
+          (Math.round(mean*10)/10).toFixed(1) + ' / 5">' +
+          '<span class="midzone"></span>' +
+          '<span class="knob" style="left:' + pct.toFixed(1) + '%"></span>' +
+        '</div>' +
+      '</div>' +
       '<p>' + TEXTS[k][textKey(lvl)] + '</p>' +
+      (middle ? '<p class="midnote">Bu xususiyatda siz oʻrtadasiz — vaziyatga qarab ' +
+                'ikkala tomon ham sizga xos boʻlishi mumkin.</p>' : '') +
       '</div>';
   });
   html += '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +

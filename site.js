@@ -200,6 +200,7 @@ function buildGallery(full){
             + '<div class="cbody"><h4 class="cname">'+a.name+'</h4>'
             + (full ? '<p class="cline">'+a.lines[0]+'</p>' : '')
             + '<p class="cstr">Kuchli tomoni: '+a.strength+'</p>'
+            + (full ? '<p class="cwatch">Eʼtibor bering: '+a.watch+'</p>' : '')
             + '<p class="cfig">Tarixdan: <b>'+a.figure.who+'</b> · '+a.figure.years+'</p>'
             + '</div></article>';
     }

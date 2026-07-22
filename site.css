@@ -116,6 +116,8 @@ section{padding:60px 0}
        color:var(--famc);margin:0 0 5px;line-height:1.25}
 .cline{font-size:13.5px;color:var(--ink);margin:0 0 8px;line-height:1.45}
 .cstr{font-size:13.5px;color:var(--muted);margin:0;line-height:1.45}
+.cwatch{font-size:13px;color:#7A5C22;background:#FBF3E4;border-radius:8px;
+        padding:8px 10px;margin:9px 0 0;line-height:1.45}
 .cfig{font-size:12.5px;color:var(--muted);margin:9px 0 0;padding-top:9px;
       border-top:1px solid var(--line)}
 .cfig b{color:var(--famc);font-weight:600}
