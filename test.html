@@ -59,23 +59,10 @@
   /* Scroll room below the questions: the last row on a page has to be able to rise
      to wherever the pointer is, and the browser will not scroll past the end.
      min-height, not height, so the content inside can never be clipped. */
-  .tailspace{min-height:40vh;margin-top:34px;padding:64px 24px 48px;background:#E7EFF1;
-             clip-path:polygon(0 0,50% 30px,100% 0,100% 100%,0 100%);
-             display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px}
-  .tailtips{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 28px;max-width:1000px}
-  .tailtips span{display:inline-flex;align-items:center;gap:9px;font-size:14px;color:var(--muted)}
-  .tailtips span::before{content:'';flex:0 0 auto;width:7px;height:7px;border-radius:50%;
-                         background:var(--lazur-soft)}
-  .tailweave{width:min(360px,70%);height:7px;border-radius:4px;opacity:.4;
-             background:repeating-linear-gradient(135deg,var(--lazur) 0 8px,transparent 8px 16px)}
-  @media (max-width:560px){
-    .tailspace{padding:44px 18px 32px;gap:18px}
-    .tailtips{flex-direction:column;align-items:center;gap:12px;text-align:center}
-    /* Stacked and centred, a leading dot ends up floating beside a two-line tip
-       instead of in front of it. Drop the dots; the spacing already separates them. */
-    .tailtips span{display:block;font-size:13.5px;max-width:32ch}
-    .tailtips span::before{display:none}
-  }
+  /* Blank scroll room, nothing in it. The last row of a step still has to climb to
+     wherever the pointer is and the browser will not scroll past the end of the page;
+     below ~36vh the fifth circle stops arriving and the click lands on nothing. */
+  .tailspace{height:40vh}
   /* ---- step bar: back on the left, progress on the right ---- */
   .stepbar{margin:0 0 18px}
   .stepbarin{background:var(--card);border:1px solid var(--line);border-radius:14px;
@@ -736,16 +723,7 @@ function renderPage(){
       '<p class="navmsg" id="navMsg" role="status"></p>' +
       '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? 'Natijani koʻrish' : 'Keyingi') + '</button>' +
     '</div>' +
-    // The scroll room has to exist; leaving it blank made the foot of the page look
-    // broken. Fill it with the three things worth repeating while they answer.
-    '<div class="tailspace">' +
-      '<div class="tailtips">' +
-        '<span>Toʻgʻri yoki notoʻgʻri javob yoʻq</span>' +
-        '<span>Uzoq oʻylamang — birinchi javob odatda eng toʻgʻrisi</span>' +
-        '<span>Javoblaringiz ismsiz saqlanadi</span>' +
-      '</div>' +
-      '<div class="tailweave" aria-hidden="true"></div>' +
-    '</div>';
+    '<div class="tailspace" aria-hidden="true"></div>';
   app.innerHTML = html;
   window.scrollTo({top:0, behavior:'auto'});
 
