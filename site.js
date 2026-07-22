@@ -211,6 +211,29 @@ function buildGallery(full){
   return html;
 }
 
+// Full-bleed colour band per family, characters in a row - the layout used by
+// 16personalities.com/personality-types. Each character links to its own page.
+function buildBands(){
+  var byFam = {}, html = '', i, j, k, f, fam, keys, a;
+  for (k in ARCHETYPES){ a = ARCHETYPES[k]; (byFam[a.fam] = byFam[a.fam] || []).push(k); }
+  for (i = 0; i < FAM_ORDER.length; i++){
+    f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
+    html += '<section class="famband" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
+          + '<div class="wrap"><h2 class="famtitle">'+fam.name+'</h2>'
+          + '<p class="famsub">'+FAM_NOTES[f]+'</p><div class="famrow">';
+    for (j = 0; j < keys.length; j++){
+      a = ARCHETYPES[keys[j]];
+      html += '<a class="ftype" href="obraz-'+a.slug+'.html">'
+            + '<span class="ftart">'+charSvg(keys[j], a.name)+'</span>'
+            + '<span class="ftname">'+a.name+'</span>'
+            + '<span class="ftdesc">'+a.lines[0]+'</span>'
+            + '<span class="ftfig">'+a.figure.who+'</span></a>';
+    }
+    html += '</div></div></section>';
+  }
+  return html;
+}
+
 /* ================= shared behaviour ================= */
 
 // If an unfinished test is saved on this device, say so on every start button.
@@ -229,6 +252,8 @@ function markResumeCtas(){
 function mountPage(){
   var scene = document.getElementById('scene');
   if (scene) scene.innerHTML = buildScene();
+  var bandBox = document.getElementById('bands');
+  if (bandBox) bandBox.innerHTML = buildBands();
   var gal = document.getElementById('gallery');
   if (gal) gal.innerHTML = buildGallery(gal.getAttribute('data-full') === '1');
   var v;
