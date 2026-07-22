@@ -70,12 +70,17 @@
   .kbhint{display:none;font-size:12.5px;color:var(--muted);margin:0 0 16px}
   @media (min-width:820px){ .kbhint{display:block} }
   .kbhint b{color:var(--lazur-deep)}
-  .item{padding:18px 0;border-bottom:1px solid var(--line)}
+  .item{padding:18px 0;border-bottom:1px solid var(--line);transition:opacity .25s ease}
   .item:last-of-type{border-bottom:0}
+  /* Answered questions fade back so the one still to do is the one you look at.
+     Hover or keyboard focus brings a faded question back to full strength, so
+     changing an earlier answer never means squinting at it. */
+  .item.done{opacity:.45}
+  .item.done:hover,.item.done:focus-within{opacity:1}
   .item.warn .qtext{color:#8A3B1F}
-  .qtext{font-weight:500;margin-bottom:4px}
-  .qnum{color:var(--lazur-deep);font-weight:600;margin-right:6px}
-  .qhelp{font-size:13.5px;color:var(--muted);margin:0 0 10px}
+  .qtext{font-weight:600;font-size:17.5px;line-height:1.35;margin-bottom:6px}
+  .qnum{color:var(--lazur-deep);font-weight:600;font-size:.86em;margin-right:7px}
+  .qhelp{font-size:14px;color:var(--muted);margin:0 0 10px}
   /* ---- 5-point circle scale: Qoʻshilmayman -> Qoʻshilaman ---- */
   .scale{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:12px}
   .slab{font-size:13px;line-height:1.25;color:var(--muted);flex:0 0 auto;max-width:104px}
@@ -86,11 +91,15 @@
        padding:5px;cursor:pointer;border-radius:50%;user-select:none;
        -webkit-tap-highlight-color:transparent}
   .opt input{position:absolute;opacity:0;pointer-events:none}
-  .dot{display:block;border-radius:50%;background:transparent;border:2px solid var(--line);
+  .dot{display:flex;align-items:center;justify-content:center;border-radius:50%;
+       background:transparent;border:2.5px solid var(--line);
        transition:background .15s ease,border-color .15s ease,transform .12s ease}
-  .opt.s1 .dot,.opt.s5 .dot{width:clamp(38px,10.5vw,46px);height:clamp(38px,10.5vw,46px)}
-  .opt.s2 .dot,.opt.s4 .dot{width:clamp(33px,9vw,39px);height:clamp(33px,9vw,39px)}
-  .opt.s3 .dot{width:clamp(28px,7.5vw,32px);height:clamp(28px,7.5vw,32px)}
+  /* A tick inside the chosen circle: colour alone is not enough to read at a
+     glance, and it is what makes the choice feel confirmed. */
+  .opt.sel .dot::after{content:'✓';color:#fff;font-weight:700;line-height:1}
+  .opt.s1 .dot,.opt.s5 .dot{width:clamp(44px,11.6vw,54px);height:clamp(44px,11.6vw,54px);font-size:20px}
+  .opt.s2 .dot,.opt.s4 .dot{width:clamp(37px,9.9vw,45px);height:clamp(37px,9.9vw,45px);font-size:17px}
+  .opt.s3 .dot{width:clamp(31px,8.2vw,37px);height:clamp(31px,8.2vw,37px);font-size:14px}
   /* resting ring colours: warm on the disagree side, teal on the agree side */
   .opt.s1 .dot,.opt.s2 .dot{border-color:var(--viol-soft)}
   .opt.s4 .dot,.opt.s5 .dot{border-color:var(--lazur-soft)}
@@ -133,8 +142,6 @@
   .score{font-weight:600;color:var(--lazur-deep)}
   .badge{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.4px;color:var(--zar);border:1px solid var(--zar);border-radius:99px;padding:3px 10px;margin-bottom:12px}
   .lede{font-size:17px;line-height:1.5;margin:0 0 16px}
-  .meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 22px;padding:0;list-style:none}
-  .meta li{font-size:13px;color:var(--lazur-deep);background:#E7EFF1;border-radius:99px;padding:5px 12px}
   .more{margin-top:20px;border-top:1px solid var(--line);padding-top:12px}
   .more summary{cursor:pointer;font-size:14px;font-weight:500;color:var(--lazur-deep);list-style:none}
   .more summary::-webkit-details-marker{display:none}
@@ -177,12 +184,7 @@
   .figwho{font-family:var(--display);font-weight:700;font-size:18px;color:var(--fam)}
   .figyr{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-left:6px}
   .figwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
-  /* ---- start screen: show what they can get before asking for anything ---- */
-  .teaser{display:grid;grid-template-columns:repeat(5,1fr);gap:0 2px;margin:2px 0 8px;
-          background:linear-gradient(180deg,#EAF1F3,#F8FBFB);border-radius:12px;padding:12px 8px 4px}
-  .teaser svg{display:block;width:100%;height:auto}
-  .teasercap{text-align:center;font-size:13.5px;color:var(--muted);margin:0 0 22px}
-  /* ---- start screen: three steps, then the button. No form. ---- */
+  /* ---- the opener, sitting above question 1. No form, no start button. ---- */
   .starthead{text-align:center;margin:6px 0 26px}
   .startmark{display:block;width:58px;height:58px;margin:0 auto 14px}
   .starthead h1{font-size:clamp(27px,7vw,40px);margin:0 0 8px}
@@ -196,9 +198,6 @@
            color:var(--sc);background:var(--ss);border-radius:99px;padding:4px 11px;margin:0 0 9px}
   .step h2{font-size:18px;margin:0 0 6px;color:var(--ink)}
   .step p{font-size:14.5px;color:var(--muted);margin:0}
-  .startcta{text-align:center;margin:0 0 26px}
-  .startcta .btn{font-size:17px;padding:14px 36px;border-radius:12px}
-  .startcta .meta{justify-content:center;margin:14px 0 0}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -247,20 +246,23 @@
     /* four actions in one row instead of a 2x2 block */
     .actions{grid-template-columns:repeat(4,1fr)}
     .actions .wide{grid-column:auto}
-    /* the ten characters fit on a single line */
-    .teaser{grid-template-columns:repeat(10,1fr);padding:16px 12px 6px}
     .starthead{margin:14px 0 34px}
     .steps{gap:22px;margin-bottom:32px}
     .step{padding:18px 22px 24px}
     .stepart svg{max-width:200px}
-    /* Questions in the 16Personalities shape: the two poles anchored to the far
-       edges of the row, the circles spread across the middle. */
-    .qtext,.qhelp{max-width:76ch}
-    .scale{justify-content:space-between;gap:20px;margin-top:16px}
+    /* Questions in the 16Personalities shape: big type, big targets, the two
+       poles anchored to the far edges with the circles spread across the middle. */
+    .item{padding:28px 0}
+    .qtext{font-size:23px;line-height:1.3;margin-bottom:2px;max-width:76ch}
+    .qhelp{font-size:15px;max-width:76ch}
+    .scale{justify-content:space-between;gap:20px;margin-top:18px}
     /* Equal basis, not auto: the two labels are different lengths, and with an
        auto basis the longer one would shove the circles off centre. */
-    .slab{flex:0 0 150px;max-width:150px}
-    .dots{flex:1 1 auto;justify-content:center;gap:clamp(16px,3.6vw,46px)}
+    .slab{flex:0 0 150px;max-width:150px;font-size:15.5px}
+    .dots{flex:1 1 auto;justify-content:center;gap:clamp(18px,3.8vw,48px)}
+    .opt.s1 .dot,.opt.s5 .dot{width:78px;height:78px;font-size:30px}
+    .opt.s2 .dot,.opt.s4 .dot{width:64px;height:64px;font-size:25px}
+    .opt.s3 .dot{width:52px;height:52px;font-size:20px}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   @media print{
@@ -640,14 +642,11 @@ function detachKeys(){
   if (keyHandler){ document.removeEventListener('keydown', keyHandler); keyHandler = null; }
 }
 
-function renderStart(){
-  detachKeys();
-  // The ten characters are the hook, so they sit under the button — but with no names
-  // and no trait labels, so seeing them can't teach anyone how to game their answers.
-  var teaser = Object.keys(TM_ART).map(function(k){ return charSvg(k); }).join('');
-
-  app.innerHTML =
-    '<div class="starthead">' + BRAND_MARK +
+// The opener sits ABOVE the first five questions rather than on a screen of its
+// own: there is no "start" button to press, so the test is already running when
+// the page loads. Only page 0 carries it.
+function introHtml(){
+  return '<div class="starthead">' + BRAND_MARK +
       '<h1>Siz qaysi obrazsiz?</h1>' +
       '<p class="startsub">Bepul shaxsiyat testi · 50 ta savol · ~7 daqiqa</p>' +
     '</div>' +
@@ -660,21 +659,7 @@ function renderStart(){
           '<p>' + st.text + '</p>' +
         '</section>';
       }).join('') +
-    '</div>' +
-    '<div class="startcta">' +
-      '<button class="btn" id="startBtn">Testni boshlash</button>' +
-      '<ul class="meta"><li>Bepul</li><li>Anonim</li>' +
-        '<li>Roʻyxatdan oʻtish shart emas</li></ul>' +
-    '</div>' +
-    '<div class="teaser" aria-hidden="true">' + teaser + '</div>' +
-    '<p class="teasercap">Oʻnta obrazdan qaysi biri sizniki?</p>';
-
-  // Nothing to fill in: the first tap is the first question.
-  document.getElementById('startBtn').onclick = function(){
-    state.page = 0;
-    saveDraft();
-    renderPage();
-  };
+    '</div>';
 }
 
 function answeredOnPage(p){
@@ -693,6 +678,7 @@ function renderPage(){
   // otherwise editing an answer on a completed page would yank the page away.
   var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
   var html =
+    (p === 0 ? introHtml() : '') +
     '<div class="qhead">' +
       '<h2 class="cheer" id="cheer">' + cheerText(answeredTotal) + '</h2>' +
       '<span class="pcount" id="pageCount">' + answeredTotal + ' / ' + ITEMS.length + '</span>' +
@@ -704,7 +690,7 @@ function renderPage(){
     '<div class="card">';
   for (var i = from; i < to; i++){
     var it = ITEMS[i];
-    html += '<div class="item" id="item-' + i + '">' +
+    html += '<div class="item' + (state.answers[i] ? ' done' : '') + '" id="item-' + i + '">' +
       '<div class="qtext"><span class="qnum">' + (i+1) + '.</span>' + esc(it.t) + '</div>' +
       (it.h ? '<p class="qhelp">' + esc(it.h) + '</p>' : '') +
       '<div class="scale" role="radiogroup" aria-label="' + (i+1) + '-savol">' +
@@ -736,31 +722,54 @@ function renderPage(){
     var labels = itemEl.querySelectorAll('.opt');
     for (var k = 0; k < labels.length; k++) labels[k].classList.remove('sel');
     var v = state.answers[idx];
+    // Answered questions fade back so the eye lands on the one still to do.
+    if (v) itemEl.classList.add('done'); else itemEl.classList.remove('done');
     if (v){
       var chosen = itemEl.querySelector('.opt.s' + v);
       if (chosen) chosen.classList.add('sel');
     }
   }
 
+  function firstUnanswered(){
+    for (var i = from; i < to; i++) if (!state.answers[i]) return i;
+    return -1;
+  }
+
+  // Bring the next unanswered question up. Focus AND scroll: the keyboard path
+  // needs the focus, the pointer path needs the scroll.
+  function goToNextUnanswered(){
+    var i = firstUnanswered();
+    if (i < 0) return false;
+    var el = document.getElementById('item-' + i);
+    if (!el) return false;
+    var radio = el.querySelector('input[type=radio]');
+    if (radio) radio.focus({ preventScroll: true });
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+    return true;
+  }
+
   // Gentle auto-advance: only the first time this page becomes complete, and
   // never on the last page (seeing the result should be a deliberate tap).
   function tryAutoAdvance(){
-    if (pageWasComplete || p >= PAGES - 1) return;
+    if (pageWasComplete || p >= PAGES - 1) return false;
     var ap = answeredOnPage(p);
-    if (ap.done === ap.total){
-      pageWasComplete = true;
-      setTimeout(function(){
-        if (state.page === p){ state.page = p + 1; renderPage(); }
-      }, 450);
-    }
+    if (ap.done !== ap.total) return false;
+    pageWasComplete = true;
+    setTimeout(function(){
+      if (state.page === p){ state.page = p + 1; renderPage(); }
+    }, 450);
+    return true;
   }
 
   function applyAnswer(idx, val, mayAdvance){
+    // Only move forward if this was the question they were ON. Editing an earlier
+    // answer must leave them where they are rather than yanking them down the page.
+    var wasCurrent = firstUnanswered() === idx;
     state.answers[idx] = val;
     paintItem(idx);
     updateCount();
     saveDraft();
-    if (val && mayAdvance) tryAutoAdvance();
+    if (val && mayAdvance && wasCurrent && !tryAutoAdvance()) goToNextUnanswered();
   }
 
   var radios = app.querySelectorAll('input[type=radio]');
@@ -805,20 +814,9 @@ function renderPage(){
     }
     if (idx < 0) return;                       // page already complete
     e.preventDefault();
+    // applyAnswer moves on to the next unanswered question, so 3-1-5-2 typing
+    // just works without a second loop here.
     applyAnswer(idx, v, true);
-
-    // move on to the next unanswered question so 3-1-5-2 typing just works
-    for (i = from; i < to; i++){
-      if (!state.answers[i]){
-        var nextEl = document.getElementById('item-' + i);
-        if (nextEl){
-          var r = nextEl.querySelector('input[type=radio]');
-          if (r) r.focus();
-          nextEl.scrollIntoView({behavior:'smooth', block:'center'});
-        }
-        return;
-      }
-    }
   };
   document.addEventListener('keydown', keyHandler);
 
@@ -1054,7 +1052,7 @@ function renderReport(){
     clearDraft();
     state = { answers:new Array(ITEMS.length).fill(0), page:0 };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
-    renderStart();
+    renderPage();
   };
   // Telegram is how this actually spreads here, so make the message one tap away.
   document.getElementById('copyBtn').onclick = function(){
@@ -1162,14 +1160,14 @@ function renderResume(d){
     clearDraft();
     state = { answers:new Array(ITEMS.length).fill(0), page:0 };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
-    renderStart();
+    renderPage();
   };
 }
 
 function boot(){
   var d = loadDraft();
   if (d && d.answers.some(function(v){ return v > 0; })) renderResume(d);
-  else renderStart();
+  else renderPage();
 }
 
 boot();
