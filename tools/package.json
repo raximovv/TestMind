@@ -1,0 +1,17 @@
+{
+  "name": "testmind-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Build + verification tooling for the TestMind site (dev only; not served).",
+  "scripts": {
+    "test:e2e": "node e2e.js",
+    "test:keyboard": "node keyboard.js",
+    "test:capture": "node capture.js",
+    "test:autosave": "node autosave_test.js",
+    "test:anchor": "node anchor.js",
+    "audit": "node audit.js"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^23.0.0"
+  }
+}

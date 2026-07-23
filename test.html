@@ -578,6 +578,10 @@ function sendLead(email, archName, done){
     fetch(SHEET_URL, {
       method: 'POST', mode: 'no-cors', keepalive: true,
       headers: {'Content-Type':'text/plain;charset=UTF-8'}, body: JSON.stringify(payload)
+    // no-cors gives an opaque response: this resolves on a successful *send*, not on
+    // confirmed storage. So done(true) means "left the device", and the UI says
+    // "yuborildi" (sent), not "received". A true delivery receipt would need the
+    // Apps Script to answer with CORS headers so a normal fetch could read its reply.
     }).then(function(){ leadSent = true; done(true); })['catch'](function(){ done(false); });
   } catch (e) { done(false); }
 }
@@ -608,6 +612,10 @@ function sendResearch(done){
 }
 
 // Capture drop-off: report an unfinished attempt when the page is closed/hidden.
+// NOTE for Sheet analysis: switching apps fires 'abandoned', and if the student
+// comes back and finishes, a later 'completed' row is written too. Both rows carry
+// the SAME attempt id (anonId), so reconcile per id — an id with a 'completed' row
+// was NOT abandoned. Counting raw 'abandoned' rows overstates drop-off.
 window.addEventListener('pagehide', function(){ sendStats('abandoned'); });
 document.addEventListener('visibilitychange', function(){
   if (document.visibilityState === 'hidden') sendStats('abandoned');
@@ -733,10 +741,14 @@ function renderPage(){
     '<div class="card">';
   for (var i = from; i < to; i++){
     var it = ITEMS[i];
+    // The radiogroup is labelled BY the question statement (and its help line), not
+    // with a bare "N-savol": a screen reader should read the actual statement when
+    // it lands on the answer scale, not just a number.
+    var labelledBy = 'qtext-' + i + (it.h ? ' qhelp-' + i : '');
     html += '<div class="item' + (state.answers[i] ? ' done' : '') + '" id="item-' + i + '">' +
-      '<div class="qtext">' + esc(it.t) + '</div>' +
-      (it.h ? '<p class="qhelp">' + esc(it.h) + '</p>' : '') +
-      '<div class="scale" role="radiogroup" aria-label="' + (i+1) + '-savol">' +
+      '<div class="qtext" id="qtext-' + i + '">' + esc(it.t) + '</div>' +
+      (it.h ? '<p class="qhelp" id="qhelp-' + i + '">' + esc(it.h) + '</p>' : '') +
+      '<div class="scale" role="radiogroup" aria-labelledby="' + labelledBy + '">' +
         '<span class="slab l" aria-hidden="true">' + LABELS[0] + '</span>' +
         '<div class="dots">';
     for (var v = 1; v <= 5; v++){
@@ -1114,10 +1126,13 @@ function renderReport(){
     msg.className = 'capmsg'; msg.textContent = '';
     sendLead(email, arch.name, function(okSent){
       if (okSent){
+        // "Yuborildi" (sent), not "qabul qilindi" (received): the no-cors request
+        // resolves without telling us the server actually stored it, so we can only
+        // honestly say it left the device — never that it was confirmed received.
         document.getElementById('capture').innerHTML =
           '<div class="capdone"><span class="tick" aria-hidden="true">✓</span><div>' +
-            '<h3 style="margin:0 0 4px">Qabul qilindi</h3>' +
-            '<p class="caplede" style="margin:0">Qoʻllanma tayyor boʻlishi bilan ' + esc(email) +
+            '<h3 style="margin:0 0 4px">Soʻrovingiz yuborildi</h3>' +
+            '<p class="caplede" style="margin:0">Qoʻllanma tayyor boʻlgach, uni ' + esc(email) +
             ' manziliga yuboramiz.</p>' +
           '</div></div>';
       } else {
