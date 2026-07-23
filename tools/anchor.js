@@ -66,6 +66,12 @@ const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, conso
     await p.reload({ waitUntil: 'networkidle2' });
     await p.evaluate(() => { state.page = 3; renderPage(); });
     await new Promise(r => setTimeout(r, 300));
+    // The opener (mark + title + 3 cards) now sits above the questions on every
+    // step, so on a phone the first question of a middle step opens below the fold.
+    // A real student scrolls it into view before answering; do the same, then park
+    // the mouse on its 2nd circle and never move it again.
+    await p.evaluate(() => document.getElementById('item-15').scrollIntoView({ block: 'center' }));
+    await new Promise(r => setTimeout(r, 250));
     const spot = await p.$eval('input[name=q15][value="2"]', e => {
       const r = e.closest('.opt').getBoundingClientRect();
       return { x: r.left + r.width / 2, y: Math.round(r.top + r.height / 2) };

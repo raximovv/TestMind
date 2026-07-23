@@ -155,7 +155,7 @@ async function answer(p, i, v) {
     for (let i = 0; i < 5; i++) await answer(p, i, 4);
     await new Promise(r => setTimeout(r, 700));
     ok(await p.evaluate(() => state.page === 1), 'the last answer on a page advances it');
-    ok(!(await p.$('.step')), 'the opener only appears on the first page');
+    ok((await p.$$('.step')).length === 3, 'the three step cards stay on every step, not just the first');
     ok((await p.$$('.item.done')).length === 0, 'the new page starts with nothing dimmed');
     await p.close();
   }

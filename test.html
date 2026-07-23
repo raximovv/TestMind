@@ -725,7 +725,9 @@ function renderPage(){
   // otherwise editing an answer on a completed page would yank the page away.
   var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
   var html =
-    (p === 0 ? introHtml() : '') +
+    // The opener (mark + title + the three step cards) stays on every step, not
+    // just the first, so the "what happens" explainer never disappears mid-test.
+    introHtml() +
     // The step bar only appears from step 2 on. On step 1 there is nothing to go
     // back to and no progress to show yet, so it would just be a dead bar above the
     // first questions; it slides in once the student finishes a page.
