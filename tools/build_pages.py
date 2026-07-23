@@ -10,7 +10,7 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
            "%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E"
            "%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E")
 
-SITE = 'https://testmind-minis.netlify.app'   # one line to change on the .uz domain
+SITE = 'https://raximovv.github.io/TestMind'   # one line to change on the .uz domain
 
 NAV_ITEMS = [('index.html', 'Bosh sahifa'), ('obrazlar.html', 'Obrazlar'),
              ('test.html', 'Shaxsiyat testi'),
@@ -69,7 +69,6 @@ FOOTER = u"""<footer class="foot"><div class="wrap">
       <li><a href="privacy.html">Maxfiylik</a></li>
       <li><a href="qanday-ishlaydi.html#model">Test qaysi modelga asoslangan</a></li>
       <li><a href="maktablar.html">Maktablar va ota-onalar uchun</a></li>
-      <li><a href="ota-onalarga.html">Ota-onalarga xat (chop etish uchun)</a></li>
     </ul></div>
     <div class="footcol"><h2>Bogʻlanish</h2><ul>
       <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
@@ -463,7 +462,7 @@ MAKTABLAR = u"""<header class="phead"><div class="wrap">
      oʻquvchining boshqa maʼlumotlariga bogʻlab boʻlmaydi. Bu maʼlumot faqat testni
      oʻzbek oʻsmirlari uchun aniqroq qilish uchun ishlatiladi va hech kimga
      berilmaydi. Sinfda oʻtkazishdan oldin bu haqda ota-onalarga xabar berishingizni
-     soʻraymiz — tayyor xat saytda bor.</p>
+     soʻraymiz.</p>
   <p>Agar oʻquvchi <b>oʻz xohishi bilan</b> email qoldirsa, u anonim boʻlmaydi — buni
      <a href="privacy.html">Maxfiylik</a> sahifasida ochiq yozganmiz. 18 yoshgacha
      boʻlganlarga email qoldirishdan oldin kattalar bilan maslahatlashish tavsiya etiladi.</p>
@@ -481,12 +480,3 @@ html = head(u'Maktablar va ota-onalar uchun — TestMind',
      + nav('maktablar.html') + MAKTABLAR + FOOTER + SCRIPTS
 io.open(OUT + 'maktablar.html', 'w', encoding='utf-8', newline='').write(html)
 print('wrote %-24s %6d bytes' % ('maktablar.html', len(html.encode('utf-8'))))
-
-# ---------------------------------------------------------------- parent letter
-XAT = '<header class="phead noprint"><div class="wrap">\n  <h1>Ota-onalarga xat</h1>\n  <p class="lead">Sinfda test oʻtkazishdan oldin ota-onalarni xabardor qilish uchun tayyor\n     matn. Chop eting yoki nusxalab yuboring — tugma faqat xatni chiqaradi.</p>\n  <p><button class="btn" id="printLetter">Xatni chop etish</button></p>\n</div></header>\n\n<section><div class="wrap" style="max-width:760px">\n  <div class="letter" id="letter">\n    <p class="lt-to">Hurmatli ota-onalar,</p>\n\n    <p>Farzandingiz oʻqiydigan sinfda <b>TestMind</b> nomli shaxsiyat soʻrovnomasini\n       oʻtkazishni rejalashtiryapmiz. Quyida u haqida qisqacha maʼlumot.</p>\n\n    <p><b>Bu nima?</b> 50 ta savoldan iborat, taxminan 7 daqiqa davom etadigan\n       soʻrovnoma. U psixologiyada keng qoʻllanadigan «Katta beshlik» modeliga\n       asoslangan va oʻquvchiga oʻzining kuchli tomonlarini tanishga yordam beradi.</p>\n\n    <p><b>Bu nima emas.</b> Bu imtihon emas, baho qoʻyilmaydi. Bu tibbiy yoki psixologik\n       tashxis ham emas. Natija oʻquvchining qobiliyatini yoki kelajakdagi\n       muvaffaqiyatini oʻlchamaydi va uning hujjatlariga kiritilmaydi.</p>\n\n    <p><b>Maʼlumotlar.</b> Test farzandingizdan ism ham, yosh ham soʻramaydi. Test\n       yakunida faqat anonim maʼlumot saqlanadi: umumiy ballar va natija nomi.\n       Savollarga bergan javoblari ham ismsiz saqlanadi: bu yozuvda\n       ism ham, yosh ham, email ham boʻlmaydi va unga alohida tasodifiy raqam beriladi,\n       yaʼni uni farzandingizga bogʻlab boʻlmaydi. Bu maʼlumot faqat testni\n       yaxshilash uchun ishlatiladi va hech kimga berilmaydi.</p>\n\n    <p><b>Ishtirok ixtiyoriy.</b> Farzandingiz xohlamasa, qatnashmasligi mumkin va bu\n       hech qanday tarzda bahosiga taʼsir qilmaydi.</p>\n\n    <p>Batafsil maʼlumot va maxfiylik siyosati saytda mavjud: <b class="lt-host">testmind-minis.netlify.app</b></p>\n\n    <p>Savollaringiz boʻlsa, sinf rahbariga yoki\n       <b>raximovrahim1@gmail.com</b> manziliga murojaat qiling.</p>\n\n    <div class="lt-sign">\n      <div><span class="lt-line"></span>Sinf rahbari</div>\n      <div><span class="lt-line"></span>Sana</div>\n    </div>\n\n    <hr class="lt-hr">\n\n    <p class="lt-small"><b>Rozilik.</b> Quyidagini toʻldirib qaytaring:</p>\n    <p class="lt-small">Men, ____________________________________, farzandim\n       ____________________________________ ning TestMind soʻrovnomasida\n       ishtirok etishiga:</p>\n    <p class="lt-small">&#9744; roziman &nbsp;&nbsp;&nbsp; &#9744; rozi emasman</p>\n    <div class="lt-sign">\n      <div><span class="lt-line"></span>Imzo</div>\n      <div><span class="lt-line"></span>Sana</div>\n    </div>\n  </div>\n</div></section>\n'
-
-html = head(u'Ota-onalarga xat — TestMind',
-            u'Sinfda TestMind oʻtkazishdan oldin ota-onalarni xabardor qilish uchun tayyor xat.') \
-     + nav('maktablar.html') + XAT + FOOTER + SCRIPTS
-io.open(OUT + 'ota-onalarga.html', 'w', encoding='utf-8', newline='').write(html)
-print('wrote %-24s %6d bytes' % ('ota-onalarga.html', len(html.encode('utf-8'))))

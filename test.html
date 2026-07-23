@@ -353,7 +353,6 @@
       <li><a href="privacy.html">Maxfiylik</a></li>
       <li><a href="qanday-ishlaydi.html#model">Test qaysi modelga asoslangan</a></li>
       <li><a href="maktablar.html">Maktablar va ota-onalar uchun</a></li>
-      <li><a href="ota-onalarga.html">Ota-onalarga xat (chop etish uchun)</a></li>
     </ul></div>
     <div class="footcol"><h2>Bogʻlanish</h2><ul>
       <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
@@ -561,7 +560,7 @@ var SHEET_URL  = 'https://script.google.com/macros/s/AKfycbykz3hl6NJllpdhipaj1Xt
 var TM_VERSION = '1.0';
 // The only place the public address appears. Change this one line when the
 // .uz domain is ready and the share card follows automatically.
-var SITE_HOST = 'testmind-minis.netlify.app';
+var SITE_HOST = 'raximovv.github.io/TestMind';
 var statsSent = false, abandonSent = false;
 
 function anonId(){
@@ -974,6 +973,10 @@ function wrapText(g, text, x, y, maxW, lineH, maxLines){
 // stays untainted and toBlob() keeps working. If it ever fails to decode we still
 // return a usable card without the figure rather than no card at all.
 function buildShareCard(s, arch, key, cb){
+  // Draw only after Bitter/Inter have loaded — on a slow connection an early tap on
+  // "Rasm qilib saqlash" would rasterise the card in a fallback font. On the result
+  // screen the fonts are almost always ready already, so this resolves immediately.
+  function draw(){
   var W = 1080, H = 1350, M = 80;
   var fam = FAMILIES[arch.fam];
   var c = document.createElement('canvas'); c.width = W; c.height = H;
@@ -1020,6 +1023,8 @@ function buildShareCard(s, arch, key, cb){
   img.onload = function(){ g.drawImage(img, (W - 432) / 2, 140, 432, 540); finish(); };
   img.onerror = finish;
   img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(charSvg(key));
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); else draw();
 }
 
 function renderReport(){

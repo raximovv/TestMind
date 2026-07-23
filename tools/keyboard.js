@@ -137,7 +137,7 @@ async function answer(p, i, v) {
     const archName = await p.evaluate(() => document.querySelector('.archname').textContent);
     ok(txt.length > 0, 'something was handed to the clipboard');
     ok(/TestMind/.test(txt), 'message mentions TestMind');
-    ok(txt.indexOf('testmind-minis.netlify.app') !== -1, 'message contains the link');
+    ok(txt.indexOf('raximovv.github.io/TestMind') !== -1, 'message contains the link');
     ok(txt.indexOf(archName) !== -1, 'message names their archetype: ' + archName);
     ok(txt.length > 40 && txt.indexOf('Dilnoza') === -1, 'message does NOT leak their name');
     ok(/Nusxalandi/.test(await p.$eval('#copyBtn', b => b.textContent)), 'button confirms the copy');

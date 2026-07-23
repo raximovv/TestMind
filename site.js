@@ -262,7 +262,11 @@ function mountPage(){
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   markResumeCtas();
 }
-mountPage();
+// This file is loaded at the bottom of <body>, so the DOM is already parsed — but
+// guard anyway, so nothing silently fails to render if the tag is ever moved to
+// <head> or given defer/async.
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountPage);
+else mountPage();
 
 // Parent-letter page: the button prints only the letter (print CSS hides the rest).
 var _pl = document.getElementById('printLetter');
