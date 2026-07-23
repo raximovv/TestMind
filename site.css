@@ -170,6 +170,10 @@ section{padding:60px 0}
          display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
          font-size:13px;color:var(--muted)}
 .footbar a{color:var(--muted)}
+.socrow{display:flex;gap:10px;margin-top:14px}
+.soc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
+     border-radius:50%;background:var(--lazur);color:#fff;flex:0 0 auto}
+.soc svg{width:20px;height:20px;display:block}
 
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important;animation:none !important}
