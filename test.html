@@ -48,8 +48,15 @@
               padding:4px 0;border-bottom:2px solid transparent}
   .toplinks a:hover{color:var(--lazur-deep)}
   .toplinks a[aria-current="page"]{color:var(--lazur-deep);font-weight:600;border-bottom-color:var(--lazur)}
+  /* Same CTA as every other page's nav, so the bar looks identical when you land
+     on the test rather than emptier on the right. Mirrors .btn.sm in site.css. */
+  .topcta{display:inline-block;background:var(--lazur);color:#fff;text-decoration:none;
+          border-radius:10px;padding:9px 16px;font-weight:600;font-size:14.5px;white-space:nowrap}
+  .topcta:hover{background:var(--lazur-deep)}
+  .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   @media (max-width:820px){
     .topnavin{gap:10px;height:auto;padding:10px 20px;flex-wrap:wrap}
+    .topcta{margin-left:auto;order:2}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
     .toplinks a{font-size:14.5px}
@@ -314,6 +321,7 @@
     <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
     <a href="savollar.html">Savollar</a>
   </div>
+  <a class="topcta" href="test.html">Testni boshlash</a>
 </div></nav>
 <div class="wrap">
   <main id="app"></main>
