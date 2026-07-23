@@ -67,15 +67,21 @@ async function answer(p, i, v) {
     await p.close();
   }
 
-  console.log('\n== the fixed step bar ==');
+  console.log('\n== the step bar (hidden on step 1, appears from step 2) ==');
   {
     const { p } = await open();
     ok((await p.$$('.qnum')).length === 0, 'no "1." "2." numbers on the questions');
     ok(!(await p.$('.kbhint')), 'the keyboard hint is gone');
+    ok(!(await p.$('.stepbar')), 'no step bar on step 1 - nothing to go back to, no progress yet');
+
+    for (let i = 0; i < 5; i++) await answer(p, i, 4);
+    await new Promise(r => setTimeout(r, 900));
+    ok(!!(await p.$('.stepbar')), 'the step bar appears once step 1 is finished');
     const bar = await p.$eval('.stepbar', e => e.textContent.replace(/\s+/g, ' ').trim());
     ok(!/Boshladik|Yaxshi|marrada|Miyangiz|qoldi/.test(bar) && bar.indexOf('/ 50') === -1,
       'no motivational line, no x/50, no time estimate: "' + bar + '"');
-    ok(bar.indexOf('Qadam 1 / 10') !== -1, 'shows which step they are on');
+    ok(bar.indexOf('Qadam 2 / 10') !== -1, 'shows the step they are on now: "' + bar + '"');
+    ok(bar.indexOf('Qadam 1 / 10') === -1, 'never shows step 1 in the bar');
     ok(await p.$eval('.stepbar', e => getComputedStyle(e).position) === 'static',
       'the bar stays put in the page, it does not follow the screen');
     ok(await p.evaluate(() => {
@@ -83,15 +89,8 @@ async function answer(p, i, v) {
       const c = document.querySelector('.card').getBoundingClientRect();
       return b.bottom <= c.top + 1;
     }), 'and it sits above the questions');
-    ok(await p.$eval('.backlink', e => e.classList.contains('off') && e.tagName !== 'BUTTON'),
-      'no working back link on step 1');
-    ok(await p.$eval('#pfill', e => e.style.width) === '0%', 'bar starts empty');
-
-    for (let i = 0; i < 5; i++) await answer(p, i, 4);
-    await new Promise(r => setTimeout(r, 900));
+    ok(await p.$eval('.backlink', e => e.tagName === 'BUTTON'), 'the back link is a real button now');
     ok(await p.$eval('#pfill', e => e.style.width) === '10%', '5 of 50 answered fills 10%');
-    ok((await p.$eval('.stepbar', e => e.textContent)).indexOf('Qadam 2 / 10') !== -1,
-      'and it is now step 2');
 
     // The bug that killed the pinned version: a bar over the content ate the taps
     // landing under it. Nothing may sit on top of an answer circle now.
@@ -107,6 +106,7 @@ async function answer(p, i, v) {
     await p.click('#prevBtn');
     await new Promise(r => setTimeout(r, 250));
     ok(await p.evaluate(() => state.page === 0), 'the back link goes back a step');
+    ok(!(await p.$('.stepbar')), 'and step 1 has no bar again');
     ok(await p.evaluate(() => state.answers.slice(0, 5).every(v => v === 4)),
       'and the answers are still there');
 

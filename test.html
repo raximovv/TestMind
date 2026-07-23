@@ -95,7 +95,6 @@
             color:var(--lazur);cursor:pointer;white-space:nowrap}
   .backlink:hover{color:var(--lazur-deep)}
   .backlink:focus-visible{outline:3px solid var(--zar);outline-offset:2px;border-radius:7px}
-  .backlink.off{color:#B4C6CB;cursor:default}
   .stepright{display:flex;align-items:center;gap:14px;flex:1 1 auto;justify-content:flex-end;min-width:0}
   .stepbar .ptrack{flex:0 1 360px;min-width:60px}
   .stepcount{font-size:14px;color:var(--muted);white-space:nowrap}
@@ -727,17 +726,18 @@ function renderPage(){
   var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
   var html =
     (p === 0 ? introHtml() : '') +
-    // Sits above the questions and stays put: pinned to the viewport it covered
-    // whatever was at the bottom of the screen and swallowed taps landing there.
-    '<div class="stepbar"><div class="stepbarin">' +
-      (p > 0
-        ? '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> Orqaga</button>'
-        : '<span class="backlink off" aria-hidden="true"><span>←</span> Orqaga</span>') +
-      '<div class="stepright">' +
-        '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
-        '<span class="stepcount">Qadam ' + (p + 1) + ' / ' + PAGES + '</span>' +
-      '</div>' +
-    '</div></div>' +
+    // The step bar only appears from step 2 on. On step 1 there is nothing to go
+    // back to and no progress to show yet, so it would just be a dead bar above the
+    // first questions; it slides in once the student finishes a page.
+    (p > 0
+      ? '<div class="stepbar"><div class="stepbarin">' +
+          '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> Orqaga</button>' +
+          '<div class="stepright">' +
+            '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
+            '<span class="stepcount">Qadam ' + (p + 1) + ' / ' + PAGES + '</span>' +
+          '</div>' +
+        '</div></div>'
+      : '') +
     '<div class="card">';
   for (var i = from; i < to; i++){
     var it = ITEMS[i];
