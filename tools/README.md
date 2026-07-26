@@ -52,6 +52,13 @@ anything overflows its box, so a longer sentence can never silently get clipped.
 If it reports an overflow, either shorten the text or loosen that page's
 spacing; do not raise the page height.
 
+It also skips writing a PDF whose content did not change. Chrome stamps a
+timestamp into every PDF it makes, so without that check a rebuild would push
+~7.5 MB of identical-but-different files through git each time.
+
+**When writing new guide text, read the rule at the top of `guide_content.py`.**
+Short version: if a sentence would be true of any student, cut it.
+
 Tip: to check for drift without touching the repo, copy a script, point its
 `OUT` at a temp dir, run it, and `diff` against the committed pages.
 
@@ -71,7 +78,13 @@ npm run test:capture    # 19 — email capture: sent once, no name/age/answers, 
 npm run test:autosave   # 9  — answers saved anonymously with a separate id
 npm run test:anchor     # 13 — the next question lands under the pointer (0px drift)
 npm run audit           # 18 pages × 3 widths, horizontal + vertical overflow
+node retest.js          # 14 — «Oʻshanda va hozir» compares against the OLD result
+node lowend.js          # 10 — cheap Android: 4x slower CPU, slow 4G, 360px
 ```
+
+`lowend.js` is the one to run before a school pilot: 89% of Uzbek internet users
+are on a phone, and desktop Chrome at a 390px viewport is not the same test —
+it has no CPU limit, no latency and no data cost.
 
 `anchor.js` opens the page over `file://` and needs no server; the rest use
 `http://localhost:8765/`.

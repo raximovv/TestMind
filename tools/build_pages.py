@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Generates the four static TestMind pages so the nav and footer can never drift."""
-import io, os
+import io, json, os, re
 
 OUT = 'C:/Users/Asus/TestMind-site/'
 
@@ -17,7 +17,14 @@ NAV_ITEMS = [('index.html', 'Bosh sahifa'), ('obrazlar.html', 'Obrazlar'),
              ('qanday-ishlaydi.html', 'Qanday ishlaydi'), ('savollar.html', 'Savollar')]
 
 
-def head(title, desc):
+def head(title, desc, path=None, extra=u''):
+    """`path` is the page's own filename — it produces the canonical URL, which
+    keeps index.html / index.html?x / a trailing slash from competing as separate
+    pages in search results. `extra` takes per-page tags such as JSON-LD."""
+    canon = u''
+    if path:
+        canon = u'\n<link rel="canonical" href="%s/%s">' % (
+            SITE, '' if path == 'index.html' else path)
     return u"""<!doctype html>
 <html lang="uz">
 <head>
@@ -28,16 +35,18 @@ def head(title, desc):
 <meta property="og:title" content="%s">
 <meta property="og:description" content="%s">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="TestMind">
+<meta property="og:locale" content="uz_UZ">
 <meta property="og:image" content="%s/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="icon" href="%s">
+<link rel="icon" href="%s">%s
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="site.css">%s
 </head>
 <body>
-""" % (title, desc, title, desc, SITE, FAVICON)
+""" % (title, desc, title, desc, SITE, FAVICON, canon, extra)
 
 
 def nav(active):
@@ -318,8 +327,39 @@ PAGES = [
      SAVOLLAR),
 ]
 
+def jsonld(obj):
+    return u'\n<script type="application/ld+json">%s</script>' % json.dumps(
+        obj, ensure_ascii=False, separators=(',', ':'))
+
+
+# Only two pages carry structured data, and only where it is honestly true: the
+# site itself, and the FAQ page (which is genuinely a list of questions and
+# answers). Marking anything else up would be decoration, not description.
+SITE_LD = jsonld({
+    '@context': 'https://schema.org', '@type': 'WebSite',
+    'name': 'TestMind', 'url': SITE + '/', 'inLanguage': 'uz',
+    'description': u'Oʻzbek tilidagi bepul shaxsiyat testi 14–16 yoshdagilar uchun.',
+})
+
+def faq_ld(html):
+    """Read the FAQ entries back out of the page we just built, so the structured
+    data can never describe questions the page does not actually contain."""
+    pairs = re.findall(r'<summary>(.*?)</summary>(.*?)</details>', html, re.S)
+    strip = lambda s: re.sub(r'\s+', ' ', re.sub(r'<[^>]+>', ' ', s)).strip()
+    return jsonld({
+        '@context': 'https://schema.org', '@type': 'FAQPage',
+        'mainEntity': [{
+            '@type': 'Question', 'name': strip(q),
+            'acceptedAnswer': {'@type': 'Answer', 'text': strip(a)},
+        } for q, a in pairs],
+    })
+
+
+EXTRA_LD = {'index.html': SITE_LD, 'savollar.html': faq_ld(SAVOLLAR)}
+
 for fname, title, desc, body in PAGES:
-    html = head(title, desc) + nav(fname) + body + FOOTER + SCRIPTS
+    html = head(title, desc, fname, EXTRA_LD.get(fname, u'')) \
+         + nav(fname) + body + FOOTER + SCRIPTS
     io.open(OUT + fname, 'w', encoding='utf-8', newline='').write(html)
     print('wrote %-24s %6d bytes' % (fname, len(html.encode('utf-8'))))
 
@@ -384,7 +424,8 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
 """
 
 html = head(u'Maxfiylik — TestMind',
-            u'TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa izoh.') \
+            u'TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa izoh.',
+            'privacy.html') \
      + nav('privacy.html') + PRIVACY + FOOTER + SCRIPTS
 io.open(OUT + 'privacy.html', 'w', encoding='utf-8', newline='').write(html)
 print('wrote %-24s %6d bytes' % ('privacy.html', len(html.encode('utf-8'))))
@@ -476,7 +517,41 @@ MAKTABLAR = u"""<header class="phead"><div class="wrap">
 """
 
 html = head(u'Maktablar va ota-onalar uchun — TestMind',
-            u'TestMind nima qila oladi, nima qila olmaydi va uni sinfda qanday qoʻllash kerak.') \
+            u'TestMind nima qila oladi, nima qila olmaydi va uni sinfda qanday qoʻllash kerak.',
+            'maktablar.html') \
      + nav('maktablar.html') + MAKTABLAR + FOOTER + SCRIPTS
 io.open(OUT + 'maktablar.html', 'w', encoding='utf-8', newline='').write(html)
 print('wrote %-24s %6d bytes' % ('maktablar.html', len(html.encode('utf-8'))))
+
+
+# ---------------------------------------------------------------- sitemap
+# Written here rather than by hand so a new page can never be forgotten: the list
+# is the pages this script and build_archetypes.py actually produce.
+def write_sitemap(slugs):
+    urls = ['', 'test.html', 'obrazlar.html', 'qanday-ishlaydi.html',
+            'savollar.html', 'privacy.html', 'maktablar.html'] \
+         + ['obraz-%s.html' % s for s in slugs]
+    body = u''.join(
+        u'  <url><loc>%s/%s</loc><priority>%s</priority></url>\n'
+        % (SITE, u, '1.0' if u == '' else ('0.9' if u == 'test.html' else '0.7'))
+        for u in urls)
+    xml = (u'<?xml version="1.0" encoding="UTF-8"?>\n'
+           u'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+           + body + u'</urlset>\n')
+    io.open(OUT + 'sitemap.xml', 'w', encoding='utf-8', newline='').write(xml)
+    io.open(OUT + 'robots.txt', 'w', encoding='utf-8', newline='').write(
+        u'User-agent: *\nAllow: /\n\nSitemap: %s/sitemap.xml\n' % SITE)
+    print('wrote %-24s %6d bytes (%d urls)' % ('sitemap.xml', len(xml.encode('utf-8')), len(urls)))
+    print('wrote %-24s' % 'robots.txt')
+
+
+if __name__ == '__main__':
+    # Standalone run: pull the archetype slugs from the shipped characters.js so
+    # the sitemap lists the same ten pages build_archetypes.py writes.
+    import subprocess
+    slugs = json.loads(subprocess.check_output(['node', '-e', '''
+const fs=require('fs'),vm=require('vm');const s={};vm.createContext(s);
+vm.runInContext(fs.readFileSync(%r,'utf8'),s);
+process.stdout.write(JSON.stringify(Object.values(s.ARCHETYPES).map(a=>a.slug)));
+''' % (OUT + 'characters.js')]).decode('utf-8'))
+    write_sitemap(slugs)

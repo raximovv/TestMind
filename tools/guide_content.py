@@ -16,6 +16,24 @@ Three layers, so the same sentence is never written twice:
                  traits, so its two cards are looked up here; that is why
                  «Xotirjam» reads the same in all four ES guides.
   GUIDES       — what is genuinely specific to the pair.
+
+THE ONE RULE: if a sentence would be true of any student, cut it.
+
+This is not style advice. The reason personality tests have a poor reputation is
+the Barnum effect — vague, flattering statements feel accurate to everyone, which
+is why horoscopes work and why "you sometimes doubt yourself" is worthless. A
+guide earns its credibility sentence by sentence, by saying things that would be
+WRONG for another archetype.
+
+Concretely, when writing the remaining guides:
+  - Name the situation: a group project, the ten minutes before an exam, a friend
+    who went quiet — not "social situations".
+  - Every growth point ends with one action doable this week. Advice without an
+    action is just a compliment.
+  - Prefer a sentence that could be wrong. "You find it hard to say no" is worth
+    more than "you value harmony", because a student can disagree with it.
+  - No praise that costs nothing. Delete anything of the form "you are special
+    in your own way".
 """
 
 # --------------------------------------------------------------------------

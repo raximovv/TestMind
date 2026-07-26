@@ -3,7 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>TestMind · Shaxsiy xususiyatlar soʻrovnomasi</title>
+<title>Bepul shaxsiyat testi — TestMind</title>
+<meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi: 50 ta savol, 7 daqiqa, roʻyxatdan oʻtmasdan. Yakunida oʻnta obrazdan bittasi va 8 sahifalik qoʻllanma.">
+<meta property="og:title" content="Bepul shaxsiyat testi — TestMind">
+<meta property="og:description" content="50 ta savol, 7 daqiqa. Ism ham, yosh ham soʻralmaydi. Yakunida obrazingiz va bepul PDF qoʻllanma.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TestMind">
+<meta property="og:locale" content="uz_UZ">
+<meta property="og:image" content="https://raximovv.github.io/TestMind/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://raximovv.github.io/TestMind/test.html">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
 <link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <style>
@@ -139,7 +150,9 @@
   .opt.sel .dot::after{content:'✓';color:#fff;font-weight:700;line-height:1}
   .opt.s1 .dot,.opt.s5 .dot{width:clamp(44px,11.6vw,54px);height:clamp(44px,11.6vw,54px);font-size:20px}
   .opt.s2 .dot,.opt.s4 .dot{width:clamp(37px,9.9vw,45px);height:clamp(37px,9.9vw,45px);font-size:17px}
-  .opt.s3 .dot{width:clamp(31px,8.2vw,37px);height:clamp(31px,8.2vw,37px);font-size:14px}
+  /* 34px min, not 31px: with .opt's 5px padding this brings the smallest tap area
+     to 44px on a 360px phone — the comfort floor for a thumb. */
+  .opt.s3 .dot{width:clamp(34px,8.2vw,37px);height:clamp(34px,8.2vw,37px);font-size:14px}
   /* resting ring colours: warm on the disagree side, teal on the agree side */
   .opt.s1 .dot,.opt.s2 .dot{border-color:var(--viol-soft)}
   .opt.s4 .dot,.opt.s5 .dot{border-color:var(--lazur-soft)}
@@ -237,6 +250,19 @@
            color:var(--sc);background:var(--ss);border-radius:99px;padding:4px 11px;margin:0 0 9px}
   .step h2{font-size:18px;margin:0 0 6px;color:var(--ink)}
   .step p{font-size:14.5px;color:var(--muted);margin:0}
+  /* «Oʻshanda va hozir» — shown only to a student who took the test months ago. */
+  .thennow{background:var(--paper);border:1px solid var(--line);border-radius:14px;
+           padding:18px 20px;margin-bottom:16px}
+  .tnlbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+         color:var(--lazur);font-weight:700;margin-bottom:6px}
+  .tnlede{margin:0 0 10px;font-size:15px;color:var(--ink)}
+  .tnlist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
+  .tnlist li{font-size:15.5px;color:var(--ink)}
+  .tnarrow{display:inline-block;width:20px;font-weight:700}
+  .tnarrow.up{color:#237A5E}
+  .tnarrow.dn{color:#A2731F}
+  .thennow p{font-size:15px;color:var(--muted);margin:0}
+  .tnarch{margin-top:10px !important;color:var(--ink) !important}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
@@ -550,6 +576,52 @@ function saveDraft(){
   } catch (e) {}
 }
 function clearDraft(){ try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
+
+// ---------- Result history, for «then and now» (this device only) ----------
+// Agreeableness and Conscientiousness both start rising between 14 and 16, so a
+// student who retakes this months later has a real chance of seeing themselves
+// move. That is the most honest lesson the test can teach — "this is a snapshot"
+// stops being a disclaimer and becomes something they can watch happen.
+// Stored locally and never sent anywhere: scores + date, no answers, no id.
+var HIST_KEY = 'testmind_history_v1';
+var RETEST_DAYS = 60;          // below this, a change is noise, not development
+function loadHistory(){
+  try {
+    var h = JSON.parse(localStorage.getItem(HIST_KEY));
+    return Array.isArray(h) ? h.filter(function(e){ return e && e.ts && e.s; }) : [];
+  } catch (e) { return []; }
+}
+function saveHistory(entry){
+  try {
+    var h = loadHistory();
+    // A same-day retake replaces the last entry rather than filling up the log.
+    if (h.length && (entry.ts - h[h.length - 1].ts) < 864e5) h[h.length - 1] = entry;
+    else h.push(entry);
+    localStorage.setItem(HIST_KEY, JSON.stringify(h.slice(-6)));
+  } catch (e) {}
+}
+/** The most recent earlier result that is far enough back to be meaningful. */
+function previousResult(){
+  var h = loadHistory();
+  for (var i = h.length - 1; i >= 0; i--){
+    if (Date.now() - h[i].ts >= RETEST_DAYS * 864e5) return h[i];
+  }
+  return null;
+}
+function dateOf(ts){
+  var d = new Date(ts);
+  return ('0' + d.getDate()).slice(-2) + '.' + ('0' + (d.getMonth() + 1)).slice(-2) +
+         '.' + d.getFullYear();
+}
+var MONTHS_UZ = ['yanvar','fevral','mart','aprel','may','iyun',
+                 'iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
+/** "sentabr 2026" — the month n months from today, for a concrete retest date. */
+function monthAfter(n){
+  var d = new Date();
+  d.setDate(1);
+  d.setMonth(d.getMonth() + n);
+  return MONTHS_UZ[d.getMonth()] + ' ' + d.getFullYear();
+}
 function loadDraft(){
   try {
     var d = JSON.parse(localStorage.getItem(SAVE_KEY));
@@ -1038,6 +1110,42 @@ function buildShareCard(s, arch, key, cb){
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); else draw();
 }
 
+/** «Oʻshanda va hozir» — only for a student who took this at least RETEST_DAYS ago.
+ *  Shows which traits actually moved; says so plainly when none did. */
+function thenAndNowHtml(s, archKey){
+  var prev = previousResult();
+  if (!prev) return '';
+  var moved = [];
+  ['ES','E','O','A','C'].forEach(function(k){
+    var d = s[k] - (prev.s[k] || 0);
+    if (Math.abs(d) >= 0.4) moved.push({ k: k, up: d > 0, d: Math.abs(d) });
+  });
+  moved.sort(function(a, b){ return b.d - a.d; });
+
+  var body;
+  if (!moved.length){
+    body = '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija — ' +
+           'demak, oʻzingizni yaxshi bilar ekansiz.</p>';
+  } else {
+    body = '<ul class="tnlist">' + moved.map(function(m){
+      return '<li><span class="tnarrow ' + (m.up ? 'up' : 'dn') + '">' +
+             (m.up ? '▲' : '▼') + '</span> <b>' + TRAITS[m.k] + '</b> ' +
+             (m.up ? 'oʻsibdi' : 'pasaybdi') + '</li>';
+    }).join('') + '</ul>';
+  }
+  var archLine = '';
+  if (prev.key && prev.key !== archKey && ARCHETYPES[prev.key]){
+    archLine = '<p class="tnarch">Oʻshanda obrazingiz «' + ARCHETYPES[prev.key].name +
+               '» edi. Obraz oʻzgarishi — xato emas, oʻsish belgisi.</p>';
+  }
+  return '<div class="thennow">' +
+           '<div class="tnlbl">Oʻshanda va hozir</div>' +
+           '<p class="tnlede">Siz bu testni <b>' + dateOf(prev.ts) +
+             '</b> kuni ham ishlagansiz.</p>' +
+           body + archLine +
+         '</div>';
+}
+
 function renderReport(){
   clearDraft(); // test finished — remove the saved answers from this device
   var s = scoreAnswers(state.answers);
@@ -1074,6 +1182,10 @@ function renderReport(){
                  'bu ikkisi orasidagi farq juda kichik. Ikkala tavsifni ham oʻqib koʻring.</p>' : '') +
           '<p>Bu — bugungi suratingiz, oʻzgarmas yorliq emas. 14–16 yoshda shaxsiyat hali ' +
           'shakllanmoqda: bir necha oydan keyin natija boshqacha chiqishi mumkin, va bu normal.</p>' +
+          // A concrete month beats "someday": a returning student gets the
+          // «Oʻshanda va hozir» comparison instead of just a second result.
+          '<p>Shuning uchun <b>' + monthAfter(6) + '</b>da testni yana bir marta ishlab ' +
+          'koʻring — oʻshanda nima oʻzgarganini sizga koʻrsatamiz.</p>' +
         '</div>' +
         // A real Uzbek figure known for the same quality. Deliberately worded as
         // "who had this strength", never "you are this person".
@@ -1085,6 +1197,7 @@ function renderReport(){
         '</div>' +
       '</div>' +
     '</div>' +
+    thenAndNowHtml(s, archKey) +
     '<div class="actions">' +
       '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
       '<button class="btn ghost" id="copyBtn">Havolani nusxalash</button>' +
@@ -1141,6 +1254,9 @@ function renderReport(){
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
     '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
   app.innerHTML = html;
+  // Recorded only after the page is built, so «Oʻshanda va hozir» compares against
+  // the earlier result rather than the one just produced.
+  saveHistory({ ts: Date.now(), s: s, key: archKey });
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
     clearDraft();

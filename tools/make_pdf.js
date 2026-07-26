@@ -37,12 +37,30 @@ async function render(browser, slug) {
 
   if (!fs.existsSync(OUTDIR)) fs.mkdirSync(OUTDIR, { recursive: true });
   const out = path.posix.join(OUTDIR, slug + '.pdf');
-  await page.pdf({ path: out, printBackground: true, preferCSSPageSize: true,
-                   displayHeaderFooter: false });
+  const buf = await page.pdf({ printBackground: true, preferCSSPageSize: true,
+                               displayHeaderFooter: false });
   await page.close();
+
+  // Chrome stamps /CreationDate and /ModDate into every PDF, so a rebuild with no
+  // content change still produces a different file — which would churn ~750 KB per
+  // guide through git for nothing. Compare with those two fields blanked out and
+  // only write when the guide itself actually changed.
+  const same = fs.existsSync(out) && strip(fs.readFileSync(out)) === strip(buf);
+  if (same) { console.log('  --  ' + slug + '.pdf unchanged'); return true; }
+
+  fs.writeFileSync(out, buf);
   console.log('  ok  ' + slug + '.pdf  (' + boxes.length + ' pages, ' +
-              (fs.statSync(out).size / 1024).toFixed(0) + ' KB)');
+              (buf.length / 1024).toFixed(0) + ' KB)');
   return true;
+}
+
+/** A PDF's bytes with the two timestamp fields neutralised.
+ *  Buffer.from is required: page.pdf() hands back a Uint8Array, whose toString()
+ *  ignores the encoding argument and would never compare equal to a file read. */
+function strip(buf) {
+  return Buffer.from(buf).toString('latin1')
+    .replace(/\/CreationDate \(D:[^)]*\)/g, '/CreationDate ()')
+    .replace(/\/ModDate \(D:[^)]*\)/g, '/ModDate ()');
 }
 
 (async () => {

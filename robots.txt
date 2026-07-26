@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://raximovv.github.io/TestMind/sitemap.xml

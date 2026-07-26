@@ -98,7 +98,8 @@ for key, a in ARCH.items():
 
     title = u'%s — TestMind obrazlari' % a['name']
     desc = u'%s %s' % (a['lines'][0], a['strength'])
-    html = bp.head(title, desc) + bp.nav('obrazlar.html') + body + bp.CLOSE + bp.FOOTER + bp.SCRIPTS
     fname = 'obraz-%s.html' % a['slug']
+    html = bp.head(title, desc, fname) + bp.nav('obrazlar.html') + body \
+         + bp.CLOSE + bp.FOOTER + bp.SCRIPTS
     io.open(OUT + fname, 'w', encoding='utf-8', newline='').write(html)
     print('wrote %-38s %6d bytes' % (fname, len(html.encode('utf-8'))))
