@@ -323,6 +323,24 @@ function guideUrl_(archName){
   return SITE_URL + '/guides/' + GUIDES[archName].slug + '.pdf';
 }
 
+/**
+ * Run this from the editor when the email arrives WITHOUT its attachment.
+ * Deliberately has no try/catch: guidePdf_ hides failures so a broken fetch can
+ * never stop the email, but that also hides WHY. This one lets the error (or
+ * the authorization prompt for external requests) reach you.
+ */
+function testGuideFetch(){
+  var url = guideUrl_('Ijodkor Strateg');
+  var r = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  var n = r.getBlob().getBytes().length;
+  Logger.log('URL   : ' + url);
+  Logger.log('HTTP  : ' + r.getResponseCode());
+  Logger.log('bytes : ' + n);
+  Logger.log(r.getResponseCode() === 200 && n > 10000
+    ? 'OK — attachments will work.'
+    : 'PROBLEM — the PDF could not be fetched.');
+}
+
 function guidePdf_(archName){
   try {
     var r = UrlFetchApp.fetch(guideUrl_(archName), { muteHttpExceptions: true });
