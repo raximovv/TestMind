@@ -239,6 +239,10 @@
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
+  /* Telegram delivery button — the primary "get your result" option. */
+  .btn.tg{display:block;text-align:center;background:#229ED9}
+  .btn.tg:hover{background:#1C86B8}
+  .capor{text-align:center;color:var(--muted);font-size:13px;margin:12px 0}
   .caprow{display:flex;gap:10px;flex-wrap:wrap}
   .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
                 border-radius:9px;background:#FBFDFD;color:var(--ink)}
@@ -561,6 +565,9 @@ var TM_VERSION = '1.0';
 // The only place the public address appears. Change this one line when the
 // .uz domain is ready and the share card follows automatically.
 var SITE_HOST = 'raximovv.github.io/TestMind';
+// Telegram bot that delivers results. Change this one line when the real bot is
+// created (the @username, without the @).
+var TG_BOT = 'TestMind_demo_bot';
 var statsSent = false, abandonSent = false;
 
 function anonId(){
@@ -1085,6 +1092,9 @@ function renderReport(){
       '<h3>Toʻliq tahlilni olasizmi?</h3>' +
       '<p class="caplede">«' + arch.name + '» uchun batafsil qoʻllanma: kuchli tomonlaringiz, ' +
         'oʻsish nuqtalaringiz va sizga mos yoʻnalishlar.</p>' +
+      '<a class="btn tg" href="https://t.me/' + TG_BOT + '?start=' + arch.slug + '" ' +
+        'target="_blank" rel="noopener">Telegramda olish</a>' +
+      '<div class="capor">yoki emailga</div>' +
       '<div class="caprow">' +
         '<input type="email" id="capEmail" placeholder="email@example.com" ' +
           'autocomplete="email" inputmode="email" aria-label="Email manzilingiz">' +
