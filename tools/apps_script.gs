@@ -37,6 +37,10 @@ var HEADERS = ['server_time', 'id', 'status', 'age', 'answered', 'total',
 var SEND_GUIDE_EMAIL = true;
 var SITE_URL = 'https://raximovv.github.io/TestMind';
 var FROM_NAME = 'TestMind';
+// Bump this whenever you change this file, then open the /exec URL: it reports
+// the version, so you can tell in one second whether your new code is really
+// deployed instead of guessing from a delivered email.
+var SCRIPT_VERSION = 'pdf-v1';
 
 // Baked email content, one entry per archetype (generated from characters.js).
 var GUIDES = {
@@ -379,9 +383,13 @@ function guideEmailHtml_(name){
   + '</table></td></tr></table></div>';
 }
 
-/** Lets you sanity-check the deployment by opening the URL in a browser. */
+/** Lets you sanity-check the deployment by opening the URL in a browser.
+ *  `version` tells you WHICH code the Web App is actually serving — pasting new
+ *  code is not enough, the deployment must be re-published as a NEW version, and
+ *  without this stamp the only way to notice is to read a delivered email. */
 function doGet(){
-  return json_({ ok: true, msg: 'TestMind collector is live. Post JSON here.' });
+  return json_({ ok: true, version: SCRIPT_VERSION,
+                 msg: 'TestMind collector is live. Post JSON here.' });
 }
 
 function json_(obj){
