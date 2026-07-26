@@ -210,6 +210,15 @@ section{padding:60px 0}
 .afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam)}
 .afigwho span{font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
 .afig p{margin:6px 0 0;color:var(--muted);font-size:15px}
+/* The PDF guide offer on an archetype page. Wraps to a column on a phone so
+   the button never gets squeezed next to the text. */
+.aguide{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px;
+        background:var(--famsoft,#EDF4F5);border-radius:14px;padding:18px 20px}
+.aguide>div{flex:1 1 260px;min-width:0}
+.aguide b{font-size:16px}
+.aguide p{margin:6px 0 0}
+.aguide .btn{background:var(--fam);white-space:nowrap}
+.aguide .btn:hover{filter:brightness(.92)}
 .sibs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-top:14px}
 .sib{display:block;text-decoration:none;background:var(--card);border:1px solid var(--line);
      border-radius:12px;padding:12px 10px;text-align:center;transition:transform .16s ease,box-shadow .16s ease}

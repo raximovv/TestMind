@@ -4,7 +4,12 @@
  * WHAT IT DOES
  *  - Logs every submission as a row (unchanged from before).
  *  - status = "lead": when a student typed their email to ask for the guide, it now
- *    ALSO emails them their result (v1: the character summary they saw on screen).
+ *    ALSO emails them their result AND attaches the 8-page PDF guide, fetched from
+ *    SITE_URL/guides/<slug>.pdf. If that fetch fails the email still goes out with
+ *    a download link, so nobody is left empty-handed.
+ *
+ * NOTE: the PDF must be live on the site before this can attach it. Re-run
+ * `sendTestEmail` after a site deploy to confirm the attachment arrives.
  *
  * SAFETY
  *  - The email CONTENT lives in this file (the GUIDES object below), keyed by the
@@ -297,12 +302,33 @@ function alreadySentBefore_(sh, email, arch){
 function looksLikeEmail_(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v); }
 
 function sendGuideEmail_(email, archName){
-  MailApp.sendEmail({
+  var opts = {
     to: email,
     name: FROM_NAME,
-    subject: '«' + archName + '» — TestMind natijangiz',
+    subject: '«' + archName + '» — TestMind natijangiz va qoʻllanmangiz',
     htmlBody: guideEmailHtml_(archName)
-  });
+  };
+  // Attach the 8-page PDF. If fetching it fails for any reason the email must
+  // still go out — the body always carries the download link as well.
+  var pdf = guidePdf_(archName);
+  if (pdf) opts.attachments = [pdf];
+  MailApp.sendEmail(opts);
+}
+
+function guideUrl_(archName){
+  return SITE_URL + '/guides/' + GUIDES[archName].slug + '.pdf';
+}
+
+function guidePdf_(archName){
+  try {
+    var r = UrlFetchApp.fetch(guideUrl_(archName), { muteHttpExceptions: true });
+    if (r.getResponseCode() !== 200) return null;
+    var blob = r.getBlob();
+    if (blob.getBytes().length < 10000) return null;   // not a real PDF
+    return blob.setName('TestMind-' + GUIDES[archName].slug + '.pdf');
+  } catch (err) {
+    return null;
+  }
 }
 
 function esc_(s){
@@ -341,8 +367,9 @@ function guideEmailHtml_(name){
   + '<div style="font-family:Georgia,serif;font-weight:bold;font-size:17px;color:' + c + ';margin-top:6px">' + esc_(g.figure.who)
   + ' <span style="font-family:Arial;font-weight:normal;font-size:13px;color:#5B7078">' + esc_(g.figure.years) + '</span></div>'
   + '<p style="margin:5px 0 0;font-size:14px;line-height:1.5;color:#5B7078">' + esc_(g.figure.why) + '</p></div>'
-  + '<p style="margin:22px 0 18px;font-size:14px;line-height:1.55;color:#5B7078">Bu — boshlanishi. «' + esc_(name) + '» uchun toʻliqroq qoʻllanma tayyor boʻlishi bilan birinchilardan boʻlib shu manzilga yuboramiz.</p>'
-  + '<a href="' + SITE_URL + '/" style="display:inline-block;background:' + c + ';color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:12px 24px;border-radius:10px">Saytga qaytish</a>'
+  + '<p style="margin:22px 0 14px;font-size:14px;line-height:1.55;color:#5B7078">Toʻliq qoʻllanmangiz — 8 sahifa — shu xatga <b>PDF fayl</b> sifatida biriktirilgan. Ochilmasa, quyidagi tugma orqali yuklab olishingiz mumkin.</p>'
+  + '<a href="' + guideUrl_(name) + '" style="display:inline-block;background:' + c + ';color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:12px 24px;border-radius:10px">Qoʻllanmani yuklab olish (PDF)</a>'
+  + '<div style="margin-top:14px"><a href="' + SITE_URL + '/" style="color:' + c + ';font-size:14px">Saytga qaytish</a></div>'
   + '</td></tr>'
   + '<tr><td style="padding:22px 32px 26px;border-top:1px solid #E2EBEC;font-size:12px;line-height:1.6;color:#8A9AA0">'
   + 'Bu xatni oldingiz, chunki TestMind natijangizni koʻrgach, uni email orqali soʻradingiz.<br>'

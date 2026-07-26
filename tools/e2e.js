@@ -219,6 +219,28 @@ async function answer(p, i, v) {
     await p.close();
   }
 
+  console.log('\n== every archetype has a downloadable guide ==');
+  {
+    // The result screen offers "Qoʻllanmani yuklab olish". If a PDF is missing,
+    // the student gets a 404 at the one moment they were promised something.
+    const { p } = await open();
+    const slugs = await p.evaluate(() =>
+      Object.keys(ARCHETYPES).map(k => ARCHETYPES[k].slug));
+    const codes = await p.evaluate(async function (list) {
+      const out = {};
+      for (const s of list) {
+        const r = await fetch('guides/' + s + '.pdf', { method: 'HEAD' });
+        out[s] = r.status;
+      }
+      return out;
+    }, slugs);
+    const broken = slugs.filter(s => codes[s] !== 200);
+    ok(slugs.length === 10, 'ten archetypes');
+    ok(broken.length === 0, 'every archetype PDF is downloadable (' +
+      (broken.join(',') || 'all 10 present') + ')');
+    await p.close();
+  }
+
   console.log('\n== restart ==');
   {
     const { p } = await fullRun(function () { return 4; });

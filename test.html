@@ -71,7 +71,8 @@
   h2{font-family:var(--display);font-weight:600;font-size:21px;margin:0 0 6px}
   p{margin:0 0 12px}
   .muted{color:var(--muted);font-size:14px}
-  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:#fff}
+  /* text-decoration:none matters: .btn is used on <a> too (PDF, Telegram). */
+  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:#fff;text-decoration:none}
   .btn:hover{background:var(--lazur-deep)}
   .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   .btn[disabled]{background:#B8C9CE;cursor:not-allowed}
@@ -239,7 +240,9 @@
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
   .capture h3{font-family:var(--display);font-weight:600;font-size:18px;margin:0 0 6px}
   .caplede{font-size:14.5px;color:var(--muted);margin:0 0 14px}
-  /* Telegram delivery button — the primary "get your result" option. */
+  /* The guide, three ways: download it now, get it in Telegram, or by email. */
+  .btn.pdf{display:block;text-align:center}
+  /* Telegram delivery button. */
   .btn.tg{display:block;text-align:center;background:#229ED9}
   .btn.tg:hover{background:#1C86B8}
   .capor{text-align:center;color:var(--muted);font-size:13px;margin:12px 0}
@@ -568,6 +571,7 @@ var SITE_HOST = 'raximovv.github.io/TestMind';
 // Telegram bot that delivers results. Change this one line when the real bot is
 // created (the @username, without the @).
 var TG_BOT = 'TestMind_demo_bot';
+var GUIDE_DIR = 'guides/';          // the per-archetype PDF guides, built by tools/
 var statsSent = false, abandonSent = false;
 
 function anonId(){
@@ -1089,9 +1093,13 @@ function renderReport(){
     '</div>' +
     '<div id="shareBox" class="sharebox"></div>' +
     '<div class="capture" id="capture">' +
-      '<h3>Toʻliq tahlilni olasizmi?</h3>' +
-      '<p class="caplede">«' + arch.name + '» uchun batafsil qoʻllanma: kuchli tomonlaringiz, ' +
-        'oʻsish nuqtalaringiz va sizga mos yoʻnalishlar.</p>' +
+      '<h3>Toʻliq qoʻllanmangiz tayyor</h3>' +
+      '<p class="caplede">«' + arch.name + '» uchun 8 sahifalik qoʻllanma: kuchli tomonlaringiz, ' +
+        'oʻsish nuqtalaringiz, maktab va kelajak yoʻnalishlari.</p>' +
+      // Straight download first — it needs neither Telegram nor an email address.
+      '<a class="btn pdf" href="' + GUIDE_DIR + arch.slug + '.pdf" download>' +
+        'Qoʻllanmani yuklab olish (PDF)</a>' +
+      '<div class="capor">yoki</div>' +
       '<a class="btn tg" href="https://t.me/' + TG_BOT + '?start=' + arch.slug + '" ' +
         'target="_blank" rel="noopener">Telegramda olish</a>' +
       '<div class="capor">yoki emailga</div>' +
@@ -1101,8 +1109,8 @@ function renderReport(){
         '<button class="btn" id="capBtn">Yuborish</button>' +
       '</div>' +
       '<p class="capmsg" id="capMsg" role="status"></p>' +
-      '<p class="capnote">Qoʻllanma hozir tayyorlanmoqda — tayyor boʻlishi bilan birinchilardan ' +
-        'boʻlib sizga yuboramiz. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
+      '<p class="capnote">Yuklab olish uchun email kerak emas — u faqat qoʻllanmani ' +
+        'pochtangizga yuborish uchun. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
         '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
     '</div>' +
     '<details class="deep"><summary>Batafsil natija — 5 ta xususiyat</summary><div>';

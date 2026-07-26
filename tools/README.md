@@ -27,6 +27,31 @@ python build_pages.py
 python build_archetypes.py
 ```
 
+## The PDF guide
+
+The take-away guide students receive (by email or through the Telegram bot) is
+an A4 PDF built the same way — generated, never hand-made:
+
+- `guide_content.py` — the **hand-written** long form, one entry per archetype
+  key. This is the actual product; everything else is plumbing. Only `ES|A`
+  (Ishonchli Doʻst) is written so far.
+- `build_guide.py` → `tools/build/guide-<slug>.html` — a single self-contained
+  file (fonts base64-inlined, artwork inlined SVG, no network at all). The name,
+  the two lines, the strength/watch and the historical figure are pulled from
+  `characters.js`, so the PDF cannot contradict the website.
+- `make_pdf.js` → `guides/<slug>.pdf` via headless Chrome.
+
+```
+python build_guide.py "ES|A"
+node   make_pdf.js  ishonchli-dost
+```
+
+Each A4 page is a **fixed box**, not flowing text — the layout is designed per
+page. `make_pdf.js` measures every page first and refuses to write the PDF if
+anything overflows its box, so a longer sentence can never silently get clipped.
+If it reports an overflow, either shorten the text or loosen that page's
+spacing; do not raise the page height.
+
 Tip: to check for drift without touching the repo, copy a script, point its
 `OUT` at a temp dir, run it, and `diff` against the committed pages.
 

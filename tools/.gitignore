@@ -4,3 +4,5 @@ __pycache__/
 *.pyc
 # screenshot / scratch artifacts a test run might drop
 *.png
+# generated intermediate for the PDF guide (the PDF itself is committed)
+build/

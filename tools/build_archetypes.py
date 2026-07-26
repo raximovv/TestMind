@@ -70,6 +70,16 @@ for key, a in ARCH.items():
     <div class="afig"><div class="afigwho">%(figwho)s <span>%(figyears)s</span></div>
       <p>%(figwhy)s</p></div>
 
+    <h2 class="asec">Toʻliq qoʻllanma</h2>
+    <div class="aguide">
+      <div>
+        <b>«%(name)s» — 8 sahifalik PDF qoʻllanma.</b>
+        <p class="amuted">Kundalik hayotda, maktabda va kelajak yoʻnalishlarida; oʻsish
+           nuqtalari va ikki haftalik amaliyot. Bepul, roʻyxatdan oʻtmasdan.</p>
+      </div>
+      <a class="btn" href="guides/%(slug)s.pdf" download>Yuklab olish (PDF)</a>
+    </div>
+
     <h2 class="asec">%(famname)s oilasidagi boshqa obrazlar</h2>
     <p class="amuted">%(famnote)s</p>
     <div class="sibs">%(sibs)s</div>
@@ -78,6 +88,7 @@ for key, a in ARCH.items():
 """ % {
         'famc': fam['c'], 'famsoft': fam['soft'], 'famname': fam['name'],
         'famnote': FAM_NOTES[a['fam']], 'svg': a['svg'], 'name': a['name'],
+        'slug': a['slug'],
         'line0': a['lines'][0], 'line1': a['lines'][1],
         'strengthcap': a['strength'][0].upper() + a['strength'][1:],
         'watch': a['watch'], 't0': a['traits'][0], 't1': a['traits'][1],
