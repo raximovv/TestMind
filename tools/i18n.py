@@ -78,7 +78,6 @@ S['uz'] = {
     'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.',
     'home.h1': u'Siz qaysi obrazsiz?',
     'home.lead': u'50 ta savol, taxminan 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi — kuchli tomonlaringiz bilan birga.',
-    'home.cta2': u'Obrazlarni koʻrish',
     'home.scenecap': u'Registon maydoni · Samarqand',
 
     'home.num.h2': u'Raqamlarda',
@@ -296,7 +295,6 @@ S['ru'] = {
     'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
     'home.h1': u'Какой у вас образ?',
     'home.lead': u'50 вопросов, примерно 7 минут. В конце один из десяти образов станет вашим — вместе с вашими сильными сторонами.',
-    'home.cta2': u'Посмотреть образы',
     'home.scenecap': u'Площадь Регистан · Самарканд',
 
     'home.num.h2': u'В цифрах',
@@ -508,7 +506,6 @@ S['en'] = {
     'home.desc': u'A free Uzbek-language Big Five personality test for 14–16-year-olds. 50 items, about 7 minutes, ten result profiles.',
     'home.h1': u'Which character are you?',
     'home.lead': u'50 items, about seven minutes. At the end, one of ten characters is yours — together with the strengths that come with it.',
-    'home.cta2': u'See the characters',
     'home.scenecap': u'Registan Square · Samarkand',
 
     'home.num.h2': u'In numbers',

@@ -189,10 +189,7 @@ HOME = u"""<header class="hero" id="top">
     <h1>%(home.h1)s</h1>
     <p class="lead" style="font-size:clamp(16px,2.4vw,19px);margin-bottom:26px">
       %(home.lead)s</p>
-    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
-      <a class="btn big" href="test.html" data-cta>%(nav.cta)s</a>
-      <a class="btn big ghost" href="obrazlar.html">%(home.cta2)s</a>
-    </div>
+    <a class="btn big" href="test.html" data-cta>%(nav.cta)s</a>
   </div>
   <div class="scene" id="scene" aria-hidden="true"></div>
   <p class="scenecap">%(home.scenecap)s</p>
