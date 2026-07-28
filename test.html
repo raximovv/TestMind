@@ -45,6 +45,39 @@
     --display:'Bitter', Georgia, serif;
     --body:'Inter', 'Segoe UI', system-ui, sans-serif;
   }
+  /* ---- full life-area detail on the result screen ----
+     test.html is standalone and does not load site.css, so these rules are
+     duplicated here deliberately. They mirror the archetype-page styling so a
+     student sees the same thing in both places. */
+  .lifefull{margin:26px 0 0;text-align:left}
+  .lifehead{font-family:var(--display);font-size:clamp(18px,4.6vw,22px);font-weight:600;
+            margin:30px 0 4px;color:var(--lazur-deep)}
+  .lifehead span{display:block;font-family:var(--body);font-size:13.5px;font-weight:400;
+                 color:var(--muted);margin-top:2px}
+  .lifegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+  .lifecol{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--card)}
+  .lifecol.good{border-left:4px solid #2E8B6B}
+  .lifecol.watch{border-left:4px solid var(--zar)}
+  .lifecol h4{margin:0 0 9px;font-size:13px;letter-spacing:.02em;text-transform:uppercase}
+  .lifecol.good h4{color:#237A5E}
+  .lifecol.watch h4{color:#8A6520}
+  .lifecol ul{list-style:none;margin:0;padding:0}
+  .lifecol li{margin:0 0 10px;font-size:14px;line-height:1.5;color:var(--muted)}
+  .lifecol li:last-child{margin-bottom:0}
+  .lifecol li b{display:block;color:var(--ink)}
+  .careers{list-style:none;margin:12px 0 0;padding:0}
+  .career{margin-bottom:15px}
+  .carhead{display:flex;align-items:baseline;gap:10px}
+  .carname{font-weight:600}
+  .carpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--lazur-deep)}
+  .carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
+  .carbar i{display:block;height:100%;border-radius:4px;
+            background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
+  .carwhy{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
+  .cardisc{margin:15px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);
+           font-size:13px;line-height:1.55;color:var(--muted)}
+  @media (max-width:700px){ .lifegrid{grid-template-columns:1fr} }
+  @media print{ .lifefull{page-break-inside:auto} .lifegrid{grid-template-columns:1fr 1fr} }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{background:var(--paper);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.55}
@@ -403,6 +436,7 @@
 </div></footer>
 
 <script src="characters.js"></script>
+<script src="life.js"></script>
 <script id="tm-logic">
 // ---------- TestMind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -1145,6 +1179,43 @@ function buildShareCard(s, arch, key, cb){
 
 /** «Oʻshanda va hozir» — only for a student who took this at least RETEST_DAYS ago.
  *  Shows which traits actually moved; says so plainly when none did. */
+// ---- full life-area detail on the result screen ----
+// Same content as the archetype page, from the same generated source (life.js),
+// so a student sees everything without having to leave the result. Returns ''
+// for an archetype with no entry yet, rather than an empty heading.
+function lifeHtml(archKey){
+  if (typeof LIFE === 'undefined' || !LIFE[archKey]) return '';
+  var d = LIFE[archKey], L = LIFE_LABELS, out = '', i, j;
+  function list(items){
+    var h = '', k;
+    for (k = 0; k < items.length; k++)
+      h += '<li><b>' + esc(items[k][0]) + '</b> ' + esc(items[k][1]) + '</li>';
+    return h;
+  }
+  for (i = 0; i < d.areas.length; i++){
+    var a = d.areas[i];
+    out += '<h3 class="lifehead">' + esc(a.title) +
+           '<span>' + esc(a.sub) + '</span></h3>' +
+           '<div class="lifegrid">' +
+             '<div class="lifecol good"><h4>' + esc(L.strong) + '</h4><ul>' + list(a.strong) + '</ul></div>' +
+             '<div class="lifecol watch"><h4>' + esc(L.weak) + '</h4><ul>' + list(a.weak) + '</ul></div>' +
+           '</div>';
+  }
+  if (d.careers && d.careers.length){
+    out += '<h3 class="lifehead">' + esc(L.careers) + '</h3><ul class="careers">';
+    for (j = 0; j < d.careers.length; j++){
+      var c = d.careers[j];
+      out += '<li class="career"><div class="carhead">' +
+               '<span class="carname">' + esc(c.name) + '</span>' +
+               '<span class="carpct">' + c.pct + '%</span></div>' +
+             '<div class="carbar"><i style="width:' + c.pct + '%"></i></div>' +
+             '<p class="carwhy">' + esc(c.why) + '</p></li>';
+    }
+    out += '</ul><p class="cardisc">' + esc(L.disclaimer) + '</p>';
+  }
+  return '<section class="lifefull">' + out + '</section>';
+}
+
 function thenAndNowHtml(s, archKey){
   var prev = previousResult();
   if (!prev) return '';
@@ -1231,6 +1302,7 @@ function renderReport(){
       '</div>' +
     '</div>' +
     thenAndNowHtml(s, archKey) +
+    lifeHtml(archKey) +
     '<div class="actions">' +
       '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
       '<button class="btn ghost" id="copyBtn">Havolani nusxalash</button>' +

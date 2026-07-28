@@ -15,6 +15,12 @@ generator and re-run:
 
 - `build_pages.py` → `index.html`, `obrazlar.html`, `qanday-ishlaydi.html`,
   `savollar.html`, `privacy.html`, `maktablar.html`
+- `build_life_js.py` → `life.js` — the browser copy of `life_content.py`.
+  test.html is a standalone client-side app and cannot read a Python module, so
+  the Oilada / Maktabda / Munosabatlarda detail and the ranked directions are
+  compiled to JS for the result screen. Percentages are baked in already
+  computed, so the result screen and the archetype page can never show a
+  different number. `build_archetypes.py` runs it, so it cannot go stale.
 - `build_archetypes.py` → the ten `obraz-*.html` pages (reads `characters.js`
   and `strings.js` via Node, so Node must be on PATH). It imports
   `build_pages.py` from this folder for the shared head/nav/footer, and writes

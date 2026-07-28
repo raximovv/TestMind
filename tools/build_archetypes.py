@@ -11,6 +11,7 @@ import io, json, os, subprocess, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_pages as bp
 import life_content as lc
+import build_life_js
 from i18n import S, LANGS, DIR
 
 OUT = 'C:/Users/Asus/TestMind-site/'
@@ -190,6 +191,11 @@ for lang in LANGS:
     print('wrote %2d archetype pages to %s' % (len(ARCH), DIR[lang] or './'))
 
 print('%d pages total' % count)
+
+# life.js carries the same content to the result screen in test.html, which is a
+# standalone client-side app and cannot read life_content.py. Regenerated here so
+# the two can never disagree.
+build_life_js.build()
 
 # The sitemap lists every page both generators produce, so it is written last,
 # once, from the slugs we just used.
