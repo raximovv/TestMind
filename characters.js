@@ -168,7 +168,15 @@ function tmFigure(o){
 
   s += '<path d="M90 72 h20 v24 q-10 6 -20 0 z" fill="'+skinD+'"/>';
   // chopon in ikat cloth
-  s += '<path d="M68 94 Q100 84 132 94 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+cloth+'"/>';
+  // Build and hem drive the outline. w spreads the shoulders and the skirt; hem
+  // is where the coat stops. Both survive being shrunk to a thumbnail, which the
+  // ikat and the cap embroidery do not.
+  var bw = o.build === 'stocky' ? 1.10 : (o.build === 'narrow' ? 0.91 : 1);
+  var hem = o.hem === 'long' ? 216 : (o.hem === 'short' ? 196 : 206);
+  var sx = function(x){ return (100 + (x - 100) * bw).toFixed(1); };
+  s += '<path d="M' + sx(68) + ' 94 Q100 84 ' + sx(132) + ' 94 L' + sx(148) + ' ' + (hem - 7)
+     + ' Q' + sx(149) + ' ' + hem + ' ' + sx(142) + ' ' + hem
+     + ' H' + sx(58) + ' Q' + sx(51) + ' ' + hem + ' ' + sx(52) + ' ' + (hem - 7) + ' Z" fill="'+cloth+'"/>';
   // the koʻylak worn under the chopon shows as a white V at the throat
   s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="#F4F7F8"/>';
   s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+INK+'" opacity=".05"/>';
@@ -177,10 +185,11 @@ function tmFigure(o){
   // the cuffs. It is the most recognisable thing about a good chopon and the
   // difference between a festival coat and a work one. Drawn before the belbogʻ
   // so the sash correctly covers the middle of the placket.
-  s += '<path d="M53.8 201 H146.2 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+gold+'"/>'
-     + '<path d="M53.4 204.4 H146.6 L146.8 206.4 H53.2 Z" fill="'+goldD+'" opacity=".45"/>';
-  s += '<path d="M96 110 h8 l5 91 h-18 z" fill="'+gold+'"/>'
-     + '<path d="M96 110 h1.6 l-4.2 91 h-1.9z M102.4 110 h1.6 l5 91 h-1.9z" fill="'+goldD+'" opacity=".55"/>';
+  s += '<path d="M' + sx(53.8) + ' ' + (hem - 8) + ' H' + sx(146.2) + ' L' + sx(148) + ' ' + (hem - 7)
+     + ' Q' + sx(149) + ' ' + hem + ' ' + sx(142) + ' ' + hem + ' H' + sx(58)
+     + ' Q' + sx(51) + ' ' + hem + ' ' + sx(52) + ' ' + (hem - 7) + ' Z" fill="'+gold+'"/>';
+  s += '<path d="M96 110 h8 l' + (5 * bw).toFixed(1) + ' ' + (hem - 8 - 110)
+     + ' h-' + (18 * bw).toFixed(1) + ' z" fill="'+gold+'"/>';
   var leaf = '';
   for (i = 0; i < 9; i++) leaf += '<path d="M100 ' + (117 + i * 9) + ' q3.8 3.3 0 6.6 q-3.8 -3.3 0 -6.6z"/>';
   s += '<g fill="'+goldD+'" opacity=".8">' + leaf + '</g>';
@@ -243,7 +252,12 @@ function tmFigure(o){
     // Chust doʻppi: black ground, four white qalampir pods, sixteen arches on the band.
     // The whole cap sits high on the crown - the band must clear the eyebrows at y=50.
     var cap = o.cap || '#141C33', capD = o.capD || '#0B1124';
-    s += '<path d="M68 40 Q68 6 100 6 Q132 6 132 40 Z" fill="'+cap+'"/>';
+    // Crown height is the top third of the silhouette — the most visible
+    // difference of all at thumbnail size.
+    var top = o.crown === 'tall' ? 0 : (o.crown === 'low' ? 16 : 6);
+    var cw = o.crown === 'tall' ? 30 : (o.crown === 'low' ? 35 : 32);
+    s += '<path d="M' + (100 - cw) + ' 40 Q' + (100 - cw) + ' ' + top + ' 100 ' + top
+       + ' Q' + (100 + cw) + ' ' + top + ' ' + (100 + cw) + ' 40 Z" fill="'+cap+'"/>';
     // qalampir: a curved pepper pod, mirrored in pairs the way they sit round the crown
     var pods = '', px = [80, 93.3, 106.7, 120];
     for (i = 0; i < 4; i++){
@@ -418,18 +432,18 @@ var TM_PROPS = {
 };
 
 var TM_ART = {
-  'ES|E': {dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
-  'E|C':  {dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
-  'ES|O': {dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {dstyle:'iroqi', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
-  'O|C':  {dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
-  'ES|A': {dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {dstyle:'iroqi', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
-  'O|A':  {dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
+  'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'E|C':  {build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
+  'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
+  'E|O':  {build:'narrow', crown:'tall', hem:'short', dstyle:'iroqi', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
+  'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
+  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'iroqi', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'O|A':  {build:'narrow', crown:'low',  hem:'normal', dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
-  'ES|C': {dstyle:'chust', pose:'rest', beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
-  'A|C':  {dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
+  'ES|C': {build:'normal', crown:'low',  hem:'long', dstyle:'chust', pose:'rest', beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
+  'A|C':  {build:'stocky', crown:'low',  hem:'normal', dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
 
 function shallowCopy(o, over){
