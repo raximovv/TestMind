@@ -6,8 +6,11 @@
            font-weight:100 900;font-style:normal;font-display:swap}
 
 :root{
-  --lazur:#0F6E8C; --lazur-deep:#0A4F66; --ink:#152730; --paper:#F1F6F7;
-  --card:#FFFFFF; --line:#D7E2E4; --zar:#C08A2E; --muted:#5B7078;
+  /* Naseeb Edu palette: warm cream ground, bronze primary, gold accent. The
+     variable names are kept (--lazur / --zar) because they are referenced in
+     ~60 places; only the values moved. */
+  --lazur:#8A6A3F; --lazur-deep:#6B5230; --ink:#2B2620; --paper:#F4F0E8;
+  --card:#FDFCF9; --line:#E3DCCC; --zar:#C9A961; --muted:#6E6558;
   --display:'Bitter', Georgia, serif; --body:'Inter','Segoe UI',system-ui,sans-serif;
 }
 *{box-sizing:border-box}
@@ -31,10 +34,10 @@ img,svg{max-width:100%}
 .btn:active{transform:translateY(1px)}
 .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
-.btn.ghost:hover{background:#EDF4F5;border-color:var(--lazur)}
+.btn.ghost:hover{background:#F0EADD;border-color:var(--lazur)}
 .btn.sm{padding:9px 16px;font-size:14.5px}
 .btn.big{padding:16px 34px;font-size:18px;border-radius:12px}
-.btn[disabled]{background:#B8C9CE;cursor:not-allowed}
+.btn[disabled]{background:#CFC5B2;cursor:not-allowed}
 
 /* ---------- nav ---------- */
 .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
@@ -56,7 +59,7 @@ img,svg{max-width:100%}
 .langsw a,.langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;
         font-weight:600;letter-spacing:.03em;line-height:1.55;text-decoration:none;
         color:var(--muted);white-space:nowrap}
-.langsw a:hover{color:var(--lazur-deep);background:#EDF4F5}
+.langsw a:hover{color:var(--lazur-deep);background:#F0EADD}
 .langsw a:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
 
@@ -77,7 +80,7 @@ img,svg{max-width:100%}
 }
 
 /* ---------- page header ---------- */
-.phead{background:linear-gradient(180deg,#EAF3F5 0%,#F1F6F7 100%);
+.phead{background:linear-gradient(180deg,#EFE9DC 0%,#F4F0E8 100%);
        border-bottom:1px solid var(--line);padding:52px 0 46px;text-align:center}
 .phead h1{margin:0 0 12px}
 .phead .lead{margin:0 auto;max-width:640px}
@@ -100,7 +103,7 @@ section{padding:60px 0}
 .panel .ptext h2{margin-bottom:12px}
 .panel .ptext p{color:var(--muted);margin:0 0 20px;font-size:16.5px}
 .ptag{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.5px;
-      text-transform:uppercase;color:var(--lazur-deep);background:#E1EEF2;
+      text-transform:uppercase;color:var(--lazur-deep);background:#EFE7D8;
       border-radius:99px;padding:5px 13px;margin-bottom:14px}
 .part{background:var(--paper);border:1px solid var(--line);border-radius:18px;
       padding:18px;display:flex;align-items:center;justify-content:center}
@@ -175,14 +178,14 @@ section{padding:60px 0}
 /* Said before the click, not after it: on the Russian and English pages the test
    button leads to a test that is only in Uzbek. */
 .testlang{max-width:560px;margin:22px auto 0;font-size:13.5px;line-height:1.55;
-          color:#A9CBD8}
+          color:#D6C9AE}
 .fnote{color:var(--muted);font-size:12.5px;white-space:nowrap}
 
 .close{text-align:center;background:var(--lazur-deep);color:#fff;padding:60px 20px}
 .close h2{color:#fff;margin-bottom:12px}
-.close p{color:#C9DEE6;margin:0 0 26px;font-size:17px}
+.close p{color:#DCD2BE;margin:0 0 26px;font-size:17px}
 .close .btn{background:#fff;color:var(--lazur-deep)}
-.close .btn:hover{background:#E7F1F4}
+.close .btn:hover{background:#F2ECE0}
 
 /* ---------- footer ---------- */
 .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}
@@ -244,7 +247,7 @@ section{padding:60px 0}
 /* The PDF guide offer on an archetype page. Wraps to a column on a phone so
    the button never gets squeezed next to the text. */
 .aguide{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px;
-        background:var(--famsoft,#EDF4F5);border-radius:14px;padding:18px 20px}
+        background:var(--famsoft,#F0EADD);border-radius:14px;padding:18px 20px}
 .aguide>div{flex:1 1 260px;min-width:0}
 .aguide b{font-size:16px}
 .aguide p{margin:6px 0 0}
@@ -267,7 +270,7 @@ table.dt{border-collapse:collapse;width:100%;font-size:14.5px;min-width:520px}
 table.dt th{text-align:left;background:var(--paper);font-weight:600;font-size:13px;
             letter-spacing:.3px;text-transform:uppercase;color:var(--muted);
             padding:10px 14px;border-bottom:1px solid var(--line)}
-table.dt td{padding:9px 14px;border-bottom:1px solid #EDF3F4;vertical-align:top}
+table.dt td{padding:9px 14px;border-bottom:1px solid #F1EBDF;vertical-align:top}
 table.dt tr:last-child td{border-bottom:0}
 table.dt td.num{color:var(--muted);width:44px;font-variant-numeric:tabular-nums}
 table.dt td.tr{white-space:nowrap;width:150px}
@@ -294,8 +297,8 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 .letter p{margin:0 0 14px}
 .lt-to{font-weight:600}
 .lt-sign{display:flex;gap:40px;flex-wrap:wrap;margin:26px 0 6px;font-size:14px;color:var(--muted)}
-.lt-line{display:block;width:190px;border-bottom:1px solid #9FB3BA;margin-bottom:5px;height:22px}
-.lt-hr{border:0;border-top:1px dashed #B9CBD1;margin:26px 0 18px}
+.lt-line{display:block;width:190px;border-bottom:1px solid #C0B49C;margin-bottom:5px;height:22px}
+.lt-hr{border:0;border-top:1px dashed #D3C9B4;margin:26px 0 18px}
 .lt-small{font-size:14.5px}
 @media print{
   .noprint,.nav,.foot,.close{display:none !important}
@@ -322,12 +325,12 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
    than its box so the characters stay big on a phone instead of shrinking. That
    only works if the box CLIPS it - without overflow:hidden it paints over the
    section below. */
-.hero{background:linear-gradient(180deg,#EAF3F5 0%,#F1F6F7 100%);
+.hero{background:linear-gradient(180deg,#EFE9DC 0%,#F4F0E8 100%);
       border-bottom:1px solid var(--line);overflow:hidden}
 .scene{width:100%;height:clamp(244px,40vw,520px);overflow:hidden;margin-bottom:-4px}
 .scene svg{display:block;width:100%;height:100%}
 .scenecap{margin:0;padding:10px 20px 16px;text-align:center;font-size:12.5px;
-          letter-spacing:.3px;color:var(--muted);background:#E3EDEA}
+          letter-spacing:.3px;color:var(--muted);background:#EDE7DA}
 
 /* ---------- family bands (Obrazlar page) ---------- */
 .famband{background:var(--famsoft);padding:52px 0 46px;border-bottom:1px solid var(--line)}
@@ -371,7 +374,7 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 .carname{font-weight:600}
 .carpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;
         color:var(--lazur-deep)}
-.carbar{height:7px;border-radius:4px;background:#E3EFF3;margin:5px 0 6px;overflow:hidden}
+.carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
 .carbar i{display:block;height:100%;border-radius:4px;
           background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
 .carwhy{margin:0;font-size:14.5px;color:var(--muted);line-height:1.5}
