@@ -49,6 +49,9 @@
      test.html is standalone and does not load site.css, so these rules are
      duplicated here deliberately. They mirror the archetype-page styling so a
      student sees the same thing in both places. */
+  .lifetop{font-family:var(--display);font-size:clamp(21px,5vw,26px);font-weight:700;
+           margin:34px 0 2px;text-align:center}
+  .lifetopsub{margin:0 0 6px;text-align:center;color:var(--muted);font-size:14.5px}
   .lifefull{margin:26px 0 0;text-align:left}
   .lifehead{font-family:var(--display);font-size:clamp(18px,4.6vw,22px);font-weight:600;
             margin:30px 0 4px;color:var(--lazur-deep)}
@@ -1298,7 +1301,6 @@ function renderReport(){
       '</div>' +
     '</div>' +
     thenAndNowHtml(s, archKey) +
-    lifeHtml(archKey) +
     '<div class="actions">' +
       '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
       '<button class="btn ghost" id="copyBtn">Havolani nusxalash</button>' +
@@ -1329,6 +1331,11 @@ function renderReport(){
         'pochtangizga yuborish uchun. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
         '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
     '</div>' +
+    // The long-form guidance now sits BELOW the actions: reading it is optional,
+    // sharing and downloading are not.
+    '<h2 class="lifetop">Toʻliq tahlil</h2>' +
+    '<p class="lifetopsub">Obrazingiz kundalik hayotda qanday koʻrinadi.</p>' +
+    lifeHtml(archKey) +
     // The per-trait breakdown was removed at the founder's request. The
     // DISCLAIMER it used to carry is kept here, outside any toggle.
     '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
