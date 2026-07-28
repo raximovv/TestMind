@@ -777,9 +777,21 @@ var ART_RESULT =
     // scalloped white arches along the band.
     '<g transform="translate(60,36)">' +
       '<circle cx="0" cy="6" r="13" fill="#F5E0C0"/>' +
-      '<path d="M-14 -2 Q-14 -20 0 -20 Q14 -20 14 -2 Z" fill="#0F6E8C"/>' +
-      '<path d="M0 -17 q2.8 4.4 0 8 q-2.8 -3.6 0 -8z" fill="#C08A2E"/>' +
-      '<rect x="-15.5" y="-4" width="31" height="7" rx="2.2" fill="#0A4F66"/>' +
+      // Black ground with four white qalampir pods — a Chust doʻppi. It is not a
+      // smooth dome with a single ornament at the apex: that is the Kazakh
+      // takyia, and the two are not interchangeable.
+      '<path d="M-14 -2 Q-14 -20 0 -20 Q14 -20 14 -2 Z" fill="#141C33"/>' +
+      '<g fill="#F4F7F8" opacity=".95">' +
+        '<g transform="translate(-8.6,-15)">' +
+          '<path d="M0 0 c2.1 1.4 2.8 4.2 1.1 6 c-0.9 1 -2.5 0.8 -2.9 -0.5 c-0.8 -2.3 0.1 -4.5 1.8 -5.5z"/></g>' +
+        '<g transform="translate(-2.9,-16.4)">' +
+          '<path d="M0 0 c2.1 1.4 2.8 4.2 1.1 6 c-0.9 1 -2.5 0.8 -2.9 -0.5 c-0.8 -2.3 0.1 -4.5 1.8 -5.5z"/></g>' +
+        '<g transform="translate(2.9,-16.4) scale(-1,1)">' +
+          '<path d="M0 0 c2.1 1.4 2.8 4.2 1.1 6 c-0.9 1 -2.5 0.8 -2.9 -0.5 c-0.8 -2.3 0.1 -4.5 1.8 -5.5z"/></g>' +
+        '<g transform="translate(8.6,-15) scale(-1,1)">' +
+          '<path d="M0 0 c2.1 1.4 2.8 4.2 1.1 6 c-0.9 1 -2.5 0.8 -2.9 -0.5 c-0.8 -2.3 0.1 -4.5 1.8 -5.5z"/></g>' +
+      '</g>' +
+      '<rect x="-15.5" y="-4" width="31" height="7" rx="2.2" fill="#0B1124"/>' +
       '<path d="M-15.5 3 q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 ' +
         'q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 q1.94 -3 3.875 0 ' +
         'q1.94 -3 3.875 0" fill="none" stroke="#fff" stroke-width="1.1"/>' +

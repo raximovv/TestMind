@@ -123,6 +123,16 @@ function ikatPattern(id, base, band, motif){
     + '</pattern>';
 }
 
+// A hand, not a dot. `flip` is 1 for the left hand and -1 for the right, so the
+// thumb always points inwards towards the body.
+function tmHand(cx, cy, flip, skin, skinD){
+  return '<g transform="translate(' + cx + ',' + cy + ') scale(' + flip + ',1)">'
+       + '<circle r="9.5" fill="' + skin + '"/>'
+       + '<path d="M4 -6.5 q6.5 0.5 6 5.5 q-0.5 4.5 -6 3.5z" fill="' + skin + '"/>'
+       + '<path d="M4.4 -5.6 q4.6 0.8 4.4 4.4" stroke="' + skinD
+       + '" stroke-width="1.2" fill="none" opacity=".7"/></g>';
+}
+
 function tmFigure(o){
   var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
   var robe = o.robe, robeD = o.robeD, sash = o.sash;
@@ -142,13 +152,27 @@ function tmFigure(o){
     s += '<path d="M64 60 Q64 20 100 20 Q136 20 136 60 V110 Q136 118 128 116 L124 60 H76 L72 116 Q64 118 64 110 Z" fill="'+(o.hair||'#332D38')+'"/>';
   }
 
+  var gold = o.gold || '#D9AE52', goldD = o.goldD || '#A8762A';
+
   s += '<path d="M90 72 h20 v24 q-10 6 -20 0 z" fill="'+skinD+'"/>';
   // chopon in ikat cloth
   s += '<path d="M68 94 Q100 84 132 94 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+cloth+'"/>';
-  s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+skinD+'"/>';
-  // plain binding down the front opening, as a real chopon has
-  s += '<path d="M97 112 h6 l5 97 h-16 z" fill="'+robeD+'"/>';
-  s += '<path d="M86 90 Q100 82 114 90 L110 95 Q100 88 90 95 Z" fill="'+robeD+'"/>';
+  // the koʻylak worn under the chopon shows as a white V at the throat
+  s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="#F4F7F8"/>';
+  s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+INK+'" opacity=".05"/>';
+
+  // Zarhal jiyak — the gold braid down the front opening, round the hem and at
+  // the cuffs. It is the most recognisable thing about a good chopon and the
+  // difference between a festival coat and a work one. Drawn before the belbogʻ
+  // so the sash correctly covers the middle of the placket.
+  s += '<path d="M53.8 201 H146.2 L148 202 Q149 209 142 209 H58 Q51 209 52 202 Z" fill="'+gold+'"/>'
+     + '<path d="M53.4 204.4 H146.6 L146.8 206.4 H53.2 Z" fill="'+goldD+'" opacity=".45"/>';
+  s += '<path d="M96 110 h8 l5 91 h-18 z" fill="'+gold+'"/>'
+     + '<path d="M96 110 h1.6 l-4.2 91 h-1.9z M102.4 110 h1.6 l5 91 h-1.9z" fill="'+goldD+'" opacity=".55"/>';
+  var leaf = '';
+  for (i = 0; i < 9; i++) leaf += '<path d="M100 ' + (117 + i * 9) + ' q3.8 3.3 0 6.6 q-3.8 -3.3 0 -6.6z"/>';
+  s += '<g fill="'+goldD+'" opacity=".8">' + leaf + '</g>';
+  s += '<path d="M86 90 Q100 82 114 90 L110 95 Q100 88 90 95 Z" fill="'+gold+'"/>';
 
   // tumor - the triangular amulet worn against the evil eye
   if (o.head === 'romol' || o.head === 'hair'){
@@ -162,10 +186,14 @@ function tmFigure(o){
   s += '<path d="M58 165 H142 L143 170 H57 Z" fill="#0B2027" opacity=".13"/>';
 
   s += '<g transform="rotate(10 78 100)"><rect x="69" y="100" width="18" height="64" rx="9" fill="'+cloth+'"/>'
-     + '<rect x="69" y="144" width="18" height="7" fill="'+robeD+'"/></g>';
+     + '<rect x="69" y="143" width="18" height="8" fill="'+gold+'"/>'
+     + '<rect x="69" y="147.5" width="18" height="2" fill="'+goldD+'" opacity=".5"/></g>';
   s += '<g transform="rotate(-10 122 100)"><rect x="113" y="100" width="18" height="64" rx="9" fill="'+cloth+'"/>'
-     + '<rect x="113" y="144" width="18" height="7" fill="'+robeD+'"/></g>';
-  s += '<circle cx="67" cy="161" r="9.5" fill="'+skin+'"/><circle cx="133" cy="161" r="9.5" fill="'+skin+'"/>';
+     + '<rect x="113" y="143" width="18" height="8" fill="'+gold+'"/>'
+     + '<rect x="113" y="147.5" width="18" height="2" fill="'+goldD+'" opacity=".5"/></g>';
+  // Hands read as hands rather than dots because of the thumb; without it a bare
+  // circle at this size looks like a button.
+  s += tmHand(67, 161, 1, skin, skinD) + tmHand(133, 161, -1, skin, skinD);
 
   s += '<circle cx="71" cy="60" r="6.5" fill="'+skinD+'"/><circle cx="129" cy="60" r="6.5" fill="'+skinD+'"/>';
   s += '<rect x="71" y="30" width="58" height="56" rx="23" fill="'+skin+'"/>';
@@ -312,8 +340,10 @@ var TM_ART = {
   'ES|A': {head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
   'E|A':  {head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
   'O|A':  {head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
-  'ES|C': {head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', prop:'rook'},
-  'A|C':  {head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', prop:'non'}
+  // The two gold robes need a trim that is not also gold, or the braid disappears
+  // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
+  'ES|C': {head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
+  'A|C':  {head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
 
 var TM_UID = 0;
