@@ -10,6 +10,7 @@ import io, json, os, subprocess, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import build_pages as bp
+import life_content as lc
 from i18n import S, LANGS, DIR
 
 OUT = 'C:/Users/Asus/TestMind-site/'
@@ -87,12 +88,58 @@ BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s">
       <a class="btn" href="guides/%(slug)s.pdf" download>%(guidebtn)s</a>
     </div>
 
+    %(life)s
+
     <h2 class="asec">%(l_sibs)s</h2>
     <p class="amuted">%(famnote)s</p>
     <div class="sibs">%(sibs)s</div>
   </div></section>
 </article>
 """
+
+def esc(s):
+    return s.replace(u'&', u'&amp;').replace(u'<', u'&lt;').replace(u'>', u'&gt;')
+
+
+def life_html(key, lang):
+    u"""Oilada / Maktabda / Munosabatlarda plus the suggested directions.
+
+    Only Uzbek for now: this is long-form written copy, and a machine-shaped
+    Russian rendering of it would read worse than not offering it at all. The
+    section simply does not appear on the ru/ and en/ pages until it is written.
+    Returns '' for any archetype not yet written, so the ten pages keep
+    building while the content lands one at a time.
+    """
+    if lang != 'uz' or key not in lc.LIFE:
+        return u''
+    d = lc.LIFE[key]
+    out = u''
+    for area in ('family', 'school', 'friends'):
+        if area not in d:
+            continue
+        title, sub = lc.AREA_TITLES[area]
+        cols = u''
+        for kind, label, cls in (('strong', lc.STRONG_LABEL, 'good'),
+                                 ('weak', lc.WEAK_LABEL, 'watch')):
+            items = u''.join(
+                u'<li><b>%s</b> %s</li>' % (esc(t), esc(p)) for t, p in d[area][kind])
+            cols += u'<div class="lifecol %s"><h4>%s</h4><ul>%s</ul></div>' % (cls, label, items)
+        out += (u'<h3 class="lifehead">%s <span>%s</span></h3>'
+                u'<div class="lifegrid">%s</div>') % (esc(title), esc(sub), cols)
+
+    if d.get('careers'):
+        rows = sorted(((lc.pct(key, w), n, why) for n, w, why in d['careers']), reverse=True)
+        items = u''.join(
+            u'<li class="career"><div class="carhead"><span class="carname">%s</span>'
+            u'<span class="carpct">%d%%</span></div>'
+            u'<div class="carbar"><i style="width:%d%%"></i></div>'
+            u'<p class="carwhy">%s</p></li>' % (esc(n), p, p, esc(why))
+            for p, n, why in rows)
+        out += (u'<h3 class="lifehead">%s</h3><ul class="careers">%s</ul>'
+                u'<p class="cardisc">%s</p>') % (
+            esc(lc.CAREER_TITLE), items, esc(lc.DISCLAIMER))
+    return out
+
 
 count = 0
 for lang in LANGS:
@@ -129,7 +176,7 @@ for lang in LANGS:
             'guidep': t['arch.guide.p'], 'guidelang': guidelang,
             'guidebtn': t['arch.guide.btn'],
             'l_sibs': t['arch.sibs.h2'] % {'fam': fam['name'][lang]},
-            'sibs': sib_html,
+            'sibs': sib_html, 'life': life_html(key, lang),
         }
 
         fname = 'obraz-%s.html' % a['slug']
