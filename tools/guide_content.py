@@ -3,7 +3,7 @@
 
 Only the short lines on the website are generated from characters.js; the long
 form below is hand-written, because it is the actual product a student takes
-away. Keep the voice: talking TO a 14–16-year-old, second person, concrete
+away. Keep the voice: talking TO a school student aged 10–18, second person, concrete
 school examples, no jargon, no verdicts. Every «oʻsish nuqtasi» must end with
 one small thing they can do this week — advice without an action is just a
 compliment.
@@ -47,7 +47,7 @@ COMMON = {
 'howto': [
     (u'Bu — hukm emas, oyna.',
      u'Bu yerda «siz shundaysiz, boshqacha boʻla olmaysiz» degan gap yoʻq. '
-     u'Bu — bugungi suratingiz. 14–16 yoshda shaxsiyat hali shakllanmoqda, '
+     u'Bu — bugungi suratingiz. 10–18 yoshda shaxsiyat hali shakllanmoqda, '
      u'shuning uchun bir yildan keyin ayrim javoblaringiz oʻzgarishi tabiiy.'),
     (u'«Yaxshi» yoki «yomon» tur yoʻq.',
      u'Har bir obrazning kuchli tomoni ham, ehtiyot boʻladigan joyi ham bor. '
