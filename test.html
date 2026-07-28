@@ -681,6 +681,11 @@ var SITE_HOST = 'raximovv.github.io/TestMind';
 // Telegram bot that delivers results. Change this one line when the real bot is
 // created (the @username, without the @).
 var TG_BOT = 'TestMind_demo_bot';
+// TEMPORARY (2026-07-29): the bot is deliberately not running, so the "get it on
+// Telegram" option is hidden. A button that opens a bot which never answers reads
+// as broken, which is worse than not offering it. Set back to true the moment
+// bot.py is up — nothing else needs changing.
+var SHOW_TELEGRAM = false;
 var GUIDE_DIR = 'guides/';          // the per-archetype PDF guides, built by tools/
 var statsSent = false, abandonSent = false;
 
@@ -1317,9 +1322,11 @@ function renderReport(){
       // Straight download first — it needs neither Telegram nor an email address.
       '<a class="btn pdf" href="' + GUIDE_DIR + arch.slug + '.pdf" download>' +
         'Qoʻllanmani yuklab olish (PDF)</a>' +
-      '<div class="capor">yoki</div>' +
-      '<a class="btn tg" href="https://t.me/' + TG_BOT + '?start=' + arch.slug + '" ' +
-        'target="_blank" rel="noopener">Telegramda olish</a>' +
+      (SHOW_TELEGRAM
+        ? '<div class="capor">yoki</div>' +
+          '<a class="btn tg" href="https://t.me/' + TG_BOT + '?start=' + arch.slug + '" ' +
+            'target="_blank" rel="noopener">Telegramda olish</a>'
+        : '') +
       '<div class="capor">yoki emailga</div>' +
       '<div class="caprow">' +
         '<input type="email" id="capEmail" placeholder="email@example.com" ' +
