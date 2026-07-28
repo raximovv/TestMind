@@ -197,20 +197,49 @@ function tmFigure(o){
   s += '<path d="M60 150 H140 L143 170 H57 Z" fill="'+sash+'"/>';
   s += '<path d="M58 165 H142 L143 170 H57 Z" fill="#0B2027" opacity=".13"/>';
 
-  s += '<g transform="rotate(10 78 100)"><rect x="69" y="100" width="18" height="64" rx="9" fill="'+cloth+'"/>'
-     + '<rect x="69" y="143" width="18" height="8" fill="'+gold+'"/>'
-     + '<rect x="69" y="147.5" width="18" height="2" fill="'+goldD+'" opacity=".5"/></g>';
-  s += '<g transform="rotate(-10 122 100)"><rect x="113" y="100" width="18" height="64" rx="9" fill="'+cloth+'"/>'
-     + '<rect x="113" y="143" width="18" height="8" fill="'+gold+'"/>'
-     + '<rect x="113" y="147.5" width="18" height="2" fill="'+goldD+'" opacity=".5"/></g>';
-  // Hands read as hands rather than dots because of the thumb; without it a bare
-  // circle at this size looks like a button.
-  s += tmHand(67, 161, 1, skin, skinD) + tmHand(133, 161, -1, skin, skinD);
+  // Arm poses. 'rest' is both arms down; 'greet' brings the right hand to the
+  // chest (the ordinary Uzbek greeting); 'point' raises it, as in the reference.
+  // The held object stays where it is, so a prop never ends up in mid-air.
+  var pose = o.pose || 'rest';
+  function sleeve(rot, x){
+    return '<g transform="rotate(' + rot + ' ' + (x + 9) + ' 100)">'
+      + '<rect x="' + x + '" y="100" width="18" height="64" rx="9" fill="' + cloth + '"/>'
+      + '<rect x="' + x + '" y="143" width="18" height="8" fill="' + gold + '"/>'
+      + '<rect x="' + x + '" y="147.5" width="18" height="2" fill="' + goldD + '" opacity=".5"/></g>';
+  }
+  s += sleeve(10, 69);                       // left arm is always down
+  if (pose === 'greet'){
+    // Two segments. The forearm's far end after rotate(108) about the elbow is
+    // (106,132); the hand goes there, so it can never float free of the sleeve.
+    s += '<g transform="rotate(14 122 104)">'
+       + '<rect x="113" y="100" width="18" height="40" rx="9" fill="' + cloth + '"/></g>';
+    s += '<g transform="rotate(108 131 140)">'
+       + '<rect x="122" y="132" width="18" height="34" rx="9" fill="' + cloth + '"/>'
+       + '<rect x="122" y="157" width="18" height="8" fill="' + gold + '"/>'
+       + '<rect x="122" y="161.5" width="18" height="2" fill="' + goldD + '" opacity=".5"/></g>';
+    s += tmHand(67, 161, 1, skin, skinD) + tmHand(106, 132, -1, skin, skinD);
+  } else if (pose === 'point'){
+    s += '<g transform="rotate(-74 122 108)">' + sleeve(0, 113) + '</g>';
+    s += tmHand(67, 161, 1, skin, skinD)
+       + '<g transform="translate(146,96)">'
+       + '<circle r="9.5" fill="' + skin + '"/>'
+       + '<rect x="-3.4" y="-20" width="7" height="14" rx="3.5" fill="' + skin + '"/>'
+       + '<path d="M-3 -18 h6" stroke="' + skinD + '" stroke-width="1" opacity=".6"/></g>';
+  } else {
+    s += sleeve(-10, 113);
+    s += tmHand(67, 161, 1, skin, skinD) + tmHand(133, 161, -1, skin, skinD);
+  }
 
   s += '<circle cx="71" cy="60" r="6.5" fill="'+skinD+'"/><circle cx="129" cy="60" r="6.5" fill="'+skinD+'"/>';
   s += '<rect x="71" y="30" width="58" height="56" rx="23" fill="'+skin+'"/>';
 
+  // ---- regional cap styles ----
+  // chust   black ground, four white qalampir pods, arched band   (Fergana)
+  // iroqi   dense coloured cross-stitch all over the crown        (Shahrisabz)
+  // zardozi gold couching on velvet, the formal one               (Buxoro)
+  // chizma  outlined bodom medallions, lighter ground             (Samarqand)
   if (o.head === 'doppi'){
+    var style = o.dstyle || 'chust';
     // Chust doʻppi: black ground, four white qalampir pods, sixteen arches on the band.
     // The whole cap sits high on the crown - the band must clear the eyebrows at y=50.
     var cap = o.cap || '#141C33', capD = o.capD || '#0B1124';
@@ -224,11 +253,46 @@ function tmFigure(o){
             + 'c-1.8 -5.4 0.2 -10.8 4.4 -13.2 z"/>'
             + '<path d="M-0.4 0.4 q2.6 -2.4 4.6 -1.6 q-1.8 2 -4.6 2.6 z"/></g>';
     }
-    s += '<g fill="#F4F7F8" opacity=".94">' + pods + '</g>';
+    if (style === 'chust') s += '<g fill="#F4F7F8" opacity=".94">' + pods + '</g>';
     s += '<rect x="65" y="32" width="70" height="13" rx="3" fill="'+capD+'"/>';
-    var arcs = '';
-    for (i = 0; i < 16; i++) arcs += 'M' + (66.5 + i * 4.25) + ' 42.6 q2.125 -4.6 4.25 0 ';
-    s += '<path d="'+arcs+'" stroke="#F4F7F8" stroke-width="1.3" fill="none" opacity=".92"/>';
+    var band = '', bi;
+    if (style === 'iroqi'){
+      // rows of tiny cross-stitch, the busiest of the four
+      var cross = '', cx2, cy2;
+      for (cy2 = 12; cy2 < 34; cy2 += 6){
+        for (cx2 = 72; cx2 < 130; cx2 += 6.4){
+          cross += 'M' + cx2 + ' ' + cy2 + ' l3 3 M' + (cx2 + 3) + ' ' + cy2 + ' l-3 3 ';
+        }
+      }
+      s += '<path d="' + cross + '" stroke="' + (o.stitch || '#E8C25A') +
+           '" stroke-width="1.15" opacity=".9" fill="none" stroke-linecap="round"/>';
+      for (bi = 0; bi < 10; bi++)
+        band += 'M' + (67 + bi * 6.8) + ' 43.4 l3.4 -4 l3.4 4 ';
+      s += '<path d="' + band + '" stroke="#F4F7F8" stroke-width="1.35" fill="none" opacity=".9"/>';
+    } else if (style === 'zardozi'){
+      // gold couching: a medallion flanked by scrolls, no white at all
+      var g2 = o.stitch || '#D9AE52';
+      s += '<g fill="none" stroke="' + g2 + '" stroke-width="1.5" stroke-linecap="round">'
+         + '<path d="M100 14 q7 5 0 11 q-7 -6 0 -11z"/>'
+         + '<path d="M84 20 q5 4 0 8 q-5 -4 0 -8z"/><path d="M116 20 q-5 4 0 8 q5 -4 0 -8z"/>'
+         + '<path d="M74 27 q4 3 0 6 q-4 -3 0 -6z"/><path d="M126 27 q-4 3 0 6 q4 -3 0 -6z"/></g>';
+      for (bi = 0; bi < 9; bi++)
+        band += 'M' + (68 + bi * 7.5) + ' 38.6 q3.75 6 7.5 0 ';
+      s += '<path d="' + band + '" stroke="' + g2 + '" stroke-width="1.5" fill="none" opacity=".95"/>';
+    } else if (style === 'chizma'){
+      // outlined bodom medallions rather than solid pods
+      s += '<g fill="none" stroke="' + (o.stitch || '#F2E3B0') + '" stroke-width="1.3">'
+         + '<path d="M100 12 q6.5 6 0 12 q-6.5 -6 0 -12z"/>'
+         + '<path d="M82 17 q5.5 5 0 10 q-5.5 -5 0 -10z"/><path d="M118 17 q-5.5 5 0 10 q5.5 -5 0 -10z"/>'
+         + '<circle cx="100" cy="18" r="1.8"/></g>';
+      for (bi = 0; bi < 12; bi++)
+        band += 'M' + (66.5 + bi * 5.7) + ' 41.8 h3.4 ';
+      s += '<path d="' + band + '" stroke="#F4F7F8" stroke-width="1.6" fill="none" opacity=".9"/>';
+    } else {
+      var arcs = '';
+      for (i = 0; i < 16; i++) arcs += 'M' + (66.5 + i * 4.25) + ' 42.6 q2.125 -4.6 4.25 0 ';
+      s += '<path d="'+arcs+'" stroke="#F4F7F8" stroke-width="1.3" fill="none" opacity=".92"/>';
+    }
   } else if (o.head === 'romol'){
     s += '<path d="M62 104 V60 Q62 18 100 18 Q138 18 138 60 V104 Q129 109 122 102 V60 Q122 40 100 40 Q78 40 78 60 V102 Q71 109 62 104 Z" fill="'+o.scarf+'"/>';
     s += '<path d="M78 60 Q78 40 100 40 Q122 40 122 60" stroke="'+o.scarfD+'" stroke-width="4.5" fill="none"/>';
@@ -354,18 +418,18 @@ var TM_PROPS = {
 };
 
 var TM_ART = {
-  'ES|E': {beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
-  'E|C':  {beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
-  'ES|O': {beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
-  'O|C':  {beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
-  'ES|A': {beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
-  'O|A':  {beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
+  'ES|E': {dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'E|C':  {dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
+  'ES|O': {dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
+  'E|O':  {dstyle:'iroqi', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'O|C':  {dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
+  'ES|A': {dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
+  'E|A':  {dstyle:'iroqi', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'O|A':  {dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
-  'ES|C': {beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
-  'A|C':  {beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
+  'ES|C': {dstyle:'chust', pose:'rest', beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
+  'A|C':  {dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
 
 function shallowCopy(o, over){
