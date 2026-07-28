@@ -133,7 +133,19 @@ function tmHand(cx, cy, flip, skin, skinD){
        + '" stroke-width="1.2" fill="none" opacity=".7"/></g>';
 }
 
+// TEMPORARY (2026-07-29, at the founder's request): render every archetype as a
+// male figure in a doʻppi. Set to false to bring back the roʻmol and uncovered-hair
+// variants — nothing was deleted, TM_ART still carries scarf and hair colours.
+//
+// Worth revisiting: about half the students taking this are girls, and a result
+// card that shows an adult man to all of them is a card they are less likely to
+// share. Sharing is how this spreads.
+var ALL_MALE = true;
+
 function tmFigure(o){
+  // Before anything is drawn: the uncovered-hair block runs early, so a later
+  // override would leave the hair behind the body still rendered.
+  if (ALL_MALE && o.head !== 'doppi') o = shallowCopy(o, {head: 'doppi'});
   var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
   var robe = o.robe, robeD = o.robeD, sash = o.sash;
   var pid = 'ikat-' + (o.uid || 'x');
@@ -233,6 +245,16 @@ function tmFigure(o){
     s += '<circle cx="70" cy="67" r="2.3" fill="#C9A227"/><circle cx="130" cy="67" r="2.3" fill="#C9A227"/>';
   }
 
+  // A beard is what separates a grown man from a round-faced boy at this size —
+  // three lengths so ten bearded figures do not read as ten copies.
+  if (o.beard){
+    var bc = o.beardc || '#4B4149', bd = o.beard;
+    var drop = bd === 'long' ? 102 : (bd === 'short' ? 90 : 96);
+    s += '<path d="M72 57 C72 ' + drop + ' 84 ' + (drop + 2) + ' 100 ' + (drop + 2)
+       + ' C116 ' + (drop + 2) + ' 128 ' + drop + ' 128 57 '
+       + 'C124 74 114 79 100 79 C86 79 76 74 72 57z" fill="'+bc+'"/>';
+    s += '<path d="M87 64 q13 -6 26 0 q-4 8 -13 8 q-9 0 -13 -8z" fill="'+bc+'"/>';
+  }
   s += '<circle cx="88" cy="59" r="3.5" fill="'+INK+'"/><circle cx="112" cy="59" r="3.5" fill="'+INK+'"/>';
   s += '<path d="M82.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
      + '<path d="M106.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
@@ -332,19 +354,26 @@ var TM_PROPS = {
 };
 
 var TM_ART = {
-  'ES|E': {head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
-  'E|C':  {head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
-  'ES|O': {head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
-  'O|C':  {head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
-  'ES|A': {head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
-  'O|A':  {head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
+  'ES|E': {beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'E|C':  {beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
+  'ES|O': {beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
+  'E|O':  {beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'O|C':  {beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
+  'ES|A': {beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
+  'E|A':  {beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'O|A':  {beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
-  'ES|C': {head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
-  'A|C':  {head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
+  'ES|C': {beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
+  'A|C':  {beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
+
+function shallowCopy(o, over){
+  var out = {}, k;
+  for (k in o) out[k] = o[k];
+  for (k in over) out[k] = over[k];
+  return out;
+}
 
 var TM_UID = 0;
 // width/height are required for the canvas share card to rasterise this in Firefox.
