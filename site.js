@@ -188,7 +188,7 @@ function buildGallery(full){
   for (i = 0; i < FAM_ORDER.length; i++){
     f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
     // heading levels stay in order: page h1 -> family h2 -> card h3
-    html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
+    html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+';--famdark:'+fam.dark+';--famlit:'+fam.lit+'">'
           + '<div class="famhead"><h2 class="famname">'+tmFam(f)+'</h2>'
           + '<span class="famnote">'+tmFamNote(f)+'</span></div><div class="cards">';
     for (j = 0; j < keys.length; j++){
@@ -214,7 +214,7 @@ function buildBands(){
   for (k in ARCHETYPES){ a = ARCHETYPES[k]; (byFam[a.fam] = byFam[a.fam] || []).push(k); }
   for (i = 0; i < FAM_ORDER.length; i++){
     f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
-    html += '<section class="famband" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
+    html += '<section class="famband" style="--famc:'+fam.c+';--famsoft:'+fam.soft+';--famdark:'+fam.dark+';--famlit:'+fam.lit+'">'
           + '<div class="wrap"><h2 class="famtitle">'+tmFam(f)+'</h2>'
           + '<p class="famsub">'+tmFamNote(f)+'</p><div class="famrow">';
     for (j = 0; j < keys.length; j++){
@@ -245,6 +245,29 @@ function markResumeCtas(){
   } catch (e) {}
 }
 
+
+/* ---------- theme toggle ----------
+   The stored value is applied in <head> before first paint (see THEME_BOOT in
+   build_pages.py); this only handles the click. Writing an explicit value
+   rather than clearing it matters: a user on a dark OS who chooses light must
+   keep light, which the CSS honours via :not([data-theme="light"]). */
+function currentTheme(){
+  var set = document.documentElement.getAttribute('data-theme');
+  if (set) return set;
+  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark' : 'light';
+}
+function bindThemeToggle(){
+  var btns = document.querySelectorAll('[data-theme-toggle]'), i;
+  for (i = 0; i < btns.length; i++){
+    btns[i].onclick = function(){
+      var next = currentTheme() === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      try { localStorage.setItem('testmind_theme', next); } catch (e) {}
+    };
+  }
+}
+
 function mountPage(){
   var scene = document.getElementById('scene');
   if (scene) scene.innerHTML = buildScene();
@@ -257,6 +280,7 @@ function mountPage(){
   if ((v = document.getElementById('vg-others'))) v.innerHTML = vgOthers();
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   markResumeCtas();
+  bindThemeToggle();
 }
 // This file is loaded at the bottom of <body>, so the DOM is already parsed — but
 // guard anyway, so nothing silently fails to render if the tag is ever moved to

@@ -26,20 +26,40 @@
              font-weight:100 900;font-style:normal;font-display:swap}
   @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
+  /* Naseeb Edu palette. Light is warm cream + bronze; dark is the deep violet
+     the platform uses. Both are declared here rather than in site.css because
+     the test is a standalone page that does not load it. */
   :root{
-    --lazur:#0F6E8C;      /* Registan tile teal */
-    --lazur-deep:#0A4F66;
-    --ink:#152730;        /* dark blue slate text */
-    --paper:#F1F6F7;      /* cool paper background */
-    --card:#FFFFFF;
-    --line:#D7E2E4;
-    --zar:#C08A2E;        /* ochre accent, used sparingly */
+    --lazur:#8A6A3F;      /* bronze — primary */
+    --lazur-deep:#6B5230;
+    --ink:#2B2620;        /* warm near-black text */
+    --paper:#F4F0E8;      /* warm cream background */
+    --card:#FDFCF9;
+    --line:#E3DCCC;
+    --zar:#C9A961;        /* gold accent, used sparingly */
     --viol:#8A6BC1;       /* violet — disagree side of scale */
     --viol-soft:#DCD2EE;
-    --lazur-soft:#A8CBD6;
-    --muted:#5B7078;
+    --lazur-soft:#D9C7A4;
+    --muted:#6E6558;
+    --artbg:#FFFFFF;      /* ground the characters are drawn against */
     --display:'Bitter', Georgia, serif;
     --body:'Inter', 'Segoe UI', system-ui, sans-serif;
+  }
+  /* The OS preference is the default; an explicit choice on the site overrides
+     it via data-theme and wins in both directions. */
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
+      --card:#1E1529; --line:#332742; --zar:#C9A961; --viol:#A98BE0;
+      --viol-soft:#392B52; --lazur-soft:#6B5230; --muted:#A093B0;
+      --artbg:#EFEAF5;
+    }
+  }
+  :root[data-theme="dark"]{
+    --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
+    --card:#1E1529; --line:#332742; --zar:#C9A961; --viol:#A98BE0;
+    --viol-soft:#392B52; --lazur-soft:#6B5230; --muted:#A093B0;
+    --artbg:#EFEAF5;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}

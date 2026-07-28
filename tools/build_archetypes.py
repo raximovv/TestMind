@@ -47,14 +47,14 @@ for (const f in s.FAMILIES){
     name[L]=(S.fam||{})[f]||F.name;
     note[L]=(S.famnote||{})[f]||s.FAM_NOTES[f];
   }
-  fams[f]={c:F.c, soft:F.soft, name, note};
+  fams[f]={c:F.c, soft:F.soft, dark:F.dark, lit:F.lit, name, note};
 }
 process.stdout.write(JSON.stringify({arch,fams}));
 ''' % (OUT + 'characters.js', OUT + 'strings.js', json.dumps(LANGS)))])
 data = json.loads(dump.decode('utf-8'))
 ARCH, FAMS = data['arch'], data['fams']
 
-BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s">
+BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s;--famdark:%(famdark)s;--famlit:%(famlit)s">
   <header class="ahero">
     <div class="wrap ahin">
       <div class="aart">%(svg)s</div>
@@ -160,6 +160,7 @@ for lang in LANGS:
 
         body = BODY % {
             'famc': fam['c'], 'famsoft': fam['soft'],
+            'famdark': fam['dark'], 'famlit': fam['lit'],
             'famname': fam['name'][lang], 'famnote': fam['note'][lang],
             'svg': v['svg'], 'name': v['name'], 'slug': a['slug'],
             'line0': v['lines'][0], 'line1': v['lines'][1],

@@ -384,3 +384,152 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 @media (max-width:700px){
   .lifegrid{grid-template-columns:1fr}
 }
+
+/* ================= dark theme ==================================
+   Naseeb Edu runs a warm cream light theme and a deep violet dark one, with a
+   toggle in the header. TestMind follows both, because it is embedded in that
+   platform and a page that ignores the host's theme reads as pasted in.
+
+   The OS preference is the default. An explicit choice stamps data-theme on
+   <html> and must win in BOTH directions, which is why the media query is
+   scoped with :not([data-theme="light"]) — otherwise a user on a dark OS who
+   deliberately picked light would still get dark. */
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
+    --card:#1E1529; --line:#332742; --zar:#C9A961; --muted:#A093B0;
+    --artbg:#EFEAF5;
+  }
+}
+:root[data-theme="dark"]{
+  --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
+  --card:#1E1529; --line:#332742; --zar:#C9A961; --muted:#A093B0;
+  --artbg:#EFEAF5;
+}
+:root{--artbg:#FFFFFF}
+
+/* The ten characters are fixed-colour SVG: cream faces on a near-black ground
+   glow like lightbulbs. They keep their own pale panel instead — a framed
+   illustration rather than a recoloured one, which is also why their Uzbek
+   dress survives the theme switch. */
+[data-theme="dark"] .cart,
+[data-theme="dark"] .part,
+[data-theme="dark"] .aart,
+[data-theme="dark"] .sibart,
+[data-theme="dark"] .famrow .ftart{background:var(--artbg);border-radius:12px}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .cart,
+  :root:not([data-theme="light"]) .part,
+  :root:not([data-theme="light"]) .aart,
+  :root:not([data-theme="light"]) .sibart,
+  :root:not([data-theme="light"]) .famrow .ftart{background:var(--artbg);border-radius:12px}
+}
+
+/* Surfaces that were hardcoded light because there was only ever one theme. */
+[data-theme="dark"] .nav{background:rgba(20,14,27,.94)}
+[data-theme="dark"] .phead{background:linear-gradient(180deg,#1B1326 0%,#140E1B 100%)}
+[data-theme="dark"] .lifecol.good{border-left-color:#4FBF95}
+[data-theme="dark"] .lifecol.good h4{color:#6FD3AC}
+[data-theme="dark"] .lifecol.watch h4{color:#D9B872}
+[data-theme="dark"] .carbar{background:#2A1E3C}
+[data-theme="dark"] .btn.ghost:hover{background:#2A1E3C}
+[data-theme="dark"] .langsw a:hover{background:#2A1E3C}
+[data-theme="dark"] .close .btn{background:var(--lazur);color:#140E1B}
+[data-theme="dark"] .close .btn:hover{background:var(--lazur-deep)}
+
+/* Theme toggle, matching the language switcher so the header reads as one control set. */
+.themesw{display:flex;align-items:center;flex:none;border:1px solid var(--line);
+         border-radius:999px;background:var(--card);padding:2px;cursor:pointer;
+         color:var(--muted);line-height:0}
+.themesw:hover{color:var(--lazur-deep)}
+.themesw:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+.themesw svg{width:17px;height:17px;margin:5px;display:block}
+.themesw .moon{display:none}
+[data-theme="dark"] .themesw .moon{display:block}
+[data-theme="dark"] .themesw .sun{display:none}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .themesw .moon{display:block}
+  :root:not([data-theme="light"]) .themesw .sun{display:none}
+}
+@media (max-width:820px){ .themesw svg{width:15px;height:15px;margin:4px} }
+
+/* Family bands are painted from inline custom properties, so the dark pair has
+   to be swapped rather than overridden — an inline --famsoft always wins. */
+[data-theme="dark"] .famband{background:var(--famdark)}
+[data-theme="dark"] .fam .cart{background:var(--artbg)}
+[data-theme="dark"] .famtitle,
+[data-theme="dark"] .famname{color:var(--famlit)}
+[data-theme="dark"] .famhead{border-bottom-color:var(--famlit)}
+[data-theme="dark"] .ftname,[data-theme="dark"] .cname{color:var(--ink)}
+[data-theme="dark"] .ftdesc,[data-theme="dark"] .ftfig,
+[data-theme="dark"] .cline,[data-theme="dark"] .cstr,
+[data-theme="dark"] .cwatch,[data-theme="dark"] .cfig{color:var(--muted)}
+[data-theme="dark"] .ccard{background:var(--card)}
+[data-theme="dark"] .apage{--fam:var(--famlit)}
+[data-theme="dark"] .ahero{background:var(--famdark)}
+[data-theme="dark"] .abox.strong{background:#132A22}
+[data-theme="dark"] .abox.warn{background:#2B2213}
+[data-theme="dark"] .afig{background:var(--card)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .famband{background:var(--famdark)}
+  :root:not([data-theme="light"]) .fam .cart{background:var(--artbg)}
+  :root:not([data-theme="light"]) .famtitle,
+  :root:not([data-theme="light"]) .famname{color:var(--famlit)}
+  :root:not([data-theme="light"]) .famhead{border-bottom-color:var(--famlit)}
+  :root:not([data-theme="light"]) .ftname,
+  :root:not([data-theme="light"]) .cname{color:var(--ink)}
+  :root:not([data-theme="light"]) .ftdesc,:root:not([data-theme="light"]) .ftfig,
+  :root:not([data-theme="light"]) .cline,:root:not([data-theme="light"]) .cstr,
+  :root:not([data-theme="light"]) .cwatch,:root:not([data-theme="light"]) .cfig{color:var(--muted)}
+  :root:not([data-theme="light"]) .ccard{background:var(--card)}
+  :root:not([data-theme="light"]) .apage{--fam:var(--famlit)}
+  :root:not([data-theme="light"]) .ahero{background:var(--famdark)}
+  :root:not([data-theme="light"]) .abox.strong{background:#132A22}
+  :root:not([data-theme="light"]) .abox.warn{background:#2B2213}
+  :root:not([data-theme="light"]) .afig{background:var(--card)}
+}
+
+/* Surfaces that were painted light because there was only ever a light theme.
+   .close is the trap: it uses --lazur-deep as a BACKGROUND with white text, and
+   --lazur-deep lightens on dark, so it silently became white-on-lavender. */
+[data-theme="dark"] .hero{background:linear-gradient(180deg,#1B1326 0%,#140E1B 100%)}
+[data-theme="dark"] .scenecap{color:var(--muted)}
+[data-theme="dark"] .ptag{background:#2A1E3C;color:var(--lazur-deep)}
+[data-theme="dark"] .close{background:#241735;color:var(--ink)}
+[data-theme="dark"] .close h2{color:var(--ink)}
+[data-theme="dark"] .close p{color:var(--muted)}
+[data-theme="dark"] .testlang{color:var(--muted)}
+[data-theme="dark"] .foot{background:#100B16}
+[data-theme="dark"] .cardisc{background:#241735}
+[data-theme="dark"] .lifecol{background:var(--card)}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]) .hero{background:linear-gradient(180deg,#1B1326 0%,#140E1B 100%)}
+  :root:not([data-theme="light"]) .scenecap{color:var(--muted)}
+  :root:not([data-theme="light"]) .ptag{background:#2A1E3C;color:var(--lazur-deep)}
+  :root:not([data-theme="light"]) .close{background:#241735;color:var(--ink)}
+  :root:not([data-theme="light"]) .close h2{color:var(--ink)}
+  :root:not([data-theme="light"]) .close p{color:var(--muted)}
+  :root:not([data-theme="light"]) .testlang{color:var(--muted)}
+  :root:not([data-theme="light"]) .foot{background:#100B16}
+  :root:not([data-theme="light"]) .cardisc{background:#241735}
+  :root:not([data-theme="light"]) .lifecol{background:var(--card)}
+}
+
+/* Four controls now share the first row on a phone: brand, language switcher,
+   theme toggle and CTA. Adding the toggle pushed the header back to two rows
+   (152px, a quarter of a 360x640 screen), so all three controls tighten
+   together. navcheck.js asserts the single row. */
+@media (max-width:820px){
+  .navin{gap:8px}
+  .langsw a,.langsw span{padding:4px 5.5px;font-size:11px;letter-spacing:.01em}
+  .themesw svg{width:14px;height:14px;margin:3.5px}
+  .navin .btn.sm{padding:9px 10px;font-size:13.5px}
+}
+/* Measured at 360px: 102 + 85 + 27 + 123 + 3x8 = 361px, one pixel over. The gap
+   drops to 6 and the brand to 21px, leaving ~17px of headroom so a slightly
+   wider CTA translation does not tip it over again. */
+@media (max-width:820px){
+  .navin{gap:6px}
+  .brand{font-size:21px}
+  .navin .btn.sm{padding:9px 9px}
+}
