@@ -244,7 +244,9 @@ function tmFigure(o){
 
   // ---- regional cap styles ----
   // chust   black ground, four white qalampir pods, arched band   (Fergana)
-  // iroqi   dense coloured cross-stitch all over the crown        (Shahrisabz)
+  // sanama  dense coloured surface stitching over the crown       (Kitob/Shahrisabz)
+  //         NB 'iroqi' was used here before and is wrong: that is a
+  //         women's skullcap of Sogdian origin, not a men's style.
   // zardozi gold couching on velvet, the formal one               (Buxoro)
   // chizma  outlined bodom medallions, lighter ground             (Samarqand)
   if (o.head === 'doppi'){
@@ -254,10 +256,19 @@ function tmFigure(o){
     var cap = o.cap || '#141C33', capD = o.capD || '#0B1124';
     // Crown height is the top third of the silhouette — the most visible
     // difference of all at thumbnail size.
-    var top = o.crown === 'tall' ? 0 : (o.crown === 'low' ? 16 : 6);
-    var cw = o.crown === 'tall' ? 30 : (o.crown === 'low' ? 35 : 32);
-    s += '<path d="M' + (100 - cw) + ' 40 Q' + (100 - cw) + ' ' + top + ' 100 ' + top
-       + ' Q' + (100 + cw) + ' ' + top + ' ' + (100 + cw) + ' 40 Z" fill="'+cap+'"/>';
+    var top = o.crown === 'tall' ? 2 : (o.crown === 'low' ? 16 : 9);
+    var cw = o.crown === 'tall' ? 30 : (o.crown === 'low' ? 34 : 32);
+    var tw = cw - 7;                       // the flat top is narrower than the base
+    // Four panels: flat top, angled sides, and a seam where the front facet meets
+    // the side one. A dome would be the Kazakh takyia; this packs flat.
+    s += '<path d="M' + (100 - cw) + ' 41 L' + (100 - tw) + ' ' + top
+       + ' Q100 ' + (top - 1.5) + ' ' + (100 + tw) + ' ' + top
+       + ' L' + (100 + cw) + ' 41 Z" fill="'+cap+'"/>';
+    s += '<path d="M' + (100 - cw) + ' 41 L' + (100 - tw) + ' ' + top
+       + ' L' + (100 - tw + 10) + ' ' + (top + 0.6) + ' L' + (100 - cw + 10) + ' 41 Z" '
+       + 'fill="'+capD+'" opacity=".45"/>';
+    s += '<path d="M' + (100 + cw) + ' 41 L' + (100 + tw) + ' ' + top + '" stroke="'+capD
+       + '" stroke-width="1" opacity=".5" fill="none"/>';
     // qalampir: a curved pepper pod, mirrored in pairs the way they sit round the crown
     var pods = '', px = [80, 93.3, 106.7, 120];
     for (i = 0; i < 4; i++){
@@ -270,7 +281,7 @@ function tmFigure(o){
     if (style === 'chust') s += '<g fill="#F4F7F8" opacity=".94">' + pods + '</g>';
     s += '<rect x="65" y="32" width="70" height="13" rx="3" fill="'+capD+'"/>';
     var band = '', bi;
-    if (style === 'iroqi'){
+    if (style === 'sanama'){
       // rows of tiny cross-stitch, the busiest of the four
       var cross = '', cx2, cy2;
       for (cy2 = 12; cy2 < 34; cy2 += 6){
@@ -303,6 +314,8 @@ function tmFigure(o){
         band += 'M' + (66.5 + bi * 5.7) + ' 41.8 h3.4 ';
       s += '<path d="' + band + '" stroke="#F4F7F8" stroke-width="1.6" fill="none" opacity=".9"/>';
     } else {
+      // Sixteen arches, the traditional count — described as a fortress
+      // protecting the wearer. Not an arbitrary number.
       var arcs = '';
       for (i = 0; i < 16; i++) arcs += 'M' + (66.5 + i * 4.25) + ' 42.6 q2.125 -4.6 4.25 0 ';
       s += '<path d="'+arcs+'" stroke="#F4F7F8" stroke-width="1.3" fill="none" opacity=".92"/>';
@@ -435,10 +448,10 @@ var TM_ART = {
   'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
   'E|C':  {build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
   'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {build:'narrow', crown:'tall', hem:'short', dstyle:'iroqi', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'E|O':  {build:'narrow', crown:'tall', hem:'short', dstyle:'sanama', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
   'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
   'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'iroqi', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
   'O|A':  {build:'narrow', crown:'low',  hem:'normal', dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
