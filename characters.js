@@ -13,6 +13,15 @@ var FAMILIES = {
   base: {name:'Tayanchlar',   c:'#A2731F', soft:'#F6EEDC'}
 };
 
+// One line describing each family. Lives here beside FAMILIES rather than in
+// site.js, because the archetype-page generator needs it too.
+var FAM_NOTES = {
+  lead:'Odamlarni ortidan ergashtiradiganlar',
+  crea:'Yangi gʻoya va yechim topadiganlar',
+  care:'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
+  base:'Vaʼdasida turadigan, ishonchli odamlar'
+};
+
 // Human-readable trait names, shared by the test and the archetype pages.
 var TRAIT_NAMES = {ES:'Hissiy barqarorlik', E:'Kirishimlilik', O:'Yangilikka ochiqlik',
                    A:'Kelishuvchanlik', C:'Masʼuliyatlilik'};

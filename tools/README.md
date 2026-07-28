@@ -14,18 +14,44 @@ The **static content pages are generated** — do not hand-edit them, edit the
 generator and re-run:
 
 - `build_pages.py` → `index.html`, `obrazlar.html`, `qanday-ishlaydi.html`,
-  `savollar.html`, `privacy.html`, `maktablar.html`, `ota-onalarga.html`
+  `savollar.html`, `privacy.html`, `maktablar.html`
 - `build_archetypes.py` → the ten `obraz-*.html` pages (reads `characters.js`
-  via Node, so Node must be on PATH). It imports `build_pages.py` from this
-  folder for the shared head/nav/footer.
-
-Both write to the repo root (`OUT` at the top of each script). As of
-2026-07-23 both were verified to reproduce every committed page byte-for-byte.
+  and `strings.js` via Node, so Node must be on PATH). It imports
+  `build_pages.py` from this folder for the shared head/nav/footer, and writes
+  the sitemap last, from the slugs it just used.
 
 ```
 python build_pages.py
 python build_archetypes.py
 ```
+
+## Three languages
+
+Each generator writes **every page three times**: Uzbek to the repo root,
+Russian to `ru/`, English to `en/` — 48 pages in all. Uzbek keeps the root so
+that every link already shared in the wild keeps working, and page filenames are
+identical in all three languages so the switcher can always offer the same page.
+
+Where the words live:
+
+- `i18n.py` — every string on the six static pages, in all three languages.
+  The page *structure* exists once, as a template; the languages fill named
+  slots. `python i18n.py` checks that no language is missing a key, and the
+  build refuses to run if one is.
+- `strings.js` — the Russian and English overlay for everything rendered at
+  runtime (the ten characters, family names, `Kuchli tomoni:`-style labels).
+  Uzbek is not in it: `characters.js` is the base, and a key missing from ru/en
+  falls back to Uzbek rather than to a blank. Shipped to the browser *and* read
+  by `build_archetypes.py`, so a page and the live site cannot disagree.
+
+**`test.html` is deliberately not translated** — not the items, not the buttons.
+A translated personality questionnaire is a different instrument needing its own
+validation, and language mixed within one sample makes the responses
+uninterpretable. It stays Uzbek in all three versions, and the Russian and
+English pages say so before the click, not after it.
+
+To add a language: add it to `LANGS`/`DIR`/`UP` in `i18n.py`, add its block to
+`S`, add a block to `STRINGS` in `strings.js`, and re-run both generators.
 
 ## The PDF guide
 
@@ -67,6 +93,24 @@ Tip: to check for drift without touching the repo, copy a script, point its
 Real Chrome is driven headlessly via `puppeteer-core`. It expects Chrome at
 `C:/Program Files/Google/Chrome/Application/chrome.exe` (edit the `CHROME`
 constant in each file if yours differs).
+
+**Two suites need no `npm install` and no dependencies at all** — useful because
+`npm` is currently broken on the dev machine (the Node install at
+`C:/Informatika/` has no `node_modules/npm`, so npm cannot find itself):
+
+```
+node i18n_test.js       # 27 — language resolution and the ru/en overlay, in a bare VM
+node navcheck.js        # 48 pages x 3 widths — nav layout, switcher, overflow,
+                        #      and that the character bands render per language
+```
+
+`navcheck.js` drives Chrome over the DevTools protocol using Node 24's built-in
+`WebSocket`, so it works while `puppeteer-core` cannot be installed. It asserts
+that brand + switcher + CTA stay on **one** row at 360px: they do not fit by
+default, and letting the CTA wrap made the sticky header 153px tall — a quarter
+of a small phone screen.
+
+The rest need puppeteer:
 
 ```
 npm install

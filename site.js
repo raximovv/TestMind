@@ -178,12 +178,8 @@ function vgFuture(){
 /* ================= character gallery ================= */
 
 var FAM_ORDER = ['lead','crea','care','base'];
-var FAM_NOTES = {
-  lead:'Odamlarni ortidan ergashtiradiganlar',
-  crea:'Yangi gʻoya va yechim topadiganlar',
-  care:'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
-  base:'Vaʼdasida turadigan, ishonchli odamlar'
-};
+// FAM_NOTES moved to characters.js: the page generators read it from there, and
+// two copies of the same four lines had no way of staying in step.
 
 // full=true adds the first description line (used on the Obrazlar page).
 function buildGallery(full){
@@ -193,17 +189,17 @@ function buildGallery(full){
     f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
     // heading levels stay in order: page h1 -> family h2 -> card h3
     html += '<div class="fam" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
-          + '<div class="famhead"><h2 class="famname">'+fam.name+'</h2>'
-          + '<span class="famnote">'+FAM_NOTES[f]+'</span></div><div class="cards">';
+          + '<div class="famhead"><h2 class="famname">'+tmFam(f)+'</h2>'
+          + '<span class="famnote">'+tmFamNote(f)+'</span></div><div class="cards">';
     for (j = 0; j < keys.length; j++){
-      a = ARCHETYPES[keys[j]];
+      a = tmArch(keys[j]);
       html += '<a class="ccard" href="obraz-'+a.slug+'.html">'
             + '<div class="cart">'+charSvg(keys[j], a.name)+'</div>'
             + '<div class="cbody"><h3 class="cname">'+a.name+'</h3>'
             + (full ? '<p class="cline">'+a.lines[0]+'</p>' : '')
-            + '<p class="cstr">Kuchli tomoni: '+a.strength+'</p>'
-            + (full ? '<p class="cwatch">Eʼtibor bering: '+a.watch+'</p>' : '')
-            + '<p class="cfig">Tarixdan: <b>'+a.figure.who+'</b> · '+a.figure.years+'</p>'
+            + '<p class="cstr">'+tmUi('strength')+a.strength+'</p>'
+            + (full ? '<p class="cwatch">'+tmUi('watch')+a.watch+'</p>' : '')
+            + '<p class="cfig">'+tmUi('fig')+'<b>'+a.figure.who+'</b> · '+a.figure.years+'</p>'
             + '</div></a>';
     }
     html += '</div></div>';
@@ -219,10 +215,10 @@ function buildBands(){
   for (i = 0; i < FAM_ORDER.length; i++){
     f = FAM_ORDER[i]; fam = FAMILIES[f]; keys = byFam[f] || [];
     html += '<section class="famband" style="--famc:'+fam.c+';--famsoft:'+fam.soft+'">'
-          + '<div class="wrap"><h2 class="famtitle">'+fam.name+'</h2>'
-          + '<p class="famsub">'+FAM_NOTES[f]+'</p><div class="famrow">';
+          + '<div class="wrap"><h2 class="famtitle">'+tmFam(f)+'</h2>'
+          + '<p class="famsub">'+tmFamNote(f)+'</p><div class="famrow">';
     for (j = 0; j < keys.length; j++){
-      a = ARCHETYPES[keys[j]];
+      a = tmArch(keys[j]);
       html += '<a class="ftype" href="obraz-'+a.slug+'.html">'
             + '<span class="ftart">'+charSvg(keys[j], a.name)+'</span>'
             + '<span class="ftname">'+a.name+'</span>'
@@ -245,7 +241,7 @@ function markResumeCtas(){
     for (i = 0; i < d.answers.length; i++) if (d.answers[i] > 0) done++;
     if (!done) return;
     var els = document.querySelectorAll('[data-cta]');
-    for (i = 0; i < els.length; i++) els[i].textContent = 'Testni davom ettirish';
+    for (i = 0; i < els.length; i++) els[i].textContent = tmUi('resume');
   } catch (e) {}
 }
 

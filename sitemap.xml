@@ -1,20 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://raximovv.github.io/TestMind/</loc><priority>1.0</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/test.html</loc><priority>0.9</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/</loc><priority>1.0</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/obrazlar.html</loc><priority>0.7</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/qanday-ishlaydi.html</loc><priority>0.7</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/savollar.html</loc><priority>0.7</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/privacy.html</loc><priority>0.7</priority></url>
   <url><loc>https://raximovv.github.io/TestMind/maktablar.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-xotirjam-yetakchi.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-gayratli-tashkilotchi.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-xotirjam-kashfiyotchi.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-gayratli-ijodkor.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-ijodkor-strateg.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-ishonchli-dost.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-jamoaning-yuragi.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-ijodkor-insonparvar.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-barqaror-strateg.html</loc><priority>0.7</priority></url>
-  <url><loc>https://raximovv.github.io/TestMind/obraz-ishonchli-tayanch.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-xotirjam-yetakchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-gayratli-tashkilotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-xotirjam-kashfiyotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-gayratli-ijodkor.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-ijodkor-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-ishonchli-dost.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-jamoaning-yuragi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-ijodkor-insonparvar.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-barqaror-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/obraz-ishonchli-tayanch.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/</loc><priority>0.8</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obrazlar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/qanday-ishlaydi.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/savollar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/privacy.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/maktablar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-xotirjam-yetakchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-gayratli-tashkilotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-xotirjam-kashfiyotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-gayratli-ijodkor.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-ijodkor-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-ishonchli-dost.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-jamoaning-yuragi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-ijodkor-insonparvar.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-barqaror-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/ru/obraz-ishonchli-tayanch.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/</loc><priority>0.8</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obrazlar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/qanday-ishlaydi.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/savollar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/privacy.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/maktablar.html</loc><priority>0.7</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-xotirjam-yetakchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-gayratli-tashkilotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-xotirjam-kashfiyotchi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-gayratli-ijodkor.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-ijodkor-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-ishonchli-dost.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-jamoaning-yuragi.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-ijodkor-insonparvar.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-barqaror-strateg.html</loc><priority>0.6</priority></url>
+  <url><loc>https://raximovv.github.io/TestMind/en/obraz-ishonchli-tayanch.html</loc><priority>0.6</priority></url>
 </urlset>

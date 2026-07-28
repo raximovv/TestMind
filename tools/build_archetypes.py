@@ -1,49 +1,59 @@
 # -*- coding: utf-8 -*-
-"""Generates one page per archetype, driven by characters.js so nothing can drift."""
-import io, json, subprocess, sys
+u"""Generates one page per archetype per language — ten pages x three languages.
+
+Driven by characters.js (the Uzbek original) and strings.js (the Russian and
+English overlay), which are the same two files the browser loads. Nothing is
+retyped here, so a page and the live site cannot disagree about what an
+archetype is called.
+"""
+import io, json, os, subprocess, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import build_pages as bp
+from i18n import S, LANGS, DIR
 
 OUT = 'C:/Users/Asus/TestMind-site/'
 
-# pull the data straight out of the shipped characters.js
-dump = subprocess.check_output(['node', '-e', '''
-const fs=require('fs'),vm=require('vm');const s={};vm.createContext(s);
-vm.runInContext(fs.readFileSync('C:/Users/Asus/TestMind-site/characters.js','utf8'),s);
-const out={};
+# Pull the data straight out of the shipped files, resolving each language the
+# same way strings.js does at runtime: translated field, else the Uzbek base.
+dump = subprocess.check_output(['node', '-e', ('''
+const fs=require('fs'),vm=require('vm');
+const s={document:{documentElement:{getAttribute(){return 'uz';}}}};
+vm.createContext(s);
+vm.runInContext(fs.readFileSync(%r,'utf8'),s);   // characters.js
+vm.runInContext(fs.readFileSync(%r,'utf8'),s);   // strings.js
+const LANGS=%s;
+const pick=(t,base,k)=>(t&&t[k])||base[k];
+const arch={},fams={};
 for (const k in s.ARCHETYPES){
-  const a=s.ARCHETYPES[k];
-  out[k]={name:a.name,slug:a.slug,fam:a.fam,lines:a.lines,strength:a.strength,
-          watch:a.watch,figure:a.figure,svg:s.charSvg(k,a.name),
-          traits:k.split('|').map(x=>s.TRAIT_NAMES[x])};
+  const a=s.ARCHETYPES[k], by={};
+  for (const L of LANGS){
+    const S=s.STRINGS[L]||{}, t=(S.arch||{})[k]||{}, f=t.figure||{};
+    const name=pick(t,a,'name');
+    by[L]={name, lines:pick(t,a,'lines'),
+           strength:pick(t,a,'strength'), watch:pick(t,a,'watch'),
+           figure:{who:f.who||a.figure.who, years:a.figure.years,
+                   why:f.why||a.figure.why},
+           traits:k.split('|').map(x=>(S.traits||{})[x]||s.TRAIT_NAMES[x]),
+           svg:s.charSvg(k,name)};
+  }
+  arch[k]={slug:a.slug, fam:a.fam, byLang:by};
 }
-process.stdout.write(JSON.stringify({arch:out,fams:s.FAMILIES}));
-'''])
+for (const f in s.FAMILIES){
+  const F=s.FAMILIES[f], name={}, note={};
+  for (const L of LANGS){
+    const S=s.STRINGS[L]||{};
+    name[L]=(S.fam||{})[f]||F.name;
+    note[L]=(S.famnote||{})[f]||s.FAM_NOTES[f];
+  }
+  fams[f]={c:F.c, soft:F.soft, name, note};
+}
+process.stdout.write(JSON.stringify({arch,fams}));
+''' % (OUT + 'characters.js', OUT + 'strings.js', json.dumps(LANGS)))])
 data = json.loads(dump.decode('utf-8'))
 ARCH, FAMS = data['arch'], data['fams']
 
-sys.path.insert(0, 'C:/Users/Asus/AppData/Local/Temp/claude/C--Users-Asus/'
-                   'faec2f98-6d9f-4a7e-bfde-43b1971bf1bb/scratchpad/render')
-import os, importlib.util
-spec = importlib.util.spec_from_file_location('bp',
-    os.path.join(os.path.dirname(os.path.abspath(__file__)), 'build_pages.py'))
-bp = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(bp)   # reuses head(), nav(), FOOTER, SCRIPTS and rewrites the other pages
-
-FAM_NOTES = {
-    'lead': u'Odamlarni ortidan ergashtiradiganlar',
-    'crea': u'Yangi gʻoya va yechim topadiganlar',
-    'care': u'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
-    'base': u'Vaʼdasida turadigan, ishonchli odamlar',
-}
-
-for key, a in ARCH.items():
-    fam = FAMS[a['fam']]
-    siblings = [b for k, b in ARCH.items() if b['fam'] == a['fam'] and k != key]
-    sib_html = u''.join(
-        u'<a class="sib" href="obraz-%s.html"><span class="sibart">%s</span>'
-        u'<span class="sibname">%s</span></a>' % (b['slug'], b['svg'], b['name'])
-        for b in siblings)
-
-    body = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s">
+BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s">
   <header class="ahero">
     <div class="wrap ahin">
       <div class="aart">%(svg)s</div>
@@ -57,49 +67,82 @@ for key, a in ARCH.items():
   </header>
 
   <section><div class="wrap" style="max-width:820px">
-    <div class="abox strong"><h2>Kuchli tomoningiz</h2><p>%(strengthcap)s</p></div>
-    <div class="abox warn"><h2>Eʼtibor bering</h2><p>%(watch)s</p></div>
+    <div class="abox strong"><h2>%(l_strength)s</h2><p>%(strengthcap)s</p></div>
+    <div class="abox warn"><h2>%(l_watch)s</h2><p>%(watch)s</p></div>
 
-    <h2 class="asec">Bu obraz qanday chiqadi</h2>
-    <p>Bu obraz ikkita eng kuchli xususiyatingizdan tugʻiladi: <b>%(t0)s</b> va <b>%(t1)s</b>.
-       Boshqa uchtasi ham sizda bor — shunchaki bu ikkisi ulardan koʻra kuchliroq chiqqan.</p>
-    <p class="amuted">Agar bu ikki xususiyat bir-biriga juda yaqin boʻlsa, test yakunida sizga
-       ikkinchi obraz ham koʻrsatiladi. Natija — bugungi suratingiz, oʻzgarmas yorliq emas.</p>
+    <h2 class="asec">%(l_how)s</h2>
+    <p>%(how)s</p>
+    <p class="amuted">%(hownote)s</p>
 
-    <h2 class="asec">Shu xususiyat kimda kuchli boʻlgan</h2>
+    <h2 class="asec">%(l_fig)s</h2>
     <div class="afig"><div class="afigwho">%(figwho)s <span>%(figyears)s</span></div>
       <p>%(figwhy)s</p></div>
 
-    <h2 class="asec">Toʻliq qoʻllanma</h2>
+    <h2 class="asec">%(l_guide)s</h2>
     <div class="aguide">
       <div>
-        <b>«%(name)s» — 8 sahifalik PDF qoʻllanma.</b>
-        <p class="amuted">Kundalik hayotda, maktabda va kelajak yoʻnalishlarida; oʻsish
-           nuqtalari va ikki haftalik amaliyot. Bepul, roʻyxatdan oʻtmasdan.</p>
+        <b>%(guideb)s</b>
+        <p class="amuted">%(guidep)s%(guidelang)s</p>
       </div>
-      <a class="btn" href="guides/%(slug)s.pdf" download>Yuklab olish (PDF)</a>
+      <a class="btn" href="guides/%(slug)s.pdf" download>%(guidebtn)s</a>
     </div>
 
-    <h2 class="asec">%(famname)s oilasidagi boshqa obrazlar</h2>
+    <h2 class="asec">%(l_sibs)s</h2>
     <p class="amuted">%(famnote)s</p>
     <div class="sibs">%(sibs)s</div>
   </div></section>
 </article>
-""" % {
-        'famc': fam['c'], 'famsoft': fam['soft'], 'famname': fam['name'],
-        'famnote': FAM_NOTES[a['fam']], 'svg': a['svg'], 'name': a['name'],
-        'slug': a['slug'],
-        'line0': a['lines'][0], 'line1': a['lines'][1],
-        'strengthcap': a['strength'][0].upper() + a['strength'][1:],
-        'watch': a['watch'], 't0': a['traits'][0], 't1': a['traits'][1],
-        'figwho': a['figure']['who'], 'figyears': a['figure']['years'],
-        'figwhy': a['figure']['why'], 'sibs': sib_html,
-    }
+"""
 
-    title = u'%s — TestMind obrazlari' % a['name']
-    desc = u'%s %s' % (a['lines'][0], a['strength'])
-    fname = 'obraz-%s.html' % a['slug']
-    html = bp.head(title, desc, fname) + bp.nav('obrazlar.html') + body \
-         + bp.CLOSE + bp.FOOTER + bp.SCRIPTS
-    io.open(OUT + fname, 'w', encoding='utf-8', newline='').write(html)
-    print('wrote %-38s %6d bytes' % (fname, len(html.encode('utf-8'))))
+count = 0
+for lang in LANGS:
+    t = S[lang]
+    for key, a in ARCH.items():
+        v = a['byLang'][lang]
+        fam = FAMS[a['fam']]
+        siblings = [(b['slug'], b['byLang'][lang])
+                    for k, b in ARCH.items() if b['fam'] == a['fam'] and k != key]
+        sib_html = u''.join(
+            u'<a class="sib" href="obraz-%s.html"><span class="sibart">%s</span>'
+            u'<span class="sibname">%s</span></a>' % (slug, bv['svg'], bv['name'])
+            for slug, bv in siblings)
+
+        # The guide PDFs exist only in Uzbek; say so on the pages where that is
+        # news, rather than after the download.
+        guidelang = (u' ' + t['arch.guide.lang']) if t['arch.guide.lang'] else u''
+
+        body = BODY % {
+            'famc': fam['c'], 'famsoft': fam['soft'],
+            'famname': fam['name'][lang], 'famnote': fam['note'][lang],
+            'svg': v['svg'], 'name': v['name'], 'slug': a['slug'],
+            'line0': v['lines'][0], 'line1': v['lines'][1],
+            'l_strength': t['arch.strength'], 'l_watch': t['arch.watch'],
+            'strengthcap': v['strength'][0].upper() + v['strength'][1:],
+            'watch': v['watch'],
+            'l_how': t['arch.how.h2'],
+            'how': t['arch.how.p'] % {'t0': v['traits'][0], 't1': v['traits'][1]},
+            'hownote': t['arch.how.note'],
+            'l_fig': t['arch.fig.h2'], 'figwho': v['figure']['who'],
+            'figyears': v['figure']['years'], 'figwhy': v['figure']['why'],
+            'l_guide': t['arch.guide.h2'],
+            'guideb': t['arch.guide.b'] % {'name': v['name']},
+            'guidep': t['arch.guide.p'], 'guidelang': guidelang,
+            'guidebtn': t['arch.guide.btn'],
+            'l_sibs': t['arch.sibs.h2'] % {'fam': fam['name'][lang]},
+            'sibs': sib_html,
+        }
+
+        fname = 'obraz-%s.html' % a['slug']
+        title = t['arch.title'] % {'name': v['name']}
+        desc = u'%s %s' % (v['lines'][0], v['strength'])
+        html = bp.head(lang, title, desc, fname) + bp.nav(lang, fname, 'obrazlar.html') \
+             + body + bp.close(lang) + bp.footer(lang) + bp.SCRIPTS
+        bp.write(OUT + DIR[lang] + fname, bp.localize(html, lang))
+        count += 1
+    print('wrote %2d archetype pages to %s' % (len(ARCH), DIR[lang] or './'))
+
+print('%d pages total' % count)
+
+# The sitemap lists every page both generators produce, so it is written last,
+# once, from the slugs we just used.
+bp.write_sitemap([a['slug'] for a in ARCH.values()])

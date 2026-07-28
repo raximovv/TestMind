@@ -8,7 +8,13 @@ const BASE = 'http://localhost:8765/';
 const DIR = 'C:/Users/Asus/TestMind-site/';
 const WIDTHS = [360, 768, 1280];
 
-const PAGES = fs.readdirSync(DIR).filter(f => f.endsWith('.html')).sort();
+// Root plus each translated folder. Russian and English are longer than Uzbek —
+// German-problem territory — so a nav that fits in Uzbek is not evidence that it
+// fits at all, and these pages have to be measured, not assumed.
+const LANGDIRS = ['', 'ru/', 'en/'];
+const PAGES = LANGDIRS.flatMap(d => fs.existsSync(DIR + d)
+  ? fs.readdirSync(DIR + d).filter(f => f.endsWith('.html')).sort().map(f => d + f)
+  : []);
 const problems = [];
 let current = '?', curW = 0;
 const bug = (kind, detail, page, w) =>

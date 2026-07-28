@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TestMind — a Big Five personality test for Uzbek teenagers</title>
+<meta name="description" content="A free Uzbek-language Big Five personality test for 14–16-year-olds. 50 items, about 7 minutes, ten result profiles.">
+<meta property="og:title" content="TestMind — a Big Five personality test for Uzbek teenagers">
+<meta property="og:description" content="A free Uzbek-language Big Five personality test for 14–16-year-olds. 50 items, about 7 minutes, ten result profiles.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="TestMind">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raximovv.github.io/TestMind/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
+<link rel="canonical" href="https://raximovv.github.io/TestMind/en/">
+<link rel="alternate" hreflang="uz" href="https://raximovv.github.io/TestMind/">
+<link rel="alternate" hreflang="ru" href="https://raximovv.github.io/TestMind/ru/">
+<link rel="alternate" hreflang="en" href="https://raximovv.github.io/TestMind/en/">
+<link rel="alternate" hreflang="x-default" href="https://raximovv.github.io/TestMind/">
+<link rel="preload" href="../fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../site.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"TestMind","url":"https://raximovv.github.io/TestMind/en/","inLanguage":"en","description":"A free Uzbek-language Big Five personality test for 14–16-year-olds. 50 items, about 7 minutes, ten result profiles."}</script>
+</head>
+<body>
+<nav class="nav"><div class="wrap navin">
+  <a class="brand" href="index.html">TestMind</a>
+  <div class="navlinks">
+    <a href="index.html" aria-current="page">Home</a>
+    <a href="obrazlar.html">Characters</a>
+    <a href="../test.html">The test</a>
+    <a href="qanday-ishlaydi.html">How it works</a>
+    <a href="savollar.html">FAQ</a>
+  </div>
+  <div class="langsw" role="group" aria-label="Site language"><a href="../index.html" hreflang="uz" lang="uz" title="Oʻzbekcha">UZ</a><a href="../ru/index.html" hreflang="ru" lang="ru" title="Русский">RU</a><span aria-current="true">EN</span></div>
+  <a class="btn sm" href="../test.html" data-cta>Take the test</a>
+</div></nav>
+<header class="hero" id="top">
+  <div style="text-align:center;padding:52px 20px 28px;max-width:760px;margin:0 auto">
+    <h1>Which character are you?</h1>
+    <p class="lead" style="font-size:clamp(16px,2.4vw,19px);margin-bottom:26px">
+      50 items, about seven minutes. At the end, one of ten characters is yours — together with the strengths that come with it.</p>
+    <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+      <a class="btn big" href="../test.html" data-cta>Take the test</a>
+      <a class="btn big ghost" href="obrazlar.html">See the characters</a>
+    </div>
+  </div>
+  <div class="scene" id="scene" aria-hidden="true"></div>
+  <p class="scenecap">Registan Square · Samarkand</p>
+</header>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="center"><h2>In numbers</h2>
+      <p class="lead">TestMind has just launched. We will report these numbers openly here as they grow.</p></div>
+    <div class="facts">
+      <div class="fact"><div class="factn">0</div><div class="factl">tests completed</div></div>
+      <div class="fact"><div class="factn">0</div><div class="factl">completed today</div></div>
+      <div class="fact"><div class="factn">0</div><div class="factl">participating schools</div></div>
+      <div class="fact"><div class="factn">0</div><div class="factl">cities and districts</div></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="panel">
+      <div class="ptext">
+        <span class="ptag">Understand yourself</span>
+        <h2>Why do some things come easily to you and others not?</h2>
+        <p>The test ends with a character rather than a score: what kind of person you are, what gives you energy, and which side of you is strongest. You can save it as an image and send it to friends.</p>
+        <a class="btn" href="../test.html" data-cta>Take the test</a>
+      </div>
+      <div class="part" id="vg-result"></div>
+    </div>
+
+    <div class="panel flip">
+      <div class="ptext">
+        <span class="ptag">Understand other people</span>
+        <h2>Why is your friend nothing like you?</h2>
+        <p>None of the ten characters is better than the others. One person brings a room to life; another quietly finds the best answer. Knowing this makes it easier to get along with your classmates.</p>
+        <a class="btn ghost" href="obrazlar.html">See the ten characters</a>
+      </div>
+      <div class="part" id="vg-others"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ptext">
+        <span class="ptag">Choose your direction</span>
+        <h2>Which direction might suit you?</h2>
+        <p>Fourteen to sixteen is when subjects, streams and careers start to matter. TestMind will not hand you an answer, but it will show you the kind of environment you are comfortable in.</p>
+        <a class="btn ghost" href="qanday-ishlaydi.html">How it works</a>
+      </div>
+      <div class="part" id="vg-future"></div>
+    </div>
+  </div>
+</section>
+
+<section class="alt">
+  <div class="wrap">
+    <div class="center"><h2>Why TestMind?</h2>
+      <p class="lead">Built for Uzbek teenagers, in Uzbek.</p></div>
+    <div class="why">
+      <div class="wcard"><h3>Based on a scientific model</h3><p>The items are drawn from the Big Five, the most extensively tested model of personality in psychology.</p></div>
+      <div class="wcard"><h3>Written in natural Uzbek</h3><p>The items are not a literal translation — they are written in the language teenagers actually use day to day.</p></div>
+      <div class="wcard"><h3>Anonymous</h3><p>The test asks for neither name nor age. Responses are stored without any identifier that could be traced back to the person who gave them, and are used only to improve the instrument.</p></div>
+      <div class="wcard"><h3>Completely free</h3><p>No payment, no subscription, no registration.</p></div>
+    </div>
+  </div>
+</section>
+<section class="close">
+  <h2>Ready?</h2>
+  <p>Seven minutes. Which of the ten characters is yours?</p>
+  <a class="btn big" href="../test.html" data-cta>Take the test</a>
+  <p class="testlang">The test itself is in Uzbek only. The items are not translated: translating a personality item changes what it measures, and mixing languages within one sample would make the responses uninterpretable.</p>
+</section>
+<footer class="foot"><div class="wrap">
+  <div class="footgrid">
+    <div class="footcol"><h2>TestMind</h2><ul>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="obrazlar.html">The ten characters</a></li>
+      <li><a href="qanday-ishlaydi.html">How it works</a></li>
+    </ul></div>
+    <div class="footcol"><h2>Test</h2><ul>
+      <li><a href="../test.html" data-cta>Take the test</a> <span class="fnote">(The test is in Uzbek only)</span></li>
+      <li><a href="savollar.html">Frequently asked questions</a></li>
+    </ul></div>
+    <div class="footcol"><h2>About</h2><ul>
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="qanday-ishlaydi.html#model">What the test is based on</a></li>
+      <li><a href="maktablar.html">For schools and parents</a></li>
+    </ul></div>
+    <div class="footcol"><h2>Contact</h2><ul>
+      <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
+    </ul>
+      <div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div></div>
+  </div>
+  <div class="footbar">
+    <span>© 2026 TestMind</span>
+    <span>Results are advisory — not a medical or psychological diagnosis.</span>
+  </div>
+</div></footer>
+<script src="../characters.js"></script>
+<script src="../strings.js"></script>
+<script src="../site.js"></script>
+</body>
+</html>
