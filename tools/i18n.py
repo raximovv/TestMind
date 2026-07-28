@@ -77,7 +77,7 @@ S['uz'] = {
     'home.title': u'TestMind — Siz qaysi obrazsiz?',
     'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.',
     'home.h1': u'Siz qaysi obrazsiz?',
-    'home.lead': u'50 ta savol, taxminan 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi — kuchli tomonlaringiz bilan birga.',
+    'home.lead': u'Atigi 7 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
     'home.scenecap': u'Registon maydoni · Samarqand',
 
     'home.num.h2': u'Raqamlarda',
@@ -88,7 +88,7 @@ S['uz'] = {
     'home.fact4': u'shahar va tuman',
 
     'home.p1.tag': u'Oʻzingizni tushunib oling',
-    'home.p1.h2': u'Nega ayrim ishlar sizga oson, ayrimlari qiyin?',
+    'home.p1.h2': u'Natija — raqam emas, obraz',
     'home.p1.p': u'Test yakunida qandaydir ball emas, aniq bir obraz olasiz: siz qanday odamsiz, nima sizga kuch beradi va qaysi tomoningiz eng kuchli. Uni rasm qilib saqlab, doʻstlaringizga yuborishingiz mumkin.',
     'home.p2.tag': u'Boshqalarni tushunib oling',
     'home.p2.h2': u'Doʻstingiz nega sizdan butunlay boshqacha?',
@@ -294,7 +294,7 @@ S['ru'] = {
     'home.title': u'TestMind — какой у вас образ?',
     'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
     'home.h1': u'Какой у вас образ?',
-    'home.lead': u'50 вопросов, примерно 7 минут. В конце один из десяти образов станет вашим — вместе с вашими сильными сторонами.',
+    'home.lead': u'Всего 7 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
     'home.scenecap': u'Площадь Регистан · Самарканд',
 
     'home.num.h2': u'В цифрах',
@@ -305,7 +305,7 @@ S['ru'] = {
     'home.fact4': u'городов и районов',
 
     'home.p1.tag': u'Понять себя',
-    'home.p1.h2': u'Почему одно даётся вам легко, а другое трудно?',
+    'home.p1.h2': u'Результат — не балл, а образ',
     'home.p1.p': u'В конце теста вы получите не какой-то балл, а конкретный образ: какой вы человек, что даёт вам силы и какая ваша сторона самая сильная. Результат можно сохранить картинкой и отправить друзьям.',
     'home.p2.tag': u'Понять других',
     'home.p2.h2': u'Почему ваш друг совсем не такой, как вы?',
@@ -505,7 +505,7 @@ S['en'] = {
     'home.title': u'TestMind — a Big Five personality test for Uzbek teenagers',
     'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 50 items, about 7 minutes, ten result profiles.',
     'home.h1': u'Which character are you?',
-    'home.lead': u'50 items, about seven minutes. At the end, one of ten characters is yours — together with the strengths that come with it.',
+    'home.lead': u'Just seven minutes — and you will understand why some things come easily to you and others do not.',
     'home.scenecap': u'Registan Square · Samarkand',
 
     'home.num.h2': u'In numbers',
@@ -516,7 +516,7 @@ S['en'] = {
     'home.fact4': u'cities and districts',
 
     'home.p1.tag': u'Understand yourself',
-    'home.p1.h2': u'Why do some things come easily to you and others not?',
+    'home.p1.h2': u'The result is a character, not a score',
     'home.p1.p': u'The test ends with a character rather than a score: what kind of person you are, what gives you energy, and which side of you is strongest. You can save it as an image and send it to friends.',
     'home.p2.tag': u'Understand other people',
     'home.p2.h2': u'Why is your friend nothing like you?',
