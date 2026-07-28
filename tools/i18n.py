@@ -54,7 +54,6 @@ S['uz'] = {
     'nav.cta': u'Testni boshlash',
     'nav.resume': u'Testni davom ettirish',
     'nav.langlabel': u'Sayt tili',
-    'nav.themelabel': u'Yorugʻ yoki qorongʻi rejim',
 
     'foot.about': u'Maʼlumot',
     'foot.contact': u'Bogʻlanish',
@@ -275,7 +274,6 @@ S['ru'] = {
     'nav.cta': u'Пройти тест',
     'nav.resume': u'Продолжить тест',
     'nav.langlabel': u'Язык сайта',
-    'nav.themelabel': u'Светлая или тёмная тема',
 
     'foot.about': u'Информация',
     'foot.contact': u'Связаться',
@@ -487,7 +485,6 @@ S['en'] = {
     'nav.cta': u'Take the test',
     'nav.resume': u'Resume the test',
     'nav.langlabel': u'Site language',
-    'nav.themelabel': u'Light or dark theme',
 
     'foot.about': u'About',
     'foot.contact': u'Contact',

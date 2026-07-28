@@ -26,9 +26,9 @@
              font-weight:100 900;font-style:normal;font-display:swap}
   @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
-  /* Naseeb Edu palette. Light is warm cream + bronze; dark is the deep violet
-     the platform uses. Both are declared here rather than in site.css because
-     the test is a standalone page that does not load it. */
+  /* Naseeb Edu palette: warm cream ground, bronze primary, gold accent.
+     Declared here because the test is a standalone page that does not load
+     site.css. */
   :root{
     --lazur:#8A6A3F;      /* bronze — primary */
     --lazur-deep:#6B5230;
@@ -44,22 +44,6 @@
     --artbg:#FFFFFF;      /* ground the characters are drawn against */
     --display:'Bitter', Georgia, serif;
     --body:'Inter', 'Segoe UI', system-ui, sans-serif;
-  }
-  /* The OS preference is the default; an explicit choice on the site overrides
-     it via data-theme and wins in both directions. */
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
-      --card:#1E1529; --line:#332742; --zar:#C9A961; --viol:#A98BE0;
-      --viol-soft:#392B52; --lazur-soft:#6B5230; --muted:#A093B0;
-      --artbg:#EFEAF5;
-    }
-  }
-  :root[data-theme="dark"]{
-    --lazur:#9C74E8; --lazur-deep:#B79BF0; --ink:#EDE7F2; --paper:#140E1B;
-    --card:#1E1529; --line:#332742; --zar:#C9A961; --viol:#A98BE0;
-    --viol-soft:#392B52; --lazur-soft:#6B5230; --muted:#A093B0;
-    --artbg:#EFEAF5;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}

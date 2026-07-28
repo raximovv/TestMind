@@ -246,28 +246,6 @@ function markResumeCtas(){
 }
 
 
-/* ---------- theme toggle ----------
-   The stored value is applied in <head> before first paint (see THEME_BOOT in
-   build_pages.py); this only handles the click. Writing an explicit value
-   rather than clearing it matters: a user on a dark OS who chooses light must
-   keep light, which the CSS honours via :not([data-theme="light"]). */
-function currentTheme(){
-  var set = document.documentElement.getAttribute('data-theme');
-  if (set) return set;
-  return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-    ? 'dark' : 'light';
-}
-function bindThemeToggle(){
-  var btns = document.querySelectorAll('[data-theme-toggle]'), i;
-  for (i = 0; i < btns.length; i++){
-    btns[i].onclick = function(){
-      var next = currentTheme() === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      try { localStorage.setItem('testmind_theme', next); } catch (e) {}
-    };
-  }
-}
-
 function mountPage(){
   var scene = document.getElementById('scene');
   if (scene) scene.innerHTML = buildScene();
@@ -280,7 +258,6 @@ function mountPage(){
   if ((v = document.getElementById('vg-others'))) v.innerHTML = vgOthers();
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   markResumeCtas();
-  bindThemeToggle();
 }
 // This file is loaded at the bottom of <body>, so the DOM is already parsed — but
 // guard anyway, so nothing silently fails to render if the tag is ever moved to
