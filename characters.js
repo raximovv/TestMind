@@ -145,7 +145,9 @@ var ALL_MALE = true;
 function tmFigure(o){
   // Before anything is drawn: the uncovered-hair block runs early, so a later
   // override would leave the hair behind the body still rendered.
-  if (ALL_MALE && o.head !== 'doppi') o = shallowCopy(o, {head: 'doppi'});
+  // fem:true opts an entry out of the blanket flag — used where the archetype is
+  // paired with a woman from history and a bearded man would read as an error.
+  if (ALL_MALE && !o.fem && o.head !== 'doppi') o = shallowCopy(o, {head: 'doppi'});
   var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
   var robe = o.robe, robeD = o.robeD, sash = o.sash;
   var pid = 'ikat-' + (o.uid || 'x');
@@ -338,7 +340,7 @@ function tmFigure(o){
 
   // A beard is what separates a grown man from a round-faced boy at this size —
   // three lengths so ten bearded figures do not read as ten copies.
-  if (o.beard){
+  if (o.beard && !o.fem){
     var bc = o.beardc || '#4B4149', bd = o.beard;
     var drop = bd === 'long' ? 102 : (bd === 'short' ? 90 : 96);
     s += '<path d="M72 57 C72 ' + drop + ' 84 ' + (drop + 2) + ' 100 ' + (drop + 2)
@@ -446,9 +448,9 @@ var TM_PROPS = {
 
 var TM_ART = {
   'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
-  'E|C':  {build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
+  'E|C':  {fem:true, build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
   'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
-  'E|O':  {build:'narrow', crown:'tall', hem:'short', dstyle:'sanama', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
+  'E|O':  {fem:true, build:'narrow', crown:'tall', hem:'short', dstyle:'sanama', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
   'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
   'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
   'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},

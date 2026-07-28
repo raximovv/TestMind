@@ -648,12 +648,6 @@ function dateOf(ts){
 var MONTHS_UZ = ['yanvar','fevral','mart','aprel','may','iyun',
                  'iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
 /** "sentabr 2026" — the month n months from today, for a concrete retest date. */
-function monthAfter(n){
-  var d = new Date();
-  d.setDate(1);
-  d.setMonth(d.getMonth() + n);
-  return MONTHS_UZ[d.getMonth()] + ' ' + d.getFullYear();
-}
 function loadDraft(){
   try {
     var d = JSON.parse(localStorage.getItem(SAVE_KEY));
@@ -1278,18 +1272,13 @@ function renderReport(){
         '</ul>' +
         '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
         '<p class="watch"><b>Eʼtibor bering:</b> ' + arch.watch + '</p>' +
-        // Honesty block. Most type tests round a borderline result into certainty and
-        // hand a teenager a fixed label; both are things we deliberately do not do.
-        '<div class="note">' +
-          (tie ? '<p>Natijangiz <b>' + tie.arch.name + '</b> obraziga ham juda yaqin — ' +
-                 'bu ikkisi orasidagi farq juda kichik. Ikkala tavsifni ham oʻqib koʻring.</p>' : '') +
-          '<p>Bu — bugungi suratingiz, oʻzgarmas yorliq emas. 13–18 yoshda shaxsiyat hali ' +
-          'shakllanmoqda: bir necha oydan keyin natija boshqacha chiqishi mumkin, va bu normal.</p>' +
-          // A concrete month beats "someday": a returning student gets the
-          // «Oʻshanda va hozir» comparison instead of just a second result.
-          '<p>Shuning uchun <b>' + monthAfter(6) + '</b>da testni yana bir marta ishlab ' +
-          'koʻring — oʻshanda nima oʻzgarganini sizga koʻrsatamiz.</p>' +
-        '</div>' +
+        // The snapshot line and the retake invitation were removed at the founder's
+        // request. The near-tie notice stays: it only appears when two archetypes
+        // land within NEAR_TIE_GAP, and it is what stops a borderline result being
+        // rounded into false certainty. No tie, no box.
+        (tie ? '<div class="note"><p>Natijangiz <b>' + tie.arch.name + '</b> obraziga ' +
+               'ham juda yaqin — bu ikkisi orasidagi farq juda kichik. Ikkala tavsifni ' +
+               'ham oʻqib koʻring.</p></div>' : '') +
         // A real Uzbek figure known for the same quality. Deliberately worded as
         // "who had this strength", never "you are this person".
         '<div class="figure">' +
