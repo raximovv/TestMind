@@ -15,8 +15,8 @@ const ok = (name, cond, detail) => {
 function ctx(lang) {
   const s = { document: { documentElement: { getAttribute: () => lang } } };
   vm.createContext(s);
-  vm.runInContext(fs.readFileSync(DIR + 'characters.js', 'utf8'), s);
-  vm.runInContext(fs.readFileSync(DIR + 'strings.js', 'utf8'), s);
+  vm.runInContext(fs.readFileSync(DIR + 'assets/characters.js', 'utf8'), s);
+  vm.runInContext(fs.readFileSync(DIR + 'assets/strings.js', 'utf8'), s);
   return s;
 }
 
@@ -32,8 +32,8 @@ ok('unknown lang falls back to uz', ctx('de').tmLang() === 'uz');
 ok('missing lang attribute falls back to uz',
    (() => { const s = { document: { documentElement: { getAttribute: () => null } } };
             vm.createContext(s);
-            vm.runInContext(fs.readFileSync(DIR + 'characters.js', 'utf8'), s);
-            vm.runInContext(fs.readFileSync(DIR + 'strings.js', 'utf8'), s);
+            vm.runInContext(fs.readFileSync(DIR + 'assets/characters.js', 'utf8'), s);
+            vm.runInContext(fs.readFileSync(DIR + 'assets/strings.js', 'utf8'), s);
             return s.tmLang() === 'uz'; })());
 
 console.log('\nall ten archetypes translated, in every field');

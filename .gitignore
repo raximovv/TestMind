@@ -1,0 +1,23 @@
+# Build intermediates. tools/build/ holds the self-contained HTML that
+# make_pdf.js turns into guides/*.pdf -- the PDF is the artefact worth keeping,
+# the 7 MB of inlined-font HTML behind it is not.
+tools/build/
+
+# Dependencies. npm is currently broken on the dev machine and the two suites
+# that matter run without it, but this keeps the day it works from adding
+# thousands of files to a 93-file repo.
+node_modules/
+package-lock.json
+
+# Python
+__pycache__/
+*.pyc
+
+# Secrets. The Telegram bot token lives in token.txt and must never be committed.
+token.txt
+*.env
+
+# OS noise
+Thumbs.db
+desktop.ini
+.DS_Store

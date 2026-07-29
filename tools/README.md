@@ -7,8 +7,33 @@ let the app be verified before shipping.
 ## What generates what
 
 The **hand-written source** files are: `test.html` (the whole test app — inline
-styles + logic), `site.css`, `site.js`, `characters.js` (archetype data + SVG
-artwork), the fonts, and `og.png`.
+styles + logic), `assets/site.css`, `assets/site.js`, `assets/characters.js`
+(archetype data + SVG artwork), `assets/fonts/`, and `og.png`.
+
+## Where things live
+
+Everything the browser loads but never visits as a URL is under `assets/`; the
+repo root is the site's own URL space and nothing goes there that is not a page.
+
+```
+/                    the 20 pages GitHub Pages serves as URLs, + CNAME,
+                     robots.txt, sitemap.xml, og.png (all root by protocol)
+/assets/             site.css, site.js, characters.js, strings.js, life.js,
+                     fonts/
+/ru/  /en/           the same 16 pages, translated
+/guides/             the ten take-away PDFs
+/tools/              this folder — generators and tests, never served
+```
+
+Two things to know before moving anything else:
+
+- **A page's filename is its public URL.** Moving `obraz-*.html` into a folder
+  changes ten live addresses, so it is a decision, not a tidy-up.
+- **`assets/site.css` reaches the fonts as `url('fonts/…')`**, relative to
+  itself. That is why `fonts/` sits inside `assets/` — with the CSS in
+  `assets/` and the fonts at the root, those URLs resolve to
+  `assets/fonts/` and 404, and the page silently falls back to Segoe UI while
+  still looking almost right.
 
 The **static content pages are generated** — do not hand-edit them, edit the
 generator and re-run:

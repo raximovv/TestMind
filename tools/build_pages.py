@@ -6,8 +6,8 @@ Uzbek is written to the repo root, Russian to ru/ and English to en/, so every
 link already shared in the wild keeps working. Page filenames are identical in
 all three languages; only the prose differs (see i18n.py).
 
-test.html, site.css, site.js and characters.js are shared, single-copy files at
-the root. Pages in ru/ and en/ reach them with ../ — see localize().
+test.html and everything in assets/ are shared, single-copy files at the root.
+Pages in ru/ and en/ reach them with ../ — see localize().
 """
 import io, json, os, re
 
@@ -37,8 +37,7 @@ EMAIL = 'raximovrahim1@gmail.com'
 # plain relative link, because the translated pages sit beside each other.
 # Kept as an explicit list rather than a clever rule so that adding a shared
 # asset is a deliberate act.
-ROOT_ONLY = ['test.html', 'site.css', 'site.js', 'characters.js', 'strings.js',
-             'fonts/', 'guides/']
+ROOT_ONLY = ['test.html', 'assets/', 'guides/']
 _ROOT_RE = re.compile(r'(href|src)="(%s)' % '|'.join(
     re.escape(f) for f in ROOT_ONLY))
 
@@ -82,8 +81,8 @@ def head(lang, title, desc, fname, extra=u''):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="%s">
 <link rel="canonical" href="%s">%s
-<link rel="preload" href="fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="site.css">%s
+<link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">%s
 </head>
 <body>
 """ % (HTML_LANG[lang], title, desc, title, desc, OG_LOCALE[lang], SITE, FAVICON,
@@ -182,9 +181,9 @@ def footer(lang):
        'email': EMAIL, 'social': SOCIAL, 'disclaimer': t['foot.disclaimer']}
 
 
-SCRIPTS = u"""<script src="characters.js"></script>
-<script src="strings.js"></script>
-<script src="site.js"></script>
+SCRIPTS = u"""<script src="assets/characters.js"></script>
+<script src="assets/strings.js"></script>
+<script src="assets/site.js"></script>
 </body>
 </html>
 """
@@ -565,5 +564,5 @@ if __name__ == '__main__':
 const fs=require('fs'),vm=require('vm');const s={};vm.createContext(s);
 vm.runInContext(fs.readFileSync(%r,'utf8'),s);
 process.stdout.write(JSON.stringify(Object.values(s.ARCHETYPES).map(a=>a.slug)));
-''' % (OUT + 'characters.js')]).decode('utf-8'))
+''' % (OUT + 'assets/characters.js')]).decode('utf-8'))
     write_sitemap(slugs)

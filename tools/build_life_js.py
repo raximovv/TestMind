@@ -20,7 +20,7 @@ import io, json, os, sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import life_content as lc
 
-OUT = 'C:/Users/Asus/TestMind-site/life.js'
+OUT = 'C:/Users/Asus/TestMind-site/assets/life.js'
 
 
 def build():

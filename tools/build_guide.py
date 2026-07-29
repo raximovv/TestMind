@@ -32,13 +32,13 @@ for (const k in s.ARCHETYPES){
           traits:k.split('|').map(x=>s.TRAIT_NAMES[x])};
 }
 process.stdout.write(JSON.stringify({arch:out,fams:s.FAMILIES}));
-''' % (ROOT + 'characters.js')])
+''' % (ROOT + 'assets/characters.js')])
 data = json.loads(dump.decode('utf-8'))
 ARCH, FAMS = data['arch'], data['fams']
 
 
 def font64(name):
-    with open(ROOT + 'fonts/' + name, 'rb') as f:
+    with open(ROOT + 'assets/fonts/' + name, 'rb') as f:
         return base64.b64encode(f.read()).decode('ascii')
 
 

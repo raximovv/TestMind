@@ -51,7 +51,7 @@ for (const f in s.FAMILIES){
   fams[f]={c:F.c, soft:F.soft, dark:F.dark, lit:F.lit, name, note};
 }
 process.stdout.write(JSON.stringify({arch,fams}));
-''' % (OUT + 'characters.js', OUT + 'strings.js', json.dumps(LANGS)))])
+''' % (OUT + 'assets/characters.js', OUT + 'assets/strings.js', json.dumps(LANGS)))])
 data = json.loads(dump.decode('utf-8'))
 ARCH, FAMS = data['arch'], data['fams']
 
