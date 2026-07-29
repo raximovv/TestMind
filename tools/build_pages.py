@@ -203,7 +203,12 @@ def close(lang):
 
 # ---------------------------------------------------------------- home
 HOME = u"""<header class="hero" id="top">
-  <div style="text-align:center;padding:52px 20px 28px;max-width:760px;margin:0 auto">
+  <!-- class="center", not an inline text-align. The class also carries
+       `.center .lead{margin-left:auto;margin-right:auto}`, and without it the
+       lead's own max-width:640px sat flush left inside this 760px box: the text
+       centred within a block that was itself 60px left of centre, so it read as
+       misaligned against the h1 and the button above and below it. -->
+  <div class="center" style="padding:52px 20px 28px;max-width:760px;margin:0 auto">
     <h1>%(home.h1)s</h1>
     <p class="lead" style="font-size:clamp(16px,2.4vw,19px);margin-bottom:26px">
       %(home.lead)s</p>

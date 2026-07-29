@@ -203,6 +203,11 @@ section{padding:60px 0}
 .close p{color:#DCD2BE;margin:0 0 26px;font-size:17px}
 .close .btn{background:#fff;color:var(--lazur-deep)}
 .close .btn:hover{background:#F2ECE0}
+/* `.close p` above resets the margin outright, which also throws away the
+   `auto` in .testlang and left the 560px note flush against the left edge of a
+   1300px section on every ru/ and en/ page. Same specificity, so the fix has to
+   sit after it, not next to .testlang. */
+.close .testlang{margin:22px auto 0}
 
 /* ---------- footer ---------- */
 .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}
