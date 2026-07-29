@@ -22,7 +22,7 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
            "%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E"
            "%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E")
 
-SITE = 'https://raximovv.github.io/TestMind'   # one line to change on the .uz domain
+SITE = 'https://personality.naseebedu.com'   # the CNAME file in the repo root must agree
 
 EMAIL = 'raximovrahim1@gmail.com'
 

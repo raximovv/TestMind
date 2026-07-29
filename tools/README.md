@@ -141,4 +141,26 @@ it has no CPU limit, no latency and no data cost.
 
 ## Changing the domain
 
-Two constants: `SITE` in `build_pages.py` and `SITE_HOST` in `test.html`.
+The site is served from `personality.naseebedu.com`, a subdomain pointed at
+GitHub Pages by a CNAME record. The `CNAME` file in the repo root is what tells
+Pages to answer on that name — **do not delete it**, or the domain stops
+resolving to the site.
+
+Four places, and the last two are easy to miss because `test.html` is
+hand-written rather than generated:
+
+1. `SITE` in `build_pages.py` — canonical, hreflang, og:url, sitemap, robots
+2. `SITE_HOST` in `test.html` — the share card footer and the share text
+3. the `og:image` and `canonical` tags in `test.html`'s own `<head>`
+4. the `CNAME` file in the repo root
+
+Then re-run both generators, or 60-odd pages keep advertising the old host to
+search engines. To confirm nothing was left behind:
+
+```
+grep -rn "github\.io" --include=*.html --include=*.xml --include=*.txt . \
+  | grep -v '^\./tools/'
+```
+
+All internal links are relative, so the move from the `/TestMind` project path
+to a domain root needed no other change.
