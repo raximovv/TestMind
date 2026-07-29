@@ -270,7 +270,7 @@ function tmFigure(o){
   s += '<path d="M58 165 H142 L143 170 H57 Z" fill="#0B2027" opacity=".13"/>';
 
   // Arm poses. 'rest' is both arms down; 'greet' brings the right hand to the
-  // chest (the ordinary Uzbek greeting); 'point' raises it, as in the reference.
+  // chest (the ordinary Uzbek greeting); 'raise' lifts it in an open-handed wave.
   // The held object stays where it is, so a prop never ends up in mid-air.
   var pose = o.pose || 'rest';
   function sleeve(rot, x){
@@ -290,13 +290,23 @@ function tmFigure(o){
        + '<rect x="122" y="157" width="18" height="8" fill="' + gold + '"/>'
        + '<rect x="122" y="161.5" width="18" height="2" fill="' + goldD + '" opacity=".5"/></g>';
     s += tmHand(67, 161, 1, skin, skinD) + tmHand(106, 132, -1, skin, skinD);
-  } else if (pose === 'point'){
-    s += '<g transform="rotate(-74 122 108)">' + sleeve(0, 113) + '</g>';
-    s += tmHand(67, 161, 1, skin, skinD)
-       + '<g transform="translate(146,96)">'
-       + '<circle r="9.5" fill="' + skin + '"/>'
-       + '<rect x="-3.4" y="-20" width="7" height="14" rx="3.5" fill="' + skin + '"/>'
-       + '<path d="M-3 -18 h6" stroke="' + skinD + '" stroke-width="1" opacity=".6"/></g>';
+  } else if (pose === 'raise'){
+    // The raised arm ends in the same hand every other pose uses; it used to
+    // carry an extended index finger instead.
+    //
+    // That finger was also hiding a bug. The hand sat at (146,96) while the
+    // sleeve, after the rotation, ended somewhere else entirely — a hand
+    // floating clear of its own sleeve, which only became obvious once the
+    // finger stopped drawing the eye. It is placed like every other hand now:
+    // on the sleeve tip, pulled ~3 back along the arm so the cuff and the hand
+    // overlap rather than butt together.
+    //
+    // The angle went from -74 to -125 at the same time. At -74 the arm reached
+    // sideways far enough to land on whoever stood to the right in the Registan
+    // scene; -125 lifts it into an actual raised hand, 45 units higher and 7
+    // narrower, clearing both the neighbour and this figure's own doʻppi.
+    s += '<g transform="rotate(-125 122 108)">' + sleeve(0, 113) + '</g>';
+    s += tmHand(67, 161, 1, skin, skinD) + tmHand(165, 78, -1, skin, skinD);
   } else {
     s += sleeve(-10, 113);
     s += tmHand(67, 161, 1, skin, skinD) + tmHand(133, 161, -1, skin, skinD);
@@ -523,13 +533,13 @@ var TM_PROPS = {
 };
 
 var TM_ART = {
-  'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#332E38', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'raise', beard:'full', beardc:'#332E38', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
   'E|C':  {fem:true, build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
   'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#8C8794', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
   'E|O':  {fem:true, build:'narrow', crown:'tall', hem:'short', dstyle:'sanama', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
   'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#6E6672', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
   'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#6A5140', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#8A6A4E', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'raise', beard:'short', beardc:'#8A6A4E', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
   'O|A':  {build:'narrow', crown:'low',  hem:'normal', dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#4A3B33', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
