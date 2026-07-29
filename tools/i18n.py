@@ -46,6 +46,9 @@ S = {}
 # =====================================================================  UZBEK
 S['uz'] = {
     # ---- chrome
+    # The visible text is the brand name, identical in all three languages; this
+    # is the accessible label, which does have to be said in words.
+    'nav.back': u'Naseeb Edu saytiga qaytish',
     'nav.home': u'Bosh sahifa',
     'nav.types': u'Obrazlar',
     'nav.test': u'Shaxsiyat testi',
@@ -266,6 +269,7 @@ S['uz'] = {
 
 # ====================================================================  RUSSIAN
 S['ru'] = {
+    'nav.back': u'Вернуться на сайт Naseeb Edu',
     'nav.home': u'Главная',
     'nav.types': u'Образы',
     'nav.test': u'Тест личности',
@@ -477,6 +481,7 @@ S['ru'] = {
 
 # ====================================================================  ENGLISH
 S['en'] = {
+    'nav.back': u'Back to the Naseeb Edu site',
     'nav.home': u'Home',
     'nav.types': u'Characters',
     'nav.test': u'The test',

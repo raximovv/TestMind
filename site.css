@@ -40,6 +40,23 @@ img,svg{max-width:100%}
 .btn[disabled]{background:#CFC5B2;cursor:not-allowed}
 
 /* ---------- nav ---------- */
+/* Visually hidden, still read aloud. The back link shows the brand name only,
+   because "Naseeb Edu" is the same word in all three languages and stays narrow
+   on a phone; the sentence that says what the link does goes here instead. */
+.vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+    clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+/* TestMind sits on a subdomain of naseebedu.com. The route back to the parent
+   platform gets its own bar rather than a sixth nav item -- brand, switcher and
+   CTA already fill the nav row at 360px. Deliberately NOT sticky: it is a way
+   out, not something to keep on screen for the whole page. */
+.upbar{background:var(--lazur-deep)}
+.uplink{display:inline-flex;align-items:center;gap:6px;padding:7px 0;
+        font-size:13px;line-height:1.3;color:#fff;text-decoration:none;opacity:.9}
+.uplink span{font-weight:600;letter-spacing:.01em}
+.uplink:hover,.uplink:focus-visible{opacity:1;text-decoration:underline}
+.uplink:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+
 .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
      backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;gap:18px;height:62px}

@@ -24,6 +24,12 @@ FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox
 
 SITE = 'https://personality.naseebedu.com'   # the CNAME file in the repo root must agree
 
+# The parent platform. TestMind is a subdomain of it, not a separate product.
+NASEEB = 'https://www.naseebedu.com/'
+BACK_ARROW = (u'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">'
+              u'<path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" '
+              u'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
+
 EMAIL = 'raximovrahim1@gmail.com'
 
 # Files that exist once, at the root, and are NOT translated. A page in ru/ or
@@ -112,14 +118,25 @@ def nav(lang, fname, active=None):
     for href, label in items:
         cur = ' aria-current="page"' if href == active else ''
         links += u'\n    <a href="%s"%s>%s</a>' % (href, cur, label)
-    return u"""<nav class="nav"><div class="wrap navin">
+    # TestMind lives on a subdomain of naseebedu.com, so the way back to the
+    # parent site has to be obvious. It gets its own slim bar rather than a
+    # sixth nav item: at 360px the nav row is already full, and the last thing
+    # added to it pushed the sticky header to 153px. The bar sits outside
+    # <nav class="nav">, so it is not sticky -- it is a way out, not something
+    # worth holding on screen for the whole page.
+    return u"""<div class="upbar"><div class="wrap">
+  <a class="uplink" href="%(naseeb)s">%(arrow)s<span>Naseeb Edu</span>
+    <b class="vh">%(back)s</b></a>
+</div></div>
+<nav class="nav"><div class="wrap navin">
   <a class="brand" href="index.html">TestMind</a>
-  <div class="navlinks">%s
+  <div class="navlinks">%(links)s
   </div>
-  %s
-  <a class="btn sm" href="test.html" data-cta>%s</a>
+  %(langsw)s
+  <a class="btn sm" href="test.html" data-cta>%(cta)s</a>
 </div></nav>
-""" % (links, langsw(lang, fname), t['nav.cta'])
+""" % {'naseeb': NASEEB, 'arrow': BACK_ARROW, 'back': t['nav.back'],
+       'links': links, 'langsw': langsw(lang, fname), 'cta': t['nav.cta']}
 
 
 SOCIAL = u'<div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div>'
@@ -145,6 +162,7 @@ def footer(lang):
       <li><a href="privacy.html">%(privacy)s</a></li>
       <li><a href="qanday-ishlaydi.html#model">%(model)s</a></li>
       <li><a href="maktablar.html">%(schools)s</a></li>
+      <li><a href="%(naseeb)s">Naseeb Edu</a></li>
     </ul></div>
     <div class="footcol"><h2>%(contact)s</h2><ul>
       <li><a href="mailto:%(email)s">%(email)s</a></li>
@@ -160,7 +178,7 @@ def footer(lang):
        'test': t['foot.test'], 'cta': t['nav.cta'], 'note': note,
        'faqlong': t['foot.faqlong'], 'about': t['foot.about'],
        'privacy': t['foot.privacy'], 'model': t['foot.model'],
-       'schools': t['foot.schools'], 'contact': t['foot.contact'],
+       'schools': t['foot.schools'], 'contact': t['foot.contact'], 'naseeb': NASEEB,
        'email': EMAIL, 'social': SOCIAL, 'disclaimer': t['foot.disclaimer']}
 
 
