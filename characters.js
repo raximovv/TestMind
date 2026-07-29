@@ -142,6 +142,67 @@ function tmHand(cx, cy, flip, skin, skinD){
 // share. Sharing is how this spreads.
 var ALL_MALE = true;
 
+// ---- faces -----------------------------------------------------------------
+// Until now every figure got one hardcoded face — the same two dots, the same
+// arc for a mouth — so ten characters read as one man in ten different coats.
+// The costume was already varied; the face was doing none of the work.
+//
+// Eyes, brows and mouth are the only three marks that still register at the
+// ~0.5 scale a card thumbnail draws at, so those are what vary. Each set is
+// chosen for the trait pair it belongs to rather than for variety alone: the
+// Xotirjam ones sit level and unhurried, the Gʻayratli ones are wide open, and
+// the two thinkers actually look like they are looking at something.
+//
+// Costume, build and props stay in TM_ART. This is expression only.
+var TM_EYE = {
+  round:  function(x){ return '<circle cx="'+x+'" cy="59" r="3.5" fill="'+INK+'"/>'; },
+  // a catchlight is the cheapest way to read as "lit up" without changing size
+  wide:   function(x){ return '<circle cx="'+x+'" cy="58.8" r="4.4" fill="'+INK+'"/>'
+                            + '<circle cx="'+(x+1.5)+'" cy="57.3" r="1.5" fill="#F4F7F8"/>'; },
+  narrow: function(x){ return '<ellipse cx="'+x+'" cy="59" rx="3.9" ry="2.6" fill="'+INK+'"/>'; },
+  // closed and curved up — someone already laughing, no pupil at all
+  glad:   function(x){ return '<path d="M'+(x-4.2)+' 60.4 q4.2 -5.2 8.4 0" stroke="'+INK+'"'
+                            + ' stroke-width="2.7" fill="none" stroke-linecap="round"/>'; },
+  // a lid line over the dot reads as attention; without it the same dot is blank
+  keen:   function(x){ return '<circle cx="'+x+'" cy="59.6" r="3.4" fill="'+INK+'"/>'
+                            + '<path d="M'+(x-4)+' 55.2 q4 -1.9 8 0" stroke="'+INK+'"'
+                            + ' stroke-width="2.1" fill="none" stroke-linecap="round"/>'; }
+};
+
+// Left and right path, split on the pipe. `set` drops the inner ends toward the
+// nose — at this stroke weight that reads as concentration, not as anger.
+var TM_BROW = {
+  soft:     {w:2.6, d:'M82.5 50 q5.5 -3.5 11 0|M106.5 50 q5.5 -3.5 11 0'},
+  straight: {w:2.6, d:'M82.5 49.6 h11|M106.5 49.6 h11'},
+  raised:   {w:2.5, d:'M82.5 47.6 q5.5 -4.2 11 0|M106.5 47.6 q5.5 -4.2 11 0'},
+  set:      {w:2.9, d:'M82.5 47.8 q5.5 -1.6 11 2.2|M117.5 47.8 q-5.5 -1.6 -11 2.2'},
+  heavy:    {w:3.6, d:'M82.5 50 q5.5 -3.2 11 0|M106.5 50 q5.5 -3.2 11 0'}
+};
+
+// Path only — the colour is decided per figure, see the mouth note in tmFigure.
+var TM_MOUTH = {
+  smile: {w:2.8, d:'M92 71 q8 6.5 16 0'},
+  wide:  {w:2.8, d:'M90 70.5 q10 8 20 0'},
+  soft:  {w:2.6, d:'M93.5 71.5 q6.5 4.2 13 0'},
+  level: {w:2.6, d:'M93.5 72 q6.5 2 13 0'},
+  // the one open mouth in the set — a lens, not an outline, so it holds at size
+  grin:  {fill:true, d:'M90 70.5 q10 9.5 20 0 q-10 3.5 -20 0z'}
+};
+
+// All ten combinations are distinct — no two archetypes share a face.
+var TM_FACE = {
+  'ES|E': {eyes:'narrow', brow:'straight', mouth:'smile', blush:.20},
+  'E|C':  {eyes:'wide',   brow:'set',      mouth:'wide',  blush:.30},
+  'ES|O': {eyes:'keen',   brow:'raised',   mouth:'soft',  blush:.22},
+  'E|O':  {eyes:'wide',   brow:'raised',   mouth:'grin',  blush:.34},
+  'O|C':  {eyes:'keen',   brow:'set',      mouth:'level', blush:.16},
+  'ES|A': {eyes:'glad',   brow:'soft',     mouth:'smile', blush:.30},
+  'E|A':  {eyes:'glad',   brow:'raised',   mouth:'grin',  blush:.34},
+  'O|A':  {eyes:'round',  brow:'soft',     mouth:'soft',  blush:.28},
+  'ES|C': {eyes:'narrow', brow:'straight', mouth:'level', blush:.14},
+  'A|C':  {eyes:'round',  brow:'heavy',    mouth:'smile', blush:.24}
+};
+
 function tmFigure(o){
   // Before anything is drawn: the uncovered-hair block runs early, so a later
   // override would leave the hair behind the body still rendered.
@@ -348,12 +409,27 @@ function tmFigure(o){
        + 'C124 74 114 79 100 79 C86 79 76 74 72 57z" fill="'+bc+'"/>';
     s += '<path d="M87 64 q13 -6 26 0 q-4 8 -13 8 q-9 0 -13 -8z" fill="'+bc+'"/>';
   }
-  s += '<circle cx="88" cy="59" r="3.5" fill="'+INK+'"/><circle cx="112" cy="59" r="3.5" fill="'+INK+'"/>';
-  s += '<path d="M82.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>'
-     + '<path d="M106.5 50 q5.5 -3.5 11 0" stroke="'+INK+'" stroke-width="2.6" fill="none" stroke-linecap="round"/>';
-  s += '<path d="M92 71 q8 6.5 16 0" stroke="'+INK+'" stroke-width="2.8" fill="none" stroke-linecap="round"/>';
-  s += '<ellipse cx="80" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>'
-     + '<ellipse cx="120" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity=".28"/>';
+  // Expression. Falls back to the face every figure used to share, so a figure
+  // drawn without a TM_FACE entry still comes out as it did before.
+  var f = o.face || {};
+  var eye = TM_EYE[f.eyes] || TM_EYE.round;
+  var brow = TM_BROW[f.brow] || TM_BROW.soft;
+  var bpath = brow.d.split('|');
+  var blush = f.blush == null ? 0.28 : f.blush;
+  s += eye(88) + eye(112);
+  s += '<g stroke="'+INK+'" stroke-width="'+brow.w+'" fill="none" stroke-linecap="round">'
+     + '<path d="'+bpath[0]+'"/><path d="'+bpath[1]+'"/></g>';
+  // An ink mouth inside an ink-dark beard is invisible, which is why eight of
+  // the ten used to look alike no matter what the mouth did — only the two
+  // unbearded faces ever showed it. On a bearded face the mouth is the gap in
+  // the beard, so it is drawn light and reads at card size.
+  var mouth = TM_MOUTH[f.mouth] || TM_MOUTH.smile;
+  var mc = (o.beard && !o.fem) ? '#F7F0E4' : INK;
+  s += mouth.fill
+     ? '<path d="'+mouth.d+'" fill="'+mc+'"/>'
+     : '<path d="'+mouth.d+'" stroke="'+mc+'" stroke-width="'+mouth.w+'" fill="none" stroke-linecap="round"/>';
+  s += '<ellipse cx="80" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity="'+blush+'"/>'
+     + '<ellipse cx="120" cy="67" rx="5.5" ry="3.5" fill="#E0805C" opacity="'+blush+'"/>';
 
   // Props are nudged down so the held object sits below the belbogʻ rather than on it.
   return s + (o.prop ? '<g transform="translate(0,12)">' + o.prop + '</g>' : '');
@@ -447,18 +523,18 @@ var TM_PROPS = {
 };
 
 var TM_ART = {
-  'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#4A4048', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
+  'ES|E': {build:'normal', crown:'tall', hem:'long', dstyle:'zardozi', stitch:'#E8C25A', pose:'point', beard:'full', beardc:'#332E38', head:'doppi', robe:'#12718F', robeD:'#0B5670', sleeve:'#0E6280', sash:'#C08A2E', prop:'compass'},
   'E|C':  {fem:true, build:'stocky', crown:'low',  hem:'short', dstyle:'chust', pose:'greet', beard:'short', beardc:'#4E4038', cap:'#141C33', capD:'#0B1124', head:'romol', scarf:'#1B7E9C', scarfD:'#0B5670', robe:'#2A94B4', robeD:'#17708C', sleeve:'#1E829F', sash:'#C08A2E', prop:'clipboard'},
-  'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#3E3644', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
+  'ES|O': {build:'narrow', crown:'mid',  hem:'long', dstyle:'chizma', stitch:'#E8D9A8', pose:'rest', beard:'full', beardc:'#8C8794', head:'doppi', cap:'#3A2C63', capD:'#2B2049', robe:'#7E5FB8', robeD:'#5D4490', sleeve:'#6E509F', sash:'#C9A227', prop:'telescope'},
   'E|O':  {fem:true, build:'narrow', crown:'tall', hem:'short', dstyle:'sanama', stitch:'#F2C46A', pose:'greet', beard:'short', beardc:'#463A46', cap:'#2B2049', capD:'#1E1636', head:'hair',  hair:'#3A2F42', band:'#C08A2E', robe:'#9878CC', robeD:'#725598', sleeve:'#8567B8', sash:'#C9A227', prop:'palette'},
-  'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#3A3340', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
-  'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#4A4340', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
-  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#4B4149', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
-  'O|A':  {build:'narrow', crown:'low',  hem:'normal', dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#423B44', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
+  'O|C':  {build:'normal', crown:'tall', hem:'normal', dstyle:'zardozi', stitch:'#D9AE52', pose:'rest', beard:'long', beardc:'#6E6672', head:'doppi', cap:'#2B2049', capD:'#1E1636', robe:'#6B54A0', robeD:'#4E3C78', sleeve:'#5D4890', sash:'#C08A2E', prop:'book'},
+  'ES|A': {build:'stocky', crown:'mid',  hem:'long', dstyle:'chust', pose:'greet', beard:'full', beardc:'#6A5140', cap:'#173F35', capD:'#0E2C24', head:'romol', scarf:'#2E8B6B', scarfD:'#1F6650', robe:'#3FA07C', robeD:'#2A7660', sleeve:'#348B6E', sash:'#C08A2E', prop:'piyola'},
+  'E|A':  {build:'stocky', crown:'tall', hem:'normal', dstyle:'sanama', stitch:'#7FD8B4', pose:'point', beard:'short', beardc:'#8A6A4E', head:'doppi', robe:'#2E8B6B', robeD:'#1F6650', sleeve:'#277A5E', sash:'#C9A227', prop:'doira'},
+  'O|A':  {build:'narrow', crown:'low',  hem:'normal', dstyle:'chizma', stitch:'#BFE8D4', pose:'rest', beard:'full', beardc:'#4A3B33', cap:'#1D4A3D', capD:'#12352B', head:'hair',  hair:'#2F2A35', robe:'#57A88A', robeD:'#3B8068', sleeve:'#4A9679', sash:'#7E5FB8', prop:'sprout'},
   // The two gold robes need a trim that is not also gold, or the braid disappears
   // into the cloth. Ivory braid on a gold chopon is the traditional pairing.
-  'ES|C': {build:'normal', crown:'low',  hem:'long', dstyle:'chust', pose:'rest', beard:'long', beardc:'#4E443A', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
-  'A|C':  {build:'stocky', crown:'low',  hem:'normal', dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#57483A', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
+  'ES|C': {build:'normal', crown:'low',  hem:'long', dstyle:'chust', pose:'rest', beard:'long', beardc:'#A39CA0', head:'doppi', cap:'#143F4E', capD:'#0C2F3C', robe:'#C08A2E', robeD:'#946420', sleeve:'#AC7727', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'rook'},
+  'A|C':  {build:'stocky', crown:'low',  hem:'normal', dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#7B4A34', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
 
 function shallowCopy(o, over){
@@ -474,6 +550,7 @@ function charSvg(key, alt){
   var o = TM_ART[key]; if (!o) return '';
   var a = {}; for (var k in o) a[k] = o[k];
   a.prop = TM_PROPS[o.prop] || '';
+  a.face = TM_FACE[key] || {};
   // Per-INSTANCE, not per-key: a page can draw the same character more than once
   // (the hero scene and a vignette both use O|C), and two <pattern> elements
   // sharing an id is invalid HTML.
