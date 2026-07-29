@@ -37,6 +37,24 @@ data = json.loads(dump.decode('utf-8'))
 ARCH, FAMS = data['arch'], data['fams']
 
 
+def inline_art(svg):
+    """Embed approved raster art so the printable guide stays self-contained."""
+    marker = 'href="assets/characters/'
+    if marker not in svg:
+        return svg
+    start = svg.index(marker) + len('href="')
+    end = svg.index('"', start)
+    rel = svg[start:end]
+    path = os.path.join(ROOT, *rel.split('/'))
+    with open(path, 'rb') as f:
+        uri = 'data:image/png;base64,' + base64.b64encode(f.read()).decode('ascii')
+    return svg[:start] + uri + svg[end:]
+
+
+for _a in ARCH.values():
+    _a['svg'] = inline_art(_a['svg'])
+
+
 def font64(name):
     with open(ROOT + 'assets/fonts/' + name, 'rb') as f:
         return base64.b64encode(f.read()).decode('ascii')

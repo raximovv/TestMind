@@ -1183,7 +1183,10 @@ function buildShareCard(s, arch, key, cb){
   var img = new Image();
   img.onload = function(){ g.drawImage(img, (W - 432) / 2, 140, 432, 540); finish(); };
   img.onerror = finish;
-  img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(charSvg(key));
+  // Raster-approved characters load directly from the same-origin asset. The
+  // remaining figures continue through the inline SVG path.
+  img.src = charRasterSrc(key) ||
+            ('data:image/svg+xml;charset=utf-8,' + encodeURIComponent(charSvg(key)));
   }
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); else draw();
 }

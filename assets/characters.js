@@ -547,6 +547,27 @@ var TM_ART = {
   'A|C':  {build:'stocky', crown:'low',  hem:'normal', dstyle:'zardozi', stitch:'#F0DCA8', pose:'greet', beard:'full', beardc:'#7B4A34', cap:'#5A2A1E', capD:'#40190F', head:'romol', scarf:'#B2503A', scarfD:'#8B3A28', robe:'#D9A544', robeD:'#A97D2A', sleeve:'#C69235', sash:'#0F6E8C', gold:'#F5EAD0', goldD:'#B9945A', prop:'non'}
 };
 
+// Approved raster characters. The other nine continue through the original
+// vector renderer until their one-by-one review is complete.
+var TM_RASTER_ART = {
+  'E|C': 'assets/characters/gayratli-tashkilotchi.png'
+};
+
+function tmAssetPath(path){
+  // characters.js is shared from the repository root. Runtime-generated markup
+  // on /ru/ and /en/ pages must climb back to that root; build-time generators
+  // have no document and localize the same path themselves.
+  try {
+    var lang = document.documentElement.getAttribute('lang');
+    if (lang === 'ru' || lang === 'en') return '../' + path;
+  } catch (e) {}
+  return path;
+}
+
+function charRasterSrc(key){
+  return TM_RASTER_ART[key] ? tmAssetPath(TM_RASTER_ART[key]) : '';
+}
+
 function shallowCopy(o, over){
   var out = {}, k;
   for (k in o) out[k] = o[k];
@@ -558,6 +579,13 @@ var TM_UID = 0;
 // width/height are required for the canvas share card to rasterise this in Firefox.
 function charSvg(key, alt){
   var o = TM_ART[key]; if (!o) return '';
+  var raster = charRasterSrc(key);
+  if (raster) {
+    return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
+         + 'role="img" aria-label="' + (alt || '') + '">'
+         + '<image href="' + raster + '" x="0" y="0" width="200" height="250" '
+         + 'preserveAspectRatio="xMidYMid meet"/></svg>';
+  }
   var a = {}; for (var k in o) a[k] = o[k];
   a.prop = TM_PROPS[o.prop] || '';
   a.face = TM_FACE[key] || {};

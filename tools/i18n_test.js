@@ -3,8 +3,8 @@
 // which is the only thing tmLang() reads.
 //
 //   node i18n_test.js
-const fs = require('fs'), vm = require('vm');
-const DIR = 'C:/Users/Asus/TestMind-site/';
+const fs = require('fs'), vm = require('vm'), path = require('path');
+const DIR = path.resolve(__dirname, '..') + path.sep;
 
 let pass = 0, fail = 0;
 const ok = (name, cond, detail) => {
@@ -23,6 +23,15 @@ function ctx(lang) {
 const uz = ctx('uz'), ru = ctx('ru'), en = ctx('en');
 const KEYS = Object.keys(uz.ARCHETYPES);
 const FAMS = Object.keys(uz.FAMILIES);
+
+console.log('\napproved character assets');
+ok('Gʻayratli Tashkilotchi uses the approved raster',
+   uz.charRasterSrc('E|C') === 'assets/characters/gayratli-tashkilotchi.png');
+ok('ru/en runtime paths climb back to the shared asset',
+   ru.charRasterSrc('E|C') === '../assets/characters/gayratli-tashkilotchi.png' &&
+   en.charRasterSrc('E|C') === '../assets/characters/gayratli-tashkilotchi.png');
+ok('unapproved characters remain on the vector renderer',
+   KEYS.filter(k => k !== 'E|C').every(k => !uz.charRasterSrc(k)));
 
 console.log('\nlanguage resolution');
 ok('uz page resolves to uz', uz.tmLang() === 'uz', uz.tmLang());
