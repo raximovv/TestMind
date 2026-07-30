@@ -129,8 +129,8 @@ ru: {
               'Поэтому важное дело чаще всего поручают именно вам.'],
       strength: 'держать своё слово.',
       watch: 'Взваливая на себя всё, вы несёте лишний груз. Просить помощи — тоже сила.',
-      figure: {who: 'Дилшод Барно',
-               why: 'На протяжении пятидесяти лет научила читать и писать 891 девочку.'}
+      figure: {who: 'Имам Бухари',
+               why: 'Строго проверял каждое предание и включал в свод только достоверные.'}
     }
   }
 },
@@ -249,8 +249,8 @@ en: {
               'Which is why the thing that matters is usually handed to you.'],
       strength: 'keeping your word.',
       watch: 'Taking every task on yourself means carrying more than your share. Asking for help is also a strength.',
-      figure: {who: 'Dilshod Barno',
-               why: 'Over fifty years, taught 891 girls to read and write.'}
+      figure: {who: 'Imam al-Bukhari',
+               why: 'Checked every account rigorously and admitted only the reliable ones into his collection.'}
     }
   }
 }

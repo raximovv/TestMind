@@ -199,9 +199,9 @@ var GUIDES = {
     "strength": "soʻzida turish.",
     "watch": "Hamma ishni oʻz zimmangizga olib, ortiqcha yuk koʻtarib yurasiz. Yordam soʻrash ham kuch.",
     "figure": {
-      "who": "Dilshod Barno",
-      "years": "1800–1905",
-      "why": "Ellik yil davomida 891 nafar qizga oʻqish va yozishni oʻrgatgan."
+      "who": "Imom Buxoriy",
+      "years": "810–870",
+      "why": "Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan."
     }
   }
 };

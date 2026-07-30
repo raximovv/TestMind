@@ -1474,11 +1474,13 @@ GUIDES = {
                 u'qilgan ishingizni yozib borish odatini oldindan '
                 u'shakllantiring.',
 
-'figure_why': u'Dilshod Barno ellik yil davomida 891 nafar qizga oʻqish '
-              u'va yozishni oʻrgatgan. Ellik yil — bu ilhom emas, bu '
-              u'izchillik. Uning nomi mashhur boʻlmagan, lekin oʻsha '
-              u'891 ta hayot oʻzgargan. Katta ishlar koʻpincha '
-              u'shunday qilinadi: har kuni, jimgina, oxirigacha.',
+'figure_why': u'Imom Buxoriy oʻz toʻplamiga kirgan har bir rivoyatni '
+              u'uzoq yillar tekshirgan: kim aytgan, kimdan eshitgan, '
+              u'ishonsa boʻladimi. Minglab rivoyat orasidan faqat '
+              u'tekshiruvdan oʻtganini qoldirgan. Koʻpini emas, '
+              u'ishonchlisini tanlash — sizning ishingiz ham '
+              u'shunga oʻxshaydi: sizga ishonishadi, chunki '
+              u'aytganingiz toʻgʻri chiqadi.',
 
 'practice': [
     u'Bitta ishda ochiq yordam soʻradim.',

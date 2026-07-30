@@ -79,6 +79,7 @@ BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s;--
     <h2 class="asec">%(l_fig)s</h2>
     <div class="afig"><div class="afigwho">%(figwho)s <span>%(figyears)s</span></div>
       <p>%(figwhy)s</p></div>
+    <p class="amuted figaccuracy">%(l_fignote)s</p>
 
     <h2 class="asec">%(l_guide)s</h2>
     <div class="aguide">
@@ -171,7 +172,8 @@ for lang in LANGS:
             'l_how': t['arch.how.h2'],
             'how': t['arch.how.p'] % {'t0': v['traits'][0], 't1': v['traits'][1]},
             'hownote': t['arch.how.note'],
-            'l_fig': t['arch.fig.h2'], 'figwho': v['figure']['who'],
+            'l_fig': t['arch.fig.h2'], 'l_fignote': t['arch.fig.note'],
+            'figwho': v['figure']['who'],
             'figyears': v['figure']['years'], 'figwhy': v['figure']['why'],
             'l_guide': t['arch.guide.h2'],
             'guideb': t['arch.guide.b'] % {'name': v['name']},

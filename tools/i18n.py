@@ -262,6 +262,12 @@ S['uz'] = {
     'arch.how.p': u'Bu obraz ikkita eng kuchli xususiyatingizdan tugʻiladi: <b>%(t0)s</b> va <b>%(t1)s</b>. Boshqa uchtasi ham sizda bor — shunchaki bu ikkisi ulardan koʻra kuchliroq chiqqan.',
     'arch.how.note': u'Agar bu ikki xususiyat bir-biriga juda yaqin boʻlsa, test yakunida sizga ikkinchi obraz ham koʻrsatiladi. Natija — bugungi suratingiz, oʻzgarmas yorliq emas.',
     'arch.fig.h2': u'Shu xususiyat kimda kuchli boʻlgan',
+    # The artwork and the historical name sit close together on the page, which
+    # can read as "this is what that person looked like". It is not: these are
+    # drawn archetypes, and for several of the ten no verified likeness exists
+    # at all. Said plainly once, for every character, rather than singling any
+    # one of them out.
+    'arch.fig.note': u'Sahifadagi rasm — obrazning badiiy tasviri, tarixiy shaxsning haqiqiy portreti emas.',
     'arch.guide.h2': u'Toʻliq qoʻllanma',
     'arch.guide.b': u'«%(name)s» — 8 sahifalik PDF qoʻllanma.',
     'arch.guide.p': u'Kundalik hayotda, maktabda va kelajak yoʻnalishlarida; oʻsish nuqtalari va ikki haftalik amaliyot. Bepul, roʻyxatdan oʻtmasdan.',
@@ -474,6 +480,7 @@ S['ru'] = {
     'arch.how.p': u'Этот образ рождается из двух ваших самых сильных черт: <b>%(t0)s</b> и <b>%(t1)s</b>. Остальные три у вас тоже есть — просто эти две оказались сильнее.',
     'arch.how.note': u'Если эти две черты очень близки друг к другу, в конце теста вам покажут и второй образ. Результат — сегодняшний снимок, а не постоянный ярлык.',
     'arch.fig.h2': u'У кого это качество было сильным',
+    'arch.fig.note': u'Иллюстрация — художественный образ, а не подлинный портрет исторического лица.',
     'arch.guide.h2': u'Полное руководство',
     'arch.guide.b': u'«%(name)s» — руководство на 8 страницах в PDF.',
     'arch.guide.p': u'В повседневной жизни, в школе и в будущих направлениях; точки роста и двухнедельная практика. Бесплатно, без регистрации.',
@@ -686,6 +693,7 @@ S['en'] = {
     'arch.how.p': u'This character comes from your two strongest traits: <b>%(t0)s</b> and <b>%(t1)s</b>. You have the other three as well — these two simply scored higher.',
     'arch.how.note': u'If those two traits score very closely together, the test shows you the second character too. The result is a snapshot of today, not a fixed label.',
     'arch.fig.h2': u'Someone known for the same quality',
+    'arch.fig.note': u'The illustration is an artistic depiction of the character, not an authentic portrait of the historical figure.',
     'arch.guide.h2': u'The full guide',
     'arch.guide.b': u'"%(name)s" — an eight-page PDF guide.',
     'arch.guide.p': u'In everyday life, at school and in future directions; growth points and a two-week practice. Free, no sign-up.',

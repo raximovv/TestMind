@@ -95,7 +95,7 @@ var ARCHETYPES = {
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
     strength:'soʻzida turish.',
     watch:'Hamma ishni oʻz zimmangizga olib, ortiqcha yuk koʻtarib yurasiz. Yordam soʻrash ham kuch.',
-    figure:{who:'Dilshod Barno', years:'1800–1905', why:'Ellik yil davomida 891 nafar qizga oʻqish va yozishni oʻrgatgan.'}}
+    figure:{who:'Imom Buxoriy', years:'810–870', why:'Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan.'}}
 };
 
 // ---------- Character illustrations ----------
@@ -562,7 +562,8 @@ var TM_RASTER_ART = {
   'E|O': 'assets/characters/gayratli-ijodkor.webp',
   'O|C': 'assets/characters/ijodkor-strateg.webp',
   'ES|A': 'assets/characters/ishonchli-dost.webp',
-  'O|A': 'assets/characters/ijodkor-insonparvar.webp'
+  'O|A': 'assets/characters/ijodkor-insonparvar.webp',
+  'A|C': 'assets/characters/ishonchli-tayanch.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -605,7 +606,8 @@ var TM_RASTER_FIT = {
   // still the invariant, so she reads slimmer than her neighbours rather than
   // shorter -- which is the artwork, not the fit.
   'ES|A': {x: -2.8, y: -5.6, w: 175.4, h: 263.0},
-  'O|A': {x: 22.7, y: -8.6, w: 175.6, h: 263.4}
+  'O|A': {x: 22.7, y: -8.6, w: 175.6, h: 263.4},
+  'A|C': {x: 15.8, y: -1.2, w: 169.6, h: 254.5}
 };
 
 function tmAssetPath(path){
