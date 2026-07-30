@@ -558,7 +558,8 @@ var TM_RASTER_ART = {
   'E|A': 'assets/characters/jamoaning-yuragi.webp',
   'ES|C': 'assets/characters/barqaror-strateg.webp',
   'ES|E': 'assets/characters/xotirjam-yetakchi.webp',
-  'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp'
+  'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp',
+  'E|O': 'assets/characters/gayratli-ijodkor.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -586,7 +587,13 @@ var TM_RASTER_FIT = {
   'ES|E': {x: 17.1, y: -3.8, w: 176.6, h: 265.0},
   // Topmost ink here is the raised astrolabe, so the y that puts his feet on the
   // shared line is also what keeps the astrolabe from being cut off at y=0.
-  'ES|O': {x: 7.3, y: -2.5, w: 174.6, h: 261.9}
+  'ES|O': {x: 7.3, y: -2.5, w: 174.6, h: 261.9},
+  // Her flowing robe makes this figure 84% of its canvas width where the others
+  // are 60-75%, so she reads wider than her neighbours. That is the artwork, not
+  // the placement: matching on height is what keeps every character the same
+  // stature with its feet on one line, and matching on width instead would have
+  // made her shorter than everyone else.
+  'E|O': {x: 17.6, y: -2.9, w: 175.5, h: 263.2}
 };
 
 function tmAssetPath(path){
