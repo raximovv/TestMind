@@ -559,7 +559,8 @@ var TM_RASTER_ART = {
   'ES|C': 'assets/characters/barqaror-strateg.webp',
   'ES|E': 'assets/characters/xotirjam-yetakchi.webp',
   'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp',
-  'E|O': 'assets/characters/gayratli-ijodkor.webp'
+  'E|O': 'assets/characters/gayratli-ijodkor.webp',
+  'O|C': 'assets/characters/ijodkor-strateg.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -593,7 +594,10 @@ var TM_RASTER_FIT = {
   // the placement: matching on height is what keeps every character the same
   // stature with its feet on one line, and matching on width instead would have
   // made her shorter than everyone else.
-  'E|O': {x: 17.6, y: -2.9, w: 175.5, h: 263.2}
+  'E|O': {x: 17.6, y: -2.9, w: 175.5, h: 263.2},
+  // Topmost ink is the turban plume rather than the head, so the figure reaches
+  // higher in its canvas than the others and needs a positive y to sit right.
+  'O|C': {x: 18.0, y: 2.2, w: 171.3, h: 257.0}
 };
 
 function tmAssetPath(path){
