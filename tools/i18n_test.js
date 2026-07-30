@@ -35,7 +35,8 @@ const APPROVED = {
   'ES|E': 'assets/characters/xotirjam-yetakchi.webp',
   'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp',
   'E|O': 'assets/characters/gayratli-ijodkor.webp',
-  'O|C': 'assets/characters/ijodkor-strateg.webp'
+  'O|C': 'assets/characters/ijodkor-strateg.webp',
+  'ES|A': 'assets/characters/ishonchli-dost.webp'
 };
 // Driven off APPROVED so that redesigning the remaining characters is a
 // one-line edit to the map above rather than a new pair of assertions each time.

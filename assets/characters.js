@@ -560,7 +560,8 @@ var TM_RASTER_ART = {
   'ES|E': 'assets/characters/xotirjam-yetakchi.webp',
   'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp',
   'E|O': 'assets/characters/gayratli-ijodkor.webp',
-  'O|C': 'assets/characters/ijodkor-strateg.webp'
+  'O|C': 'assets/characters/ijodkor-strateg.webp',
+  'ES|A': 'assets/characters/ishonchli-dost.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -597,7 +598,12 @@ var TM_RASTER_FIT = {
   'E|O': {x: 17.6, y: -2.9, w: 175.5, h: 263.2},
   // Topmost ink is the turban plume rather than the head, so the figure reaches
   // higher in its canvas than the others and needs a positive y to sit right.
-  'O|C': {x: 18.0, y: 2.2, w: 171.3, h: 257.0}
+  'O|C': {x: 18.0, y: 2.2, w: 171.3, h: 257.0},
+  // Narrowest figure in the set: she stands square with her arms in, filling
+  // 48% of her canvas width where G'ayratli Ijodkor's robe fills 84%. Height is
+  // still the invariant, so she reads slimmer than her neighbours rather than
+  // shorter -- which is the artwork, not the fit.
+  'ES|A': {x: -2.8, y: -5.6, w: 175.4, h: 263.0}
 };
 
 function tmAssetPath(path){
