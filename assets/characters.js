@@ -557,7 +557,8 @@ var TM_RASTER_ART = {
   'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
   'E|A': 'assets/characters/jamoaning-yuragi.webp',
   'ES|C': 'assets/characters/barqaror-strateg.webp',
-  'ES|E': 'assets/characters/xotirjam-yetakchi.webp'
+  'ES|E': 'assets/characters/xotirjam-yetakchi.webp',
+  'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -582,7 +583,10 @@ var TM_RASTER_FIT = {
   // exactly and is the reference the others are matched to. x differs because
   // each figure sits differently within its own canvas.
   'ES|C': {x: -1.6, y: -4.0, w: 176.3, h: 264.4},
-  'ES|E': {x: 17.1, y: -3.8, w: 176.6, h: 265.0}
+  'ES|E': {x: 17.1, y: -3.8, w: 176.6, h: 265.0},
+  // Topmost ink here is the raised astrolabe, so the y that puts his feet on the
+  // shared line is also what keeps the astrolabe from being cut off at y=0.
+  'ES|O': {x: 7.3, y: -2.5, w: 174.6, h: 261.9}
 };
 
 function tmAssetPath(path){
