@@ -31,7 +31,8 @@ console.log('\napproved character assets');
 const APPROVED = {
   'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
   'E|A': 'assets/characters/jamoaning-yuragi.webp',
-  'ES|C': 'assets/characters/barqaror-strateg.webp'
+  'ES|C': 'assets/characters/barqaror-strateg.webp',
+  'ES|E': 'assets/characters/xotirjam-yetakchi.webp'
 };
 // Driven off APPROVED so that redesigning the remaining characters is a
 // one-line edit to the map above rather than a new pair of assertions each time.

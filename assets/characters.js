@@ -556,7 +556,8 @@ var TM_ART = {
 var TM_RASTER_ART = {
   'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
   'E|A': 'assets/characters/jamoaning-yuragi.webp',
-  'ES|C': 'assets/characters/barqaror-strateg.webp'
+  'ES|C': 'assets/characters/barqaror-strateg.webp',
+  'ES|E': 'assets/characters/xotirjam-yetakchi.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -576,8 +577,12 @@ var TM_RASTER_ART = {
 // disturbing the characters already signed off.
 var TM_RASTER_FIT_DEFAULT = {x: 0, y: 0, w: 200, h: 250};
 var TM_RASTER_FIT = {
-  // figure lands at top 8.25 / bottom 242.0, the same band as Jamoaning Yuragi
-  'ES|C': {x: -1.6, y: -4.0, w: 176.3, h: 264.4}
+  // Both delivered on a 1024x1536 canvas. Each lands its figure at top 8.25 /
+  // bottom 242.0 -- the same band as Jamoaning Yuragi, which fills its box
+  // exactly and is the reference the others are matched to. x differs because
+  // each figure sits differently within its own canvas.
+  'ES|C': {x: -1.6, y: -4.0, w: 176.3, h: 264.4},
+  'ES|E': {x: 17.1, y: -3.8, w: 176.6, h: 265.0}
 };
 
 function tmAssetPath(path){
