@@ -81,7 +81,7 @@ S['uz'] = {
     'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.',
     'home.h1': u'Siz qaysi obrazsiz?',
     'home.lead': u'Atigi 7 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
-    'home.scenecap': u'Registon maydoni · Samarqand',
+    'home.scenecap': u'Islom sivilizatsiyasi markazi · Toshkent',
 
     'home.num.h2': u'Raqamlarda',
     'home.num.lead': u'TestMind endi ishga tushdi. Bu raqamlarni oʻsib borishini shu yerda ochiq koʻrsatib boramiz.',
@@ -309,7 +309,7 @@ S['ru'] = {
     'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
     'home.h1': u'Какой у вас образ?',
     'home.lead': u'Всего 7 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
-    'home.scenecap': u'Площадь Регистан · Самарканд',
+    'home.scenecap': u'Центр исламской цивилизации · Ташкент',
 
     'home.num.h2': u'В цифрах',
     'home.num.lead': u'TestMind только что запустился. Мы будем открыто показывать здесь, как растут эти цифры.',
@@ -522,7 +522,7 @@ S['en'] = {
     'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 50 items, about 7 minutes, ten result profiles.',
     'home.h1': u'Which character are you?',
     'home.lead': u'Just seven minutes — and you will understand why some things come easily to you and others do not.',
-    'home.scenecap': u'Registan Square · Samarkand',
+    'home.scenecap': u'Center of Islamic Civilization · Tashkent',
 
     'home.num.h2': u'In numbers',
     'home.num.lead': u'TestMind has just launched. We will report these numbers openly here as they grow.',

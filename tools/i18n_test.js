@@ -56,6 +56,38 @@ ok('every approved file is actually in the repo',
 ok('unapproved characters remain on the vector renderer',
    KEYS.filter(k => !(k in APPROVED)).every(k => !uz.charRasterSrc(k)));
 
+console.log('\nhero scene');
+{
+  // site.js calls mountPage() as it loads, so the stub has to absorb that pass.
+  const s = { document: { documentElement: { getAttribute: () => 'uz' },
+    getElementById: () => null, querySelector: () => null,
+    querySelectorAll: () => [], addEventListener: () => {} } };
+  s.window = s; s.addEventListener = () => {};
+  s.localStorage = { getItem: () => null, setItem: () => {} };
+  vm.createContext(s);
+  for (const f of ['assets/characters.js', 'assets/strings.js', 'assets/site.js'])
+    vm.runInContext(fs.readFileSync(DIR + f, 'utf8'), s);
+
+  const H = 530;                       // the scene viewBox height
+  const plaza = s.SCENE_BG_PLAZA * H;  // the floor line, in viewBox units
+  const floating = s.SCENE_CAST.filter(c => c[2] < plaza).map(c => c[0] + '@' + c[2]);
+  ok('every hero character stands on the plaza, not on the building',
+     floating.length === 0, 'above y=' + plaza.toFixed(1) + ': ' + floating.join(', '));
+
+  const svg = s.buildScene();
+  ok('the backdrop is drawn once, before the cast',
+     (svg.match(/<image[^>]+backgrounds\//g) || []).length === 1);
+  ok('the backdrop file is in the repo', fs.existsSync(DIR + s.SCENE_BG), s.SCENE_BG);
+  // Covering by height is what crops the sides instead of letterboxing the sky.
+  const m = svg.match(/<image[^>]+width="([\d.]+)"[^>]+height="(\d+)"/);
+  ok('the backdrop covers the full scene height', m && +m[2] === H);
+  ok('the backdrop is not distorted',
+     m && Math.abs((+m[1] / +m[2]) - (s.SCENE_BG_W / s.SCENE_BG_H)) < 0.001,
+     m && (+m[1] / +m[2]).toFixed(4));
+  ok('the characters are still separate layers, not flattened in',
+     (svg.match(/<g transform="translate/g) || []).length >= s.SCENE_CAST.length);
+}
+
 console.log('\nlanguage resolution');
 ok('uz page resolves to uz', uz.tmLang() === 'uz', uz.tmLang());
 ok('ru page resolves to ru', ru.tmLang() === 'ru', ru.tmLang());

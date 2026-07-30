@@ -95,26 +95,85 @@ function madrasa(cx, g, w, h, o){
   return s;
 }
 
+// The photographed backdrop. One layer, drawn first; the characters stay
+// separate <g> elements on top of it so they can still be repositioned, rescaled
+// or swapped one at a time.
+var SCENE_BG = 'assets/backgrounds/islom-sivilizatsiyasi-markazi.webp';
+var SCENE_BG_W = 2172, SCENE_BG_H = 724;
+
+// Where the open plaza starts in the source image, as a fraction of its height.
+// Measured off the artwork, not guessed: the drawing this replaces gave the cast
+// a quarter of the scene to stand in, the photograph gives about an eighth.
+//
+// Two ways to buy back the depth were tried and both cost more than they gave --
+// zooming in crops the wings and minarets away, and lifting the image to paint
+// extra floor underneath leaves a flat band no single colour can blend into,
+// because the real plaza has perspective and this one would not. So the cast
+// moves instead. It sits deeper in frame than it did, which is simply what this
+// photograph's own perspective asks for.
+//
+// Every character's feet must land below this line or they stand on the steps.
+// i18n_test.js checks that against SCENE_CAST so a future reposition cannot
+// quietly float someone again.
+var SCENE_BG_PLAZA = 0.87;
+
+// Hoisted out of buildScene so the tests can read the positions without having
+// to parse the emitted SVG. [key, x, footY, scale] in viewBox units.
+// Further away reads as higher and smaller, which is the order of these rows.
+// Nobody stands closer than ~515: a figure needs floor BELOW its feet as well as
+// under them, or its shadow and reflection fall off the bottom of the frame and
+// it goes back to looking pasted on. Learned the hard way at 522.
+var SCENE_CAST = [['ES|O',300,468,0.56], ['A|C',906,470,0.58],
+                  ['E|A',420,490,0.76],  ['O|C',786,492,0.76],
+                  ['ES|E',548,512,0.96], ['E|O',664,515,0.94]];
+
 function buildScene(){
-  var W = 1200, H = 530, GY = 390, s = '', i;
-  s += '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">'
-     + '<stop offset="0" stop-color="#CFE7F0"/><stop offset="1" stop-color="#F1F6F7"/></linearGradient>'
-     + '<linearGradient id="grnd" x1="0" y1="0" x2="0" y2="1">'
-     + '<stop offset="0" stop-color="#EDF2EF"/><stop offset="1" stop-color="#E0EBE6"/></linearGradient></defs>'
-     + '<rect width="'+W+'" height="'+H+'" fill="url(#sky)"/>'
-     + '<path d="M0 '+GY+' L140 268 L262 336 L360 254 L510 '+GY+' Z" fill="#B4D2DF" opacity=".55"/>'
-     + '<path d="M700 '+GY+' L840 262 L960 330 L1070 248 L1200 340 L1200 '+GY+' Z" fill="#B4D2DF" opacity=".55"/>';
-  s += madrasa(196, GY, 300, 238, {minarets:250});
-  s += madrasa(600, GY, 344, 222, {domes:[[0,68]], minarets:180});
-  s += madrasa(1004, GY, 300, 238, {domes:[[-88,32],[88,32]], minarets:250, sher:true});
-  s += '<path d="M0 '+GY+' H'+W+' V'+H+' H0 Z" fill="url(#grnd)"/>'
-     + '<path d="M0 '+(GY+26)+' H'+W+'" stroke="#CFE2DB" stroke-width="3"/>';
-  var cast = [['ES|O',300,418,0.56], ['A|C',906,420,0.58],
-              ['E|A',420,462,0.76],  ['O|C',786,464,0.76],
-              ['ES|E',548,514,0.96], ['E|O',664,518,0.94]];
+  var W = 1200, H = 530, s = '', i;
+  // Cover, not fit: scale by height so the image fills the box top to bottom and
+  // the sides overhang. That is what crops the outer minarets on a narrow screen
+  // while keeping the dome and the entrance centred, which is the same trade the
+  // outer preserveAspectRatio="xMidYMax slice" already makes for the characters.
+  var bsc = H / SCENE_BG_H, bw = SCENE_BG_W * bsc, bx = (W - bw) / 2;
+  s += '<image href="' + tmAssetPath(SCENE_BG) + '" x="' + bx.toFixed(1) + '" y="0"'
+     + ' width="' + bw.toFixed(1) + '" height="' + H + '"'
+     + ' preserveAspectRatio="xMidYMid slice"/>';
+
+  // Contact shadow and reflection. Every character used to be vector art with a
+  // shadow ellipse drawn into it; the redesigned ones are photographs with no
+  // shadow at all, so against a real floor they read as stickers laid on top of
+  // the picture rather than people standing on it. Both are drawn here, per
+  // figure and scaled with it, so the approved artwork is never touched.
+  s += '<defs>'
+     // Two ellipses, not one. The wide soft pool is ambient occlusion -- it says
+     // "something is standing here". The tight dark one right under the soles is
+     // the contact patch, and it is the part that actually makes a figure touch
+     // the floor instead of hover a few centimetres above it.
+     + '<radialGradient id="tmsh"><stop offset="0" stop-color="#4A3A28" stop-opacity=".30"/>'
+     + '<stop offset=".5" stop-color="#4A3A28" stop-opacity=".14"/>'
+     + '<stop offset="1" stop-color="#4A3A28" stop-opacity="0"/></radialGradient>'
+     + '<radialGradient id="tmsh2"><stop offset="0" stop-color="#3A2C1E" stop-opacity=".50"/>'
+     + '<stop offset=".6" stop-color="#3A2C1E" stop-opacity=".22"/>'
+     + '<stop offset="1" stop-color="#3A2C1E" stop-opacity="0"/></radialGradient>'
+     // Local figure coords: y=238 is the sole, y=150 is roughly the waist. The
+     // reflection is strongest at the sole and gone by the waist, which is what
+     // a polished floor does -- a full-length mirror image would look like ice.
+     + '<linearGradient id="tmrg" gradientUnits="userSpaceOnUse" x1="0" y1="150" x2="0" y2="238">'
+     + '<stop offset="0" stop-color="#000"/><stop offset="1" stop-color="#fff"/></linearGradient>'
+     + '<mask id="tmrefl"><rect x="0" y="0" width="200" height="250" fill="url(#tmrg)"/></mask>'
+     + '</defs>';
+
+  var cast = SCENE_CAST;
   for (i = 0; i < cast.length; i++){
-    var c = cast[i], sc = c[3];
-    s += '<g transform="translate('+(c[1]-100*sc)+','+(c[2]-FOOT*sc)+') scale('+sc+')">'+inner(c[0])+'</g>';
+    var c = cast[i], sc = c[3], fig = inner(c[0]);
+    // Mirrored about the sole: local (100, FOOT) still lands on (x, footY), but
+    // everything above the feet is thrown downward instead of up.
+    s += '<g transform="translate('+(c[1]-100*sc)+','+(c[2]+FOOT*sc)+') scale('+sc+','+(-sc)+')">'
+       + '<g mask="url(#tmrefl)" opacity=".26">' + fig + '</g></g>';
+    s += '<ellipse cx="'+c[1]+'" cy="'+c[2]+'" rx="'+(58*sc).toFixed(1)+'" ry="'+(13*sc).toFixed(1)
+       + '" fill="url(#tmsh)"/>'
+       + '<ellipse cx="'+c[1]+'" cy="'+(c[2]-1).toFixed(1)+'" rx="'+(27*sc).toFixed(1)+'" ry="'+(6*sc).toFixed(1)
+       + '" fill="url(#tmsh2)"/>';
+    s += '<g transform="translate('+(c[1]-100*sc)+','+(c[2]-FOOT*sc)+') scale('+sc+')">'+fig+'</g>';
   }
   // slice keeps the characters large on a phone by cropping the sides instead of shrinking
   return '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMax slice" '
