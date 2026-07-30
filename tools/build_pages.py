@@ -117,17 +117,14 @@ def nav(lang, fname, active=None):
     for href, label in items:
         cur = ' aria-current="page"' if href == active else ''
         links += u'\n    <a href="%s"%s>%s</a>' % (href, cur, label)
-    # TestMind lives on a subdomain of naseebedu.com, so the way back to the
-    # parent site has to be obvious. It gets its own slim bar rather than a
-    # sixth nav item: at 360px the nav row is already full, and the last thing
-    # added to it pushed the sticky header to 153px. The bar sits outside
-    # <nav class="nav">, so it is not sticky -- it is a way out, not something
-    # worth holding on screen for the whole page.
-    return u"""<div class="upbar"><div class="wrap">
-  <a class="uplink" href="%(naseeb)s">%(arrow)s<span>Naseeb Edu</span>
+    # The way back to the parent platform sits left of the brand, inside the
+    # nav, where a back control is looked for. The nav row is full at 360px, so
+    # below 820px the label is dropped and only the chevron stays -- the
+    # accessible name is on the hidden span either way, so the icon-only version
+    # is not a nameless button.
+    return u"""<nav class="nav"><div class="wrap navin">
+  <a class="navback" href="%(naseeb)s">%(arrow)s<span class="backtx">Naseeb Edu</span>
     <b class="vh">%(back)s</b></a>
-</div></div>
-<nav class="nav"><div class="wrap navin">
   <a class="brand" href="index.html">TestMind</a>
   <div class="navlinks">%(links)s
   </div>

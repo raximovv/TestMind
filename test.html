@@ -89,17 +89,19 @@
      within one interface rather than landing on a bare page. Its own class names
      (topnav*), because this file already uses .nav for the prev/next row and does
      not load site.css. Values mirror .nav in site.css. */
-  /* Route back to the parent platform. Mirrors .upbar/.uplink in site.css.
-     Not sticky, and above the sticky bar, so it scrolls away once the student
-     is actually answering questions. */
+  /* Route back to the parent platform, left of the brand. Mirrors .navback in
+     site.css; the label drops below 820px because the row is full at 360px.
+     Named .navback, NOT .backlink — this file already has a .backlink further
+     down for the ORQAGA button in the step bar, and the collision handed this
+     link that button's uppercase-bronze styling with no pill at all. */
   .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
       clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
-  .upbar{background:var(--lazur-deep)}
-  .upbarin{max-width:1340px;margin:0 auto;padding:0 22px}
-  .uplink{display:inline-flex;align-items:center;gap:6px;padding:7px 0;
-          font-size:13px;line-height:1.3;color:#fff;text-decoration:none;opacity:.9}
-  .uplink span{font-weight:600;letter-spacing:.01em}
-  .uplink:hover,.uplink:focus-visible{opacity:1;text-decoration:underline}
+  .navback{display:inline-flex;align-items:center;gap:5px;flex:none;
+           padding:5px 10px 5px 7px;border:1px solid var(--line);border-radius:999px;
+           background:var(--card);font-size:13px;line-height:1.4;color:var(--muted);
+           text-decoration:none;white-space:nowrap}
+  .navback svg{flex:none}
+  .navback:hover{color:var(--lazur-deep);background:#F0EADD}
 
   .topnav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);
           backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
@@ -119,6 +121,9 @@
   .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   @media (max-width:820px){
     .topnavin{gap:10px;height:auto;padding:10px 20px;flex-wrap:wrap}
+    /* Chevron only — the row has no width to spare. Name stays on the .vh span. */
+    .backtx{display:none}
+    .navback{padding:5px 7px}
     .topcta{margin-left:auto;order:2}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
@@ -400,10 +405,8 @@
 </style>
 </head>
 <body>
-<div class="upbar"><div class="upbarin">
-  <a class="uplink" href="https://www.naseebedu.com/"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Naseeb Edu</span><b class="vh">Naseeb Edu saytiga qaytish</b></a>
-</div></div>
 <nav class="topnav"><div class="topnavin">
+  <a class="navback" href="https://www.naseebedu.com/"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="backtx">Naseeb Edu</span><b class="vh">Naseeb Edu saytiga qaytish</b></a>
   <a class="topbrand" href="index.html">TestMind</a>
   <div class="toplinks">
     <a href="index.html">Bosh sahifa</a>

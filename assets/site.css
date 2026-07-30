@@ -46,16 +46,17 @@ img,svg{max-width:100%}
 .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
     clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 
-/* TestMind sits on a subdomain of naseebedu.com. The route back to the parent
-   platform gets its own bar rather than a sixth nav item -- brand, switcher and
-   CTA already fill the nav row at 360px. Deliberately NOT sticky: it is a way
-   out, not something to keep on screen for the whole page. */
-.upbar{background:var(--lazur-deep)}
-.uplink{display:inline-flex;align-items:center;gap:6px;padding:7px 0;
-        font-size:13px;line-height:1.3;color:#fff;text-decoration:none;opacity:.9}
-.uplink span{font-weight:600;letter-spacing:.01em}
-.uplink:hover,.uplink:focus-visible{opacity:1;text-decoration:underline}
-.uplink:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+/* TestMind sits on a subdomain of naseebedu.com; this is the route back to the
+   parent platform. Left of the brand, because that is where a back control is
+   looked for. Shaped like the language switcher so the bar reads as two pills
+   around the wordmark rather than three unrelated controls. */
+.navback{display:inline-flex;align-items:center;gap:5px;flex:none;
+          padding:5px 10px 5px 7px;border:1px solid var(--line);border-radius:999px;
+          background:var(--card);font-size:13px;line-height:1.4;color:var(--muted);
+          text-decoration:none;white-space:nowrap}
+.navback svg{flex:none}
+.navback:hover{color:var(--lazur-deep);background:#F0EADD}
+.navback:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 
 .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
      backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
@@ -81,7 +82,13 @@ img,svg{max-width:100%}
 .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
 
 @media (max-width:820px){
-  .navin{gap:10px;height:auto;padding:10px 0;flex-wrap:wrap}
+  /* Measured at 360px with the back link in: brand + back + switcher + CTA came
+     to 391px in a 360px row. The width is taken off four things a little rather
+     than off one thing a lot -- gap 10>6, brand 23>20, and a point each off the
+     switcher and CTA padding -- which lands it back under with room to spare.
+     Uzbek is the binding case; its CTA is the longest of the three. */
+  .navin{gap:6px;height:auto;padding:10px 0;flex-wrap:wrap}
+  .brand{font-size:20px}
   .navlinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
             padding-bottom:2px;-webkit-overflow-scrolling:touch}
   .navlinks a{font-size:14.5px}
@@ -90,10 +97,15 @@ img,svg{max-width:100%}
      360px: at the desktop sizes the CTA wrapped to a row of its own and made
      the sticky header 153px tall, which is a quarter of a small phone screen.
      navcheck.js asserts they stay on one row. */
+  /* Label off, chevron only — brand + back + switcher + CTA do not fit at 360px
+     with the words in. The link keeps its name from the hidden span, so this is
+     an icon with a label, not a bare glyph. */
+  .backtx{display:none}
+  .navback{padding:5px 7px}
   .langsw{margin-left:auto;padding:1px;gap:1px}
-  .langsw a,.langsw span{padding:5px 7px;font-size:11.5px}
+  .langsw a,.langsw span{padding:5px 6px;font-size:11.5px}
   .navin .btn{margin-left:0}
-  .navin .btn.sm{padding:9px 13px;font-size:14px}
+  .navin .btn.sm{padding:9px 11px;font-size:13.5px}
 }
 
 /* ---------- page header ---------- */
