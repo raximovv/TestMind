@@ -18,7 +18,10 @@ OUT = os.path.join(HERE, 'build')
 sys.path.insert(0, HERE)
 from guide_content import COMMON, GUIDES, TRAIT_CARDS
 
-SITE = 'raximovv.github.io/TestMind'
+# Printed on the cover and on every page footer, and it is the only place a
+# guide names the site — a student who downloads the PDF has no other way back.
+# Keep in step with SITE in build_pages.py and SITE_HOST in test.html.
+SITE = 'personality.naseebedu.com'
 
 # ---- data straight out of the shipped characters.js -------------------------
 dump = subprocess.check_output(['node', '-e', '''

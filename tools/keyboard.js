@@ -137,7 +137,11 @@ async function answer(p, i, v) {
     const archName = await p.evaluate(() => document.querySelector('.archname').textContent);
     ok(txt.length > 0, 'something was handed to the clipboard');
     ok(/TestMind/.test(txt), 'message mentions TestMind');
-    ok(txt.indexOf('raximovv.github.io/TestMind') !== -1, 'message contains the link');
+    // Read the host out of the page rather than repeating it: this assertion
+    // silently rotted through the move to the custom domain, still demanding
+    // raximovv.github.io long after the share message had stopped saying it.
+    const host = await p.evaluate(() => SITE_HOST);
+    ok(txt.indexOf(host) !== -1, 'message contains the link (' + host + ')');
     ok(txt.indexOf(archName) !== -1, 'message names their archetype: ' + archName);
     ok(txt.length > 40 && txt.indexOf('Dilnoza') === -1, 'message does NOT leak their name');
     ok(/Nusxalandi/.test(await p.$eval('#copyBtn', b => b.textContent)), 'button confirms the copy');
