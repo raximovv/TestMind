@@ -74,6 +74,18 @@ BACK_ARROW = (u'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="tru
 
 EMAIL = 'raximovrahim1@gmail.com'
 
+# The four counters on the home page. Counts, not decoration: they are read off
+# the response Sheet and typed in here, which is why they are one obvious tuple
+# rather than four numbers buried in the template. Re-run build_pages.py after
+# changing them.
+#
+# FACTS[1] is "completed today" and is the one that rots: it is true on the day
+# it is written and wrong the next morning. Either refresh it whenever the site
+# is rebuilt, or relabel that tile to something a static page can keep saying
+# honestly -- see home.fact2 in i18n.py.
+FACTS_UPDATED = '2026-07-31'
+FACTS = ('100+', '20+', '2', '2')
+
 # Files that exist once, at the root, and are NOT translated. A page in ru/ or
 # en/ has to climb out of its folder to reach them; everything else stays a
 # plain relative link, because the translated pages sit beside each other.
@@ -261,10 +273,10 @@ HOME = u"""<header class="hero" id="top">
     <div class="center"><h2>%(home.num.h2)s</h2>
       <p class="lead">%(home.num.lead)s</p></div>
     <div class="facts">
-      <div class="fact"><div class="factn">0</div><div class="factl">%(home.fact1)s</div></div>
-      <div class="fact"><div class="factn">0</div><div class="factl">%(home.fact2)s</div></div>
-      <div class="fact"><div class="factn">0</div><div class="factl">%(home.fact3)s</div></div>
-      <div class="fact"><div class="factn">0</div><div class="factl">%(home.fact4)s</div></div>
+      <div class="fact"><div class="factn">%(factn1)s</div><div class="factl">%(home.fact1)s</div></div>
+      <div class="fact"><div class="factn">%(factn2)s</div><div class="factl">%(home.fact2)s</div></div>
+      <div class="fact"><div class="factn">%(factn3)s</div><div class="factl">%(home.fact3)s</div></div>
+      <div class="fact"><div class="factn">%(factn4)s</div><div class="factl">%(home.fact4)s</div></div>
     </div>
   </div>
 </section>
@@ -533,6 +545,9 @@ def fill(tpl, lang):
     """
     d = dict(S[lang])
     d['email'] = EMAIL
+    # Numerals are the same in all three languages; only the labels are translated.
+    for i, n in enumerate(FACTS, 1):
+        d['factn%d' % i] = n
     return tpl % d
 
 
