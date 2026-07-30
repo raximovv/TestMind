@@ -117,7 +117,11 @@ S['uz'] = {
     'types.title': u'Oʻnta obraz — TestMind',
     'types.desc': u'TestMind oʻnta obrazi: har biri oʻziga xos kuchli tomonlar toʻplami va unga mos oʻzbek tarixiy siymosi.',
     'types.h1': u'Oʻnta obraz',
-    'types.lead': u'Oʻnta obraz toʻrtta oilaga boʻlingan. Ular orasida «yomoni» yoʻq — shunchaki bir-biridan farq qiladi. Har biriga shu xususiyat bilan tanilgan oʻzbek tarixiy siymosi biriktirilgan. Batafsil oʻqish uchun obrazni bosing.',
+    # The closing sentence is the only instruction in the paragraph -- it tells
+    # you the cards are clickable, which nothing else on the page says -- so it
+    # carries <strong>. Injected unescaped by fill(), and this key is used in
+    # exactly one place, the visible <p class="lead">.
+    'types.lead': u'Oʻnta obraz toʻrtta oilaga boʻlingan. Ular orasida «yomoni» yoʻq — shunchaki bir-biridan farq qiladi. Har biriga shu xususiyat bilan tanilgan oʻzbek tarixiy siymosi biriktirilgan. <strong>Batafsil oʻqish uchun obrazni bosing.</strong>',
 
     # ---- how it works
     'how.title': u'Qanday ishlaydi — TestMind',
@@ -334,7 +338,7 @@ S['ru'] = {
     'types.title': u'Десять образов — TestMind',
     'types.desc': u'Десять образов TestMind: у каждого свой набор сильных сторон и своя историческая фигура из Узбекистана.',
     'types.h1': u'Десять образов',
-    'types.lead': u'Десять образов разделены на четыре семьи. Среди них нет «плохих» — они просто разные. К каждому образу подобрана историческая фигура из Узбекистана, известная этим же качеством. Нажмите на образ, чтобы прочитать подробнее.',
+    'types.lead': u'Десять образов разделены на четыре семьи. Среди них нет «плохих» — они просто разные. К каждому образу подобрана историческая фигура из Узбекистана, известная этим же качеством. <strong>Нажмите на образ, чтобы прочитать подробнее.</strong>',
 
     'how.title': u'Как это работает — TestMind',
     'how.desc': u'Как работает TestMind, на какой модели он основан и что происходит с вашими ответами.',
@@ -546,7 +550,7 @@ S['en'] = {
     'types.title': u'The ten characters — TestMind',
     'types.desc': u'The ten TestMind characters: each a distinct combination of strengths, paired with a historical figure from Uzbekistan.',
     'types.h1': u'The ten characters',
-    'types.lead': u'The ten characters are grouped into four families. None of them is the "bad" one — they are simply different. Each is paired with a historical figure from Uzbekistan known for the same quality. Select a character to read more.',
+    'types.lead': u'The ten characters are grouped into four families. None of them is the "bad" one — they are simply different. Each is paired with a historical figure from Uzbekistan known for the same quality. <strong>Select a character to read more.</strong>',
 
     'how.title': u'How it works — TestMind',
     'how.desc': u'How TestMind works, which model it is based on, and what happens to responses.',
