@@ -84,7 +84,7 @@ EMAIL = 'raximovrahim1@gmail.com'
 # is rebuilt, or relabel that tile to something a static page can keep saying
 # honestly -- see home.fact2 in i18n.py.
 FACTS_UPDATED = '2026-07-31'
-FACTS = ('100+', '20+', '2', '2')
+FACTS = ('100+', '20+', '15+', '2')
 
 # Files that exist once, at the root, and are NOT translated. A page in ru/ or
 # en/ has to climb out of its folder to reach them; everything else stays a
