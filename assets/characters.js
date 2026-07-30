@@ -81,7 +81,7 @@ var ARCHETYPES = {
            'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
     strength:'foydali va insoniy yechim topish.',
     watch:'Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.',
-    figure:{who:'Anbar Otin', years:'1870–1915', why:'Sheʼrlarida oddiy odamlarning va ayollarning hayoti haqida yozgan.'}},
+    figure:{who:'Abdulla Avloniy', years:'1878–1934', why:'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'}},
 
   'ES|C': {ikat2:'#8E621A', ikat3:'#F3E3BE', name:'Barqaror Strateg', slug:'barqaror-strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
@@ -561,7 +561,8 @@ var TM_RASTER_ART = {
   'ES|O': 'assets/characters/xotirjam-kashfiyotchi.webp',
   'E|O': 'assets/characters/gayratli-ijodkor.webp',
   'O|C': 'assets/characters/ijodkor-strateg.webp',
-  'ES|A': 'assets/characters/ishonchli-dost.webp'
+  'ES|A': 'assets/characters/ishonchli-dost.webp',
+  'O|A': 'assets/characters/ijodkor-insonparvar.webp'
 };
 
 // Where the <image> sits inside the shared 200x250 box.
@@ -603,7 +604,8 @@ var TM_RASTER_FIT = {
   // 48% of her canvas width where G'ayratli Ijodkor's robe fills 84%. Height is
   // still the invariant, so she reads slimmer than her neighbours rather than
   // shorter -- which is the artwork, not the fit.
-  'ES|A': {x: -2.8, y: -5.6, w: 175.4, h: 263.0}
+  'ES|A': {x: -2.8, y: -5.6, w: 175.4, h: 263.0},
+  'O|A': {x: 22.7, y: -8.6, w: 175.6, h: 263.4}
 };
 
 function tmAssetPath(path){

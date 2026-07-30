@@ -167,9 +167,9 @@ var GUIDES = {
     "strength": "foydali va insoniy yechim topish.",
     "watch": "Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.",
     "figure": {
-      "who": "Anbar Otin",
-      "years": "1870–1915",
-      "why": "Sheʼrlarida oddiy odamlarning va ayollarning hayoti haqida yozgan."
+      "who": "Abdulla Avloniy",
+      "years": "1878–1934",
+      "why": "Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan."
     }
   },
   "Barqaror Strateg": {

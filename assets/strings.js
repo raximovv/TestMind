@@ -111,8 +111,8 @@ ru: {
               'Увидев проблему, вы прежде всего думаете о людях.'],
       strength: 'находить решение и полезное, и человечное.',
       watch: 'Вы принимаете чужие проблемы как свои. Решать всё в одиночку вовсе не обязательно.',
-      figure: {who: 'Анбар Отин',
-               why: 'В своих стихах писала о жизни простых людей и женщин.'}
+      figure: {who: 'Абдулла Авлони',
+               why: 'Поставил литературу, театр, журналистику и просвещение на службу народу.'}
     },
     'ES|C': {
       name: 'Устойчивый Стратег',
@@ -231,8 +231,8 @@ en: {
               'When you see a problem, you think about the people first.'],
       strength: 'finding an answer that is both useful and humane.',
       watch: 'You take on other people’s problems as your own. You do not have to solve everything alone.',
-      figure: {who: 'Anbar Otin',
-               why: 'Wrote in her poetry about the lives of ordinary people and of women.'}
+      figure: {who: 'Abdulla Avloniy',
+               why: 'Put literature, theatre, journalism and education to work for his people.'}
     },
     'ES|C': {
       name: 'Steady Strategist',

@@ -1196,12 +1196,13 @@ GUIDES = {
                 u'odamlarga tegishli qismini toping va oʻshani oʻz '
                 u'zimmangizga oling.',
 
-'figure_why': u'Anbar Otin oʻz davrida saroy shoirlari haqida emas, oddiy '
-              u'odamlar — ayollar, kambagʻallar, koʻrinmay qolganlar '
-              u'haqida yozgan. Buning uchun uni maqtashmagan. U kim '
-              u'haqida yozishni tanlaganida osonini emas, kerakligini '
-              u'tanlagan. Muammoni odamlar tomonidan koʻrish — siz '
-              u'uchun ham xuddi shunday tabiiy.',
+'figure_why': u'Abdulla Avloniy sheʼr ham yozgan, gazeta ham chiqargan, '
+              u'teatr ham qurgan, maktab ham ochgan. Lekin bularning '
+              u'hech birini oʻzi uchun qilmagan: har bir yangi ishni '
+              u'«bu odamlarga nima beradi?» degan savol bilan '
+              u'boshlagan. Yangi gʻoya bilan odamlarga gʻamxoʻrlikni '
+              u'birga olib yurish — siz uchun ham xuddi shunday '
+              u'tabiiy.',
 
 'practice': [
     u'Birov dardini aytganda «qanday yordam bera olaman?» deb soʻradim.',
