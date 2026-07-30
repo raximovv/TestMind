@@ -555,7 +555,29 @@ var TM_ART = {
 // difference is invisible at the size these render.
 var TM_RASTER_ART = {
   'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
-  'E|A': 'assets/characters/jamoaning-yuragi.webp'
+  'E|A': 'assets/characters/jamoaning-yuragi.webp',
+  'ES|C': 'assets/characters/barqaror-strateg.webp'
+};
+
+// Where the <image> sits inside the shared 200x250 box.
+//
+// The default assumes the artwork is drawn on a 0.800 canvas like the box, so it
+// fills it exactly. Art delivered on a taller canvas does NOT: xMidYMid meet
+// fits it by height and centres it, which shrinks the figure and lifts its feet
+// clear of the line every other character stands on -- Barqaror Strateg arrived
+// at 1024x1536 (0.667) and rendered visibly smaller than the figure beside him,
+// floating about 15 units above the ground.
+//
+// Fixing that by re-canvassing the PNG would mean altering approved artwork, so
+// the placement moves instead: the numbers below scale and offset the image so
+// the FIGURE inside it -- not the canvas around it -- lands in the same band as
+// everyone else. Measured from the alpha channel, not guessed. Anything without
+// an entry keeps the old behaviour exactly, which is what keeps an approval from
+// disturbing the characters already signed off.
+var TM_RASTER_FIT_DEFAULT = {x: 0, y: 0, w: 200, h: 250};
+var TM_RASTER_FIT = {
+  // figure lands at top 8.25 / bottom 242.0, the same band as Jamoaning Yuragi
+  'ES|C': {x: -1.6, y: -4.0, w: 176.3, h: 264.4}
 };
 
 function tmAssetPath(path){
@@ -597,9 +619,11 @@ function charSvg(key, alt){
   var uid = key.replace(/[^A-Za-z0-9]/g, '-').toLowerCase() + '-' + (++TM_UID);
   var raster = charRasterSrc(key);
   if (raster) {
+    var f = TM_RASTER_FIT[key] || TM_RASTER_FIT_DEFAULT;
     return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
          + 'role="img" aria-label="' + (alt || '') + '">'
-         + '<image href="' + raster + '" x="0" y="0" width="200" height="250" '
+         + '<image href="' + raster + '" x="' + f.x + '" y="' + f.y + '" '
+         + 'width="' + f.w + '" height="' + f.h + '" '
          + 'preserveAspectRatio="xMidYMid meet"/></svg>';
   }
   var a = {}; for (var k in o) a[k] = o[k];

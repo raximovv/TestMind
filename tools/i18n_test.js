@@ -30,13 +30,15 @@ console.log('\napproved character assets');
 // one that started resolving before it was approved, both have to fail here.
 const APPROVED = {
   'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
-  'E|A': 'assets/characters/jamoaning-yuragi.webp'
+  'E|A': 'assets/characters/jamoaning-yuragi.webp',
+  'ES|C': 'assets/characters/barqaror-strateg.webp'
 };
-ok('Gʻayratli Tashkilotchi uses the approved raster',
-   uz.charRasterSrc('E|C') === APPROVED['E|C']);
-ok('Jamoaning Yuragi uses the approved raster',
-   uz.charRasterSrc('E|A') === APPROVED['E|A']);
-ok('both approved characters are on the raster path',
+// Driven off APPROVED so that redesigning the remaining characters is a
+// one-line edit to the map above rather than a new pair of assertions each time.
+for (const k of Object.keys(APPROVED))
+  ok(uz.ARCHETYPES[k].name + ' uses the approved raster',
+     uz.charRasterSrc(k) === APPROVED[k], uz.charRasterSrc(k));
+ok('every approved character is on the raster path',
    Object.keys(APPROVED).every(k => !!uz.charRasterSrc(k)));
 ok('ru/en runtime paths climb back to the shared asset',
    Object.keys(APPROVED).every(k =>
