@@ -25,13 +25,27 @@ const KEYS = Object.keys(uz.ARCHETYPES);
 const FAMS = Object.keys(uz.FAMILIES);
 
 console.log('\napproved character assets');
+// The set grows one reviewed character at a time, so the test names the approved
+// keys rather than counting them: a character that quietly stopped resolving, or
+// one that started resolving before it was approved, both have to fail here.
+const APPROVED = {
+  'E|C': 'assets/characters/gayratli-tashkilotchi.png',
+  'E|A': 'assets/characters/jamoaning-yuragi.png'
+};
 ok('Gʻayratli Tashkilotchi uses the approved raster',
-   uz.charRasterSrc('E|C') === 'assets/characters/gayratli-tashkilotchi.png');
+   uz.charRasterSrc('E|C') === APPROVED['E|C']);
+ok('Jamoaning Yuragi uses the approved raster',
+   uz.charRasterSrc('E|A') === APPROVED['E|A']);
+ok('both approved characters are on the raster path',
+   Object.keys(APPROVED).every(k => !!uz.charRasterSrc(k)));
 ok('ru/en runtime paths climb back to the shared asset',
-   ru.charRasterSrc('E|C') === '../assets/characters/gayratli-tashkilotchi.png' &&
-   en.charRasterSrc('E|C') === '../assets/characters/gayratli-tashkilotchi.png');
+   Object.keys(APPROVED).every(k =>
+     ru.charRasterSrc(k) === '../' + APPROVED[k] &&
+     en.charRasterSrc(k) === '../' + APPROVED[k]));
+ok('every approved file is actually in the repo',
+   Object.values(APPROVED).every(p => fs.existsSync(DIR + p)));
 ok('unapproved characters remain on the vector renderer',
-   KEYS.filter(k => k !== 'E|C').every(k => !uz.charRasterSrc(k)));
+   KEYS.filter(k => !(k in APPROVED)).every(k => !uz.charRasterSrc(k)));
 
 console.log('\nlanguage resolution');
 ok('uz page resolves to uz', uz.tmLang() === 'uz', uz.tmLang());

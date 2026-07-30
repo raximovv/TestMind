@@ -550,7 +550,8 @@ var TM_ART = {
 // Approved raster characters. The other nine continue through the original
 // vector renderer until their one-by-one review is complete.
 var TM_RASTER_ART = {
-  'E|C': 'assets/characters/gayratli-tashkilotchi.png'
+  'E|C': 'assets/characters/gayratli-tashkilotchi.png',
+  'E|A': 'assets/characters/jamoaning-yuragi.png'
 };
 
 function tmAssetPath(path){
@@ -579,6 +580,17 @@ var TM_UID = 0;
 // width/height are required for the canvas share card to rasterise this in Firefox.
 function charSvg(key, alt){
   var o = TM_ART[key]; if (!o) return '';
+  // Per-INSTANCE, not per-key: a page can draw the same character more than once
+  // (the hero scene and a vignette both use O|C), and two <pattern> elements
+  // sharing an id is invalid HTML.
+  //
+  // Counted before the raster branch on purpose. When it sat after, approving a
+  // character shifted the counter for every figure drawn after it, so the ids in
+  // all thirty generated pages renumbered and the diff for a one-character change
+  // touched two dozen unrelated files. The ids are internal and always emitted
+  // beside the url(#…) that uses them, so the churn was harmless — just noise
+  // that hid the real change.
+  var uid = key.replace(/[^A-Za-z0-9]/g, '-').toLowerCase() + '-' + (++TM_UID);
   var raster = charRasterSrc(key);
   if (raster) {
     return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
@@ -589,10 +601,7 @@ function charSvg(key, alt){
   var a = {}; for (var k in o) a[k] = o[k];
   a.prop = TM_PROPS[o.prop] || '';
   a.face = TM_FACE[key] || {};
-  // Per-INSTANCE, not per-key: a page can draw the same character more than once
-  // (the hero scene and a vignette both use O|C), and two <pattern> elements
-  // sharing an id is invalid HTML.
-  a.uid = key.replace(/[^A-Za-z0-9]/g, '-').toLowerCase() + '-' + (++TM_UID);
+  a.uid = uid;
   return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
        + 'role="img" aria-label="' + (alt || '') + '">' + tmFigure(a) + '</svg>';
 }
