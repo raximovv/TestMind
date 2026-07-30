@@ -49,8 +49,14 @@ def inline_art(svg):
     end = svg.index('"', start)
     rel = svg[start:end]
     path = os.path.join(ROOT, *rel.split('/'))
+    # Derived, not hardcoded: this said image/png for every file, so the day the
+    # art became WebP every guide would have carried a correctly-encoded image
+    # under a lying mime type.
+    ext = os.path.splitext(path)[1].lower().lstrip('.')
+    mime = {'png': 'image/png', 'webp': 'image/webp',
+            'jpg': 'image/jpeg', 'jpeg': 'image/jpeg'}[ext]
     with open(path, 'rb') as f:
-        uri = 'data:image/png;base64,' + base64.b64encode(f.read()).decode('ascii')
+        uri = 'data:%s;base64,%s' % (mime, base64.b64encode(f.read()).decode('ascii'))
     return svg[:start] + uri + svg[end:]
 
 

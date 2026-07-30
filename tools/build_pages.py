@@ -9,12 +9,54 @@ all three languages; only the prose differs (see i18n.py).
 test.html and everything in assets/ are shared, single-copy files at the root.
 Pages in ru/ and en/ reach them with ../ — see localize().
 """
-import io, json, os, re
+import io, json, os, re, subprocess
 
 import i18n
 from i18n import S, LANGS, DIR, UP, HTML_LANG, OG_LOCALE, LANG_SHORT, LANG_FULL
 
 OUT = 'C:/Users/Asus/TestMind-site/'
+
+
+_SCENE_RASTERS = []
+
+
+def scene_rasters():
+    u"""Which raster characters does the JS-built hero scene actually draw?
+
+    Asked of site.js rather than listed here. The cast lives in buildScene() and
+    only some of the ten are illustrated, so any list kept on this side would be
+    a second copy free to drift — and a preload for a file the page never
+    requests is a wasted download plus a console warning, while a missing one
+    puts the hole back in the scene.
+    """
+    js = u'''
+      const fs = require('fs'), vm = require('vm');
+      // site.js calls mountPage() as it loads, so the stub has to absorb that
+      // pass without mounting anything: every lookup misses, so each builder is
+      // skipped and we invoke the one we want ourselves.
+      const s = { document: {
+        documentElement: { getAttribute: () => 'uz' },
+        getElementById: () => null, querySelector: () => null,
+        querySelectorAll: () => [], addEventListener: () => {} } };
+      s.window = s; s.addEventListener = () => {};
+      s.localStorage = { getItem: () => null, setItem: () => {} };
+      vm.createContext(s);
+      for (const f of ['assets/characters.js', 'assets/strings.js', 'assets/site.js'])
+        vm.runInContext(fs.readFileSync(%s + f, 'utf8'), s);
+      const out = [];
+      const svg = s.buildScene();
+      const re = /href="([^"]+)"/g;
+      let m; while ((m = re.exec(svg))) out.push(m[1]);
+      console.log(JSON.stringify(out));
+    ''' % json.dumps(OUT)
+    if _SCENE_RASTERS:                    # same for all 18 page/language builds
+        return _SCENE_RASTERS
+    found = json.loads(subprocess.check_output(['node', '-e', js]).decode('utf-8'))
+    # Preserve first-seen order so the emitted <head> is stable between builds.
+    for p in found:
+        if p not in _SCENE_RASTERS:
+            _SCENE_RASTERS.append(p)
+    return _SCENE_RASTERS
 
 FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E"
            "%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E"
@@ -501,7 +543,12 @@ def build_page(lang, fname, tpl, tkey, dkey, with_close):
         body += close(lang)
     extra = u''
     if fname == 'index.html':
-        extra = site_ld(lang)
+        # The scene is mounted by JS, so without this the browser cannot learn the
+        # artwork exists until site.js has downloaded, parsed and run — the figure
+        # then landed about two seconds after its neighbours and visibly popped in.
+        extra = u''.join(
+            u'\n<link rel="preload" href="%s" as="image" type="image/webp">' % p
+            for p in scene_rasters()) + site_ld(lang)
     elif fname == 'savollar.html':
         extra = faq_ld(body)
     html = head(lang, t[tkey], t[dkey], fname, extra) \

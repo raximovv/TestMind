@@ -29,8 +29,8 @@ console.log('\napproved character assets');
 // keys rather than counting them: a character that quietly stopped resolving, or
 // one that started resolving before it was approved, both have to fail here.
 const APPROVED = {
-  'E|C': 'assets/characters/gayratli-tashkilotchi.png',
-  'E|A': 'assets/characters/jamoaning-yuragi.png'
+  'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
+  'E|A': 'assets/characters/jamoaning-yuragi.webp'
 };
 ok('Gʻayratli Tashkilotchi uses the approved raster',
    uz.charRasterSrc('E|C') === APPROVED['E|C']);

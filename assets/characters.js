@@ -549,9 +549,13 @@ var TM_ART = {
 
 // Approved raster characters. The other nine continue through the original
 // vector renderer until their one-by-one review is complete.
+// WebP, not PNG: the source art is ~500 KB apiece as PNG, which arrived a full
+// two seconds after the rest of the hero scene had drawn, so the row appeared
+// with holes in it and then filled in. q95 WebP is a quarter of that and the
+// difference is invisible at the size these render.
 var TM_RASTER_ART = {
-  'E|C': 'assets/characters/gayratli-tashkilotchi.png',
-  'E|A': 'assets/characters/jamoaning-yuragi.png'
+  'E|C': 'assets/characters/gayratli-tashkilotchi.webp',
+  'E|A': 'assets/characters/jamoaning-yuragi.webp'
 };
 
 function tmAssetPath(path){
