@@ -8,7 +8,14 @@ let the app be verified before shipping.
 
 The **hand-written source** files are: `test.html` (the whole test app — inline
 styles + logic), `assets/site.css`, `assets/site.js`, `assets/characters.js`
-(archetype data + SVG artwork), `assets/fonts/`, and `og.png`.
+(archetype data + SVG artwork), and `assets/fonts/`.
+
+`og.png` — the card Telegram and WhatsApp show — **is generated**, by
+`build_og.py` + `make_og.js`. It used to be hand-drawn with no source, and went
+stale twice over without anyone noticing: it was still showing replaced character
+art and the site's old teal palette months after the site went bronze, and was
+only caught in a chat preview. Nothing on the site links to it, so nothing breaks
+when it rots. **Re-run it whenever the characters or the palette change.**
 
 ## Where things live
 
