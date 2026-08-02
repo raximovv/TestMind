@@ -191,25 +191,59 @@ function figAt(k, cx, footY, sc){
 }
 
 // 1. A student in front of a result card that carries their own face.
+//
+// A real archetype, and everything about the card is read from the same data the
+// result screen uses -- name, family colour, artwork -- so the preview cannot
+// drift from the page it is previewing. Barqaror Strateg because its family
+// colour is the warm bronze one: the other three families are a cool blue, a
+// green and a violet, all of which sit beside the homepage palette rather than
+// inside it. It is also the one archetype that appears nowhere else on this
+// page, so no character is shown twice.
+var VG_CARD = 'ES|C';
+
 function vgResult(){
+  var k = VG_CARD;
+  var name = ((typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k]).name;
+  var famc = FAMILIES[ARCHETYPES[k].fam].c;
   var b = '<ellipse cx="200" cy="252" rx="170" ry="12" fill="#0B2027" opacity=".05"/>'
-    + figAt('O|C', 108, 250, 0.82)
+    + figAt(k, 108, 250, 0.82)
     + '<g transform="translate(196,44)">'
     + '<rect width="176" height="196" rx="14" fill="#F1F6F7" stroke="#D7E2E4"/>'
-    + '<rect width="176" height="46" rx="14" fill="#6B4FA8"/>'
-    + '<rect y="32" width="176" height="14" fill="#6B4FA8"/>'
+    + '<rect width="176" height="46" rx="14" fill="' + famc + '"/>'
+    + '<rect y="32" width="176" height="14" fill="' + famc + '"/>'
     + '<text x="88" y="30" text-anchor="middle" font-family="Bitter,Georgia,serif" '
-    + 'font-size="17" font-weight="700" fill="#FFFFFF">Ijodkor Strateg</text>'
-    + '<g transform="translate(88,60) scale(0.42)">' + inner('O|C') + '</g>'
+    + 'font-size="17" font-weight="700" fill="#FFFFFF">' + name + '</text>'
+    + '<g transform="translate(88,60) scale(0.42)">' + inner(k) + '</g>'
     + '<g fill="#C6D3D8"><rect x="24" y="164" width="128" height="7" rx="3.5"/>'
     + '<rect x="44" y="180" width="88" height="7" rx="3.5"/></g></g>';
   return vgFrame(b, 400, 272);
 }
 
+// The archetype name on that card is translated, and a Russian name runs half
+// again as long as its Uzbek original -- «Устойчивый Стратег» is 189px in a card
+// 176px wide. Nothing can measure text before it is in the document, so the name
+// is sized once it is, and only where it has to be: no language gets a smaller
+// name than it needs. Re-run after the webfont lands, because Georgia's metrics
+// are not Bitter's, and always from the same starting size so repeated calls
+// cannot compound.
+function fitCardName(box){
+  var t = box.querySelector('text');
+  if (!t || !t.getComputedTextLength) return;
+  function fit(){
+    t.setAttribute('font-size', '17');
+    var w;
+    try { w = t.getComputedTextLength(); } catch (e) { return; }
+    if (w > 156) t.setAttribute('font-size', (17 * 156 / w).toFixed(2));
+  }
+  fit();
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then)
+    document.fonts.ready.then(fit);
+}
+
 // 2. Two students, different results, understanding each other.
 function vgOthers(){
   var b = '<ellipse cx="200" cy="252" rx="170" ry="12" fill="#0B2027" opacity=".05"/>'
-    + figAt('E|A', 112, 250, 0.86) + figAt('ES|A', 292, 250, 0.86)
+    + figAt('E|A', 112, 250, 0.86) + figAt('ES|E', 292, 250, 0.86)
     + '<g fill="#237A5E" opacity=".55">'
     + '<circle cx="176" cy="70" r="6"/><circle cx="200" cy="60" r="8"/><circle cx="228" cy="70" r="6"/></g>'
     + '<path d="M150 96 q50 -30 104 0" stroke="#237A5E" stroke-width="3" fill="none"'
@@ -313,7 +347,7 @@ function mountPage(){
   var gal = document.getElementById('gallery');
   if (gal) gal.innerHTML = buildGallery(gal.getAttribute('data-full') === '1');
   var v;
-  if ((v = document.getElementById('vg-result'))) v.innerHTML = vgResult();
+  if ((v = document.getElementById('vg-result'))){ v.innerHTML = vgResult(); fitCardName(v); }
   if ((v = document.getElementById('vg-others'))) v.innerHTML = vgOthers();
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   markResumeCtas();

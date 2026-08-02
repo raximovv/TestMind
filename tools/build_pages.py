@@ -413,6 +413,9 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
   <h2>%(priv.h.stored)s</h2>
   <p>%(priv.p.stored)s</p>
 
+  <h2>%(priv.h.agefig)s</h2>
+  <p>%(priv.p.agefig)s</p>
+
   <h2>%(priv.h.never)s</h2>
   <p>%(priv.p.never)s</p>
 
