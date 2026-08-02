@@ -113,6 +113,19 @@
               padding:4px 0;border-bottom:2px solid transparent}
   .toplinks a:hover{color:var(--lazur-deep)}
   .toplinks a[aria-current="page"]{color:var(--lazur-deep);font-weight:600;border-bottom-color:var(--lazur)}
+  /* The same three pills every other page's nav carries. Without them the links
+     sat 134px further right here than on the rest of the site, so the whole bar
+     jumped when you arrived at the test. The instrument is Uzbek-only by design,
+     so RU and EN are shown inactive rather than linked: spans, not anchors, so
+     they are not focusable and cannot be clicked, and dimmed so the group does
+     not read as a live control that happens to be broken. Mirrors .langsw in
+     site.css, which this page does not load. */
+  .langsw{display:flex;align-items:center;gap:2px;flex:none;
+          border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--card)}
+  .langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;font-weight:600;
+               letter-spacing:.03em;line-height:1.55;color:var(--muted);white-space:nowrap}
+  .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
+  .langsw .off{opacity:.45}
   /* Same CTA as every other page's nav, so the bar looks identical when you land
      on the test rather than emptier on the right. Mirrors .btn.sm in site.css. */
   .topcta{display:inline-block;background:var(--lazur);color:#fff;text-decoration:none;
@@ -124,12 +137,28 @@
     /* Chevron only — the row has no width to spare. Name stays on the .vh span. */
     .backtx{display:none}
     .navback{padding:5px 7px}
+    /* The switcher is desktop-only here. This bar keeps 20px of side padding
+       where site.css lets its nav run edge to edge, so the first row has 320px
+       for 353px of controls: with the pills in, the CTA wrapped to a row of its
+       own and made the sticky header a quarter of a phone screen tall. Squeezing
+       four working controls to fit one that cannot be clicked is the wrong
+       trade, and the misalignment being fixed is a desktop one. */
+    .langsw{display:none}
     .topcta{margin-left:auto;order:2}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
     .toplinks a{font-size:14.5px}
+    /* Same trim as site.css: at 360px the row has no width to spare, so a point
+       comes off the switcher rather than pushing the CTA off the edge. */
+    .langsw{padding:1px;gap:1px}
+    .langsw span{padding:5px 6px;font-size:11.5px}
   }
-  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 24px;margin-bottom:18px}
+  /* Only the question card is narrowed, not the page: the three step cards
+     above it keep the full container width they have always had. Answering
+     fifty statements is a reading task, and edge to edge on a laptop left
+     the two poles far apart with no margin for the eye to rest against. */
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 24px;
+        margin:0 auto 18px;max-width:1120px}
   /* Rovoq: a shallow arch on the top edge, echoing the pishtoq of a madrasa. */
   .card{border-radius:26px 26px 14px 14px;border-top:3px solid var(--lazur)}
   .hero{border-radius:26px 26px 18px 18px}
@@ -298,12 +327,36 @@
   .startmark{display:block;width:58px;height:58px;margin:0 auto 14px}
   .starthead h1{font-size:clamp(27px,7vw,40px);margin:0}
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:0 0 26px}
-  .step{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--sc);
+  /* Tint on the top of the card behind the artwork, white underneath the words,
+     divided by a soft wave rather than a straight edge. The wave is a MASK, not
+     a background image, so the colour still comes from --ss and each card keeps
+     its own. Browsers without mask support simply get a tinted band with a
+     straight edge, which is what this looked like before. */
+  .step{--wave:url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'><path d='M0 0 H100 V70 C88 84 74 60 56 70 C38 80 18 88 0 72 Z' fill='%23000'/></svg>");
+        position:relative;overflow:hidden;
+        background:var(--card);border:1px solid transparent;border-top:4px solid var(--sc);
         border-radius:20px 20px 14px 14px;padding:16px 18px 20px;display:flex;flex-direction:column}
-  .stepart{background:var(--ss);border-radius:14px;padding:10px 8px;margin:0 0 14px}
-  .stepart svg{display:block;width:100%;max-width:176px;height:auto;margin:0 auto}
+  .step::before{content:'';position:absolute;left:0;right:0;top:0;height:200px;
+                background:var(--ss);
+                -webkit-mask:var(--wave) center/100% 100% no-repeat;
+                mask:var(--wave) center/100% 100% no-repeat}
+  /* Lift the card's own content above the tint layer. */
+  .step > *{position:relative}
+  /* The panel is a FIXED height -- the same height it had before the artwork was
+     enlarged. It used to be sized by the artwork (height:auto on the child), so
+     scaling the picture up scaled the whole card with it. Fixing the box is what
+     lets the picture grow into the panel instead of pushing it outwards. */
+  /* Transparent now that the card itself is tinted. The height and padding are
+     unchanged, so the illustration renders at exactly the size it did before. */
+  .stepart{background:transparent;border-radius:14px;padding:10px 8px;margin:0 0 14px;height:167px}
+  /* height:100% makes the illustration as tall as the panel allows and width
+     follows its own proportions, so nothing is cropped or stretched. The 10px
+     padding is the ring of tint left showing round it. */
+  .stepart img{display:block;height:100%;width:auto;max-width:100%;margin:0 auto}
+  /* White, not the soft tint: the tint is now the card behind it, so the badge
+     would have disappeared into its own background. */
   .stepnum{align-self:flex-start;font-size:11.5px;font-weight:700;letter-spacing:.09em;
-           color:var(--sc);background:var(--ss);border-radius:99px;padding:4px 11px;margin:0 0 9px}
+           color:var(--sc);background:var(--card);border-radius:99px;padding:4px 11px;margin:0 0 9px}
   .step h2{font-size:18px;margin:0 0 6px;color:var(--ink)}
   .step p{font-size:14.5px;color:var(--muted);margin:0}
   /* «Oʻshanda va hozir» — shown only to a student who took the test months ago. */
@@ -381,26 +434,84 @@
     .starthead{margin:14px 0 34px}
     .steps{gap:22px;margin-bottom:32px}
     .step{padding:18px 22px 24px}
-    .stepart svg{max-width:200px}
+    .stepart{height:187px}
     /* Questions in the 16Personalities shape: big type, big targets, the two
        poles anchored to the far edges with the circles spread across the middle. */
     .item{padding:28px 0}
     .qtext{font-size:23px;line-height:1.3;margin-bottom:2px;max-width:76ch}
     .qhelp{font-size:15px;max-width:76ch}
-    .scale{justify-content:space-between;gap:20px;margin-top:18px}
+    /* Capped and centred rather than stretched edge to edge. On a wide screen
+       the card is ~1240px, and spanning it put ~200px of empty space between
+       each pole and the nearest circle, which read as a gap rather than as one
+       row. The cap is above the row's natural width, so nothing is squeezed --
+       it only stops the row growing with the card. */
+    .scale{justify-content:space-between;gap:20px;margin-top:18px;
+           max-width:900px;margin-left:auto;margin-right:auto}
     /* Equal basis, not auto: the two labels are different lengths, and with an
        auto basis the longer one would shove the circles off centre. */
-    .slab{flex:0 0 168px;max-width:168px;font-size:18px}
-    .dots{flex:1 1 auto;justify-content:center;gap:clamp(18px,3.8vw,48px)}
-    .opt.s1 .dot,.opt.s5 .dot{width:78px;height:78px;font-size:30px}
-    .opt.s2 .dot,.opt.s4 .dot{width:64px;height:64px;font-size:25px}
-    .opt.s3 .dot{width:52px;height:52px;font-size:20px}
+    .slab{flex:0 0 150px;max-width:150px;font-size:18px}
+    /* Tighter than it was (was up to 48px). The circles are one scale, and at
+       48px apart they read as separate buttons and pushed the two poles a
+       long way from each other. */
+    .dots{flex:1 1 auto;justify-content:center;gap:clamp(16px,2.4vw,30px)}
+    /* About 10% down from 78/64/52. Desktop only -- the mobile sizes below carry
+       a 44px minimum tap area and are deliberately left alone. */
+    .opt.s1 .dot,.opt.s5 .dot{width:70px;height:70px;font-size:27px}
+    .opt.s2 .dot,.opt.s4 .dot{width:58px;height:58px;font-size:23px}
+    .opt.s3 .dot{width:47px;height:47px;font-size:18px}
   }
   @media (prefers-reduced-motion: reduce){ *{transition:none !important;animation:none !important} }
   @media print{
     body{background:#fff}
-    .btn,.nav,.topnav,.actions,.capture,.foot,.stepbar,.tailspace{display:none !important}
+    /* .fcwrap is position:fixed, and a fixed overlay prints on every page. It
+       should never be open at print time -- the result is not on screen yet --
+       but Ctrl+P is one keystroke and this costs nothing. */
+    .btn,.nav,.topnav,.actions,.capture,.foot,.stepbar,.tailspace,.fcwrap{display:none !important}
     .card{border:0;padding:0}
+  }
+
+  /* ---------- figure choice (after the last question, before the result) ----------
+     Shown only for archetypes that have both illustrations drawn. The reader
+     picks a figure and gives an age; nothing here touches the score, which was
+     already calculated before this opened. */
+  .fcwrap{position:fixed;inset:0;z-index:60;display:flex;align-items:center;
+          justify-content:center;padding:18px;background:rgba(43,38,32,.55);
+          overflow-y:auto}
+  .fcbox{background:var(--card);border-radius:22px 22px 16px 16px;border-top:3px solid var(--lazur);
+         box-shadow:0 18px 60px rgba(43,38,32,.28);max-width:520px;width:100%;
+         padding:26px 22px 22px;margin:auto}
+  .fclead{margin:0 0 18px;font-size:16px;line-height:1.5;color:var(--muted);text-align:center}
+  .fcrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
+  /* The radio itself stays in the DOM and keeps its semantics -- it is only moved
+     out of sight, so the group is still a real radio group for a screen reader
+     and for arrow-key navigation. */
+  .fcopt input{position:absolute;width:1px;height:1px;opacity:0;margin:0}
+  .fcopt{position:relative;display:block;margin:0}
+  .fccard{display:flex;align-items:flex-end;justify-content:center;position:relative;
+          border:2px solid var(--line);border-radius:18px 18px 12px 12px;background:var(--paper);
+          padding:10px 8px 8px;cursor:pointer;min-height:190px;
+          transition:border-color .16s ease,background .16s ease,transform .12s ease}
+  .fccard img{display:block;width:100%;max-width:150px;height:auto}
+  .fcopt input:hover + .fccard{border-color:var(--zar)}
+  .fcopt input:focus-visible + .fccard{outline:3px solid var(--zar);outline-offset:2px}
+  .fcopt input:checked + .fccard{border-color:var(--lazur);background:#F3EADB}
+  /* Selection is a border AND a tick, never colour alone. The tick is drawn here
+     rather than baked into the artwork, so an unselected card can never show one. */
+  .fctick{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
+          background:var(--lazur);color:#fff;display:none;align-items:center;
+          justify-content:center;font-size:15px;font-weight:700;line-height:1}
+  .fcopt input:checked + .fccard .fctick{display:flex}
+  .fcage{margin-bottom:6px}
+  .fcage label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
+  .fcage input{width:110px;padding:11px 12px;font:inherit;font-size:16px;
+               border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+  .fcage input:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .fcerr{min-height:20px;margin:6px 0 0;font-size:13.5px;color:#9B2C1E}
+  .fcgo{width:100%;margin-top:10px}
+  @media (max-width:380px){
+    .fcbox{padding:20px 14px 16px}
+    .fccard{min-height:150px}
+    .fccard img{max-width:112px}
   }
 </style>
 </head>
@@ -414,6 +525,11 @@
     <a href="test.html" aria-current="page">Shaxsiyat testi</a>
     <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
     <a href="savollar.html">Savollar</a>
+  </div>
+  <div class="langsw" role="group" aria-label="Sayt tili">
+    <span aria-current="true">UZ</span>
+    <span class="off" aria-disabled="true" title="Test faqat oʻzbek tilida">RU</span>
+    <span class="off" aria-disabled="true" title="Test faqat oʻzbek tilida">EN</span>
   </div>
   <a class="topcta" href="test.html">Testni boshlash</a>
 </div></nav>
@@ -700,7 +816,7 @@ function anonId(){
   return state.aid;
 }
 
-function sendStats(status, s, arch){
+function sendStats(status, s, arch, figureGender, age){
   if (!SHEET_URL || statsSent) return;
   var answered = state.answers.filter(function(v){ return v > 0; }).length;
   if (!answered) return;                                   // nothing worth reporting
@@ -717,6 +833,11 @@ function sendStats(status, s, arch){
   };
   if (s){ payload.ES = r1(s.ES); payload.E = r1(s.E); payload.O = r1(s.O); payload.A = r1(s.A); payload.C = r1(s.C); }
   if (arch) payload.archetype = arch.name;
+  // Which historical figure the reader picked, and their age. Only ever present
+  // on the completed row, and only for archetypes that offered the choice.
+  // No birth date and no birth year: an age is a number, not an identifier.
+  if (figureGender) payload.figure_gender = figureGender;
+  if (age) payload.age = age;
 
   // Fire-and-forget. Wrapped so a failed request can NEVER block the result screen.
   try {
@@ -801,85 +922,24 @@ var BRAND_MARK =
     '<path d="M32 16 q4 6 0 11 q-4 -5 0 -11z" fill="#0F6E8C"/>' +
   '</svg>';
 
-// Step 1: a question sheet showing the real 5-circle scale, so the format is
-// familiar before the first question rather than a surprise.
-function scaleRow(y, sel){
-  var cx = [31, 42.5, 53, 63.5, 75], r = [5, 4, 3, 4, 5], s = '', i;
-  for (i = 0; i < 5; i++){
-    if (i === sel) s += '<circle cx="'+cx[i]+'" cy="'+y+'" r="'+r[i]+'" fill="'+(i < 2 ? '#8A6BC1' : '#0F6E8C')+'"/>';
-    else s += '<circle cx="'+cx[i]+'" cy="'+y+'" r="'+r[i]+'" fill="none" stroke="#D7E2E4" stroke-width="2"/>';
-  }
-  return s;
+// The three step illustrations. Each is dropped into the same 112x92 box inside
+// the same 120x100 viewBox, so all three art panels are exactly the same height
+// whatever the artwork's own proportions are: "meet" fits by whichever side runs
+// out first and centres the rest. That matters because they are not the same
+// shape -- the clipboard and the report are landscape, the envelope is nearly
+// square and would burst a width-fitted box. Swap any file and it still fits.
+var STEP_ART_SIZE = {'step-test': [640, 475], 'step-result': [640, 488],
+                     'step-guide': [640, 577]};
+function stepArt(file){
+  var d = STEP_ART_SIZE[file];
+  return '<img src="assets/ui/' + file + '.webp" alt="" ' +
+         'width="' + d[0] + '" height="' + d[1] + '">';
 }
-var ART_TEST =
-  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
-    '<rect x="34" y="14" width="62" height="78" rx="9" fill="#D6E4E8"/>' +
-    '<rect x="22" y="8" width="62" height="78" rx="9" fill="#fff" stroke="#0F6E8C" stroke-width="2.5"/>' +
-    '<rect x="31" y="19" width="34" height="5" rx="2.5" fill="#0F6E8C"/>' +
-    scaleRow(38, 0) + scaleRow(55, 4) + scaleRow(72, 3) +
-  '</svg>';
+var ART_TEST = stepArt('step-test');
 
-var ART_RESULT =
-  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
-    '<rect x="18" y="8" width="84" height="84" rx="12" fill="#fff" stroke="#C08A2E" stroke-width="2.5"/>' +
-    // A doʻppi: black ground, white bodom (paisley) curls on the crown and a
-    // meander fret round the band. Not a smooth dome with one ornament at the
-    // apex — that is the Kazakh takyia and the two are not interchangeable.
-    '<g transform="translate(60,36)">' +
-      '<circle cx="0" cy="6" r="13" fill="#F5E0C0"/>' +
-      // A Chust doʻppi is square when it is flat, so on a head it sits LOW with a
-      // flat top and only slightly rounded shoulders. The tall smooth dome is the
-      // Kazakh takyia — that silhouette, not the embroidery, is what makes the
-      // two read differently, so the shape matters more than the motifs.
-      '<path d="M-14.4 -4.4 C-14.1 -11.8 -12.9 -15.4 -9.6 -15.8 '
-        + 'L9.6 -15.8 C12.9 -15.4 14.1 -11.8 14.4 -4.4 Z" fill="#1C2233"/>' +
-      // bodom (almond) curls in white silk, one row across the low crown
-      '<g fill="none" stroke="#F4F7F8" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">' +
-        '<g transform="translate(-8.4,-13.9) scale(0.8)">' +
-          '<path d="M0 0 c3.3 0.9 4.6 4 3 6.1 c-1.4 1.9 -4.5 1.7 -5.5 -0.4 '
-          + 'c-0.9 -1.8 0.4 -3.7 2.2 -3.5 c1.1 0.1 1.7 1.1 1.4 2"/></g>' +
-        '<g transform="translate(-2.6,-14.3) scale(0.8)">' +
-          '<path d="M0 0 c3.3 0.9 4.6 4 3 6.1 c-1.4 1.9 -4.5 1.7 -5.5 -0.4 '
-          + 'c-0.9 -1.8 0.4 -3.7 2.2 -3.5 c1.1 0.1 1.7 1.1 1.4 2"/></g>' +
-        '<g transform="translate(2.6,-14.3) scale(-0.8,0.8)">' +
-          '<path d="M0 0 c3.3 0.9 4.6 4 3 6.1 c-1.4 1.9 -4.5 1.7 -5.5 -0.4 '
-          + 'c-0.9 -1.8 0.4 -3.7 2.2 -3.5 c1.1 0.1 1.7 1.1 1.4 2"/></g>' +
-        '<g transform="translate(8.4,-13.9) scale(-0.8,0.8)">' +
-          '<path d="M0 0 c3.3 0.9 4.6 4 3 6.1 c-1.4 1.9 -4.5 1.7 -5.5 -0.4 '
-          + 'c-0.9 -1.8 0.4 -3.7 2.2 -3.5 c1.1 0.1 1.7 1.1 1.4 2"/></g>' +
-      '</g>' +
-      '<rect x="-16.2" y="-4.6" width="32.4" height="8" rx="1.6" fill="#1C2233"/>' +
-      // meander (ilon izi): nine interlocking frets between two rails
-      '<path d="M-14.6 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M-11.35 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M-8.1 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M-4.85 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M-1.6 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M1.65 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M4.9 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M8.15 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M11.4 1.4 v-3.2 h2.2 v2.1 h-1.1 '
-        + 'M-15.3 2.4 H15.3 M-15.3 -2.9 H15.3" '
-        + 'fill="none" stroke="#F4F7F8" stroke-width="0.72"/>' +
-      '<circle cx="-4.5" cy="9" r="1.5" fill="#152730"/>' +
-      '<circle cx="4.5" cy="9" r="1.5" fill="#152730"/>' +
-      '<path d="M-4 14 q4 3.4 8 0" fill="none" stroke="#152730" stroke-width="1.6" stroke-linecap="round"/>' +
-    '</g>' +
-    '<rect x="42" y="62" width="36" height="5" rx="2.5" fill="#C08A2E"/>' +
-    '<rect x="32" y="74" width="56" height="6" rx="3" fill="#F0E2C8"/>' +
-    '<rect x="32" y="74" width="38" height="6" rx="3" fill="#C08A2E"/>' +
-  '</svg>';
+var ART_RESULT = stepArt('step-result');
 
-var ART_GUIDE =
-  '<svg viewBox="0 0 120 100" role="img" aria-hidden="true">' +
-    '<rect x="40" y="8" width="44" height="50" rx="6" fill="#fff" stroke="#8A6BC1" stroke-width="2.5"/>' +
-    '<rect x="48" y="19" width="28" height="4.5" rx="2.25" fill="#8A6BC1"/>' +
-    '<rect x="48" y="29" width="22" height="4" rx="2" fill="#DCD2EE"/>' +
-    '<rect x="48" y="38" width="26" height="4" rx="2" fill="#DCD2EE"/>' +
-    '<rect x="16" y="46" width="88" height="46" rx="9" fill="#8A6BC1"/>' +
-    '<path d="M22 53 L60 78 L98 53" fill="none" stroke="#fff" stroke-width="3" ' +
-      'stroke-linecap="round" stroke-linejoin="round"/>' +
-  '</svg>';
+var ART_GUIDE = stepArt('step-guide');
 
 var STEPS = [
   { c:'#0F6E8C', soft:'#E7EFF1', art:ART_TEST, title:'Testni topshiring',
@@ -1264,18 +1324,148 @@ function thenAndNowHtml(s, archKey){
          '</div>';
 }
 
+// ---------- figure choice ----------
+// Opens after the archetype has already been calculated and before it is shown.
+// It never recalculates anything: askFigureChoice is handed a key and hands back
+// a gender and an age, and that is the whole of its contract with the result.
+//
+// Only offered when both illustrations exist for that archetype -- otherwise the
+// reader would pick "girl" and be shown a man, which is worse than not asking.
+
+var FC_STORE_G = 'testmind_figure_gender', FC_STORE_A = 'testmind_age';
+
+function fcRead(k){ try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
+function fcWrite(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+
+function askFigureChoice(archKey, cb){
+  var prevFocus = document.activeElement;
+  var wrap = document.createElement('div');
+  wrap.className = 'fcwrap';
+  wrap.setAttribute('role', 'dialog');
+  wrap.setAttribute('aria-modal', 'true');
+  wrap.setAttribute('aria-labelledby', 'fclead');
+
+  // No heading and no "male"/"female" words: the two pictures are the question.
+  // The accessible names carry what the pictures mean, for anyone not seeing them.
+  wrap.innerHTML =
+    '<div class="fcbox">' +
+      '<p class="fclead" id="fclead">Siz uchun qaysi obraz chiqsin?</p>' +
+      '<div class="fcrow" role="radiogroup" aria-labelledby="fclead">' +
+        '<label class="fcopt">' +
+          '<input type="radio" name="fcg" value="male" aria-label="Erkak obrazni tanlash">' +
+          '<span class="fccard"><span class="fctick" aria-hidden="true">✓</span>' +
+            '<img src="assets/ui/boy-student-selection.webp" alt="" width="452" height="933"></span>' +
+        '</label>' +
+        '<label class="fcopt">' +
+          '<input type="radio" name="fcg" value="female" aria-label="Ayol obrazni tanlash">' +
+          '<span class="fccard"><span class="fctick" aria-hidden="true">✓</span>' +
+            '<img src="assets/ui/girl-student-selection.webp" alt="" width="452" height="933"></span>' +
+        '</label>' +
+      '</div>' +
+      '<div class="fcage">' +
+        '<label for="fcage">Yoshingiz</label>' +
+        '<input id="fcage" type="number" inputmode="numeric" min="7" max="100" step="1" ' +
+               'autocomplete="off" aria-describedby="fcerr">' +
+      '</div>' +
+      '<p class="fcerr" id="fcerr" role="status"></p>' +
+      '<button class="btn wide fcgo" id="fcgo" disabled>Natijani koʻrish</button>' +
+    '</div>';
+  document.body.appendChild(wrap);
+  document.body.style.overflow = 'hidden';
+
+  var radios = wrap.querySelectorAll('input[name=fcg]');
+  var age = wrap.querySelector('#fcage');
+  var err = wrap.querySelector('#fcerr');
+  var go = wrap.querySelector('#fcgo');
+
+  function ageValue(){
+    var raw = (age.value || '').trim();
+    if (!/^\d{1,3}$/.test(raw)) return null;          // whole numbers only
+    var n = parseInt(raw, 10);
+    return (n >= 7 && n <= 100) ? n : null;
+  }
+  function chosen(){
+    for (var i = 0; i < radios.length; i++) if (radios[i].checked) return radios[i].value;
+    return '';
+  }
+  function refresh(showErr){
+    var g = chosen(), n = ageValue();
+    go.disabled = !(g && n);
+    if (!showErr) { err.textContent = ''; return; }
+    err.textContent = !g ? 'Avval obrazni tanlang.'
+                    : (n === null ? 'Yoshingizni 7 va 100 orasida kiriting.' : '');
+  }
+  for (var i = 0; i < radios.length; i++) radios[i].addEventListener('change', function(){ refresh(false); });
+  age.addEventListener('input', function(){ refresh(false); });
+  age.addEventListener('blur', function(){ if (age.value) refresh(true); });
+
+  function close(){
+    document.body.removeChild(wrap);
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKey, true);
+    if (prevFocus && prevFocus.focus) { try { prevFocus.focus(); } catch (e) {} }
+  }
+  go.addEventListener('click', function(){
+    var g = chosen(), n = ageValue();
+    if (!(g && n)) { refresh(true); return; }
+    fcWrite(FC_STORE_G, g); fcWrite(FC_STORE_A, String(n));
+    close();
+    cb(g, n);
+  });
+
+  // Focus trap. Deliberately no Escape-to-dismiss: there is nothing behind this
+  // to go back to -- the test is over and the result is waiting on the answer.
+  function onKey(e){
+    if (e.key !== 'Tab') return;
+    var f = wrap.querySelectorAll('input[name=fcg],#fcage,#fcgo');
+    var list = [];
+    for (var i = 0; i < f.length; i++) if (!f[i].disabled) list.push(f[i]);
+    if (!list.length) return;
+    var first = list[0], last = list[list.length - 1];
+    if (e.shiftKey && document.activeElement === first){ e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last){ e.preventDefault(); first.focus(); }
+  }
+  document.addEventListener('keydown', onKey, true);
+  radios[0].focus();
+  refresh(false);
+}
+
+// The gate. Scoring has already happened by the time anything here runs, and
+// nothing below can change it: paintReport is handed the archetype, not the
+// answers. Splitting the two is what makes "the choice cannot move the result"
+// a property of the code rather than a promise in a comment.
 function renderReport(){
   clearDraft(); // test finished — remove the saved answers from this device
   var s = scoreAnswers(state.answers);
   var arch = archetypeOf(s);
-  sendStats('completed', s, arch);
+  var archKey = archetypeKeyOf(s);
+  var g = fcRead(FC_STORE_G), a = parseInt(fcRead(FC_STORE_A), 10);
+  if (tmHasFigureVariants(archKey) && !g){
+    // Nothing is submitted and nothing is drawn until the reader answers. One
+    // completed row per test, sent below, after the choice is known.
+    askFigureChoice(archKey, function(gender, age){
+      paintReport(s, arch, archKey, gender, age);
+    });
+    return;
+  }
+  paintReport(s, arch, archKey, g || '', a || null);
+}
+
+function paintReport(s, arch, archKey, figureGender, age){
+  sendStats('completed', s, arch, figureGender, age);
   // Anonymous item-level answers, saved automatically. Carries a separate random
   // id so it can never be joined to the row that holds an email address.
   sendResearch(function(){});
   var dateStr = todayStr();
   var fam = FAMILIES[arch.fam];
-  var archKey = archetypeKeyOf(s);
   var tie = nearTieOf(s);
+  // The archetype's own illustration unless this reader chose the other figure.
+  var fv = getFigureVariant(archKey, figureGender);
+  var artHtml = (fv.art && figureGender)
+    ? '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" ' +
+      'role="img" aria-label="' + arch.name + '"><image href="' + fv.art + '" x="0" y="0" ' +
+      'width="200" height="250" preserveAspectRatio="xMidYMid meet"/></svg>'
+    : charSvg(archKey, arch.name);
 
   // The hero comes first and carries no numbers: a teenager should see who they are
   // before they see any score. The five scores live one tap away, under «Batafsil».
@@ -1283,7 +1473,7 @@ function renderReport(){
     '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft + '">' +
       '<div class="herotop">' +
         '<span class="famtag">' + fam.name + '</span>' +
-        charSvg(archKey, arch.name) +
+        artHtml +
       '</div>' +
       '<div class="herobody">' +
         '<h1 class="archname">' + arch.name + '</h1>' +
@@ -1304,9 +1494,9 @@ function renderReport(){
         // "who had this strength", never "you are this person".
         '<div class="figure">' +
           '<div class="figlbl">Shu xususiyat kimda kuchli boʻlgan</div>' +
-          '<div class="figwho">' + arch.figure.who +
-            '<span class="figyr">' + arch.figure.years + '</span></div>' +
-          '<p class="figwhy">' + arch.figure.why + '</p>' +
+          '<div class="figwho">' + fv.who +
+            '<span class="figyr">' + fv.years + '</span></div>' +
+          '<p class="figwhy">' + fv.why + '</p>' +
         '</div>' +
       '</div>' +
     '</div>' +
