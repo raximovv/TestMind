@@ -1550,11 +1550,22 @@ function thenAndNowHtml(s, archKey){
 //
 // Only offered when both illustrations exist for that archetype -- otherwise the
 // reader would pick "girl" and be shown a man, which is worse than not asking.
+//
+// The answer is deliberately NOT remembered. It used to be kept in localStorage
+// and reused for every later result on that device, which is wrong wherever the
+// device is shared -- one classroom computer or one family phone meant every
+// student after the first was shown the first student's figure without being
+// asked, and their row in the sheet carried the first student's age too. Two
+// taps at the end of a seven-minute test is a cheap price for both being right.
 
 var FC_STORE_G = 'testmind_figure_gender', FC_STORE_A = 'testmind_age';
 
-function fcRead(k){ try { return localStorage.getItem(k) || ''; } catch (e) { return ''; } }
-function fcWrite(k, v){ try { localStorage.setItem(k, v); } catch (e) {} }
+// Clears what earlier versions saved. Without this, a student who already has a
+// stored answer would keep skipping the question forever -- the bug would look
+// fixed on a new device and stay broken on every device that ever took the test.
+(function forgetStoredChoice(){
+  try { localStorage.removeItem(FC_STORE_G); localStorage.removeItem(FC_STORE_A); } catch (e) {}
+})();
 
 function askFigureChoice(archKey, cb){
   var prevFocus = document.activeElement;
@@ -1627,7 +1638,6 @@ function askFigureChoice(archKey, cb){
   go.addEventListener('click', function(){
     var g = chosen(), n = ageValue();
     if (!(g && n)) { refresh(true); return; }
-    fcWrite(FC_STORE_G, g); fcWrite(FC_STORE_A, String(n));
     close();
     cb(g, n);
   });
@@ -1658,8 +1668,8 @@ function renderReport(){
   var s = scoreAnswers(state.answers);
   var arch = archetypeOf(s);
   var archKey = archetypeKeyOf(s);
-  var g = fcRead(FC_STORE_G), a = parseInt(fcRead(FC_STORE_A), 10);
-  if (tmHasFigureVariants(archKey) && !g){
+  if (tmHasFigureVariants(archKey)){
+    // Asked on every single run, with nothing carried over from the last one.
     // Nothing is submitted and nothing is drawn until the reader answers. One
     // completed row per test, sent below, after the choice is known.
     askFigureChoice(archKey, function(gender, age){
@@ -1667,7 +1677,11 @@ function renderReport(){
     });
     return;
   }
-  paintReport(s, arch, archKey, g || '', a || null);
+  // Reached only by an archetype with a single illustration. All ten are paired
+  // today, so this is the path a future eleventh would take before its second
+  // figure is drawn -- it shows the one picture rather than asking a question
+  // whose answer could not be honoured.
+  paintReport(s, arch, archKey, '', null);
 }
 
 function paintReport(s, arch, archKey, figureGender, age){
