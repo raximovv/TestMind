@@ -611,10 +611,19 @@ var TM_RASTER_FIT = {
 };
 
 function tmAssetPath(path){
-  // characters.js is shared from the repository root. Runtime-generated markup
-  // on /ru/ and /en/ pages must climb back to that root; build-time generators
-  // have no document and localize the same path themselves.
+  // characters.js is shared from the repository root, so markup generated on a
+  // /ru/ or /en/ page has to climb back to that root.
+  //
+  // Ask the URL, not the language. The language used to be a safe proxy for the
+  // directory, because Russian only ever existed under /ru/. It stopped being
+  // one when test.html began serving all three languages from the root: that
+  // page declares lang="ru" while sitting at /, so a language-based guess
+  // prefixed ../ and every character image 404ed.
   try {
+    if (typeof location !== 'undefined' && location.pathname)
+      return /\/(ru|en)\//.test(location.pathname) ? '../' + path : path;
+    // No location means a build-time generator, which stubs a document and sets
+    // the lang precisely so the pages it writes into ru/ and en/ get the ../.
     var lang = document.documentElement.getAttribute('lang');
     if (lang === 'ru' || lang === 'en') return '../' + path;
   } catch (e) {}
