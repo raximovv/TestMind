@@ -564,7 +564,9 @@
 </div></footer>
 
 <script src="assets/characters.js"></script>
+<script src="assets/strings.js"></script>
 <script src="assets/life.js"></script>
+<script src="assets/test-ru.js"></script>
 <script id="tm-logic">
 // ---------- TestMind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -683,7 +685,10 @@ function archetypeKeyOf(s){
   });
   return pair[0] + '|' + pair[1];
 }
-function archetypeOf(s){ return ARCHETYPES[archetypeKeyOf(s)]; }
+// tmArch() applies the strings.js overlay for the current language; the raw
+// ARCHETYPES table is always Uzbek.
+function tmA(k){ return (typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k]; }
+function archetypeOf(s){ return tmA(archetypeKeyOf(s)); }
 
 // The archetype is the two strongest traits, so it hinges entirely on which trait
 // ranks 2nd and which ranks 3rd. When those two are nearly level the result is close
@@ -702,7 +707,7 @@ function nearTieOf(s){
   });
   var key = pair[0] + '|' + pair[1];
   if (key === archetypeKeyOf(s) || !ARCHETYPES[key]) return null;
-  return { key: key, arch: ARCHETYPES[key], gap: gap };
+  return { key: key, arch: tmA(key), gap: gap };
 }
 
 function levelOf(mean){ if (mean <= 2.4) return 'Past'; if (mean >= 3.6) return 'Yuqori'; return 'Oʻrta'; }
@@ -950,12 +955,163 @@ var STEPS = [
     text:'Xohlasangiz, oxirida email qoldiring — obrazingiz uchun batafsil qoʻllanmani yuboramiz.' }
 ];
 
+// ---------- language ----------
+// Uzbek is the default. ?lang=ru serves the Russian rendering of the SAME fifty
+// items: the trait letter and the reverse flag never leave this file, so a
+// translation cannot change what an item measures or which way it scores.
+var TLANG = (function(){
+  var m = /[?&]lang=(uz|ru)/.exec(location.search);
+  if (m) return m[1];
+  return document.documentElement.getAttribute('lang') === 'ru' ? 'ru' : 'uz';
+})();
+
+// Applied as a swap over the Uzbek originals rather than a parallel structure,
+// so there is exactly one item list and one scoring path. A list of the wrong
+// length is refused whole: a shifted list would score every student wrongly and
+// would look completely normal on screen.
+(function applyLanguage(){
+  if (TLANG !== 'ru' || typeof TEST_RU === 'undefined') return;
+  if (!TEST_RU.items || TEST_RU.items.length !== ITEMS.length){
+    if (window.console) console.error('TestMind: ru item list is ' +
+      ((TEST_RU.items || []).length) + ', expected ' + ITEMS.length + ' - staying in Uzbek');
+    TLANG = 'uz';
+    return;
+  }
+  for (var i = 0; i < ITEMS.length; i++) ITEMS[i].t = TEST_RU.items[i];
+  for (var j = 0; j < LABELS.length; j++) LABELS[j] = TEST_RU.labels[j];
+  TRAITS = TEST_RU.traits;
+  POLES = TEST_RU.poles;
+  TEXTS = TEST_RU.texts;
+  DISCLAIMER = TEST_RU.disclaimer;
+  for (var k = 0; k < STEPS.length && TEST_RU.steps && k < TEST_RU.steps.length; k++){
+    STEPS[k].title = TEST_RU.steps[k].title;
+    STEPS[k].text  = TEST_RU.steps[k].text;
+  }
+  document.documentElement.setAttribute('lang', 'ru');
+})();
+
+// The page's own wording in Uzbek. The instrument itself (ITEMS, LABELS) is data
+// above; this is only the furniture around it.
+var TT_UZ = {
+  title:       'Bepul shaxsiyat testi',
+  back:        'Orqaga',
+  next:        'Keyingi',
+  seeResult:   'Natijani koʻrish',
+  stepCount:   'Qadam %1 / %2',
+  answerRest:  'Qolgan savollarga javob bering.',
+  resumeH1:    'Yarim qolgan test',
+  resumeP:     'Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?',
+  resumeCount: '%1 / %2 savolga javob berilgan.',
+  cleared:     'Javoblaringiz shu qurilmadan oʻchirildi.',
+  fcLead:      'Siz uchun qaysi obraz chiqsin?',
+  fcMale:      'Erkak obrazni tanlash',
+  fcFemale:    'Ayol obrazni tanlash',
+  fcAge:       'Yoshingiz',
+  fcPickFirst: 'Avval obrazni tanlang.',
+  fcAgeRange:  'Yoshingizni 7 va 100 orasida kiriting.',
+  shareSave:   'Rasm qilib saqlash',
+  shareCopy:   'Havolani nusxalash',
+  copied:      'Nusxalandi ✓',
+  copyFailed:  'Nusxalab boʻlmadi',
+  shareMsg:    'Men TestMind testidan oʻtdim. Natijam: «%1».',
+  shareInvite: 'Sen ham oʻzingni sinab koʻr: https://%1/',
+  capOr:       'yoki emailga',
+  capNote:     'Yuklab olish uchun email kerak emas — u faqat qoʻllanmani pochtangizga yuborish uchun. ' +
+               'Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
+               '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.',
+  capSentH:    'Soʻrovingiz yuborildi',
+  capFailed:   'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.',
+  sending:     'Yuborilmoqda…',
+  tnAgain:     'Siz bu testni <b>%1</b> kuni ham ishlagansiz.',
+  tnSame:      '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija — demak, oʻzingizni yaxshi bilar ekansiz.</p>',
+  tnArch:      '<p class="tnarch">Oʻshanda obrazingiz «%1» edi. Obraz oʻzgarishi — xato emas, oʻsish belgisi.</p>',
+  grew:        'oʻsibdi',
+  strengthLbl: 'Kuchli tomoningiz:',
+  watchLbl:    'Eʼtibor bering:',
+  figLbl:      'Shu xususiyat kimda kuchli boʻlgan',
+  tieNote:     'Natijangiz <b>%1</b> obraziga ham juda yaqin — bu ikkisi orasidagi farq ' +
+               'juda kichik. Ikkala tavsifni ham oʻqib koʻring.',
+  guideH:      'Toʻliq qoʻllanmangiz tayyor',
+  guideLede:   '«%1» uchun 8 sahifalik qoʻllanma: kuchli tomonlaringiz, oʻsish ' +
+               'nuqtalaringiz, maktab va kelajak yoʻnalishlari.',
+  guidePdf:    'Qoʻllanmani yuklab olish (PDF)',
+  guideTg:     'Telegramda olish',
+  emailAria:   'Email manzilingiz',
+  send:        'Yuborish',
+  or:          'yoki',
+  mid:         'Oʻrta'
+};
+
+// The nav and footer are static markup in this file, written in Uzbek. When the
+// page is Russian they are rewritten in place, using the same wording the rest
+// of the Russian site already uses, and their links are repointed into /ru/.
+var CHROME_RU = {
+  nav: {'index.html': ['Главная', 'ru/index.html'],
+        'obrazlar.html': ['Образы', 'ru/obrazlar.html'],
+        'test.html': ['Тест личности', 'test.html?lang=ru'],
+        'qanday-ishlaydi.html': ['Как это работает', 'ru/qanday-ishlaydi.html'],
+        'savollar.html': ['Вопросы', 'ru/savollar.html'],
+        'privacy.html': ['Конфиденциальность', 'ru/privacy.html'],
+        'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
+  cta: 'Пройти тест',
+  back: 'Вернуться на сайт Naseeb Edu',
+  foot: {'Oʻnta obraz': 'Десять образов',
+         'Test': 'Тест',
+         'Koʻp beriladigan savollar': 'Частые вопросы',
+         'Maʼlumot': 'Информация',
+         'Test qaysi modelga asoslangan': 'На какой модели основан тест',
+         'Bogʻlanish': 'Связаться',
+         'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
+           'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.'}
+};
+
+function localiseChrome(){
+  if (TLANG !== 'ru') return;
+  var i, a, links = document.querySelectorAll('.toplinks a, .foot a');
+  for (i = 0; i < links.length; i++){
+    a = links[i];
+    var file = (a.getAttribute('href') || '').split('/').pop().split('?')[0];
+    var row = CHROME_RU.nav[file];
+    if (row){ a.textContent = row[0]; a.setAttribute('href', row[1]); continue; }
+    var ru = CHROME_RU.foot[a.textContent.trim()];
+    if (ru) a.textContent = ru;
+  }
+  var cta = document.querySelector('.topcta');
+  if (cta){ cta.textContent = CHROME_RU.cta; cta.setAttribute('href', 'test.html?lang=ru'); }
+  var vh = document.querySelector('.navback .vh');
+  if (vh) vh.textContent = CHROME_RU.back;
+  var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li');
+  for (i = 0; i < heads.length; i++){
+    var txt = heads[i].childNodes.length === 1 ? heads[i].textContent.trim() : null;
+    if (txt && CHROME_RU.foot[txt]) heads[i].textContent = CHROME_RU.foot[txt];
+  }
+  // the switcher: Russian is current, Uzbek links back to the Uzbek test
+  var sw = document.querySelector('.langsw');
+  if (sw){
+    sw.innerHTML = '<a href="test.html" hreflang="uz" lang="uz" title="Oʻzbekcha">UZ</a>' +
+                   '<span aria-current="true">RU</span>' +
+                   '<span class="off" aria-disabled="true" title="Тест на английском пока недоступен">EN</span>';
+  }
+  document.title = 'Бесплатный тест личности — TestMind';
+}
+
+// One lookup for the page's own wording. %1 / %2 are positional so a translation
+// can put them wherever its grammar needs them.
+function T(key){
+  var s = (TLANG === 'ru' && TEST_RU.ui && TEST_RU.ui[key] !== undefined)
+        ? TEST_RU.ui[key] : TT_UZ[key];
+  for (var i = 1; i < arguments.length; i++)
+    s = s.replace('%' + i, arguments[i]);
+  return s;
+}
+
+
 // The opener sits ABOVE the first five questions rather than on a screen of its
 // own: there is no "start" button to press, so the test is already running when
 // the page loads. Only page 0 carries it.
 function introHtml(){
   return '<div class="starthead">' + BRAND_MARK +
-      '<h1>Bepul shaxsiyat testi</h1>' +
+      '<h1>' + T('title') + '</h1>' +
     '</div>' +
     '<div class="steps">' +
       STEPS.map(function(st, i){
@@ -992,10 +1148,10 @@ function renderPage(){
     // first questions; it slides in once the student finishes a page.
     (p > 0
       ? '<div class="stepbar"><div class="stepbarin">' +
-          '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> Orqaga</button>' +
+          '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> ' + T('back') + '</button>' +
           '<div class="stepright">' +
             '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
-            '<span class="stepcount">Qadam ' + (p + 1) + ' / ' + PAGES + '</span>' +
+            '<span class="stepcount">' + T('stepCount', p + 1, PAGES) + '</span>' +
           '</div>' +
         '</div></div>'
       : '') +
@@ -1023,7 +1179,7 @@ function renderPage(){
   html += '</div>' +
     '<div class="nav">' +
       '<p class="navmsg" id="navMsg" role="status"></p>' +
-      '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? 'Natijani koʻrish' : 'Keyingi') + '</button>' +
+      '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? T('seeResult') : T('next')) + '</button>' +
     '</div>' +
     '<div class="tailspace" aria-hidden="true"></div>';
   app.innerHTML = html;
@@ -1170,7 +1326,7 @@ function updateCount(missing){
   var m = document.getElementById('navMsg');
   if (m){
     var a = answeredOnPage(state.page);
-    m.textContent = (missing && a.done < a.total) ? 'Qolgan savollarga javob bering.' : '';
+    m.textContent = (missing && a.done < a.total) ? T('answerRest') : '';
   }
 }
 
@@ -1313,8 +1469,7 @@ function thenAndNowHtml(s, archKey){
   }
   var archLine = '';
   if (prev.key && prev.key !== archKey && ARCHETYPES[prev.key]){
-    archLine = '<p class="tnarch">Oʻshanda obrazingiz «' + ARCHETYPES[prev.key].name +
-               '» edi. Obraz oʻzgarishi — xato emas, oʻsish belgisi.</p>';
+    archLine = T('tnArch', tmA(prev.key).name);
   }
   return '<div class="thennow">' +
            '<div class="tnlbl">Oʻshanda va hozir</div>' +
@@ -1349,26 +1504,26 @@ function askFigureChoice(archKey, cb){
   // The accessible names carry what the pictures mean, for anyone not seeing them.
   wrap.innerHTML =
     '<div class="fcbox">' +
-      '<p class="fclead" id="fclead">Siz uchun qaysi obraz chiqsin?</p>' +
+      '<p class="fclead" id="fclead">' + T('fcLead') + '</p>' +
       '<div class="fcrow" role="radiogroup" aria-labelledby="fclead">' +
         '<label class="fcopt">' +
-          '<input type="radio" name="fcg" value="male" aria-label="Erkak obrazni tanlash">' +
+          '<input type="radio" name="fcg" value="male" aria-label="' + T('fcMale') + '">' +
           '<span class="fccard"><span class="fctick" aria-hidden="true">✓</span>' +
             '<img src="assets/ui/boy-student-selection.webp" alt="" width="452" height="933"></span>' +
         '</label>' +
         '<label class="fcopt">' +
-          '<input type="radio" name="fcg" value="female" aria-label="Ayol obrazni tanlash">' +
+          '<input type="radio" name="fcg" value="female" aria-label="' + T('fcFemale') + '">' +
           '<span class="fccard"><span class="fctick" aria-hidden="true">✓</span>' +
             '<img src="assets/ui/girl-student-selection.webp" alt="" width="452" height="933"></span>' +
         '</label>' +
       '</div>' +
       '<div class="fcage">' +
-        '<label for="fcage">Yoshingiz</label>' +
+        '<label for="fcage">' + T('fcAge') + '</label>' +
         '<input id="fcage" type="number" inputmode="numeric" min="7" max="100" step="1" ' +
                'autocomplete="off" aria-describedby="fcerr">' +
       '</div>' +
       '<p class="fcerr" id="fcerr" role="status"></p>' +
-      '<button class="btn wide fcgo" id="fcgo" disabled>Natijani koʻrish</button>' +
+      '<button class="btn wide fcgo" id="fcgo" disabled>' + T('seeResult') + '</button>' +
     '</div>';
   document.body.appendChild(wrap);
   document.body.style.overflow = 'hidden';
@@ -1392,8 +1547,8 @@ function askFigureChoice(archKey, cb){
     var g = chosen(), n = ageValue();
     go.disabled = !(g && n);
     if (!showErr) { err.textContent = ''; return; }
-    err.textContent = !g ? 'Avval obrazni tanlang.'
-                    : (n === null ? 'Yoshingizni 7 va 100 orasida kiriting.' : '');
+    err.textContent = !g ? T('fcPickFirst')
+                    : (n === null ? T('fcAgeRange') : '');
   }
   for (var i = 0; i < radios.length; i++) radios[i].addEventListener('change', function(){ refresh(false); });
   age.addEventListener('input', function(){ refresh(false); });
@@ -1481,19 +1636,17 @@ function paintReport(s, arch, archKey, figureGender, age){
         '<ul class="archlines">' +
           arch.lines.map(function(l){ return '<li>' + l + '</li>'; }).join('') +
         '</ul>' +
-        '<p class="strength"><b>Kuchli tomoningiz:</b> ' + arch.strength + '</p>' +
-        '<p class="watch"><b>Eʼtibor bering:</b> ' + arch.watch + '</p>' +
+        '<p class="strength"><b>' + T('strengthLbl') + '</b> ' + arch.strength + '</p>' +
+        '<p class="watch"><b>' + T('watchLbl') + '</b> ' + arch.watch + '</p>' +
         // The snapshot line and the retake invitation were removed at the founder's
         // request. The near-tie notice stays: it only appears when two archetypes
         // land within NEAR_TIE_GAP, and it is what stops a borderline result being
         // rounded into false certainty. No tie, no box.
-        (tie ? '<div class="note"><p>Natijangiz <b>' + tie.arch.name + '</b> obraziga ' +
-               'ham juda yaqin — bu ikkisi orasidagi farq juda kichik. Ikkala tavsifni ' +
-               'ham oʻqib koʻring.</p></div>' : '') +
+        (tie ? '<div class="note"><p>' + T('tieNote', tie.arch.name) + '</p></div>' : '') +
         // A real Uzbek figure known for the same quality. Deliberately worded as
         // "who had this strength", never "you are this person".
         '<div class="figure">' +
-          '<div class="figlbl">Shu xususiyat kimda kuchli boʻlgan</div>' +
+          '<div class="figlbl">' + T('figLbl') + '</div>' +
           '<div class="figwho">' + fv.who +
             '<span class="figyr">' + fv.years + '</span></div>' +
           '<p class="figwhy">' + fv.why + '</p>' +
@@ -1502,44 +1655,46 @@ function paintReport(s, arch, archKey, figureGender, age){
     '</div>' +
     thenAndNowHtml(s, archKey) +
     '<div class="actions">' +
-      '<button class="btn wide" id="shareBtn">Rasm qilib saqlash</button>' +
-      '<button class="btn ghost" id="copyBtn">Havolani nusxalash</button>' +
+      '<button class="btn wide" id="shareBtn">' + T('shareSave') + '</button>' +
+      '<button class="btn ghost" id="copyBtn">' + T('shareCopy') + '</button>' +
       '<button class="btn ghost" id="printBtn">Chop etish</button>' +
       '<button class="btn ghost wide" id="againBtn">Qaytadan</button>' +
     '</div>' +
     '<div id="shareBox" class="sharebox"></div>' +
     '<div class="capture" id="capture">' +
-      '<h3>Toʻliq qoʻllanmangiz tayyor</h3>' +
-      '<p class="caplede">«' + arch.name + '» uchun 8 sahifalik qoʻllanma: kuchli tomonlaringiz, ' +
-        'oʻsish nuqtalaringiz, maktab va kelajak yoʻnalishlari.</p>' +
+      '<h3>' + T('guideH') + '</h3>' +
+      '<p class="caplede">' + T('guideLede', arch.name) + '</p>' +
       // Straight download first — it needs neither Telegram nor an email address.
       '<a class="btn pdf" href="' + GUIDE_DIR + arch.slug + '.pdf" download>' +
-        'Qoʻllanmani yuklab olish (PDF)</a>' +
+        T('guidePdf') + '</a>' +
       (SHOW_TELEGRAM
-        ? '<div class="capor">yoki</div>' +
+        ? '<div class="capor">' + T('or') + '</div>' +
           '<a class="btn tg" href="https://t.me/' + TG_BOT + '?start=' + arch.slug + '" ' +
-            'target="_blank" rel="noopener">Telegramda olish</a>'
+            'target="_blank" rel="noopener">' + T('guideTg') + '</a>'
         : '') +
-      '<div class="capor">yoki emailga</div>' +
+      '<div class="capor">' + T('capOr') + '</div>' +
       '<div class="caprow">' +
         '<input type="email" id="capEmail" placeholder="email@example.com" ' +
-          'autocomplete="email" inputmode="email" aria-label="Email manzilingiz">' +
-        '<button class="btn" id="capBtn">Yuborish</button>' +
+          'autocomplete="email" inputmode="email" aria-label="' + T('emailAria') + '">' +
+        '<button class="btn" id="capBtn">' + T('send') + '</button>' +
       '</div>' +
       '<p class="capmsg" id="capMsg" role="status"></p>' +
-      '<p class="capnote">Yuklab olish uchun email kerak emas — u faqat qoʻllanmani ' +
-        'pochtangizga yuborish uchun. Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
-        '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.</p>' +
+      '<p class="capnote">' + T('capNote') + '</p>' +
     '</div>' +
     // The long-form guidance now sits BELOW the actions: reading it is optional,
     // sharing and downloading are not.
-    '<h2 class="lifetop">Toʻliq tahlil</h2>' +
-    '<p class="lifetopsub">Obrazingiz kundalik hayotda qanday koʻrinadi.</p>' +
-    lifeHtml(archKey) +
+    // Written long-form in Uzbek only. A machine-shaped Russian rendering of
+    // three hundred bullets would read worse than not offering it, so the
+    // section is omitted rather than half-translated.
+    (TLANG === 'uz'
+      ? '<h2 class="lifetop">Toʻliq tahlil</h2>' +
+        '<p class="lifetopsub">Obrazingiz kundalik hayotda qanday koʻrinadi.</p>' +
+        lifeHtml(archKey)
+      : '') +
     // The per-trait breakdown was removed at the founder's request. The
     // DISCLAIMER it used to carry is kept here, outside any toggle.
     '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
-    '<p class="muted">Javoblaringiz shu qurilmadan oʻchirildi.</p>' +
+    '<p class="muted">' + T('cleared') + '</p>' +
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
     '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
   app.innerHTML = html;
@@ -1559,7 +1714,7 @@ function paintReport(s, arch, archKey, figureGender, age){
     var msg = 'Men TestMind testidan oʻtdim. Natijam: «' + arch.name + '».\n'
             + 'Sen ham oʻzingni sinab koʻr: https://' + SITE_HOST + '/';
     function done(okCopied){
-      btn.textContent = okCopied ? 'Nusxalandi ✓' : 'Nusxalab boʻlmadi';
+      btn.textContent = okCopied ? T('copied') : T('copyFailed');
       setTimeout(function(){ btn.textContent = 'Havolani nusxalash'; }, 2200);
     }
     if (navigator.clipboard && navigator.clipboard.writeText){
@@ -1600,14 +1755,14 @@ function paintReport(s, arch, archKey, figureGender, age){
         // honestly say it left the device — never that it was confirmed received.
         document.getElementById('capture').innerHTML =
           '<div class="capdone"><span class="tick" aria-hidden="true">✓</span><div>' +
-            '<h3 style="margin:0 0 4px">Soʻrovingiz yuborildi</h3>' +
+            '<h3 style="margin:0 0 4px">' + T('capSentH') + '</h3>' +
             '<p class="caplede" style="margin:0">Qoʻllanma tayyor boʻlgach, uni ' + esc(email) +
             ' manziliga yuboramiz.</p>' +
           '</div></div>';
       } else {
         capBtn.disabled = false; capBtn.textContent = 'Yuborish';
         msg.className = 'capmsg err';
-        msg.textContent = 'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.';
+        msg.textContent = T('capFailed');
       }
     });
   };
@@ -1641,8 +1796,8 @@ function renderResume(d){
   var answered = d.answers.filter(function(v){ return v > 0; }).length;
   app.innerHTML =
     '<div class="card">' +
-      '<h1>Yarim qolgan test</h1>' +
-      '<p>Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?</p>' +
+      '<h1>' + T('resumeH1') + '</h1>' +
+      '<p>' + T('resumeP') + '</p>' +
       '<p class="muted">' + answered + ' / ' + ITEMS.length + ' savolga javob berilgan.</p>' +
       '<div class="nav" style="margin-top:18px">' +
         '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
@@ -1664,6 +1819,7 @@ function renderResume(d){
 }
 
 function boot(){
+  localiseChrome();
   var d = loadDraft();
   if (d && d.answers.some(function(v){ return v > 0; })) renderResume(d);
   else renderPage();

@@ -96,12 +96,26 @@ _ROOT_RE = re.compile(r'(href|src)="(%s)' % '|'.join(
     re.escape(f) for f in ROOT_ONLY))
 
 
+# Languages the test itself has been translated into. English is not here yet,
+# so English pages keep linking to the Uzbek test, which is the honest default.
+TEST_LANG_PARAM = {'ru': 'ru'}
+
+
 def localize(html, lang):
-    u"""Point the shared root files at ../ for the non-root languages."""
+    u"""Point the shared root files at ../ for the non-root languages.
+
+    test.html is one shared file serving every language, so the Russian pages
+    also have to say WHICH language they want: without ?lang=ru a student who
+    has been reading Russian all the way through lands on an Uzbek test.
+    """
     up = UP[lang]
     if not up:
         return html
-    return _ROOT_RE.sub(lambda m: '%s="%s%s' % (m.group(1), up, m.group(2)), html)
+    out = _ROOT_RE.sub(lambda m: '%s="%s%s' % (m.group(1), up, m.group(2)), html)
+    if lang in TEST_LANG_PARAM:
+        out = out.replace('="%stest.html"' % up,
+                          '="%stest.html?lang=%s"' % (up, TEST_LANG_PARAM[lang]))
+    return out
 
 
 def url_for(lang, fname):

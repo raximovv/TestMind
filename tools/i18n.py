@@ -182,7 +182,7 @@ S['uz'] = {
     'faq.q8': u'Testni qayta topshirsam boʻladimi?',
     'faq.a8': u'Ha, istagancha. Lekin natija oʻzgarib turmasligi uchun oʻylab, rostgoʻy javob berish yaxshiroq.',
     'faq.q9': u'Test qaysi tillarda?',
-    'faq.a9': u'Sayt oʻzbek, rus va ingliz tillarida. Testning oʻzi esa faqat oʻzbek tilida — savollarni tarjima qilish ularning maʼnosini oʻzgartiradi va natijani ishonchsiz qiladi.',
+    'faq.a9': u'Sayt oʻzbek, rus va ingliz tillarida. Testning oʻzi oʻzbek va rus tillarida. Ruscha variant oʻzbekchadan tarjima qilingan: u oʻzini tanish uchun mos, lekin ikki tildagi natijalar toʻliq solishtirilmaydi. Inglizcha test hozircha yoʻq.',
 
     # ---- privacy
     'priv.title': u'Maxfiylik — TestMind',
@@ -302,12 +302,12 @@ S['ru'] = {
     'foot.model': u'На какой модели основан тест',
     'foot.schools': u'Школам и родителям',
     'foot.disclaimer': u'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.',
-    'foot.testnote': u'Тест только на узбекском',
+    'foot.testnote': u'',
 
     'close.h2': u'Готовы?',
     'close.p': u'7 минут. Какой из десяти образов ваш?',
 
-    'testlang.note': u'Сам тест — только на узбекском языке. Мы не переводим вопросы: перевод меняет их смысл и делает результат недостоверным.',
+    'testlang.note': u'Тест доступен на узбекском и русском. Русский вариант — перевод узбекского: он подходит для самопознания, но результаты на двух языках не полностью сопоставимы.',
 
     'home.title': u'TestMind — какой у вас образ?',
     'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
@@ -407,7 +407,7 @@ S['ru'] = {
     'faq.q8': u'Можно ли пройти тест ещё раз?',
     'faq.a8': u'Да, сколько угодно. Но чтобы результат не скакал, лучше отвечать вдумчиво и честно.',
     'faq.q9': u'На каких языках доступен тест?',
-    'faq.a9': u'Сайт доступен на узбекском, русском и английском. Сам тест — только на узбекском: перевод вопросов меняет их смысл и делает результат недостоверным.',
+    'faq.a9': u'Сайт доступен на узбекском, русском и английском. Сам тест — на узбекском и русском. Русские вопросы переведены с узбекских: перевод не проходил отдельную проверку, поэтому результаты на двух языках не полностью сопоставимы. Английского теста пока нет.',
 
     'priv.title': u'Конфиденциальность — TestMind',
     'priv.desc': u'Коротко о том, как TestMind обращается с вашими данными.',

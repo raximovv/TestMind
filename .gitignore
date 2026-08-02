@@ -21,3 +21,7 @@ token.txt
 Thumbs.db
 desktop.ini
 .DS_Store
+
+# Large local exports — never belong in the repo (a 145MB zip was caught by
+# GitHub push protection once already).
+*.zip
