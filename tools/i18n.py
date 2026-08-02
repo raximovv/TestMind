@@ -191,6 +191,11 @@ S['uz'] = {
     'priv.lead': u'TestMind maʼlumotlaringiz bilan qanday ishlashi haqida qisqa va sodda izoh.',
     'priv.h.stored': u'Nima saqlanadi',
     'priv.p.stored': u'Test yakunlanganda faqat anonim maʼlumot saqlanadi: 5 ta umumiy ball, natija nomi, testga ketgan vaqt va qurilma turi (telefon yoki kompyuter). Bu maʼlumotlar yopiq jadvalda saqlanadi va faqat testni yaxshilash uchun ishlatiladi.',
+    # Added when the result gained a boy/girl figure choice and an age field.
+    # Says exactly what is asked for and exactly what is not, because the whole
+    # promise of the test to a school is that it collects almost nothing.
+    'priv.h.agefig': u'Yosh va tanlangan siymo',
+    'priv.p.agefig': u'Natijadan oldin sizdan yoshingizni va natijada koʻrmoqchi boʻlgan siymongizni (erkak yoki ayol) soʻraymiz. Bu ikki maʼlumot anonim natija bilan birga saqlanadi va faqat umumiy tahlil uchun ishlatiladi — masalan, testdan qaysi yoshdagilar koʻproq foydalanayotganini bilish uchun. Tugʻilgan sana ham, tugʻilgan yil ham soʻralmaydi. Test uchun ism ham kerak emas. Tanlangan siymo natijadagi tarixiy shaxs rasmini va tavsifini oʻzgartiradi, xolos: ballaringiz va obrazingiz oʻzgarmaydi.',
     'priv.h.never': u'Nima soʻralmaydi',
     'priv.p.never': u'Test ismingizni ham, yoshingizni ham soʻramaydi — shuning uchun ular hech qayerda saqlanmaydi. Roʻyxatdan oʻtish ham kerak emas: «Testni boshlash» tugmasini bosasiz va birinchi savol chiqadi.',
     'priv.h.answers': u'Javoblaringiz',
@@ -273,7 +278,6 @@ S['uz'] = {
     'arch.guide.p': u'Kundalik hayotda, maktabda va kelajak yoʻnalishlarida; oʻsish nuqtalari va ikki haftalik amaliyot. Bepul, roʻyxatdan oʻtmasdan.',
     'arch.guide.btn': u'Yuklab olish (PDF)',
     'arch.guide.lang': u'',
-    'arch.sibs.h2': u'%(fam)s oilasidagi boshqa obrazlar',
     'arch.title': u'%(name)s — TestMind obrazlari',
 }
 
@@ -411,6 +415,8 @@ S['ru'] = {
     'priv.lead': u'Короткое и простое объяснение того, как TestMind обращается с вашими данными.',
     'priv.h.stored': u'Что сохраняется',
     'priv.p.stored': u'По завершении теста сохраняются только анонимные данные: 5 общих баллов, название результата, время прохождения и тип устройства (телефон или компьютер). Эти данные хранятся в закрытой таблице и используются только для улучшения теста.',
+    'priv.h.agefig': u'Возраст и выбранный образ',
+    'priv.p.agefig': u'Перед показом результата мы спрашиваем ваш возраст и то, какой образ вы хотите видеть в результате (мужской или женский). Эти два значения сохраняются вместе с анонимным результатом и используются только для общего анализа — например, чтобы понять, в каком возрасте тест проходят чаще. Ни дата, ни год рождения не запрашиваются. Имя для теста тоже не нужно. Выбранный образ меняет только иллюстрацию и описание исторической фигуры: ваши баллы и ваш образ остаются прежними.',
     'priv.h.never': u'Что не спрашивается',
     'priv.p.never': u'Тест не спрашивает ни имени, ни возраста — поэтому они нигде и не хранятся. Регистрация тоже не нужна: вы нажимаете «Пройти тест», и появляется первый вопрос.',
     'priv.h.answers': u'Ваши ответы',
@@ -486,7 +492,6 @@ S['ru'] = {
     'arch.guide.p': u'В повседневной жизни, в школе и в будущих направлениях; точки роста и двухнедельная практика. Бесплатно, без регистрации.',
     'arch.guide.btn': u'Скачать (PDF)',
     'arch.guide.lang': u'Руководство — на узбекском языке.',
-    'arch.sibs.h2': u'Другие образы семьи «%(fam)s»',
     'arch.title': u'%(name)s — образы TestMind',
 }
 
@@ -624,6 +629,8 @@ S['en'] = {
     'priv.lead': u'A short, plainly written account of how TestMind handles your data.',
     'priv.h.stored': u'What is stored',
     'priv.p.stored': u'When the test is completed, only anonymous data is stored: five trait scores, the name of the result, how long the test took, and the device type (phone or computer). It is held in a private spreadsheet and used only to improve the test.',
+    'priv.h.agefig': u'Age and the figure you choose',
+    'priv.p.agefig': u'Before the result is shown we ask your age and which historical figure you would like to see with it — the male one or the female one. Those two values are stored alongside the anonymous result and used only for aggregate analysis, such as understanding which ages use the test most. Neither a date of birth nor a birth year is requested. No name is needed to take the test. The figure you pick changes only the historical illustration and its description: your scores and your character stay exactly the same.',
     'priv.h.never': u'What is never asked',
     'priv.p.never': u'The test asks for neither your name nor your age, so neither is stored anywhere. No registration is required either: you press "Take the test" and the first item appears.',
     'priv.h.answers': u'Your responses',
@@ -699,7 +706,6 @@ S['en'] = {
     'arch.guide.p': u'In everyday life, at school and in future directions; growth points and a two-week practice. Free, no sign-up.',
     'arch.guide.btn': u'Download (PDF)',
     'arch.guide.lang': u'The guide is written in Uzbek.',
-    'arch.sibs.h2': u'Other characters in the %(fam)s family',
     'arch.title': u'%(name)s — TestMind characters',
 }
 

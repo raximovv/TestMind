@@ -36,6 +36,19 @@ for (const k in s.ARCHETYPES){
            strength:pick(t,a,'strength'), watch:pick(t,a,'watch'),
            figure:{who:f.who||a.figure.who, years:a.figure.years,
                    why:f.why||a.figure.why},
+           // Both sides where the archetype has a pair, so the page can name the
+           // woman as well as the man. Read from the same helper the result
+           // screen uses, so a page can never advertise a figure the test does
+           // not actually offer. null when only one figure exists.
+           figvar:(function(){
+             if(!s.tmHasFigureVariants(k)) return null;
+             const was=s.document.documentElement.getAttribute;
+             s.document.documentElement.getAttribute=()=>L;
+             const m=s.getFigureVariant(k,'male'), fm=s.getFigureVariant(k,'female');
+             s.document.documentElement.getAttribute=was;
+             return {male:{who:m.who,years:m.years,why:m.why},
+                     female:{who:fm.who,years:fm.years,why:fm.why}};
+           })(),
            traits:k.split('|').map(x=>(S.traits||{})[x]||s.TRAIT_NAMES[x]),
            svg:s.charSvg(k,name)};
   }
@@ -77,8 +90,7 @@ BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s;--
     <p class="amuted">%(hownote)s</p>
 
     <h2 class="asec">%(l_fig)s</h2>
-    <div class="afig"><div class="afigwho">%(figwho)s <span>%(figyears)s</span></div>
-      <p>%(figwhy)s</p></div>
+%(figblock)s
     <p class="amuted figaccuracy">%(l_fignote)s</p>
 
     <h2 class="asec">%(l_guide)s</h2>
@@ -91,10 +103,6 @@ BODY = u"""<article class="apage" style="--fam:%(famc)s;--famsoft:%(famsoft)s;--
     </div>
 
     %(life)s
-
-    <h2 class="asec">%(l_sibs)s</h2>
-    <p class="amuted">%(famnote)s</p>
-    <div class="sibs">%(sibs)s</div>
   </div></section>
 </article>
 """
@@ -143,18 +151,28 @@ def life_html(key, lang):
     return out
 
 
+def fig_block(v):
+    u"""The historical figure, or both of them where the archetype has a pair.
+
+    One .afig per figure, identical markup either way and no "male"/"female"
+    heading over them: the section already asks who had this trait, and the two
+    names answer it without being sorted into labelled boxes. The page therefore
+    does not change shape as the remaining nine get their second figure.
+    """
+    fv = v.get('figvar')
+    figs = [fv['male'], fv['female']] if fv else [v['figure']]
+    return u'\n'.join(
+        (u'    <div class="afig"><div class="afigwho">%s <span>%s</span></div>\n'
+         u'      <p>%s</p></div>') % (esc(f['who']), esc(f['years']), esc(f['why']))
+        for f in figs)
+
+
 count = 0
 for lang in LANGS:
     t = S[lang]
     for key, a in ARCH.items():
         v = a['byLang'][lang]
         fam = FAMS[a['fam']]
-        siblings = [(b['slug'], b['byLang'][lang])
-                    for k, b in ARCH.items() if b['fam'] == a['fam'] and k != key]
-        sib_html = u''.join(
-            u'<a class="sib" href="obraz-%s.html"><span class="sibart">%s</span>'
-            u'<span class="sibname">%s</span></a>' % (slug, bv['svg'], bv['name'])
-            for slug, bv in siblings)
 
         # The guide PDFs exist only in Uzbek; say so on the pages where that is
         # news, rather than after the download.
@@ -163,9 +181,10 @@ for lang in LANGS:
         body = BODY % {
             'famc': fam['c'], 'famsoft': fam['soft'],
             'famdark': fam['dark'], 'famlit': fam['lit'],
-            'famname': fam['name'][lang], 'famnote': fam['note'][lang],
+            'famname': fam['name'][lang],
             'svg': v['svg'], 'name': v['name'], 'slug': a['slug'],
             'line0': v['lines'][0], 'line1': v['lines'][1],
+            'figblock': fig_block(v),
             'l_strength': t['arch.strength'], 'l_watch': t['arch.watch'],
             'strengthcap': v['strength'][0].upper() + v['strength'][1:],
             'watch': v['watch'],
@@ -173,14 +192,12 @@ for lang in LANGS:
             'how': t['arch.how.p'] % {'t0': v['traits'][0], 't1': v['traits'][1]},
             'hownote': t['arch.how.note'],
             'l_fig': t['arch.fig.h2'], 'l_fignote': t['arch.fig.note'],
-            'figwho': v['figure']['who'],
-            'figyears': v['figure']['years'], 'figwhy': v['figure']['why'],
+
             'l_guide': t['arch.guide.h2'],
             'guideb': t['arch.guide.b'] % {'name': v['name']},
             'guidep': t['arch.guide.p'], 'guidelang': guidelang,
             'guidebtn': t['arch.guide.btn'],
-            'l_sibs': t['arch.sibs.h2'] % {'fam': fam['name'][lang]},
-            'sibs': sib_html, 'life': life_html(key, lang),
+            'life': life_html(key, lang),
         }
 
         fname = 'obraz-%s.html' % a['slug']

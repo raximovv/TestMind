@@ -20,6 +20,8 @@ ru: {
     strength: 'Сильная сторона: ',
     watch:    'Обратите внимание: ',
     fig:      'Из истории: ',
+    figmale:  'Мужской образ:',
+    figfemale:'Женский образ:',
     resume:   'Продолжить тест'
   },
   fam: {
@@ -132,6 +134,75 @@ ru: {
       figure: {who: 'Имам Бухари',
                why: 'Строго проверял каждое предание и включал в свод только достоверные.'}
     }
+  },
+  // Gendered historical figures. Only who/why translate; the dates and the
+  // artwork path live once in characters.js. Keyed the same way as `arch`, so an
+  // archetype without a pair simply has no entry here.
+  figvar: {
+    'ES|E': {
+      male: {who: 'Бахоуддин Накшбанд',
+             why: 'Вёл людей за собой не принуждением, а собственным примером.'},
+      female: {who: 'Зульфия',
+               why: 'Своей поэзией, стойкостью и спокойной общественной работой показала пример тихой силы и лидерства.'}
+    },
+    // Nodirabegim's two lines are the ones this archetype already shipped with,
+    // copied rather than re-translated so the pair cannot drift from the page.
+    'E|C': {
+      male: {who: 'Амир Темур',
+             why: 'Он создал сильное централизованное государство и опирался в управлении на порядок, чёткую систему и стратегию.'},
+      female: {who: 'Нодирабегим',
+               why: 'Собрала вокруг себя литературную среду Коканда, строила медресе и мечети.'}
+    },
+    'ES|O': {
+      male: {who: 'Абу Райхан Беруни',
+             why: 'С одинаковым хладнокровием изучал и незнакомые земли, и незнакомые науки.'},
+      female: {who: 'Гульбадан Бегим',
+               why: 'Интересуясь знаниями и путешествиями, она внимательно запечатлела жизнь своей эпохи в «Хумаюн-наме».'}
+    },
+    'E|O': {
+      // years carries a qualifier here, so it is translated too; Zebunniso's is
+      // bare numerals and inherits the Uzbek.
+      male: {who: 'Камолиддин Бехзод', years: 'ок. 1455–1535/36',
+             why: 'Он привнёс в миниатюрную живопись живые образы и новые композиции, оказав сильное влияние на целую художественную школу.'},
+      female: {who: 'Зебуннисо Бегим',
+               why: 'Из дома Бабуридов; под псевдонимом «Махфи» написала целый диван стихов.'}
+    },
+    'O|C': {
+      male: {who: 'Мирзо Улугбек',
+             why: 'Мечтал сосчитать звёзды, построил обсерваторию и внёс в каталог 1018 из них.'},
+      female: {who: 'Гавхаршад Бегим', years: 'ок. 1378–1457',
+               why: 'Она поддерживала архитектуру, образование и искусство, превращая масштабные культурные идеи в чёткие планы и крупные строительные проекты.'}
+    },
+    'ES|A': {
+      male: {who: 'Абу Али ибн Сина',
+             why: 'Как врач и учёный, он направлял свои знания на помощь людям, сохранение их здоровья и благополучия.'},
+      female: {who: 'Джахон Отин Увайси',
+               why: 'Поэтесса и наставница; учила Нодирабегим искусству стиха.'}
+    },
+    'E|A': {
+      male: {who: 'Алишер Навои',
+             why: 'Писал на родном языке и этим сблизил между собой целый народ.'},
+      female: {who: 'Тамара Ханум',
+               why: 'Через танец и песню она знакомила зрителей с культурой разных народов и объединяла людей на сцене.'}
+    },
+    'O|A': {
+      male: {who: 'Абдулла Авлони',
+             why: 'Поставил литературу, театр, журналистику и просвещение на службу народу.'},
+      female: {who: 'Мукаррама Тургунбаева',
+               why: 'Через искусство танца она несла красоту и доброту, помогая воспитывать многих молодых талантов и развивать искусство.'}
+    },
+    'ES|C': {
+      male: {who: 'Мухаммад аль-Хорезми',
+             why: 'Разложил сложную задачу на точные шаги — слово «алгоритм» осталось от его имени.'},
+      female: {who: 'Томирис', years: 'VI век до н. э.',
+               why: 'Благодаря решительности, сильной воле и мудрым решениям она защищала свой народ и показала пример устойчивого лидерства.'}
+    },
+    'A|C': {
+      male: {who: 'Имам Бухари',
+             why: 'Строго проверял каждое предание и включал в свод только достоверные.'},
+      female: {who: 'Сарай Мульк Ханум — Бибиханым', years: 'ок. 1341–1408',
+               why: 'Как мудрая советница, покровительница просвещения и влиятельная государственная деятельница, она была надёжной опорой для окружающих и общества.'}
+    }
   }
 },
 
@@ -140,6 +211,8 @@ en: {
     strength: 'Strength: ',
     watch:    'Worth watching: ',
     fig:      'From history: ',
+    figmale:  'Male figure:',
+    figfemale:'Female figure:',
     resume:   'Resume the test'
   },
   fam: {
@@ -252,6 +325,68 @@ en: {
       figure: {who: 'Imam al-Bukhari',
                why: 'Checked every account rigorously and admitted only the reliable ones into his collection.'}
     }
+  },
+  figvar: {
+    'ES|E': {
+      male: {who: 'Bahouddin Naqshband',
+             why: 'Led people by his own example rather than by compulsion.'},
+      female: {who: 'Zulfiya',
+               why: 'Showed what quiet strength and leadership look like through her poetry, her endurance and her steady public work.'}
+    },
+    'E|C': {
+      male: {who: 'Amir Temur',
+             why: 'He built a strong centralized state and relied on order, clear systems, and strategy in governance.'},
+      female: {who: 'Nodirabegim',
+               why: 'Built the literary circle of Kokand around her, and had madrasas and mosques constructed.'}
+    },
+    'ES|O': {
+      male: {who: 'Abu Rayhan Biruni',
+             why: 'Studied unfamiliar lands and unfamiliar sciences with the same composure.'},
+      female: {who: 'Gulbadan Begum',
+               why: 'Curious about learning and travel, she carefully recorded the life of her time in the “Humayun-nama.”'}
+    },
+    'E|O': {
+      male: {who: 'Kamal al-Din Behzad', years: 'c. 1455–1535/36',
+             why: 'He brought vivid figures and innovative compositions to miniature painting, strongly influencing an entire school of artists.'},
+      female: {who: 'Zebunniso Begim',
+               why: 'Of the Mughal house; wrote a complete divan of poetry under the pen name "Makhfi".'}
+    },
+    'O|C': {
+      male: {who: 'Mirzo Ulugbek',
+             why: 'Set out to count the stars, built an observatory, and catalogued 1,018 of them.'},
+      female: {who: 'Gawhar Shad Begum', years: 'c. 1378–1457',
+               why: 'She supported architecture, education, and the arts, turning ambitious cultural ideas into clear plans and major building projects.'}
+    },
+    'ES|A': {
+      male: {who: 'Ibn Sina (Avicenna)',
+             why: 'As a physician and scholar, he devoted his knowledge to helping people and protecting their health and well-being.'},
+      female: {who: 'Jahon Otin Uvaysi',
+               why: 'A poet and a teacher; she taught Nodirabegim the craft of verse.'}
+    },
+    'E|A': {
+      male: {who: 'Alisher Navoi',
+             why: 'Wrote in his own language, and in doing so brought a whole people closer together.'},
+      female: {who: 'Tamara Khanum',
+               why: 'Through dance and song, she introduced audiences to the cultures of different peoples and brought people together on stage.'}
+    },
+    'O|A': {
+      male: {who: 'Abdulla Avloniy',
+             why: 'Put literature, theatre, journalism and education to work for his people.'},
+      female: {who: 'Mukarrama Turgunboyeva',
+               why: 'Through the art of dance, she shared beauty and kindness while helping nurture many young talents and develop the arts.'}
+    },
+    'ES|C': {
+      male: {who: 'Muhammad al-Khwarizmi',
+             why: 'Broke a complex problem into exact steps — the word "algorithm" comes from his name.'},
+      female: {who: 'Tomyris', years: '6th century BCE',
+               why: 'With determination, strong will, and wise decisions, she defended her people and showed an example of steady leadership.'}
+    },
+    'A|C': {
+      male: {who: 'Imam al-Bukhari',
+             why: 'Checked every account rigorously and admitted only the reliable ones into his collection.'},
+      female: {who: 'Saray Mulk Khanum — Bibi Khanum', years: 'c. 1341–1408',
+               why: 'As a wise adviser, patron of education, and influential public figure, she provided dependable support to those around her and to society.'}
+    }
   }
 }
 
@@ -269,7 +404,8 @@ function tmLang(){
 function tmUi(key){
   var s = STRINGS[tmLang()];
   var uz = {strength: 'Kuchli tomoni: ', watch: 'Eʼtibor bering: ',
-            fig: 'Tarixdan: ', resume: 'Testni davom ettirish'};
+            fig: 'Tarixdan: ', figmale: 'Erkak siymo:', figfemale: 'Ayol siymo:',
+            resume: 'Testni davom ettirish'};
   return (s && s.ui && s.ui[key]) || uz[key];
 }
 

@@ -625,6 +625,170 @@ function charRasterSrc(key){
   return TM_RASTER_ART[key] ? tmAssetPath(TM_RASTER_ART[key]) : '';
 }
 
+// ---------- gendered historical figures ----------
+// A reader picks a boy or a girl after the test, and only the historical figure
+// changes: its illustration, name, dates and one-line explanation. Nothing about
+// the archetype moves -- not the score, the name, the family, the strengths, the
+// warning or the career list. Keeping the pairs in one map rather than in an if
+// inside the result renderer is what makes that guarantee checkable.
+//
+// Filled in one archetype at a time as the second illustration is drawn. An
+// archetype is only offered the choice when BOTH sides exist, so a reader is
+// never shown a man's portrait under a woman's name; see tmHasFigureVariants.
+//
+// Uzbek is the base. Russian and English overlay who/why through strings.js, the
+// same way tmArch() already translates the default figure. Dates never translate.
+var TM_FIGURE_VARIANTS = {
+  'ES|E': {
+    male: {who: 'Bahouddin Naqshband', years: '1318–1389',
+           art: 'assets/characters/xotirjam-yetakchi.webp',
+           why: 'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'},
+    female: {who: 'Zulfiya', years: '1915–1996',
+             art: 'assets/characters/female/xotirjam-yetakchi.webp',
+             why: 'Sheʼriyati, matonati va vazmin jamoat faoliyati bilan sokin ' +
+                  'kuch va yetakchilik namunasini koʻrsatgan.'}
+  },
+  // Nodirabegim was this archetype's original single figure and keeps her own
+  // artwork untouched at the default path; the male side is a separate file.
+  'E|C': {
+    male: {who: 'Amir Temur', years: '1336–1405',
+           art: 'assets/characters/male/gayratli-tashkilotchi.webp',
+           why: 'Kuchli markazlashgan davlat barpo etib, boshqaruvda tartib, ' +
+                'aniq tizim va strategiyaga tayangan.'},
+    female: {who: 'Nodirabegim', years: '1792–1842',
+             art: 'assets/characters/gayratli-tashkilotchi.webp',
+             why: 'Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan.'}
+  },
+  // Beruniy was this archetype's original single figure and keeps his own artwork
+  // at the default path; the female side is a separate file.
+  'ES|O': {
+    male: {who: 'Abu Rayhon Beruniy', years: '973–1048',
+           art: 'assets/characters/xotirjam-kashfiyotchi.webp',
+           why: 'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'},
+    female: {who: 'Gulbadan Begim', years: '1523–1603',
+             art: 'assets/characters/female/xotirjam-kashfiyotchi.webp',
+             why: 'Ilm va safarga qiziqib, “Humoyunnoma”da oʻz davrining hayotini ' +
+                  'sinchkovlik bilan yozib qoldirgan.'}
+  },
+  // Zebunniso Begim was this archetype's original single figure and keeps her own
+  // artwork at the default path; the male side is a separate file.
+  'E|O': {
+    male: {who: 'Kamoliddin Behzod', years: 'taxm. 1455–1535/36',
+           art: 'assets/characters/male/gayratli-ijodkor.webp',
+           why: 'Miniatyura sanʼatiga jonli obrazlar va yangi kompozitsiyalar olib ' +
+                'kirib, butun bir rassomlik maktabiga kuchli taʼsir koʻrsatgan.'},
+    female: {who: 'Zebunniso Begim', years: '1638–1702',
+             art: 'assets/characters/gayratli-ijodkor.webp',
+             why: 'Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan.'}
+  },
+  // Mirzo Ulugʻbek was this archetype's original single figure and keeps his own
+  // artwork at the default path; the female side is a separate file.
+  'O|C': {
+    male: {who: 'Mirzo Ulugʻbek', years: '1394–1449',
+           art: 'assets/characters/ijodkor-strateg.webp',
+           why: 'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'},
+    female: {who: 'Gavharshod Begim', years: 'taxm. 1378–1457',
+             art: 'assets/characters/female/ijodkor-strateg.webp',
+             why: 'Meʼmorchilik, taʼlim va sanʼatni qoʻllab-quvvatlab, yirik ' +
+                  'bunyodkorlik gʻoyalarini aniq reja va amaliy loyihalarga aylantirgan.'}
+  },
+  // Jahonotin Uvaysiy was this archetype's original single figure and keeps her
+  // own artwork at the default path; the male side is a separate file. The line
+  // below describes what Ibn Sino did for people, not what he was like: no claim
+  // is made about the personality of anyone who is not here to be asked.
+  'ES|A': {
+    male: {who: 'Abu Ali ibn Sino', years: '980–1037',
+           art: 'assets/characters/male/ishonchli-dost.webp',
+           why: 'Tabib va olim sifatida odamlarga yordam berib, ularning salomatligi ' +
+                'va xotirjamligini asrashga xizmat qilgan.'},
+    female: {who: 'Jahonotin Uvaysiy', years: '1781–1845',
+             art: 'assets/characters/ishonchli-dost.webp',
+             why: 'Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan.'}
+  },
+  // Alisher Navoiy was this archetype's original single figure and keeps his own
+  // artwork at the default path; the female side is a separate file. Her line is
+  // about what she did on a stage -- carrying other peoples' cultures to an
+  // audience -- not about what she was like offstage.
+  'E|A': {
+    male: {who: 'Alisher Navoiy', years: '1441–1501',
+           art: 'assets/characters/jamoaning-yuragi.webp',
+           why: 'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'},
+    female: {who: 'Tamaraxonim', years: '1906–1991',
+             art: 'assets/characters/female/jamoaning-yuragi.webp',
+             why: 'Raqs va qoʻshiq orqali turli xalqlar madaniyatini tomoshabinlarga ' +
+                  'yetkazib, sahnada odamlarni birlashtira olgan.'}
+  },
+  // Abdulla Avloniy was this archetype's original single figure and keeps his own
+  // artwork at the default path; the female side is a separate file. Her line is
+  // about the work -- teaching, and what she gave to the art form -- not about a
+  // personality nobody can now measure.
+  'O|A': {
+    male: {who: 'Abdulla Avloniy', years: '1878–1934',
+           art: 'assets/characters/ijodkor-insonparvar.webp',
+           why: 'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'},
+    female: {who: 'Mukarrama Turgʻunboyeva', years: '1913–1978',
+             art: 'assets/characters/female/ijodkor-insonparvar.webp',
+             why: 'Raqs sanʼati orqali goʻzallik va mehr ulashib, koʻplab yosh isteʼdodlarni ' +
+                  'tarbiyalashga va sanʼatni rivojlantirishga xizmat qilgan.'}
+  },
+  // Muhammad al-Xorazmiy was this archetype's original single figure and keeps
+  // his own artwork at the default path; the female side is a separate file.
+  // Her years are a century rather than two dates, so every language overrides
+  // them -- "mil. avv." does not survive translation any more than "taxm." does.
+  'ES|C': {
+    male: {who: 'Muhammad al-Xorazmiy', years: '783–850',
+           art: 'assets/characters/barqaror-strateg.webp',
+           why: 'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'},
+    female: {who: 'Toʻmaris', years: 'mil. avv. VI asr',
+             art: 'assets/characters/female/barqaror-strateg.webp',
+             why: 'Qatʼiyat, mustahkam iroda va dono qarorlari bilan oʻz xalqini himoya ' +
+                  'qilib, barqaror yetakchilik namunasini koʻrsatgan.'}
+  },
+  // Imom Buxoriy was this archetype's original single figure and keeps his own
+  // artwork at the default path; the female side is a separate file. Her line is
+  // about the role she held -- adviser, patron, public figure -- not about a
+  // disposition, which nobody can now measure.
+  'A|C': {
+    male: {who: 'Imom Buxoriy', years: '810–870',
+           art: 'assets/characters/ishonchli-tayanch.webp',
+           why: 'Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan.'},
+    female: {who: 'Saroy Mulk Xonim — Bibixonim', years: 'taxm. 1341–1408',
+             art: 'assets/characters/female/ishonchli-tayanch.webp',
+             why: 'Dono maslahatchi, maʼrifat homiysi va nufuzli davlat arbobi sifatida ' +
+                  'yaqinlariga hamda jamiyatga ishonchli tayanch boʻlgan.'}
+  }
+};
+
+function tmHasFigureVariants(key){
+  var v = TM_FIGURE_VARIANTS[key];
+  return !!(v && v.male && v.female && v.male.art && v.female.art);
+}
+
+// Returns {who, years, why, art} for the chosen side, or the archetype's existing
+// default when this archetype has no pair yet or the caller passed no choice.
+// Never touches scoring: it is handed a key that has already been calculated.
+function getFigureVariant(key, gender){
+  var arch = (typeof tmArch === 'function') ? tmArch(key) : ARCHETYPES[key];
+  var fallback = {who: arch.figure.who, years: arch.figure.years,
+                  why: arch.figure.why, art: charRasterSrc(key)};
+  if (!tmHasFigureVariants(key)) return fallback;
+  var side = TM_FIGURE_VARIANTS[key][gender === 'female' ? 'female' : 'male'];
+  if (!side) return fallback;
+  var t = null;
+  try {
+    var s = STRINGS[tmLang()];
+    t = s && s.figvar && s.figvar[key] && s.figvar[key][gender === 'female' ? 'female' : 'male'];
+  } catch (e) {}
+  // years is usually bare numerals and needs no translating, so a language may
+  // leave it out and inherit the Uzbek. It is overridable because a qualifier
+  // does not survive translation: "taxm. 1455" is "c. 1455" in English and
+  // "ок. 1455" in Russian.
+  return {who: (t && t.who) || side.who,
+          years: (t && t.years) || side.years,
+          why: (t && t.why) || side.why,
+          art: tmAssetPath(side.art)};
+}
+
 function shallowCopy(o, over){
   var out = {}, k;
   for (k in o) out[k] = o[k];
