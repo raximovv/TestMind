@@ -119,11 +119,18 @@
      so RU and EN are shown inactive rather than linked: spans, not anchors, so
      they are not focusable and cannot be clicked, and dimmed so the group does
      not read as a live control that happens to be broken. Mirrors .langsw in
-     site.css, which this page does not load. */
+     site.css, which this page does not load.
+
+     RU is a real link now that the test exists in Russian. EN stays inactive
+     until there is an English test -- an English pill that silently served an
+     Uzbek test would be worse than one that plainly does nothing. */
   .langsw{display:flex;align-items:center;gap:2px;flex:none;
           border:1px solid var(--line);border-radius:999px;padding:2px;background:var(--card)}
-  .langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;font-weight:600;
-               letter-spacing:.03em;line-height:1.55;color:var(--muted);white-space:nowrap}
+  .langsw a,.langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;font-weight:600;
+               letter-spacing:.03em;line-height:1.55;color:var(--muted);white-space:nowrap;
+               text-decoration:none}
+  .langsw a:hover{color:var(--lazur-deep);background:#F0EADD}
+  .langsw a:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
   .langsw .off{opacity:.45}
   /* Same CTA as every other page's nav, so the bar looks identical when you land
@@ -133,25 +140,32 @@
   .topcta:hover{background:var(--lazur-deep)}
   .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   @media (max-width:820px){
-    .topnavin{gap:10px;height:auto;padding:10px 20px;flex-wrap:wrap}
+    /* The switcher is shown on a phone rather than hidden. It used to be hidden
+       because the pills were inert and cost nothing to drop; now that RU really
+       switches the test, a phone has to be able to reach it -- and most students
+       are on a phone.
+
+       Four controls have to share 320px here (this bar keeps 20px of side
+       padding where site.css runs its nav edge to edge). Measured at 360px:
+       back 29 + brand 102 + switcher 92 + CTA 125 + gaps 30 = 378, which pushed
+       the CTA onto a row of its own and made the sticky header three rows tall.
+       Width comes off four things a little rather than one thing a lot, which is
+       the same trade site.css makes at this width. */
+    .topnavin{gap:6px;height:auto;padding:10px 14px;flex-wrap:wrap}
+    .topbrand{font-size:20px}
     /* Chevron only — the row has no width to spare. Name stays on the .vh span. */
     .backtx{display:none}
     .navback{padding:5px 7px}
-    /* The switcher is desktop-only here. This bar keeps 20px of side padding
-       where site.css lets its nav run edge to edge, so the first row has 320px
-       for 353px of controls: with the pills in, the CTA wrapped to a row of its
-       own and made the sticky header a quarter of a phone screen tall. Squeezing
-       four working controls to fit one that cannot be clicked is the wrong
-       trade, and the misalignment being fixed is a desktop one. */
-    .langsw{display:none}
-    .topcta{margin-left:auto;order:2}
+    .langsw{padding:1px;gap:1px;margin-left:auto}
+    .langsw a,.langsw span{padding:5px 6px;font-size:11.5px}
+    /* Dropped on a phone. This is the test page: a "start the test" button
+       here does nothing a student wants, and it was the last 119px keeping
+       the switcher from fitting on one row. It stays on desktop, where it
+       costs nothing and keeps the bar looking like every other page's. */
+    .topcta{display:none}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
     .toplinks a{font-size:14.5px}
-    /* Same trim as site.css: at 360px the row has no width to spare, so a point
-       comes off the switcher rather than pushing the CTA off the edge. */
-    .langsw{padding:1px;gap:1px}
-    .langsw span{padding:5px 6px;font-size:11.5px}
   }
   /* Only the question card is narrowed, not the page: the three step cards
      above it keep the full container width they have always had. Answering
@@ -528,8 +542,8 @@
   </div>
   <div class="langsw" role="group" aria-label="Sayt tili">
     <span aria-current="true">UZ</span>
-    <span class="off" aria-disabled="true" title="Test faqat oʻzbek tilida">RU</span>
-    <span class="off" aria-disabled="true" title="Test faqat oʻzbek tilida">EN</span>
+    <a href="test.html?lang=ru" hreflang="ru" lang="ru" title="Тест на русском">RU</a>
+    <span class="off" aria-disabled="true" title="Inglizcha test hozircha yoʻq">EN</span>
   </div>
   <a class="topcta" href="test.html">Testni boshlash</a>
 </div></nav>
