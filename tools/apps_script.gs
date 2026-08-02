@@ -40,11 +40,66 @@ var FROM_NAME = 'TestMind';
 // Bump this whenever you change this file, then open the /exec URL: it reports
 // the version, so you can tell in one second whether your new code is really
 // deployed instead of guessing from a delivered email.
-var SCRIPT_VERSION = 'pdf-v1';
+var SCRIPT_VERSION = 'pdf-v2';
+
+// Four archetypes lost their adjective ("Xotirjam Yetakchi" -> "Yetakchi").
+// A student who loaded the page before that deploy still has the old name in
+// their tab and will post it hours later, and every row already in the sheet
+// carries the old name too -- so the old spelling has to keep resolving. The
+// guide slugs did not change, so this only affects the lookup, not the PDFs.
+//
+// It also carries the Russian and English names. The site posts whatever the
+// reader's page called the archetype, so since the RU/EN launch a Russian
+// student's row has said "Лидер" -- which matched no key here, so the guide
+// email was silently never sent to them. GUIDES stays Uzbek-keyed because the
+// PDFs are Uzbek; this only decides which one to send.
+var ARCH_ALIASES = {
+  "Лидер":                      "Yetakchi",
+  "Leader":                     "Yetakchi",
+  "Xotirjam Yetakchi":          "Yetakchi",
+  "Спокойный Лидер":            "Yetakchi",
+  "Calm Leader":                "Yetakchi",
+  "Организатор":                "Tashkilotchi",
+  "Organiser":                  "Tashkilotchi",
+  "Gʻayratli Tashkilotchi":     "Tashkilotchi",
+  "Энергичный Организатор":     "Tashkilotchi",
+  "Driven Organiser":           "Tashkilotchi",
+  "Исследователь":              "Kashfiyotchi",
+  "Explorer":                   "Kashfiyotchi",
+  "Xotirjam Kashfiyotchi":      "Kashfiyotchi",
+  "Спокойный Исследователь":    "Kashfiyotchi",
+  "Calm Explorer":              "Kashfiyotchi",
+  "Творец":                     "Ijodkor",
+  "Creator":                    "Ijodkor",
+  "Gʻayratli Ijodkor":          "Ijodkor",
+  "Энергичный Творец":          "Ijodkor",
+  "Spirited Creator":           "Ijodkor",
+  "Дальновидный":               "Uzoqni Koʻzlovchi",
+  "Visionary":                  "Uzoqni Koʻzlovchi",
+  "Ijodkor Strateg":            "Uzoqni Koʻzlovchi",
+  "Творческий Стратег":         "Uzoqni Koʻzlovchi",
+  "Creative Strategist":        "Uzoqni Koʻzlovchi",
+  "Надёжный Друг":              "Ishonchli Doʻst",
+  "Trusted Friend":             "Ishonchli Doʻst",
+  "Душа Команды":               "Jamoaning Yuragi",
+  "Heart of the Group":         "Jamoaning Yuragi",
+  "Добрый Человек":             "Mehribon Inson",
+  "Kind Soul":                  "Mehribon Inson",
+  "Ijodkor Insonparvar":        "Mehribon Inson",
+  "Творческий Гуманист":        "Mehribon Inson",
+  "Creative Humanitarian":      "Mehribon Inson",
+  "Устойчивый Стратег":         "Barqaror Strateg",
+  "Steady Strategist":          "Barqaror Strateg",
+  "Надёжная Опора":             "Ishonchli Tayanch",
+  "Dependable Anchor":          "Ishonchli Tayanch"
+};
+function canonicalArch_(name){
+  return ARCH_ALIASES[name] || name;
+}
 
 // Baked email content, one entry per archetype (generated from characters.js).
 var GUIDES = {
-  "Xotirjam Yetakchi": {
+  "Yetakchi": {
     "slug": "xotirjam-yetakchi",
     "fam": "Yetakchilar",
     "color": "#0F6E8C",
@@ -60,7 +115,7 @@ var GUIDES = {
       "why": "Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan."
     }
   },
-  "Gʻayratli Tashkilotchi": {
+  "Tashkilotchi": {
     "slug": "gayratli-tashkilotchi",
     "fam": "Yetakchilar",
     "color": "#0F6E8C",
@@ -76,7 +131,7 @@ var GUIDES = {
       "why": "Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan."
     }
   },
-  "Xotirjam Kashfiyotchi": {
+  "Kashfiyotchi": {
     "slug": "xotirjam-kashfiyotchi",
     "fam": "Ijodkorlar",
     "color": "#6B4FA8",
@@ -92,7 +147,7 @@ var GUIDES = {
       "why": "Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan."
     }
   },
-  "Gʻayratli Ijodkor": {
+  "Ijodkor": {
     "slug": "gayratli-ijodkor",
     "fam": "Ijodkorlar",
     "color": "#6B4FA8",
@@ -108,7 +163,7 @@ var GUIDES = {
       "why": "Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan."
     }
   },
-  "Ijodkor Strateg": {
+  "Uzoqni Koʻzlovchi": {
     "slug": "ijodkor-strateg",
     "fam": "Ijodkorlar",
     "color": "#6B4FA8",
@@ -156,7 +211,7 @@ var GUIDES = {
       "why": "Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan."
     }
   },
-  "Ijodkor Insonparvar": {
+  "Mehribon Inson": {
     "slug": "ijodkor-insonparvar",
     "fam": "Gʻamxoʻrlar",
     "color": "#237A5E",
@@ -264,7 +319,7 @@ function doPost(e){
     // slow send never blocks another student's submission.
     if (SEND_GUIDE_EMAIL && String(d.status || '') === 'lead'){
       var email = String(d.email || '').trim();
-      var arch  = String(d.archetype || '').trim();
+      var arch  = canonicalArch_(String(d.archetype || '').trim());
       if (looksLikeEmail_(email) && GUIDES[arch] && !alreadySentBefore_(sh, email, arch)){
         toSend = { email: email, arch: arch };
       }
@@ -295,7 +350,7 @@ function alreadySentBefore_(sh, email, arch){
   for (var r = 0; r < vals.length; r++){
     if (String(vals[r][iStatus]) === 'lead'
         && String(vals[r][iEmail]).trim().toLowerCase() === email.toLowerCase()
-        && String(vals[r][iArch]) === arch){
+        && canonicalArch_(String(vals[r][iArch]).trim()) === arch){
       seen++;
       if (seen > 1) return true;
     }
@@ -330,7 +385,7 @@ function guideUrl_(archName){
  * the authorization prompt for external requests) reach you.
  */
 function testGuideFetch(){
-  var url = guideUrl_('Ijodkor Strateg');
+  var url = guideUrl_('Uzoqni Koʻzlovchi');
   var r = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
   var n = r.getBlob().getBytes().length;
   Logger.log('URL   : ' + url);

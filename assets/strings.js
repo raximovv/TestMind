@@ -45,7 +45,7 @@ ru: {
   },
   arch: {
     'ES|E': {
-      name: 'Спокойный Лидер',
+      name: 'Лидер',
       lines: ['Даже когда обстановка накаляется, вы не повышаете голос — поэтому вас слушают.',
               'Когда группа сбивается с пути, направление обычно показываете вы.'],
       strength: 'принимать верные решения под давлением.',
@@ -54,7 +54,7 @@ ru: {
                why: 'Вёл людей за собой не принуждением, а собственным примером.'}
     },
     'E|C': {
-      name: 'Энергичный Организатор',
+      name: 'Организатор',
       lines: ['Вы быстро переходите от слов к делу — пока другие ещё обсуждают план, вы уже начали.',
               'И умеете расшевелить остальных.'],
       strength: 'превращать идею в реальность.',
@@ -63,7 +63,7 @@ ru: {
                why: 'Собрала вокруг себя литературную среду Коканда, строила медресе и мечети.'}
     },
     'ES|O': {
-      name: 'Спокойный Исследователь',
+      name: 'Исследователь',
       lines: ['Увидев незнакомое, вы сначала пробуете, а уже потом высказываете мнение.',
               'Но в приключение идёте не вслепую, а хладнокровно.'],
       strength: 'спокойно исследовать незнакомый путь.',
@@ -72,7 +72,7 @@ ru: {
                why: 'С одинаковым хладнокровием изучал и незнакомые земли, и незнакомые науки.'}
     },
     'E|O': {
-      name: 'Энергичный Творец',
+      name: 'Творец',
       lines: ['Идеи у вас не заканчиваются, и вы любите рассказывать о них людям.',
               'Стоит вам начать объяснять идею — слушающий тоже загорается.'],
       strength: 'заражать людей новой идеей.',
@@ -81,7 +81,7 @@ ru: {
                why: 'Из дома Бабуридов; под псевдонимом «Махфи» написала целый диван стихов.'}
     },
     'O|C': {
-      name: 'Творческий Стратег',
+      name: 'Дальновидный',
       lines: ['Вы находите новое решение — и доводите его до конца.',
               'Идея не остаётся в тетради: вы превращаете её в график и шаги.'],
       strength: 'приводить идею в чёткую систему.',
@@ -108,7 +108,7 @@ ru: {
                why: 'Писал на родном языке и этим сблизил между собой целый народ.'}
     },
     'O|A': {
-      name: 'Творческий Гуманист',
+      name: 'Добрый Человек',
       lines: ['Новые идеи и забота о людях уживаются в вас вместе.',
               'Увидев проблему, вы прежде всего думаете о людях.'],
       strength: 'находить решение и полезное, и человечное.',
@@ -236,7 +236,7 @@ en: {
   },
   arch: {
     'ES|E': {
-      name: 'Calm Leader',
+      name: 'Leader',
       lines: ['Even when things heat up you do not raise your voice — which is why people listen to you.',
               'When a group loses its way, you are usually the one who points out the direction.'],
       strength: 'making the right call under pressure.',
@@ -245,7 +245,7 @@ en: {
                why: 'Led people by his own example rather than by compulsion.'}
     },
     'E|C': {
-      name: 'Driven Organiser',
+      name: 'Organiser',
       lines: ['You move from talk to action quickly — while others are still discussing the plan, you have started.',
               'And you can get the people around you moving too.'],
       strength: 'turning an idea into something real.',
@@ -254,7 +254,7 @@ en: {
                why: 'Built the literary circle of Kokand around her, and had madrasas and mosques constructed.'}
     },
     'ES|O': {
-      name: 'Calm Explorer',
+      name: 'Explorer',
       lines: ['When you meet something unfamiliar you try it first and give your opinion afterwards.',
               'But you go into an adventure clear-headed, not blindly.'],
       strength: 'exploring an unknown path without losing your nerve.',
@@ -263,7 +263,7 @@ en: {
                why: 'Studied unfamiliar lands and unfamiliar sciences with the same composure.'}
     },
     'E|O': {
-      name: 'Spirited Creator',
+      name: 'Creator',
       lines: ['Your ideas never run out, and you like telling people about them.',
               'Once you start explaining an idea, whoever is listening gets interested too.'],
       strength: 'making a new idea catch on.',
@@ -272,7 +272,7 @@ en: {
                why: 'Of the Mughal house; wrote a complete divan of poetry under the pen name "Makhfi".'}
     },
     'O|C': {
-      name: 'Creative Strategist',
+      name: 'Visionary',
       lines: ['You find a new answer — and you see it through to the end.',
               'The idea does not stay in the notebook: you turn it into a schedule and a set of steps.'],
       strength: 'giving an idea a clear structure.',
@@ -299,7 +299,7 @@ en: {
                why: 'Wrote in his own language, and in doing so brought a whole people closer together.'}
     },
     'O|A': {
-      name: 'Creative Humanitarian',
+      name: 'Kind Soul',
       lines: ['New ideas and care for people live side by side in you.',
               'When you see a problem, you think about the people first.'],
       strength: 'finding an answer that is both useful and humane.',

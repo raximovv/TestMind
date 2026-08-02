@@ -140,11 +140,14 @@ async function main() {
       checked++;
 
       const at = `${page} @${width}`;
-      // test.html is the standalone test app: it deliberately has no site nav
-      // and no switcher, because the instrument is Uzbek-only.
+      // test.html is the standalone test app: it has its own chrome rather than
+      // the site nav, so the site-wide nav checks below do not apply. It used to
+      // have no switcher either, because the instrument was Uzbek-only -- it now
+      // ships in three languages, so the switcher has to be there instead.
       const hasNav = page !== 'test.html';
       if (!hasNav) {
-        if (d.swItems.length) problems.push(`${at}: test.html should have no switcher`);
+        if (d.swItems.length !== 3)
+          problems.push(`${at}: test.html switcher has ${d.swItems.length} items, expected 3`);
         continue;
       }
       if (d.docOverflow > 0)
@@ -173,10 +176,14 @@ async function main() {
         if (b.length < 400)
           problems.push(`${at}: character bands did not render (${b.length} chars)`);
         // Each language must render in its own script, from the same JS.
-        const want = { uz: 'Xotirjam Yetakchi', ru: 'Спокойный Лидер', en: 'Calm Leader' }[expLang];
+        // Deliberately not the Leaders family: four archetypes lost their
+        // adjective, and the bare "Yetakchi"/"Leader"/"Лидер" left behind is a
+        // substring of the family heading above it, so this check would pass on
+        // the heading alone even if every card vanished.
+        const want = { uz: 'Ishonchli Doʻst', ru: 'Надёжный Друг', en: 'Trusted Friend' }[expLang];
         if (!b.includes(want))
           problems.push(`${at}: bands missing "${want}"`);
-        const wrong = { uz: 'Calm Leader', ru: 'Xotirjam Yetakchi', en: 'Спокойный Лидер' }[expLang];
+        const wrong = { uz: 'Trusted Friend', ru: 'Ishonchli Doʻst', en: 'Надёжный Друг' }[expLang];
         if (b.includes(wrong))
           problems.push(`${at}: bands leaked "${wrong}" into the ${expLang} page`);
       }
