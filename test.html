@@ -540,10 +540,12 @@
     <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
     <a href="savollar.html">Savollar</a>
   </div>
+  <!-- Rebuilt by localiseChrome() once the language is known, because which pill
+       is current depends on ?lang=. This is the no-JS fallback. -->
   <div class="langsw" role="group" aria-label="Sayt tili">
     <span aria-current="true">UZ</span>
-    <a href="test.html?lang=ru" hreflang="ru" lang="ru" title="Тест на русском">RU</a>
-    <span class="off" aria-disabled="true" title="Inglizcha test hozircha yoʻq">EN</span>
+    <a href="test.html?lang=ru" hreflang="ru" lang="ru" title="Русский">RU</a>
+    <a href="test.html?lang=en" hreflang="en" lang="en" title="English">EN</a>
   </div>
   <a class="topcta" href="test.html">Testni boshlash</a>
 </div></nav>
@@ -581,6 +583,7 @@
 <script src="assets/strings.js"></script>
 <script src="assets/life.js"></script>
 <script src="assets/test-ru.js"></script>
+<script src="assets/test-en.js"></script>
 <script id="tm-logic">
 // ---------- TestMind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -970,13 +973,20 @@ var STEPS = [
 ];
 
 // ---------- language ----------
-// Uzbek is the default. ?lang=ru serves the Russian rendering of the SAME fifty
-// items: the trait letter and the reverse flag never leave this file, so a
-// translation cannot change what an item measures or which way it scores.
+// Uzbek is the default and is the original: ?lang=ru and ?lang=en serve
+// translations of the SAME fifty items. The trait letter and the reverse flag
+// never leave this file, so a translation cannot change what an item measures
+// or which way it scores.
+var TEST_LANGS = {
+  ru: (typeof TEST_RU !== 'undefined') ? TEST_RU : null,
+  en: (typeof TEST_EN !== 'undefined') ? TEST_EN : null
+};
+
 var TLANG = (function(){
-  var m = /[?&]lang=(uz|ru)/.exec(location.search);
+  var m = /[?&]lang=(uz|ru|en)/.exec(location.search);
   if (m) return m[1];
-  return document.documentElement.getAttribute('lang') === 'ru' ? 'ru' : 'uz';
+  var l = document.documentElement.getAttribute('lang');
+  return TEST_LANGS[l] ? l : 'uz';
 })();
 
 // Applied as a swap over the Uzbek originals rather than a parallel structure,
@@ -984,24 +994,25 @@ var TLANG = (function(){
 // length is refused whole: a shifted list would score every student wrongly and
 // would look completely normal on screen.
 (function applyLanguage(){
-  if (TLANG !== 'ru' || typeof TEST_RU === 'undefined') return;
-  if (!TEST_RU.items || TEST_RU.items.length !== ITEMS.length){
-    if (window.console) console.error('TestMind: ru item list is ' +
-      ((TEST_RU.items || []).length) + ', expected ' + ITEMS.length + ' - staying in Uzbek');
+  var L = TEST_LANGS[TLANG];
+  if (!L) { TLANG = 'uz'; return; }
+  if (!L.items || L.items.length !== ITEMS.length){
+    if (window.console) console.error('TestMind: ' + TLANG + ' item list is ' +
+      ((L.items || []).length) + ', expected ' + ITEMS.length + ' - staying in Uzbek');
     TLANG = 'uz';
     return;
   }
-  for (var i = 0; i < ITEMS.length; i++) ITEMS[i].t = TEST_RU.items[i];
-  for (var j = 0; j < LABELS.length; j++) LABELS[j] = TEST_RU.labels[j];
-  TRAITS = TEST_RU.traits;
-  POLES = TEST_RU.poles;
-  TEXTS = TEST_RU.texts;
-  DISCLAIMER = TEST_RU.disclaimer;
-  for (var k = 0; k < STEPS.length && TEST_RU.steps && k < TEST_RU.steps.length; k++){
-    STEPS[k].title = TEST_RU.steps[k].title;
-    STEPS[k].text  = TEST_RU.steps[k].text;
+  for (var i = 0; i < ITEMS.length; i++) ITEMS[i].t = L.items[i];
+  for (var j = 0; j < LABELS.length; j++) LABELS[j] = L.labels[j];
+  TRAITS = L.traits;
+  POLES = L.poles;
+  TEXTS = L.texts;
+  DISCLAIMER = L.disclaimer;
+  for (var k = 0; k < STEPS.length && L.steps && k < L.steps.length; k++){
+    STEPS[k].title = L.steps[k].title;
+    STEPS[k].text  = L.steps[k].text;
   }
-  document.documentElement.setAttribute('lang', 'ru');
+  document.documentElement.setAttribute('lang', TLANG);
 })();
 
 // The page's own wording in Uzbek. The instrument itself (ITEMS, LABELS) is data
@@ -1059,61 +1070,100 @@ var TT_UZ = {
 // The nav and footer are static markup in this file, written in Uzbek. When the
 // page is Russian they are rewritten in place, using the same wording the rest
 // of the Russian site already uses, and their links are repointed into /ru/.
-var CHROME_RU = {
-  nav: {'index.html': ['Главная', 'ru/index.html'],
-        'obrazlar.html': ['Образы', 'ru/obrazlar.html'],
-        'test.html': ['Тест личности', 'test.html?lang=ru'],
-        'qanday-ishlaydi.html': ['Как это работает', 'ru/qanday-ishlaydi.html'],
-        'savollar.html': ['Вопросы', 'ru/savollar.html'],
-        'privacy.html': ['Конфиденциальность', 'ru/privacy.html'],
-        'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
-  cta: 'Пройти тест',
-  back: 'Вернуться на сайт Naseeb Edu',
-  foot: {'Oʻnta obraz': 'Десять образов',
-         'Test': 'Тест',
-         'Koʻp beriladigan savollar': 'Частые вопросы',
-         'Maʼlumot': 'Информация',
-         'Test qaysi modelga asoslangan': 'На какой модели основан тест',
-         'Bogʻlanish': 'Связаться',
-         'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
-           'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.'}
+var CHROME = {
+  ru: {
+    nav: {'index.html': ['Главная', 'ru/index.html'],
+          'obrazlar.html': ['Образы', 'ru/obrazlar.html'],
+          'test.html': ['Тест личности', 'test.html?lang=ru'],
+          'qanday-ishlaydi.html': ['Как это работает', 'ru/qanday-ishlaydi.html'],
+          'savollar.html': ['Вопросы', 'ru/savollar.html'],
+          'privacy.html': ['Конфиденциальность', 'ru/privacy.html'],
+          'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
+    cta: 'Пройти тест',
+    back: 'Вернуться на сайт Naseeb Edu',
+    title: 'Бесплатный тест личности — TestMind',
+    foot: {'Oʻnta obraz': 'Десять образов',
+           'Test': 'Тест',
+           'Koʻp beriladigan savollar': 'Частые вопросы',
+           'Maʼlumot': 'Информация',
+           'Test qaysi modelga asoslangan': 'На какой модели основан тест',
+           'Bogʻlanish': 'Связаться',
+           'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
+             'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.'}
+  },
+  en: {
+    nav: {'index.html': ['Home', 'en/index.html'],
+          'obrazlar.html': ['Characters', 'en/obrazlar.html'],
+          'test.html': ['The test', 'test.html?lang=en'],
+          'qanday-ishlaydi.html': ['How it works', 'en/qanday-ishlaydi.html'],
+          'savollar.html': ['FAQ', 'en/savollar.html'],
+          'privacy.html': ['Privacy', 'en/privacy.html'],
+          'maktablar.html': ['For schools and parents', 'en/maktablar.html']},
+    cta: 'Take the test',
+    back: 'Back to the Naseeb Edu site',
+    title: 'Free personality test — TestMind',
+    foot: {'Oʻnta obraz': 'The ten characters',
+           'Test': 'Test',
+           'Koʻp beriladigan savollar': 'Frequently asked questions',
+           'Maʼlumot': 'About',
+           'Test qaysi modelga asoslangan': 'What the test is based on',
+           'Bogʻlanish': 'Contact',
+           'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
+             'Results are advisory — not a medical or psychological diagnosis.'}
+  }
 };
 
+// UZ / RU / EN, with the current one marked and the others linking to the same
+// test in their language. Built here rather than in the static markup because
+// which pill is current depends on ?lang=.
+var LANG_ORDER = ['uz', 'ru', 'en'];
+var LANG_TITLE = {uz: 'Oʻzbekcha', ru: 'Русский', en: 'English'};
+
 function localiseChrome(){
-  if (TLANG !== 'ru') return;
-  var i, a, links = document.querySelectorAll('.toplinks a, .foot a');
+  // The switcher is rebuilt in every language, including Uzbek: the static
+  // markup cannot know which pill is current when the language comes from a
+  // query string.
+  var sw = document.querySelector('.langsw'), i;
+  if (sw){
+    var html = '';
+    for (i = 0; i < LANG_ORDER.length; i++){
+      var l = LANG_ORDER[i], up = l.toUpperCase();
+      if (l === TLANG) html += '<span aria-current="true">' + up + '</span>';
+      else html += '<a href="test.html' + (l === 'uz' ? '' : '?lang=' + l) + '" hreflang="' + l +
+                   '" lang="' + l + '" title="' + LANG_TITLE[l] + '">' + up + '</a>';
+    }
+    sw.innerHTML = html;
+  }
+
+  var C = CHROME[TLANG];
+  if (!C) return;                       // Uzbek: the static markup is already right
+
+  var a, links = document.querySelectorAll('.toplinks a, .foot a');
   for (i = 0; i < links.length; i++){
     a = links[i];
     var file = (a.getAttribute('href') || '').split('/').pop().split('?')[0];
-    var row = CHROME_RU.nav[file];
+    var row = C.nav[file];
     if (row){ a.textContent = row[0]; a.setAttribute('href', row[1]); continue; }
-    var ru = CHROME_RU.foot[a.textContent.trim()];
-    if (ru) a.textContent = ru;
+    var tr = C.foot[a.textContent.trim()];
+    if (tr) a.textContent = tr;
   }
   var cta = document.querySelector('.topcta');
-  if (cta){ cta.textContent = CHROME_RU.cta; cta.setAttribute('href', 'test.html?lang=ru'); }
+  if (cta){ cta.textContent = C.cta; cta.setAttribute('href', 'test.html?lang=' + TLANG); }
   var vh = document.querySelector('.navback .vh');
-  if (vh) vh.textContent = CHROME_RU.back;
+  if (vh) vh.textContent = C.back;
   var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li');
   for (i = 0; i < heads.length; i++){
     var txt = heads[i].childNodes.length === 1 ? heads[i].textContent.trim() : null;
-    if (txt && CHROME_RU.foot[txt]) heads[i].textContent = CHROME_RU.foot[txt];
+    if (txt && C.foot[txt]) heads[i].textContent = C.foot[txt];
   }
-  // the switcher: Russian is current, Uzbek links back to the Uzbek test
-  var sw = document.querySelector('.langsw');
-  if (sw){
-    sw.innerHTML = '<a href="test.html" hreflang="uz" lang="uz" title="Oʻzbekcha">UZ</a>' +
-                   '<span aria-current="true">RU</span>' +
-                   '<span class="off" aria-disabled="true" title="Тест на английском пока недоступен">EN</span>';
-  }
-  document.title = 'Бесплатный тест личности — TestMind';
+  document.title = C.title;
 }
 
 // One lookup for the page's own wording. %1 / %2 are positional so a translation
 // can put them wherever its grammar needs them.
 function T(key){
-  var s = (TLANG === 'ru' && TEST_RU.ui && TEST_RU.ui[key] !== undefined)
-        ? TEST_RU.ui[key] : TT_UZ[key];
+  var L = TEST_LANGS[TLANG];
+  var s = (L && L.ui && L.ui[key] !== undefined) ? L.ui[key] : TT_UZ[key];
   for (var i = 1; i < arguments.length; i++)
     s = s.replace('%' + i, arguments[i]);
   return s;

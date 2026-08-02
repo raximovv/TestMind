@@ -67,7 +67,6 @@ S['uz'] = {
     'foot.model': u'Test qaysi modelga asoslangan',
     'foot.schools': u'Maktablar va ota-onalar uchun',
     'foot.disclaimer': u'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.',
-    'foot.testnote': u'Test faqat oʻzbek tilida',
 
     'close.h2': u'Tayyormisiz?',
     'close.p': u'7 daqiqa. Oʻnta obrazdan qaysi biri sizniki?',
@@ -182,7 +181,7 @@ S['uz'] = {
     'faq.q8': u'Testni qayta topshirsam boʻladimi?',
     'faq.a8': u'Ha, istagancha. Lekin natija oʻzgarib turmasligi uchun oʻylab, rostgoʻy javob berish yaxshiroq.',
     'faq.q9': u'Test qaysi tillarda?',
-    'faq.a9': u'Sayt oʻzbek, rus va ingliz tillarida. Testning oʻzi oʻzbek va rus tillarida. Ruscha variant oʻzbekchadan tarjima qilingan: u oʻzini tanish uchun mos, lekin ikki tildagi natijalar toʻliq solishtirilmaydi. Inglizcha test hozircha yoʻq.',
+    'faq.a9': u'Sayt ham, test ham oʻzbek, rus va ingliz tillarida. Ruscha va inglizcha savollar oʻzbekchadan tarjima qilingan: tarjimalar alohida tekshiruvdan oʻtmagan, shuning uchun turli tillardagi natijalar toʻliq solishtirilmaydi.',
 
     # ---- privacy
     'priv.title': u'Maxfiylik — TestMind',
@@ -302,12 +301,11 @@ S['ru'] = {
     'foot.model': u'На какой модели основан тест',
     'foot.schools': u'Школам и родителям',
     'foot.disclaimer': u'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.',
-    'foot.testnote': u'',
 
     'close.h2': u'Готовы?',
     'close.p': u'7 минут. Какой из десяти образов ваш?',
 
-    'testlang.note': u'Тест доступен на узбекском и русском. Русский вариант — перевод узбекского: он подходит для самопознания, но результаты на двух языках не полностью сопоставимы.',
+    'testlang.note': u'Тест доступен на узбекском, русском и английском. Русский и английский варианты — перевод узбекского: они подходят для самопознания, но результаты на разных языках не полностью сопоставимы.',
 
     'home.title': u'TestMind — какой у вас образ?',
     'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
@@ -407,7 +405,7 @@ S['ru'] = {
     'faq.q8': u'Можно ли пройти тест ещё раз?',
     'faq.a8': u'Да, сколько угодно. Но чтобы результат не скакал, лучше отвечать вдумчиво и честно.',
     'faq.q9': u'На каких языках доступен тест?',
-    'faq.a9': u'Сайт доступен на узбекском, русском и английском. Сам тест — на узбекском и русском. Русские вопросы переведены с узбекских: перевод не проходил отдельную проверку, поэтому результаты на двух языках не полностью сопоставимы. Английского теста пока нет.',
+    'faq.a9': u'И сайт, и тест доступны на узбекском, русском и английском. Русские и английские вопросы переведены с узбекских: переводы не проходили отдельную проверку, поэтому результаты на разных языках не полностью сопоставимы.',
 
     'priv.title': u'Конфиденциальность — TestMind',
     'priv.desc': u'Коротко о том, как TestMind обращается с вашими данными.',
@@ -516,12 +514,11 @@ S['en'] = {
     'foot.model': u'What the test is based on',
     'foot.schools': u'For schools and parents',
     'foot.disclaimer': u'Results are advisory — not a medical or psychological diagnosis.',
-    'foot.testnote': u'The test is in Uzbek only',
 
     'close.h2': u'Ready?',
     'close.p': u'Seven minutes. Which of the ten characters is yours?',
 
-    'testlang.note': u'The test itself is in Uzbek only. The items are not translated: translating a personality item changes what it measures, and mixing languages within one sample would make the responses uninterpretable.',
+    'testlang.note': u'The test is available in Uzbek, Russian and English. The Russian and English versions are translations of the Uzbek original: they are fine for self-reflection, but results in different languages are not strictly comparable.',
 
     'home.title': u'TestMind — a Big Five personality test for Uzbek teenagers',
     'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 50 items, about 7 minutes, ten result profiles.',
@@ -621,7 +618,7 @@ S['en'] = {
     'faq.q8': u'Can I take the test again?',
     'faq.a8': u'Yes, as often as you like. But answering thoughtfully and honestly keeps the result from jumping around.',
     'faq.q9': u'What languages is the test available in?',
-    'faq.a9': u'The site is available in Uzbek, Russian and English. The test itself is in Uzbek only. Translating a personality item changes what it measures, so a Russian or English version would be a separate instrument requiring its own validation rather than the same test in another language.',
+    'faq.a9': u'Both the site and the test are available in Uzbek, Russian and English. The Russian and English items are translated from the Uzbek: the translations have not been separately validated, so results in different languages are not strictly comparable.',
 
     'priv.title': u'Privacy — TestMind',
     'priv.desc': u'A short account of how TestMind handles data.',

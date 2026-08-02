@@ -96,9 +96,10 @@ _ROOT_RE = re.compile(r'(href|src)="(%s)' % '|'.join(
     re.escape(f) for f in ROOT_ONLY))
 
 
-# Languages the test itself has been translated into. English is not here yet,
-# so English pages keep linking to the Uzbek test, which is the honest default.
-TEST_LANG_PARAM = {'ru': 'ru'}
+# Languages the test itself has been translated into. A language listed here
+# gets ?lang= appended to the shared test link, so a student who has been
+# reading in one language does not land on the test in another.
+TEST_LANG_PARAM = {'ru': 'ru', 'en': 'en'}
 
 
 def localize(html, lang):
@@ -210,7 +211,10 @@ def footer(lang):
     t = S[lang]
     # In ru/en the test link leads somewhere Uzbek-only; say so next to the link
     # rather than letting the reader discover it after the click.
-    note = (u' <span class="fnote">(%s)</span>' % t['foot.testnote']) if UP[lang] else u''
+    # The footer used to carry "(the test is in Uzbek only)" next to the test
+    # link on the ru/ and en/ pages. The test exists in all three languages
+    # now, so there is nothing left to warn about.
+    note = u''
     return u"""<footer class="foot"><div class="wrap">
   <div class="footgrid">
     <div class="footcol"><h2>TestMind</h2><ul>
