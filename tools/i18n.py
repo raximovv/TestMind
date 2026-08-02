@@ -84,10 +84,9 @@ S['uz'] = {
 
     'home.num.h2': u'Raqamlarda',
     'home.num.lead': u'TestMind endi ishga tushdi. Bu raqamlarni oʻsib borishini shu yerda ochiq koʻrsatib boramiz.',
-    'home.fact1': u'topshirilgan test',
-    'home.fact2': u'bugun topshirilgan',
+    'home.fact1': u'topshirilgan testlar — shu oy',
+    'home.fact2': u'umumiy topshirilgan testlar',
     'home.fact3': u'ishtirok etgan maktab',
-    'home.fact4': u'shahar va tuman',
 
     'home.p1.tag': u'Oʻzingizni tushunib oling',
     'home.p1.h2': u'Natija — raqam emas, obraz',
@@ -315,10 +314,9 @@ S['ru'] = {
 
     'home.num.h2': u'В цифрах',
     'home.num.lead': u'TestMind только что запустился. Мы будем открыто показывать здесь, как растут эти цифры.',
-    'home.fact1': u'пройденных тестов',
-    'home.fact2': u'пройдено сегодня',
+    'home.fact1': u'пройденных тестов — в этом месяце',
+    'home.fact2': u'пройденных тестов всего',
     'home.fact3': u'школ-участников',
-    'home.fact4': u'городов и районов',
 
     'home.p1.tag': u'Понять себя',
     'home.p1.h2': u'Результат — не балл, а образ',
@@ -528,10 +526,9 @@ S['en'] = {
 
     'home.num.h2': u'In numbers',
     'home.num.lead': u'TestMind has just launched. We will report these numbers openly here as they grow.',
-    'home.fact1': u'tests completed',
-    'home.fact2': u'completed today',
+    'home.fact1': u'tests completed this month',
+    'home.fact2': u'tests completed in total',
     'home.fact3': u'participating schools',
-    'home.fact4': u'cities and districts',
 
     'home.p1.tag': u'Understand yourself',
     'home.p1.h2': u'The result is a character, not a score',

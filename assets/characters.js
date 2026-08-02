@@ -10,7 +10,7 @@ var FAMILIES = {
   lead: {name:'Yetakchilar',  c:'#0F6E8C', soft:'#E1EEF2', dark:'#12262F', lit:'#5FB4CE'},
   crea: {name:'Ijodkorlar',   c:'#6B4FA8', soft:'#EDE7F7', dark:'#221B36', lit:'#A98BE0'},
   care: {name:'Gʻamxoʻrlar',  c:'#237A5E', soft:'#E2F1EC', dark:'#12271F', lit:'#5FC2A0'},
-  base: {name:'Tayanchlar',   c:'#A2731F', soft:'#F6EEDC', dark:'#2B2213', lit:'#D9AE52'}
+  base: {name:'Ishonchlilar', c:'#A2731F', soft:'#F6EEDC', dark:'#2B2213', lit:'#D9AE52'}
 };
 
 // One line describing each family. Lives here beside FAMILIES rather than in
@@ -19,7 +19,7 @@ var FAM_NOTES = {
   lead:'Odamlarni ortidan ergashtiradiganlar',
   crea:'Yangi gʻoya va yechim topadiganlar',
   care:'Atrofdagilarni koʻradigan va qoʻllab-quvvatlaydiganlar',
-  base:'Vaʼdasida turadigan, ishonchli odamlar'
+  base:'Masʼuliyatli, soʻzida turadigan insonlar'
 };
 
 // Human-readable trait names, shared by the test and the archetype pages.
@@ -83,14 +83,14 @@ var ARCHETYPES = {
     watch:'Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.',
     figure:{who:'Abdulla Avloniy', years:'1878–1934', why:'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'}},
 
-  'ES|C': {ikat2:'#8E621A', ikat3:'#F3E3BE', name:'Barqaror Strateg', slug:'barqaror-strateg', fam:'base',
+  'ES|C': {ikat2:'#8E621A', ikat3:'#F3E3BE', name:'Rejali Inson', slug:'barqaror-strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
            'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
     strength:'uzoq masofaga chidash.',
     watch:'Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish — magʻlubiyat emas.',
     figure:{who:'Muhammad al-Xorazmiy', years:'783–850', why:'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'}},
 
-  'A|C':  {ikat2:'#A5771F', ikat3:'#F5E6C0', name:'Ishonchli Tayanch', slug:'ishonchli-tayanch', fam:'base',
+  'A|C':  {ikat2:'#A5771F', ikat3:'#F5E6C0', name:'Soʻzida Turuvchi', slug:'ishonchli-tayanch', fam:'base',
     lines:['Vaʼda berishdan oldin oʻylaysiz — chunki bergan vaʼdangizni bajarasiz.',
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
     strength:'soʻzida turish.',
@@ -610,6 +610,25 @@ var TM_RASTER_FIT = {
   'A|C': {x: 15.8, y: -1.2, w: 169.6, h: 254.5}
 };
 
+// Fits for the gendered variants. A variant is separate artwork on its own
+// canvas, so it cannot borrow the archetype's fit -- the result screen gets away
+// with the naive 0,0,200,250 box because it draws one figure alone, with nothing
+// beside it to be out of step with. A vignette puts the figure next to others on
+// a shared ground line, so it needs a measured fit like every other character.
+//
+// Measured the same way as the table above: land the figure's ink on the
+// 8.25-242.0 band so everyone stands the same height with their feet on one
+// line. Keyed "<archetype>|<side>".
+var TM_VARIANT_FIT = {
+  // Amir Temur. His ink starts at the very top of the canvas -- no margin above
+  // the helmet plume at all -- which is why y is positive here where most of the
+  // others are negative.
+  'E|C|male': {x: 18.7, y: 8.2, w: 163.5, h: 245.2},
+  // Toʻmaris. Drawn with generous margin on the same canvas, so she lands on the
+  // same w/h as the archetype's own artwork and differs only in x.
+  'ES|C|female': {x: 11.8, y: -4.0, w: 176.3, h: 264.4}
+};
+
 function tmAssetPath(path){
   // characters.js is shared from the repository root, so markup generated on a
   // /ru/ or /en/ page has to climb back to that root.
@@ -807,7 +826,11 @@ function shallowCopy(o, over){
 
 var TM_UID = 0;
 // width/height are required for the canvas share card to rasterise this in Firefox.
-function charSvg(key, alt){
+// `side` is optional and only ever 'male' or 'female': pass it to draw that
+// archetype's gendered figure instead of its default one. Omitted everywhere the
+// archetype itself is the subject (the gallery, the bands, an archetype page),
+// because there the default artwork IS the archetype's own picture.
+function charSvg(key, alt, side){
   var o = TM_ART[key]; if (!o) return '';
   // Per-INSTANCE, not per-key: a page can draw the same character more than once
   // (the hero scene and a vignette both use O|C), and two <pattern> elements
@@ -820,9 +843,19 @@ function charSvg(key, alt){
   // beside the url(#…) that uses them, so the churn was harmless — just noise
   // that hid the real change.
   var uid = key.replace(/[^A-Za-z0-9]/g, '-').toLowerCase() + '-' + (++TM_UID);
-  var raster = charRasterSrc(key);
+  var raster = charRasterSrc(key), fit = TM_RASTER_FIT[key];
+  if (side) {
+    var variant = TM_FIGURE_VARIANTS[key];
+    // Fall through to the default when the side asked for has no artwork, rather
+    // than drawing nothing: a missing variant should cost the caller its
+    // preference, not the whole figure.
+    if (variant && variant[side] && variant[side].art) {
+      raster = tmAssetPath(variant[side].art);
+      fit = TM_VARIANT_FIT[key + '|' + side];
+    }
+  }
   if (raster) {
-    var f = TM_RASTER_FIT[key] || TM_RASTER_FIT_DEFAULT;
+    var f = fit || TM_RASTER_FIT_DEFAULT;
     return '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="250" viewBox="0 0 200 250" '
          + 'role="img" aria-label="' + (alt || '') + '">'
          + '<image href="' + raster + '" x="' + f.x + '" y="' + f.y + '" '

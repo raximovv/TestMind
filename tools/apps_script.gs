@@ -88,10 +88,16 @@ var ARCH_ALIASES = {
   "Ijodkor Insonparvar":        "Mehribon Inson",
   "Творческий Гуманист":        "Mehribon Inson",
   "Creative Humanitarian":      "Mehribon Inson",
-  "Устойчивый Стратег":         "Barqaror Strateg",
-  "Steady Strategist":          "Barqaror Strateg",
-  "Надёжная Опора":             "Ishonchli Tayanch",
-  "Dependable Anchor":          "Ishonchli Tayanch"
+  "Человек Плана":              "Rejali Inson",
+  "Planner":                    "Rejali Inson",
+  "Barqaror Strateg":           "Rejali Inson",
+  "Устойчивый Стратег":         "Rejali Inson",
+  "Steady Strategist":          "Rejali Inson",
+  "Человек Слова":              "Soʻzida Turuvchi",
+  "True to Their Word":         "Soʻzida Turuvchi",
+  "Ishonchli Tayanch":          "Soʻzida Turuvchi",
+  "Надёжная Опора":             "Soʻzida Turuvchi",
+  "Dependable Anchor":          "Soʻzida Turuvchi"
 };
 function canonicalArch_(name){
   return ARCH_ALIASES[name] || name;
@@ -227,9 +233,9 @@ var GUIDES = {
       "why": "Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan."
     }
   },
-  "Barqaror Strateg": {
+  "Rejali Inson": {
     "slug": "barqaror-strateg",
-    "fam": "Tayanchlar",
+    "fam": "Ishonchlilar",
     "color": "#A2731F",
     "lines": [
       "Reja tuzasiz va rejadan chalgʻimaysiz.",
@@ -243,9 +249,9 @@ var GUIDES = {
       "why": "Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan."
     }
   },
-  "Ishonchli Tayanch": {
+  "Soʻzida Turuvchi": {
     "slug": "ishonchli-tayanch",
-    "fam": "Tayanchlar",
+    "fam": "Ishonchlilar",
     "color": "#A2731F",
     "lines": [
       "Vaʼda berishdan oldin oʻylaysiz — chunki bergan vaʼdangizni bajarasiz.",

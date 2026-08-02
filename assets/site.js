@@ -7,7 +7,7 @@ var STONE='#E8DCC0', STONE_D='#D5C6A2', STONE_L='#F2E9D5';
 var GOLD='#C08A2E', DEEP='#16505F';
 var FOOT = 238;   // y of the feet inside a character's own 200x250 viewBox
 
-function inner(k){ return charSvg(k).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, ''); }
+function inner(k, side){ return charSvg(k, '', side).replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, ''); }
 
 /* ================= Registan hero scene ================= */
 
@@ -186,34 +186,37 @@ function vgFrame(body, w, h){
   return '<svg viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg">'
        + '<rect width="'+w+'" height="'+h+'" rx="16" fill="#FFFFFF"/>' + body + '</svg>';
 }
-function figAt(k, cx, footY, sc){
-  return '<g transform="translate('+(cx-100*sc)+','+(footY-FOOT*sc)+') scale('+sc+')">'+inner(k)+'</g>';
+function figAt(k, cx, footY, sc, side){
+  return '<g transform="translate('+(cx-100*sc)+','+(footY-FOOT*sc)+') scale('+sc+')">'+inner(k, side)+'</g>';
 }
 
 // 1. A student in front of a result card that carries their own face.
 //
 // A real archetype, and everything about the card is read from the same data the
 // result screen uses -- name, family colour, artwork -- so the preview cannot
-// drift from the page it is previewing. Barqaror Strateg because its family
-// colour is the warm bronze one: the other three families are a cool blue, a
-// green and a violet, all of which sit beside the homepage palette rather than
-// inside it. It is also the one archetype that appears nowhere else on this
-// page, so no character is shown twice.
-var VG_CARD = 'ES|C';
+// drift from the page it is previewing. That is why the card header turned teal
+// when the figure became Amir Temur: he is the male figure of Tashkilotchi, and
+// Tashkilotchi is a Leader. Painting a Leader's card in the Anchors' bronze
+// would have made the homepage prettier by showing something the test never
+// produces. Nothing else on this page draws E|C, so no character appears twice.
+var VG_CARD = 'E|C';
+// Which of the two figures to draw. The archetype's default artwork here is
+// Nodirabegim; Amir Temur is the male variant and has to be asked for by name.
+var VG_CARD_FIGURE = 'male';
 
 function vgResult(){
-  var k = VG_CARD;
+  var k = VG_CARD, side = VG_CARD_FIGURE;
   var name = ((typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k]).name;
   var famc = FAMILIES[ARCHETYPES[k].fam].c;
   var b = '<ellipse cx="200" cy="252" rx="170" ry="12" fill="#0B2027" opacity=".05"/>'
-    + figAt(k, 108, 250, 0.82)
+    + figAt(k, 108, 250, 0.82, side)
     + '<g transform="translate(196,44)">'
     + '<rect width="176" height="196" rx="14" fill="#F1F6F7" stroke="#D7E2E4"/>'
     + '<rect width="176" height="46" rx="14" fill="' + famc + '"/>'
     + '<rect y="32" width="176" height="14" fill="' + famc + '"/>'
     + '<text x="88" y="30" text-anchor="middle" font-family="Bitter,Georgia,serif" '
     + 'font-size="17" font-weight="700" fill="#FFFFFF">' + name + '</text>'
-    + '<g transform="translate(88,60) scale(0.42)">' + inner(k) + '</g>'
+    + '<g transform="translate(88,60) scale(0.42)">' + inner(k, side) + '</g>'
     + '<g fill="#C6D3D8"><rect x="24" y="164" width="128" height="7" rx="3.5"/>'
     + '<rect x="44" y="180" width="88" height="7" rx="3.5"/></g></g>';
   return vgFrame(b, 400, 272);
@@ -252,6 +255,12 @@ function vgOthers(){
 }
 
 // 3. A signpost: the same person, several possible directions.
+//
+// Toʻmaris, the female figure of Barqaror Strateg. She is asked for by name
+// because the archetype's own artwork is al-Xorazmiy; and she replaced Bahouddin
+// Naqshband here, who was already standing in the hero scene and in the vignette
+// above this one -- three appearances on one page made the homepage look like it
+// had one character rather than ten.
 function vgFuture(){
   var b = '<ellipse cx="200" cy="252" rx="170" ry="12" fill="#0B2027" opacity=".05"/>'
     + '<g transform="translate(286,0)">'
@@ -264,7 +273,7 @@ function vgFuture(){
     + '<text x="-82" y="146">Yoʻnalish</text>'
     + '<path d="M-70 168 h132 l16 15 -16 15 h-132 z" fill="#237A5E"/>'
     + '<text x="-60" y="188">Fan</text></g></g>'
-    + figAt('ES|E', 120, 250, 0.86);
+    + figAt('ES|C', 120, 250, 0.86, 'female');
   return vgFrame(b, 400, 272);
 }
 
@@ -339,6 +348,92 @@ function markResumeCtas(){
 }
 
 
+/* ================= historical-figure portraits ================= */
+// The archetype page names two people but showed neither, so the names read as
+// footnotes. Each one now opens its portrait.
+//
+// Built here rather than baked into the 30 generated pages: the markup only
+// carries data-art, and the button is made at runtime. A reader with no
+// JavaScript therefore sees the page exactly as it was, instead of a name
+// styled to look pressable that does nothing when pressed.
+var figBox = null, figLastFocus = null;
+
+function closeFigure(){
+  if (!figBox) return;
+  figBox.parentNode.removeChild(figBox);
+  figBox = null;
+  document.removeEventListener('keydown', figKey, true);
+  if (figLastFocus && figLastFocus.focus){
+    try { figLastFocus.focus({preventScroll: true}); } catch (e) { figLastFocus.focus(); }
+  }
+}
+
+function figKey(e){
+  if (e.key === 'Escape' || e.keyCode === 27){ e.preventDefault(); closeFigure(); }
+}
+
+// Just the picture. No name, no dates, no explanation, no close button -- all of
+// that is already on the page directly under the name that was pressed, and
+// repeating it in a card turns "show me his face" into a second page to read.
+//
+// The page must not move a pixel while this is open, so the body scroll is NOT
+// locked: hiding the scrollbar reclaims its width and shifts the whole layout
+// sideways, which is exactly the jump this is supposed to avoid. The overlay is
+// position:fixed, so it covers the view without touching the flow behind it.
+function openFigure(art, who, returnTo){
+  closeFigure();
+  figLastFocus = returnTo || document.activeElement;
+  figBox = document.createElement('div');
+  figBox.className = 'figpop';
+  figBox.setAttribute('role', 'dialog');
+  figBox.setAttribute('aria-modal', 'true');
+  figBox.setAttribute('aria-label', who);
+  figBox.tabIndex = -1;   // focusable so Escape reaches it for keyboard readers
+  // alt carries the name for anyone not seeing the picture. It renders nothing.
+  figBox.innerHTML = '<img src="' + art + '" alt="' + who + '">';
+  // Anywhere, including the picture itself: there is no other control to hit.
+  figBox.addEventListener('click', closeFigure);
+  document.body.appendChild(figBox);
+  document.addEventListener('keydown', figKey, true);
+  // Moving focus is what announces the picture to a screen reader, but focusing
+  // an element scrolls it into view -- and this one is pinned to the viewport,
+  // so the browser scrolled the page to "reach" it and the article jumped under
+  // the overlay. preventScroll stops that where it is supported; the restore
+  // afterwards covers the browsers that ignore the option.
+  var sx = window.pageXOffset, sy = window.pageYOffset;
+  if (figBox.focus){
+    try { figBox.focus({preventScroll: true}); } catch (e) { figBox.focus(); }
+  }
+  if (window.pageXOffset !== sx || window.pageYOffset !== sy) window.scrollTo(sx, sy);
+}
+
+function mountFigures(){
+  var rows = document.querySelectorAll('.afig[data-art]'), i;
+  for (i = 0; i < rows.length; i++){
+    (function(row){
+      var who = row.querySelector('.afigwho');
+      if (!who) return;
+      var span = who.querySelector('span');
+      // Keep the years out of the button: the name is the thing you press.
+      var name = who.childNodes[0] ? who.childNodes[0].nodeValue.replace(/\s+$/, '') : '';
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'afigbtn';
+      b.textContent = name;
+      who.replaceChild(b, who.childNodes[0]);
+      // Pressing a button focuses it, and focusing it makes the browser scroll
+      // it clear of the sticky nav -- a few pixels of drift at exactly the
+      // moment the reader is looking somewhere else. Suppressing focus on mouse
+      // press costs nothing: the click still fires, and a keyboard reader still
+      // reaches the button with Tab, where the scroll is wanted.
+      b.addEventListener('mousedown', function(e){ e.preventDefault(); });
+      b.addEventListener('click', function(){
+        openFigure(row.getAttribute('data-art'), name, b);
+      });
+    })(rows[i]);
+  }
+}
+
 function mountPage(){
   var scene = document.getElementById('scene');
   if (scene) scene.innerHTML = buildScene();
@@ -350,6 +445,7 @@ function mountPage(){
   if ((v = document.getElementById('vg-result'))){ v.innerHTML = vgResult(); fitCardName(v); }
   if ((v = document.getElementById('vg-others'))) v.innerHTML = vgOthers();
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
+  mountFigures();
   markResumeCtas();
 }
 // This file is loaded at the bottom of <body>, so the DOM is already parsed — but

@@ -46,8 +46,11 @@ for (const k in s.ARCHETYPES){
              s.document.documentElement.getAttribute=()=>L;
              const m=s.getFigureVariant(k,'male'), fm=s.getFigureVariant(k,'female');
              s.document.documentElement.getAttribute=was;
-             return {male:{who:m.who,years:m.years,why:m.why},
-                     female:{who:fm.who,years:fm.years,why:fm.why}};
+             // art comes through getFigureVariant, so it is already prefixed
+             // ../ for the pages written into ru/ and en/ -- the stubbed lang
+             // above is what tmAssetPath reads when there is no location.
+             return {male:{who:m.who,years:m.years,why:m.why,art:m.art},
+                     female:{who:fm.who,years:fm.years,why:fm.why,art:fm.art}};
            })(),
            traits:k.split('|').map(x=>(S.traits||{})[x]||s.TRAIT_NAMES[x]),
            svg:s.charSvg(k,name)};
@@ -161,9 +164,15 @@ def fig_block(v):
     """
     fv = v.get('figvar')
     figs = [fv['male'], fv['female']] if fv else [v['figure']]
+    # data-art carries the portrait so site.js can open it. The name stays plain
+    # text here rather than a <button>: site.js upgrades it on load, so a reader
+    # with no JS sees exactly the page they saw before instead of a control that
+    # looks pressable and does nothing.
     return u'\n'.join(
-        (u'    <div class="afig"><div class="afigwho">%s <span>%s</span></div>\n'
-         u'      <p>%s</p></div>') % (esc(f['who']), esc(f['years']), esc(f['why']))
+        (u'    <div class="afig"%s><div class="afigwho">%s <span>%s</span></div>\n'
+         u'      <p>%s</p></div>')
+        % ((u' data-art="%s"' % esc(f['art'])) if f.get('art') else u'',
+           esc(f['who']), esc(f['years']), esc(f['why']))
         for f in figs)
 
 

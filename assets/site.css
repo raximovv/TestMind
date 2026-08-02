@@ -158,15 +158,19 @@ section{padding:60px 0}
 }
 
 /* ---------- fact strip (real product facts, never invented usage numbers) ---------- */
-.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+/* Three tiles, not four, so each one may be wider: the minimum column grew with
+   them, which is what keeps three on one row and stops a lone tile dropping to
+   a second line on a tablet. */
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
 .fact{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--lazur);
-      border-radius:12px;padding:20px 18px;text-align:center}
+      border-radius:12px;padding:28px 22px;text-align:center}
 .fact:nth-child(2){border-top-color:var(--zar)}
 .fact:nth-child(3){border-top-color:#237A5E}
-.fact:nth-child(4){border-top-color:#6B4FA8}
-.factn{font-family:var(--display);font-weight:700;font-size:clamp(26px,4.4vw,34px);
-       line-height:1.1;color:var(--ink)}
-.factl{font-size:13.5px;color:var(--muted);margin-top:6px}
+.factn{font-family:var(--display);font-weight:700;font-size:clamp(34px,5.4vw,46px);
+       line-height:1.05;color:var(--ink)}
+/* The label is now two or three words rather than one, so it needs the line
+   height as much as the size. */
+.factl{font-size:15px;line-height:1.4;color:var(--muted);margin-top:8px}
 
 /* ---------- character gallery ---------- */
 .fam{margin-bottom:38px}
@@ -292,6 +296,25 @@ section{padding:60px 0}
 .afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam)}
 .afigwho span{font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
 .afig p{margin:6px 0 0;color:var(--muted);font-size:15px}
+/* The name becomes a button only when site.js is there to make it one, so this
+   has to undo every default a <button> brings and inherit the heading it sits
+   in -- otherwise the name would change size and typeface the moment JS loads. */
+.afigbtn{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;
+  cursor:pointer;text-align:left;text-decoration:underline;
+  text-decoration-color:color-mix(in srgb,var(--fam) 35%,transparent);
+  text-underline-offset:3px;text-decoration-thickness:2px}
+.afigbtn:hover{text-decoration-color:var(--fam)}
+.afigbtn:focus-visible{outline:2px solid var(--fam);outline-offset:3px;border-radius:3px}
+/* Portrait pop-up: the picture and a dimmed backdrop, nothing else. Fixed, so
+   the page underneath keeps its exact scroll position and layout. */
+.figpop{position:fixed;inset:0;z-index:70;display:flex;align-items:center;
+  justify-content:center;padding:24px;background:rgba(20,16,10,.72);cursor:zoom-out}
+.figpop:focus{outline:none}
+/* Cut-outs on a transparent canvas, so no frame and no background -- the figure
+   stands against the dim on its own. Capped by height rather than width because
+   they are far taller than they are wide. */
+.figpop img{display:block;width:auto;height:auto;max-width:100%;max-height:82vh;
+  filter:drop-shadow(0 18px 34px rgba(0,0,0,.45))}
 /* The PDF guide offer on an archetype page. Wraps to a column on a phone so
    the button never gets squeezed next to the text. */
 .aguide{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px;

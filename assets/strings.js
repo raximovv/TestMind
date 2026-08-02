@@ -28,13 +28,13 @@ ru: {
     lead: 'Лидеры',
     crea: 'Творцы',
     care: 'Заботливые',
-    base: 'Опоры'
+    base: 'Надёжные'
   },
   famnote: {
     lead: 'Те, за кем идут люди',
     crea: 'Те, кто находит новые идеи и решения',
     care: 'Те, кто замечает окружающих и поддерживает их',
-    base: 'Люди, которые держат слово'
+    base: 'Ответственные люди, которые держат слово'
   },
   traits: {
     ES: 'Эмоциональная стабильность',
@@ -117,7 +117,7 @@ ru: {
                why: 'Поставил литературу, театр, журналистику и просвещение на службу народу.'}
     },
     'ES|C': {
-      name: 'Устойчивый Стратег',
+      name: 'Человек Плана',
       lines: ['Вы составляете план и не отвлекаетесь от него.',
               'Там, где остальные сдались, вы всё ещё работаете.'],
       strength: 'выдерживать длинную дистанцию.',
@@ -126,7 +126,7 @@ ru: {
                why: 'Разложил сложную задачу на точные шаги — слово «алгоритм» осталось от его имени.'}
     },
     'A|C': {
-      name: 'Надёжная Опора',
+      name: 'Человек Слова',
       lines: ['Вы думаете, прежде чем пообещать, — потому что обещанное выполняете.',
               'Поэтому важное дело чаще всего поручают именно вам.'],
       strength: 'держать своё слово.',
@@ -219,13 +219,13 @@ en: {
     lead: 'Leaders',
     crea: 'Creators',
     care: 'Carers',
-    base: 'Anchors'
+    base: 'Reliable Ones'
   },
   famnote: {
     lead: 'The ones people follow',
     crea: 'The ones who find new ideas and answers',
     care: 'The ones who notice the people around them',
-    base: 'The ones who keep their word'
+    base: 'Responsible people who keep their word'
   },
   traits: {
     ES: 'Emotional stability',
@@ -308,7 +308,7 @@ en: {
                why: 'Put literature, theatre, journalism and education to work for his people.'}
     },
     'ES|C': {
-      name: 'Steady Strategist',
+      name: 'Planner',
       lines: ['You make a plan and you do not get pulled away from it.',
               'Where others have given up, you are still working.'],
       strength: 'lasting the distance.',
@@ -317,7 +317,7 @@ en: {
                why: 'Broke a complex problem into exact steps — the word "algorithm" comes from his name.'}
     },
     'A|C': {
-      name: 'Dependable Anchor',
+      name: 'True to Their Word',
       lines: ['You think before you promise — because a promise you make, you keep.',
               'Which is why the thing that matters is usually handed to you.'],
       strength: 'keeping your word.',

@@ -79,12 +79,12 @@ EMAIL = 'raximovrahim1@gmail.com'
 # rather than four numbers buried in the template. Re-run build_pages.py after
 # changing them.
 #
-# FACTS[1] is "completed today" and is the one that rots: it is true on the day
-# it is written and wrong the next morning. Either refresh it whenever the site
-# is rebuilt, or relabel that tile to something a static page can keep saying
-# honestly -- see home.fact2 in i18n.py.
-FACTS_UPDATED = '2026-07-31'
-FACTS = ('100+', '20+', '15+', '2')
+# FACTS[0] is "this month" and is the one that rots -- it stops being true on the
+# 1st. It rots a month at a time rather than overnight, which is the whole
+# reason the tile that used to say "completed today" was relabelled, but it
+# still has to be refreshed from the Sheet whenever the site is rebuilt.
+FACTS_UPDATED = '2026-08-02'
+FACTS = ('100+', '500+', '15+')
 
 # Files that exist once, at the root, and are NOT translated. A page in ru/ or
 # en/ has to climb out of its folder to reach them; everything else stays a
@@ -230,7 +230,6 @@ def footer(lang):
       <li><a href="privacy.html">%(privacy)s</a></li>
       <li><a href="qanday-ishlaydi.html#model">%(model)s</a></li>
       <li><a href="maktablar.html">%(schools)s</a></li>
-      <li><a href="%(naseeb)s">Naseeb Edu</a></li>
     </ul></div>
     <div class="footcol"><h2>%(contact)s</h2><ul>
       <li><a href="mailto:%(email)s">%(email)s</a></li>
@@ -294,7 +293,6 @@ HOME = u"""<header class="hero" id="top">
       <div class="fact"><div class="factn">%(factn1)s</div><div class="factl">%(home.fact1)s</div></div>
       <div class="fact"><div class="factn">%(factn2)s</div><div class="factl">%(home.fact2)s</div></div>
       <div class="fact"><div class="factn">%(factn3)s</div><div class="factl">%(home.fact3)s</div></div>
-      <div class="fact"><div class="factn">%(factn4)s</div><div class="factl">%(home.fact4)s</div></div>
     </div>
   </div>
 </section>
