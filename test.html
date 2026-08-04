@@ -659,8 +659,6 @@
 <script src="assets/test-en.js"></script>
 <script src="assets/career.js"></script>
 <script src="assets/values.js"></script>
-<script src="assets/careers-data.js"></script>
-<script src="assets/recommend.js"></script>
 <script id="tm-logic">
 // ---------- TestMind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -1524,6 +1522,32 @@ var TLANG = (function(){
 // If it has not landed by the time the report paints, the report paints without
 // it and lifeArrived() fills the slot in when it does — the section appears late
 // rather than not at all.
+// The taxonomy and the engine are 84 KB together and are needed NOWHERE until
+// the report. Loading them in <head> pushed the payload a student waits on
+// before the first question from 217 KB to 368 KB -- on a school connection
+// that is seconds of staring at nothing, for data they may never reach. Same
+// treatment as the life packs: fetched in the background while the questions
+// are being answered.
+var recReady = false, recWaiting = null;
+(function loadTaxonomy(){
+  var need = 2, i;
+  function done(){ if (--need === 0){ recReady = true;
+    if (recWaiting){ recWaiting(); recWaiting = null; } } }
+  var srcs = ['assets/careers-data.js', 'assets/recommend.js'];
+  for (i = 0; i < srcs.length; i++){
+    var s = document.createElement('script');
+    s.src = srcs[i];
+    s.onload = done;
+    // A failed load leaves recReady false, and recommendHtml() already returns
+    // '' when the taxonomy is absent -- the report loses its Directions section
+    // and keeps everything else, rather than breaking.
+    s.onerror = (function(u){ return function(){
+      if (window.console) console.error('TestMind: ' + u + ' failed to load');
+    }; })(srcs[i]);
+    document.getElementsByTagName('head')[0].appendChild(s);
+  }
+})();
+
 var lifeReady = false, lifeWaiting = null;
 (function loadLife(){
   var s = document.createElement('script');
@@ -2399,6 +2423,7 @@ function subjImpliedInterests(perf){
 function recRefresh(){
   var slot = document.getElementById('recslot');
   if (!slot) return;
+  if (!recReady){ recWaiting = recRefresh; return; }   // fills itself in on arrival
   slot.innerHTML = recommendHtml();
   recBind();
 }

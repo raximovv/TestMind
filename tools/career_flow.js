@@ -625,6 +625,75 @@ async function open(browser, lang){
     await p.close();
   }
 
+  // ------------------------------------------- the deferred taxonomy load
+  // 84 KB that is needed nowhere until the report. Blocking on it cost every
+  // student seconds before their first question, on a connection where that
+  // matters, for data many never reach.
+  console.log('\n== the taxonomy is fetched in the background, not before question 1 ==');
+  {
+    const p = await browser.newPage();
+    const early = [];
+    p.on('request', r => {
+      if (/careers-data\.js|recommend\.js/.test(r.url())) early.push(r.url());
+    });
+    // Read the SERVED SOURCE, not the live DOM: a script the page injects at
+    // runtime ends up in <head> too, so the DOM cannot tell the two apart, and
+    // only a tag present in the source blocks the parser.
+    const src = await (await fetch(PAGE)).text();
+    ok(!/<script[^>]+careers-data\.js/.test(src) && !/<script[^>]+recommend\.js/.test(src),
+       'neither file appears as a script tag in the served HTML');
+    await p.goto(PAGE, { waitUntil: 'domcontentloaded' });
+    await p.waitForFunction('typeof CAREER_ENTRIES !== "undefined"', { timeout: 8000 }).catch(() => {});
+    const arrived = await p.evaluate(() => typeof CAREER_ENTRIES !== 'undefined' && typeof recRank === 'function');
+    ok(arrived, 'but both do arrive on their own');
+    await p.close();
+  }
+
+  console.log('\n== a report painted before the taxonomy lands fills itself in ==');
+  {
+    const p = await browser.newPage();
+    const errs = []; p.on('pageerror', e => errs.push(String(e)));
+    await p.setRequestInterception(true);
+    p.on('request', r => {
+      if (/careers-data\.js/.test(r.url())) setTimeout(() => r.continue(), 3000);
+      else r.continue();
+    });
+    await p.goto(PAGE, { waitUntil: 'domcontentloaded' });
+    await p.evaluate(INSTALL);
+    await p.evaluate(() => {
+      localStorage.clear();
+      const pref = { R: 2, I: 5, A: 2, S: 2, E: 3, C: 4 };
+      for (let g = 0; g < 50; g++){
+        for (let k = 0; k < state.plan.length; k++){
+          const qi = state.plan[k];
+          if (state.answers[qi]) continue;
+          const it = ITEMS[qi];
+          state.answers[qi] = it.sec === 'c' ? pref[it.s] : 3 + (k % 3);
+        }
+        if (!extendPlan()) break;
+      }
+      renderReport();
+    });
+    await settleFigureChoice(p).catch(() => {});
+    await new Promise(r => setTimeout(r, 400));
+    const before = await p.evaluate(() => ({
+      report: !!document.querySelector('#shareBox'),
+      rec: !!document.querySelector('#recslot .recgrid'),
+      empty: (document.getElementById('recslot') || {}).innerHTML === ''
+    }));
+    ok(before.report, 'the report is usable before the taxonomy lands');
+    ok(!before.rec && before.empty, 'no half-drawn Directions block while waiting');
+    await p.waitForSelector('#recslot .recgrid', { timeout: 10000 }).catch(() => {});
+    const after = await p.evaluate(() => ({
+      rec: !!document.querySelector('#recslot .recgrid'),
+      subj: document.querySelectorAll('.subjrow').length
+    }));
+    ok(after.rec, 'and it fills itself in when the file arrives');
+    ok(after.subj === 11, 'including the subject form');
+    ok(errs.length === 0, 'no JS errors (' + (errs[0] || 'none') + ')');
+    await p.close();
+  }
+
   await browser.close();
   console.log('\n' + (fail ? fail + ' FAILED, ' : '') + pass + ' checks passed');
   process.exit(fail ? 1 : 0);
