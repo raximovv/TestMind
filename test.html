@@ -611,6 +611,7 @@
 <script src="assets/test-ru.js"></script>
 <script src="assets/test-en.js"></script>
 <script src="assets/career.js"></script>
+<script src="assets/values.js"></script>
 <script id="tm-logic">
 // ---------- TestMind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -708,12 +709,63 @@ var CAREER_START = ITEMS.length;
   }
 })();
 var CAREER_COUNT = ITEMS.length - CAREER_START;
+
+/* ---------- Work Values, appended the same way ----------
+   Third section, third response scale: personality asks whether a statement is
+   TRUE of you, career asks whether you would LIKE doing something, and this asks
+   how IMPORTANT something is in a future job. Marked sec:'v'; every loop over
+   ITEMS that reads it.d or it.s has to skip them, which is why all three scorers
+   are bounded to their own block rather than running to ITEMS.length. */
+var VALUES_START = ITEMS.length;
+(function appendValues(){
+  var pack = (typeof VALUE_LANGS !== 'undefined') && VALUE_LANGS.uz;
+  if (!pack) return;
+  for (var i = 0; i < pack.items.length; i++)
+    ITEMS.push({ sec: 'v', vd: pack.items[i].d, t: pack.items[i].t });
+})();
+var VALUES_COUNT = ITEMS.length - VALUES_START;
+var VALUES_META = (typeof VALUE_LANGS !== 'undefined') ? VALUE_LANGS.uz : null;
+var VALUES_LABELS = VALUES_META ? VALUES_META.labels.slice() : null;
+
+/** Work-value profile, CENTRED ON THE STUDENT'S OWN MEAN.
+ *
+ *  Almost every teenager calls almost every value important, so absolute levels
+ *  carry little information -- what does is which values they put above their own
+ *  average. Centring also makes "everything is very important" come out flat
+ *  instead of as ten strong values, which is the honest reading of that answer.
+ *
+ *  Returns {} when the section was never reached, so the engine can tell "no
+ *  data" apart from "no preference". */
+function scoreValues(answers){
+  if (!VALUES_COUNT) return {};
+  var sums = {}, counts = {}, i, d, n = 0, total = 0;
+  for (i = VALUES_START; i < ITEMS.length; i++){
+    var v = answers[i];
+    if (!v) continue;
+    d = ITEMS[i].vd;
+    sums[d] = (sums[d] || 0) + v; counts[d] = (counts[d] || 0) + 1;
+    total += v; n++;
+  }
+  if (!n) return {};
+  var mean = total / n, out = {};
+  for (d in counts) if (counts.hasOwnProperty(d))
+    out[d] = (sums[d] / counts[d]) - mean;
+  return out;
+}
+
+function valuesAnswered(answers){
+  var n = 0;
+  for (var i = VALUES_START; i < ITEMS.length; i++) if (answers[i]) n++;
+  return n;
+}
 var CAREER_META = (typeof CAREER_LANGS !== 'undefined') ? CAREER_LANGS.uz : null;
 var CAREER_LABELS = CAREER_META ? CAREER_META.labels.slice() : null;
 
 /** Which response labels this item is answered on. */
 function labelsFor(it){
-  return (it && it.sec === 'c' && CAREER_LABELS) ? CAREER_LABELS : LABELS;
+  if (it && it.sec === 'c' && CAREER_LABELS) return CAREER_LABELS;
+  if (it && it.sec === 'v' && VALUES_LABELS) return VALUES_LABELS;
+  return LABELS;
 }
 
 /** Mean 1..5 per RIASEC scale. No reverse keying: "I would dislike repairing an
@@ -724,7 +776,7 @@ function labelsFor(it){
 function scoreCareer(answers){
   var sums = {}, counts = {}, i, s;
   for (i = 0; i < CAREER_SCALES.length; i++){ sums[CAREER_SCALES[i]] = 0; counts[CAREER_SCALES[i]] = 0; }
-  for (i = CAREER_START; i < ITEMS.length; i++){
+  for (i = CAREER_START; i < CAREER_START + CAREER_COUNT; i++){
     var v = answers[i];
     if (!v) continue;
     s = ITEMS[i].s;
@@ -743,7 +795,7 @@ function scoreCareer(answers){
  *  profile built from three answers. */
 function careerAnswered(answers){
   var n = 0;
-  for (var i = CAREER_START; i < ITEMS.length; i++) if (answers[i]) n++;
+  for (var i = CAREER_START; i < CAREER_START + CAREER_COUNT; i++) if (answers[i]) n++;
   return n;
 }
 
@@ -756,7 +808,7 @@ function scoreAnswers(answers){
     var v = answers[i];
     if (!v) continue;
     var it = ITEMS[i];
-    if (it.sec === 'c') continue;    // career items carry no Big Five trait
+    if (it.sec) continue;            // any later section: no Big Five trait on it
 
     if (it.r) v = 6 - v;
     sums[it.d] += v; counts[it.d]++;
@@ -891,7 +943,10 @@ var CORE_PLAN = [], RESERVE = {};
   var seen = {};
   for (var i = 0; i < ITEMS.length; i++){
     var it = ITEMS[i], k = it.d + (it.r ? 'r' : 'f');
-    if (it.sec === 'c') continue;      // the career block has its own split below
+    // ANY later section, not just the career one. These items carry no trait
+    // and no keying; three work-value items reached CORE_PLAN through an
+    // `=== 'c'` test here and were scored as personality questions.
+    if (it.sec) continue;              // later sections split themselves
     // An item marked `late` is held back and does not count against the quota,
     // so the next item of the same trait and keying takes its place in the core.
     if (it.late){ (RESERVE[it.d] = RESERVE[it.d] || []).push(i); continue; }
@@ -946,7 +1001,7 @@ var CAREER_GATE = 0.5;
 var CAREER_TOPUP_PER_SCALE = 3;
 var CAREER_CORE = [], CAREER_RESERVE = {};
 (function splitCareer(){
-  for (var i = CAREER_START; i < ITEMS.length; i++){
+  for (var i = CAREER_START; i < CAREER_START + CAREER_COUNT; i++){
     var it = ITEMS[i];
     if (it.late) (CAREER_RESERVE[it.s] = CAREER_RESERVE[it.s] || []).push(i);
     else CAREER_CORE.push(i);
@@ -987,7 +1042,7 @@ function careerTopup(answers){
 // that could identify the student even before anything is sent.
 // `plan` is the items this student is being asked, in order, as indices into
 // ITEMS. It starts as the personality core and grows one stage at a time.
-var STAGE_P_TOPUP = 0, STAGE_C_CORE = 1, STAGE_C_TOPUP = 2, STAGE_DONE = 3;
+var STAGE_P_TOPUP = 0, STAGE_C_CORE = 1, STAGE_C_TOPUP = 2, STAGE_V_CORE = 3, STAGE_DONE = 4;
 var state = { answers: new Array(ITEMS.length).fill(0), page: 0,
               plan: CORE_PLAN.slice(), stage: STAGE_P_TOPUP };
 function pageCount(){ return Math.ceil(state.plan.length / PAGE_SIZE); }
@@ -1003,10 +1058,8 @@ function willFinish(){
   // Only the very last stage can end the test. While personality questions are
   // still being answered the career block is certain to follow, so the button
   // must not offer a result it is not about to give.
-  if (state.stage === STAGE_C_TOPUP){
-    var a = answeredOnPage(state.page);
-    return a.done === a.total && !careerTopup(state.answers).length;
-  }
+  // The career top-up is no longer the end: values always follow it.
+  if (state.stage === STAGE_V_CORE) return !VALUES_COUNT;
   return false;
 }
 
@@ -1029,6 +1082,10 @@ function extendPlan(){
       add = CAREER_CORE.slice();
     } else if (st === STAGE_C_TOPUP){
       add = careerTopup(state.answers);
+    } else if (st === STAGE_V_CORE){
+      // Values are ten fixed items -- there is nothing to be adaptive about,
+      // and with one item per dimension there is no reserve to draw on.
+      for (var vi = VALUES_START; vi < VALUES_START + VALUES_COUNT; vi++) add.push(vi);
     }
     if (add.length){ state.plan = state.plan.concat(add); return true; }
   }
@@ -1042,6 +1099,12 @@ function careerStartsAt(){
     if (ITEMS[state.plan[i]].sec === 'c') return i;
   return -1;
 }
+/** Index in the plan where the work-value questions begin, or -1. */
+function valuesStartAt(){
+  for (var i = 0; i < state.plan.length; i++)
+    if (ITEMS[state.plan[i]].sec === 'v') return i;
+  return -1;
+}
 /** Is the page starting at plan index `from` the personality top-up block? */
 function pTopupHere(from){
   var c = careerStartsAt();
@@ -1049,8 +1112,9 @@ function pTopupHere(from){
 }
 /** ...or the career top-up block? */
 function cTopupHere(from){
-  var c = careerStartsAt();
-  return c >= 0 && from >= c + CAREER_CORE.length;
+  var c = careerStartsAt(), v = valuesStartAt();
+  if (c < 0 || from < c + CAREER_CORE.length) return false;
+  return v < 0 || from < v;          // not once the values block has begun
 }
 var app = document.getElementById('app');
 
@@ -1136,8 +1200,10 @@ function loadDraft(){
     var st = parseInt(d.stage, 10);
     if (!(st >= STAGE_P_TOPUP && st <= STAGE_DONE)){
       st = (d.plan.length > CORE_PLAN.length) ? STAGE_C_CORE : STAGE_P_TOPUP;
-      for (var q = 0; q < d.plan.length; q++)
-        if (ITEMS[d.plan[q]].sec === 'c'){ st = STAGE_C_TOPUP; break; }
+      for (var q = 0; q < d.plan.length; q++){
+        if (ITEMS[d.plan[q]].sec === 'c' && st < STAGE_C_TOPUP) st = STAGE_C_TOPUP;
+        if (ITEMS[d.plan[q]].sec === 'v'){ st = STAGE_DONE; break; }
+      }
     }
     d.stage = st;
     return d;
@@ -1384,6 +1450,21 @@ var TLANG = (function(){
   for (var i = 0; i < CAREER_COUNT; i++) ITEMS[CAREER_START + i].t = pack.items[i].t;
   CAREER_LABELS = pack.labels.slice();
   CAREER_META = pack;
+})();
+
+// Same swap, same refusal, for the work-value items.
+(function applyValuesLanguage(){
+  if (!VALUES_COUNT || typeof VALUE_LANGS === 'undefined') return;
+  var pack = VALUE_LANGS[TLANG];
+  if (!pack || TLANG === 'uz') return;
+  if (!pack.items || pack.items.length !== VALUES_COUNT){
+    if (window.console) console.error('TestMind: ' + TLANG + ' value list is ' +
+      ((pack.items || []).length) + ', expected ' + VALUES_COUNT + ' - staying in Uzbek');
+    return;
+  }
+  for (var i = 0; i < VALUES_COUNT; i++) ITEMS[VALUES_START + i].t = pack.items[i].t;
+  VALUES_LABELS = pack.labels.slice();
+  VALUES_META = pack;
 })();
 
 // ---- life content, fetched in the student's language only ----
@@ -1639,6 +1720,12 @@ function renderPage(){
     (careerStartsAt() === from
       ? '<div class="secintro"><h2>' + esc(T('careerH')) + '</h2>' +
         '<p>' + esc(T('careerLede')) + '</p></div>'
+      : '') +
+    // ...and again into the values block, where the scale changes a third time,
+    // from like/dislike to how-important.
+    (valuesStartAt() === from && VALUES_META
+      ? '<div class="secintro"><h2>' + esc(VALUES_META.introH) + '</h2>' +
+        '<p>' + esc(VALUES_META.introP) + '</p></div>'
       : '') +
     '<div class="card">';
   for (var k = from; k < to; k++){

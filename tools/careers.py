@@ -131,6 +131,54 @@ MAJORS = {
     'major_business_admin':('business', {'E': 0.5, 'C': 0.3, 'S': 0.2}, {}, 'higher'),
 }
 
+
+# ------------------------------------------------------ work-value associations
+# What each family tends to OFFER, on the ten work-value dimensions. Weights sum
+# to 1.0 and are deliberately coarse -- they exist to separate careers that
+# RIASEC scores identically. An entrepreneur and an operations manager are both
+# Enterprising; independence against stability is what tells them apart, and
+# that is the whole reason this signal is collected at all.
+#
+# Tunable in one place on purpose. These are judgements, not measurements, and
+# the first real student data should be allowed to move them.
+FAMILY_VALUES = {
+    'cs':          {'learning': .35, 'independence': .25, 'creativity': .20, 'income': .20},
+    'engineering': {'learning': .30, 'stability': .25, 'income': .25, 'teamwork': .20},
+    'business':    {'income': .30, 'leadership': .30, 'independence': .25, 'creativity': .15},
+    'finance':     {'income': .40, 'stability': .35, 'learning': .25},
+    'medicine':    {'helping': .40, 'meaning': .25, 'learning': .20, 'stability': .15},
+    'science':     {'learning': .45, 'independence': .30, 'meaning': .25},
+    'architecture':{'creativity': .45, 'independence': .25, 'meaning': .15, 'income': .15},
+    'psychology':  {'helping': .45, 'meaning': .30, 'learning': .25},
+    'law':         {'income': .25, 'meaning': .25, 'leadership': .25, 'stability': .25},
+    'education':   {'helping': .35, 'meaning': .30, 'balance': .20, 'stability': .15},
+    'media':       {'creativity': .40, 'independence': .25, 'meaning': .20, 'teamwork': .15},
+    'agriculture': {'meaning': .30, 'independence': .25, 'stability': .25, 'balance': .20},
+    'logistics':   {'stability': .35, 'income': .25, 'teamwork': .20, 'balance': .20},
+    'arts':        {'creativity': .50, 'independence': .30, 'meaning': .20},
+    'hospitality': {'teamwork': .35, 'helping': .25, 'income': .20, 'creativity': .20},
+    'sport':       {'teamwork': .30, 'balance': .25, 'helping': .25, 'meaning': .20},
+}
+
+# Only where an individual entry really departs from its family, so this stays
+# short and the family remains the tuning surface.
+ENTRY_VALUES = {
+    'entrepreneur':      {'independence': .35, 'income': .30, 'leadership': .25, 'stability': .10},
+    'technician':        {'stability': .35, 'income': .25, 'balance': .20, 'teamwork': .20},
+    'data_scientist':    {'learning': .45, 'independence': .30, 'income': .25},
+    'frontend_developer':{'creativity': .40, 'learning': .25, 'independence': .20, 'income': .15},
+    'sales_manager':     {'income': .40, 'teamwork': .25, 'leadership': .20, 'independence': .15},
+}
+
+
+def values_of(key):
+    u"""Work-value profile for a career or major, inherited from its family."""
+    if key in ENTRY_VALUES:
+        return ENTRY_VALUES[key]
+    fam = (CAREERS.get(key) or MAJORS.get(key))[0]
+    return FAMILY_VALUES[fam]
+
+
 FAMILY_KEYS = sorted(FAMILIES.keys())
 EDUCATION_LEVELS = ('higher', 'college', 'either')
 

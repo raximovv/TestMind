@@ -126,7 +126,7 @@ async function open(browser, lang){
       return d && { stage: d.stage, plan: d.plan.length };
     });
     ok(!!r, 'the draft still loads');
-    ok(r && typeof r.stage === 'number' && r.stage >= 0 && r.stage <= 3,
+    ok(r && typeof r.stage === 'number' && r.stage >= 0 && r.stage <= 4,
        'stage repaired to a real value (' + (r && r.stage) + ')');
     // derived from a plan that already contains career items => career core done
     ok(r && r.stage === 2, 'derived stage says the career core has already been asked');
@@ -342,6 +342,76 @@ async function open(browser, lang){
          lang + ': it names the language -> "' + (r.text || '') + '"');
       ok(r.has && r.beforeBtn, lang + ': it appears BEFORE the download button');
     }
+    await p.close();
+  }
+
+  // ------------------------------------------------------------ work values
+  console.log('\n== work values: section, scale and scoring ==');
+  {
+    const p = await open(browser);
+    const r = await p.evaluate(() => {
+      localStorage.clear();
+      for (let g = 0; g < 50; g++){
+        for (let k = 0; k < state.plan.length; k++)
+          if (!state.answers[state.plan[k]]) state.answers[state.plan[k]] = 3 + (k % 3);
+        if (!extendPlan()) break;
+      }
+      const secs = {};
+      state.plan.forEach(i => { const s = ITEMS[i].sec || 'p'; secs[s] = (secs[s] || 0) + 1; });
+      let order = '';
+      state.plan.forEach(i => { const s = ITEMS[i].sec || 'p'; if (order[order.length-1] !== s) order += s; });
+      return { secs, order, core: CORE_PLAN.length, vAt: valuesStartAt(), cAt: careerStartsAt() };
+    });
+    ok(r.core === 25, 'the personality core is still 25 items (' + r.core + ')');
+    ok(r.secs.v === 10, 'all ten value items are asked (' + r.secs.v + ')');
+    ok(r.order === 'pcv', 'sections run personality -> career -> values, never mixed (' + r.order + ')');
+    ok(r.vAt > r.cAt, 'values come after the career block');
+    ok(p.__errs.length === 0, 'no JS errors (' + (p.__errs[0] || 'none') + ')');
+    await p.close();
+  }
+
+  console.log('\n== work values: the answers that carry no information ==');
+  {
+    const p = await open(browser);
+    const r = await p.evaluate(() => {
+      const fill = v => {
+        const a = new Array(ITEMS.length).fill(0);
+        for (let i = VALUES_START; i < VALUES_START + VALUES_COUNT; i++) a[i] = v;
+        return a;
+      };
+      const flatAt = v => {
+        const s = scoreValues(fill(v));
+        return Object.keys(s).every(k => Math.abs(s[k]) < 1e-9);
+      };
+      const one = new Array(ITEMS.length).fill(0);
+      for (let i = VALUES_START; i < VALUES_START + VALUES_COUNT; i++) one[i] = 3;
+      one[VALUES_START] = 5;
+      const oneS = scoreValues(one);
+      const top = Object.keys(oneS).sort((a,b) => oneS[b] - oneS[a])[0];
+      return { high: flatAt(5), low: flatAt(1), mid: flatAt(3),
+               none: scoreValues(new Array(ITEMS.length).fill(0)),
+               top, topDim: ITEMS[VALUES_START].vd };
+    });
+    ok(r.high, 'everything "very important" -> flat profile, not ten strong values');
+    ok(r.low, 'everything "not important" -> flat profile too');
+    ok(r.mid, 'all-neutral -> flat');
+    ok(Object.keys(r.none).length === 0, 'no answers at all -> {}, not the same as no preference');
+    ok(r.top === r.topDim, 'one value raised above the rest becomes the top one');
+    await p.close();
+  }
+
+  console.log('\n== work values: translated, and the scale travels with the item ==');
+  for (const [lang, want] of [['uz', 'muhim'], ['ru', 'важно'], ['en', 'matters to me']]) {
+    const p = await open(browser, lang);
+    const r = await p.evaluate(() => {
+      const first = ITEMS[VALUES_START];
+      return { text: first.t, labels: labelsFor(first), intro: VALUES_META ? VALUES_META.introH : '' };
+    });
+    ok(r.text.toLowerCase().indexOf(want) !== -1,
+       lang + ': the item is in the right language -> "' + r.text.slice(0, 46) + '..."');
+    ok(r.labels.length === 5 && r.labels[4].length > 0,
+       lang + ': the importance scale travels with the item ("' + r.labels[4] + '")');
+    ok(!!r.intro, lang + ': the section hand-over is translated');
     await p.close();
   }
 

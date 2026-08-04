@@ -24,11 +24,27 @@ OUT = 'C:/Users/Asus/TestMind-site/assets/career.js'
 LANGS = ['uz', 'ru', 'en']
 
 
+def _gate(script, target):
+    u"""Run a checker and refuse to emit `target` unless it passes.
+
+    The child's stdout is a pipe, and on Windows a piped Python process encodes
+    with the system codepage rather than UTF-8 -- so a checker that prints Uzbek
+    or Russian dies with UnicodeEncodeError and reports failure for a reason that
+    has nothing to do with the data. PYTHONIOENCODING settles that, and the
+    output is printed on failure instead of being swallowed, because a gate that
+    hides why it closed is worse than no gate.
+    """
+    env = dict(os.environ)
+    env['PYTHONIOENCODING'] = 'utf-8'
+    r = subprocess.run([sys.executable, os.path.join(HERE, script)],
+                       stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                       env=env)
+    if r.returncode != 0:
+        sys.stdout.write(r.stdout.decode('utf-8', 'replace'))
+        raise SystemExit('%s failed -- refusing to emit %s' % (script, target))
+
 def build():
-    check = subprocess.call([sys.executable, os.path.join(HERE, 'riasec_check.py')],
-                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-    if check != 0:
-        raise SystemExit('riasec_check.py failed -- refusing to emit career.js')
+    _gate('riasec_check.py', 'career.js')
 
     data = {}
     for lang in LANGS:
