@@ -528,6 +528,103 @@ async function open(browser, lang){
     await p.close();
   }
 
+  // ------------------------------------------------ recommendations in 3 langs
+  // The failure mode here is not a crash. A key missing from one language's
+  // table makes T() return undefined and the page renders the literal word
+  // "undefined" -- which reads as a normal, if strange, label. Every visible
+  // string in the new block is therefore checked in every language.
+  console.log('\n== the Directions block is fully translated in all three ==');
+  {
+    const SCRIPT = { uz: /[ʻʼ]|oliy|kollej/i, ru: /[А-Яа-яЁё]/, en: /[A-Za-z]/ };
+    const NEVER_CYR = { uz: true, en: true, ru: false };
+    for (const lang of ['uz', 'ru', 'en']) {
+      const p = await open(browser, lang);
+      await p.evaluate(() => {
+        localStorage.clear();
+        // deliberately a REALISTIC/technical profile, so college-level and
+        // either-level entries reach the list and their labels get rendered
+        const pref = { R: 5, I: 4, C: 4, A: 2, S: 2, E: 2 };
+        const vpref = { stability: 5, income: 4, balance: 4, independence: 3, learning: 3,
+                        teamwork: 3, creativity: 2, helping: 2, leadership: 2, meaning: 3 };
+        for (let g = 0; g < 50; g++){
+          for (let k = 0; k < state.plan.length; k++){
+            const qi = state.plan[k];
+            if (state.answers[qi]) continue;
+            const it = ITEMS[qi];
+            state.answers[qi] = it.sec === 'c' ? pref[it.s]
+                              : it.sec === 'v' ? vpref[it.vd] : 3 + (k % 3);
+          }
+          if (!extendPlan()) break;
+        }
+        renderReport();
+      });
+      await settleFigureChoice(p).catch(() => {});
+      await new Promise(r => setTimeout(r, 700));
+      await p.evaluate(() => {
+        [['math',5],['physics',5],['geography',4]].forEach(function(x){
+          const b = document.querySelector('.subjopt[data-subj="' + x[0] + '"][data-val="' + x[1] + '"]');
+          if (b) b.click();
+        });
+      });
+      await new Promise(r => setTimeout(r, 400));
+
+      const r = await p.evaluate(() => {
+        const txt = s => [].map.call(document.querySelectorAll(s), e => e.textContent.trim());
+        const slot = document.getElementById('recslot');
+        return {
+          all: slot ? slot.textContent : '',
+          tabs: txt('.scaletab'), subjects: txt('.subjname'),
+          bands: txt('.reckey span'), edu: txt('.recedu'),
+          heads: txt('#recslot .lifehead').concat(txt('#recslot .lifetop')),
+          why: (document.querySelector('.recwhy') || {}).textContent || '',
+          disc: (document.querySelector('#recslot .cattr') || {}).textContent || '',
+          // every education level the taxonomy can produce
+          levels: (function(){
+            const s = {};
+            for (const k in CAREER_ENTRIES) s[CAREER_ENTRIES[k].education] = 1;
+            return Object.keys(s).sort();
+          })()
+        };
+      });
+
+      ok(r.all.indexOf('undefined') === -1, lang + ': no missing string renders as "undefined"');
+      ok(r.tabs.length === 3 && r.tabs.every(x => x.length > 1),
+         lang + ': three scale tabs, all worded (' + r.tabs.join(' / ') + ')');
+      ok(r.subjects.length === 11 && r.subjects.every(x => x.length > 2),
+         lang + ': all eleven subject names present');
+      ok(r.bands.length === 3 && r.bands.every(x => x.length > 3),
+         lang + ': all three band labels (' + r.bands.join(' / ') + ')');
+      ok(r.heads.every(x => x.length > 3), lang + ': every heading has text');
+      ok(r.why.length > 20, lang + ': the explanation is generated');
+      ok(r.disc.length > 40, lang + ': the disclaimer is present');
+      // Each education level the data can emit must have a translated label.
+      const eduSet = [...new Set(r.edu)];
+      ok(eduSet.length > 0 && eduSet.every(x => x.length > 3 && x !== 'undefined'),
+         lang + ': education labels resolve (' + eduSet.join(' | ') + ')');
+      // script hygiene: Cyrillic must appear only in ru
+      const hasCyr = /[А-Яа-яЁё]/.test(r.all);
+      ok(hasCyr !== NEVER_CYR[lang], lang + ': script is right for this language');
+      ok(p.__errs.length === 0, lang + ': no JS errors (' + (p.__errs[0] || 'none') + ')');
+      await p.close();
+    }
+  }
+
+  // Every education level in the taxonomy must have a label in every language,
+  // checked directly rather than hoping one turns up in a top-5 list.
+  console.log('\n== every education level has a label in every language ==');
+  for (const lang of ['uz', 'ru', 'en']) {
+    const p = await open(browser, lang);
+    const r = await p.evaluate(() => {
+      const out = {};
+      ['higher', 'college', 'either'].forEach(function(lv){ out[lv] = T('edu_' + lv); });
+      return out;
+    });
+    const bad = Object.keys(r).filter(k => !r[k] || r[k] === 'undefined' || r[k].length < 4);
+    ok(bad.length === 0,
+       lang + ': higher/college/either all worded (' + Object.keys(r).map(k => r[k]).join(' | ') + ')');
+    await p.close();
+  }
+
   await browser.close();
   console.log('\n' + (fail ? fail + ' FAILED, ' : '') + pass + ' checks passed');
   process.exit(fail ? 1 : 0);
