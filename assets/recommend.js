@@ -161,15 +161,22 @@ function recSignals(riasec, values, subjects, big5){
   };
 }
 
-/** Band a ranked list. Relative to the spread actually produced, never to an
- *  absolute threshold -- the scores are ordinal, and a fixed cutoff would
- *  pretend otherwise. */
+// Banding is by GAP FROM THE BEST, not by position in the whole range.
+// Measured over 96 careers, the five that get displayed sit within 0.00-0.20 of
+// the top score while the full range is ~0.90 -- so a range-based cut put every
+// displayed row in the top quartile and every dot came out green, which told the
+// reader nothing. What a student can act on is "how much weaker is this than the
+// strongest one", and these thresholds come from that measured spread.
+var REC_BAND_STRONG = 0.04;
+var REC_BAND_EXPLORE = 0.10;
+
+/** Band a ranked row. `worst` is still needed to detect the degenerate case
+ *  where nothing separates anything, in which case nothing is claimed. */
 function recBand(score, best, worst){
-  var span = best - worst;
-  if (span < 1e-6) return 'explore';              // everything tied: claim nothing
-  var r = (score - worst) / span;
-  if (r >= 0.75) return 'strong';
-  if (r >= 0.40) return 'explore';
+  if (best - worst < 1e-6) return 'explore';      // everything tied: claim nothing
+  var gap = best - score;
+  if (gap <= REC_BAND_STRONG) return 'strong';
+  if (gap <= REC_BAND_EXPLORE) return 'explore';
   return 'alternative';
 }
 
@@ -237,6 +244,7 @@ if (typeof module !== 'undefined' && module.exports){
     REC_WEIGHTS: REC_WEIGHTS, recRelative: recRelative, recOverlap: recOverlap,
     recSubjectFit: recSubjectFit, recPersonalityTerm: recPersonalityTerm,
     recScoreEntry: recScoreEntry, recSignals: recSignals, recBand: recBand,
+    REC_BAND_STRONG: REC_BAND_STRONG, REC_BAND_EXPLORE: REC_BAND_EXPLORE,
     recRank: recRank, recRankFamilies: recRankFamilies,
     recDrivers: recDrivers, recConflicts: recConflicts
   };

@@ -3289,6 +3289,8 @@ var MAJOR_ENTRIES = {
   }
  }
 };
+var SUBJECT_KEYS = ["math", "physics", "cs", "biology", "chemistry", "economics", "english", "literature", "history", "geography", "art"];
+var SUBJECT_SCALES = {"scales": {"confidence": {"max": 5.0, "min": 1.0}, "mark_five": {"max": 5.0, "min": 2.0}, "mark_hundred": {"max": 100.0, "min": 0.0}}, "weights": {"confidence": 0.6, "mark_five": 1.0, "mark_hundred": 1.0}};
 var TAXONOMY_NAMES = {
  "en": {
   "careers": {
@@ -3463,6 +3465,19 @@ var TAXONOMY_NAMES = {
    "major_transport": "Transport Systems",
    "major_urban_planning": "Urban Planning",
    "major_veterinary": "Veterinary Medicine"
+  },
+  "subjects": {
+   "art": "Art and design",
+   "biology": "Biology",
+   "chemistry": "Chemistry",
+   "cs": "Computer Science",
+   "economics": "Economics",
+   "english": "English",
+   "geography": "Geography",
+   "history": "History",
+   "literature": "Native language and literature",
+   "math": "Mathematics",
+   "physics": "Physics"
   }
  },
  "ru": {
@@ -3638,6 +3653,19 @@ var TAXONOMY_NAMES = {
    "major_transport": "Транспортные системы",
    "major_urban_planning": "Градостроительство",
    "major_veterinary": "Ветеринария"
+  },
+  "subjects": {
+   "art": "Изобразительное искусство",
+   "biology": "Биология",
+   "chemistry": "Химия",
+   "cs": "Информатика",
+   "economics": "Экономика",
+   "english": "Английский язык",
+   "geography": "География",
+   "history": "История",
+   "literature": "Родной язык и литература",
+   "math": "Математика",
+   "physics": "Физика"
   }
  },
  "uz": {
@@ -3813,6 +3841,19 @@ var TAXONOMY_NAMES = {
    "major_transport": "Transport tizimlari",
    "major_urban_planning": "Shaharsozlik",
    "major_veterinary": "Veterinariya"
+  },
+  "subjects": {
+   "art": "Tasviriy sanʼat",
+   "biology": "Biologiya",
+   "chemistry": "Kimyo",
+   "cs": "Informatika",
+   "economics": "Iqtisodiyot",
+   "english": "Ingliz tili",
+   "geography": "Geografiya",
+   "history": "Tarix",
+   "literature": "Ona tili va adabiyot",
+   "math": "Matematika",
+   "physics": "Fizika"
   }
  }
 };

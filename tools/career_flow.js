@@ -415,6 +415,119 @@ async function open(browser, lang){
     await p.close();
   }
 
+  // ------------------------------------------- subject entry + recommendations
+  console.log('\n== recommendations render, and marks sharpen them ==');
+  {
+    const p = await open(browser);
+    await p.evaluate(() => {
+      localStorage.clear();
+      const pref = { R: 2, I: 2, A: 5, S: 4, E: 3, C: 2 };
+      const vpref = { creativity: 5, independence: 4, meaning: 4, learning: 3, income: 2,
+                      stability: 2, helping: 3, leadership: 2, teamwork: 3, balance: 3 };
+      for (let g = 0; g < 50; g++){
+        for (let k = 0; k < state.plan.length; k++){
+          const qi = state.plan[k];
+          if (state.answers[qi]) continue;
+          const it = ITEMS[qi];
+          state.answers[qi] = it.sec === 'c' ? pref[it.s]
+                            : it.sec === 'v' ? vpref[it.vd] : 3 + (k % 3);
+        }
+        if (!extendPlan()) break;
+      }
+      renderReport();
+    });
+    await settleFigureChoice(p).catch(() => {});
+    await new Promise(r => setTimeout(r, 700));
+
+    const before = await p.evaluate(() => ({
+      lists: [].map.call(document.querySelectorAll('#recslot .recgrid'), u => u.querySelectorAll('li').length),
+      areas: [].map.call(document.querySelectorAll('#recslot .recgrid')[0].querySelectorAll('.recname'), e => e.textContent),
+      rows: document.querySelectorAll('.subjrow').length,
+      nosub: !!document.querySelector('.recempty'),
+      why: (document.querySelector('.recwhy') || {}).textContent || '',
+      pct: (document.getElementById('recslot') || {}).textContent || ''
+    }));
+    ok(before.lists.join(',') === '3,4,5', '3 areas, 4 majors, 5 careers (' + before.lists.join(',') + ')');
+    ok(before.rows === 11, 'all eleven subjects offered (' + before.rows + ')');
+    ok(before.nosub, 'the student is told marks would sharpen it');
+    ok(/Sanʼat|Arts|Искусство/.test(before.areas[0]),
+       'an artistic student leads with the arts (' + before.areas[0] + ')');
+    ok(before.why.length > 20, 'an explanation is generated');
+    // Fake precision must never reach the page.
+    ok(!/\d{1,3}\s*%/.test(before.pct), 'no percentage anywhere in the block');
+    ok(p.__errs.length === 0, 'no JS errors (' + (p.__errs[0] || 'none') + ')');
+
+    // entering marks must change the ranking, not just redraw it
+    await p.evaluate(() => {
+      [['math',5],['physics',5],['cs',5],['art',2],['literature',2]].forEach(function(x){
+        const b = document.querySelector('.subjopt[data-subj="' + x[0] + '"][data-val="' + x[1] + '"]');
+        if (b) b.click();
+      });
+    });
+    await new Promise(r => setTimeout(r, 400));
+    const after = await p.evaluate(() => ({
+      nosub: !!document.querySelector('.recempty'),
+      conf: (document.querySelector('.recconf') || {}).textContent || '',
+      saved: JSON.parse(localStorage.getItem('testmind_subjects_v1') || '{}')
+    }));
+    ok(!after.nosub, 'the "add your marks" prompt disappears once they are entered');
+    ok(after.conf.length > 20, 'the interest/marks conflict is surfaced');
+    ok(Object.keys(after.saved.marks || {}).length === 5, 'marks are stored on the device');
+    await p.close();
+  }
+
+  console.log('\n== the conflict sentence names the right side each way round ==');
+  {
+    const p = await open(browser, 'en');
+    await p.evaluate(() => {
+      localStorage.clear();
+      const pref = { R: 2, I: 2, A: 5, S: 4, E: 3, C: 2 };
+      for (let g = 0; g < 50; g++){
+        for (let k = 0; k < state.plan.length; k++){
+          const qi = state.plan[k];
+          if (state.answers[qi]) continue;
+          const it = ITEMS[qi];
+          state.answers[qi] = it.sec === 'c' ? pref[it.s] : 3 + (k % 3);
+        }
+        if (!extendPlan()) break;
+      }
+      renderReport();
+    });
+    await settleFigureChoice(p).catch(() => {});
+    await new Promise(r => setTimeout(r, 700));
+    await p.evaluate(() => {
+      [['math',5],['physics',5],['art',2],['literature',2]].forEach(function(x){
+        const b = document.querySelector('.subjopt[data-subj="' + x[0] + '"][data-val="' + x[1] + '"]');
+        if (b) b.click();
+      });
+    });
+    await new Promise(r => setTimeout(r, 400));
+    const c = await p.evaluate(() => (document.querySelector('.recconf') || {}).textContent || '');
+    // interests are artistic, marks are investigative -- the sentence must not
+    // swap them, which it did while only conf[0].scale was used.
+    const iAt = c.indexOf('Creating'), mAt = c.indexOf('Investigating');
+    ok(iAt >= 0 && mAt >= 0, 'both sides are named -> "' + c.slice(0, 80) + '"');
+    ok(iAt < mAt, 'the interest side is named first, the marks side second');
+    await p.close();
+  }
+
+  console.log('\n== a corrupted subject store cannot inject anything ==');
+  {
+    const p = await open(browser);
+    const r = await p.evaluate(() => {
+      localStorage.setItem('testmind_subjects_v1', JSON.stringify({
+        scale: 'martian', marks: { math: 5, astrology: 5, physics: 'abc', cs: null }
+      }));
+      subjMarks = {}; subjScale = 'mark_five';
+      subjLoad();
+      return { scale: subjScale, marks: subjMarks, perf: subjPerformance() };
+    });
+    ok(r.scale === 'mark_five', 'an unknown scale falls back to the default');
+    ok(Object.keys(r.marks).join(',') === 'math', 'only real subjects with real numbers survive');
+    ok(r.perf && r.perf.math && r.perf.math.score === 1, 'and the good one still reads correctly');
+    await p.close();
+  }
+
   await browser.close();
   console.log('\n' + (fail ? fail + ' FAILED, ' : '') + pass + ' checks passed');
   process.exit(fail ? 1 : 0);
