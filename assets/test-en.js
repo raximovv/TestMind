@@ -104,7 +104,7 @@ var TEST_EN = {
 
   steps: [
     {title: 'Take the test',
-     text: 'Be yourself and answer honestly. First about you, then about your interests — 65–85 questions, about 12 minutes.'},
+     text: 'Be yourself and answer honestly. First about you, then your interests and what you want from work — 75–95 questions, about 14 minutes.'},
     {title: 'See your result',
      text: 'One of the ten characters will be yours — with your strengths, right there on screen.'},
     {title: 'Get your guide',

@@ -69,13 +69,13 @@ S['uz'] = {
     'foot.disclaimer': u'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.',
 
     'close.h2': u'Tayyormisiz?',
-    'close.p': u'12 daqiqa. Oʻnta obrazdan qaysi biri sizniki?',
+    'close.p': u'14 daqiqa. Oʻnta obrazdan qaysi biri sizniki?',
 
     # ---- home
     'home.title': u'TestMind — Siz qaysi obrazsiz?',
-    'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 65–85 ta savol, 12 daqiqa: shaxsiyat va qiziqishlar. Yakunida obrazingiz va qiziqish profilingiz.',
+    'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 75–95 ta savol, 14 daqiqa: shaxsiyat, qiziqish va qadriyatlar. Yakunida obrazingiz, qiziqish profilingiz va yoʻnalishlar.',
     'home.h1': u'Siz qaysi obrazsiz?',
-    'home.lead': u'12 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
+    'home.lead': u'14 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
     'home.scenecap': u'Islom sivilizatsiyasi markazi · Toshkent',
 
     'home.num.h2': u'Raqamlarda',
@@ -125,7 +125,7 @@ S['uz'] = {
     'how.steps.h2': u'Uch qadam',
     'how.steps.lead': u'Boshidan oxirigacha telefonda ham bemalol bajariladi.',
     'how.s1.h3': u'Savollarga javob bering',
-    'how.s1.p': u'Avval shaxsiyat, keyin qiziqish savollari. Har biriga qanchalik qoʻshilishingizni beshta doiradan birini bosib belgilaysiz. Toʻgʻri yoki notoʻgʻri javob yoʻq.',
+    'how.s1.p': u'Avval shaxsiyat, keyin qiziqish, oxirida qadriyat savollari. Har biriga qanchalik qoʻshilishingizni beshta doiradan birini bosib belgilaysiz. Toʻgʻri yoki notoʻgʻri javob yoʻq.',
     'how.s2.h3': u'Obrazingizni koʻring',
     'how.s2.p': u'Darhol ekranda: obrazingiz, uning tavsifi, eng kuchli tomoningiz va shu xususiyat bilan tanilgan tarixiy siymo. Rasm qilib saqlashingiz mumkin.',
     'how.s3.h3': u'Batafsil tahlilni oling',
@@ -160,7 +160,7 @@ S['uz'] = {
     'faq.h1': u'Koʻp beriladigan savollar',
     'faq.lead': u'Qisqa javoblar.',
     'faq.q1': u'Test qancha vaqt oladi?',
-    'faq.a1': u'65–85 ta savol, taxminan 12 daqiqa: javoblaringiz aniq boʻlsa test qisqaroq tugaydi. Yarmida toʻxtasangiz, javoblaringiz shu qurilmada saqlanadi va keyin davom ettira olasiz.',
+    'faq.a1': u'75–95 ta savol, taxminan 14 daqiqa: javoblaringiz aniq boʻlsa test qisqaroq tugaydi. Yarmida toʻxtasangiz, javoblaringiz shu qurilmada saqlanadi va keyin davom ettira olasiz.',
     'faq.q2': u'Natijam kimgadir koʻrinadimi?',
     'faq.a2': u'Yoʻq. Test ismingizni ham, yoshingizni ham soʻramaydi va natijangiz hech kimga koʻrsatilmaydi. Javoblaringiz ismsiz saqlanadi: bu yozuvda ism ham, email ham boʻlmaydi va uni sizga bogʻlab boʻlmaydi. Batafsil: <a href="privacy.html">Maxfiylik</a>.',
     'faq.q3': u'Bu test ilmiymi?',
@@ -298,12 +298,12 @@ S['ru'] = {
     'foot.disclaimer': u'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.',
 
     'close.h2': u'Готовы?',
-    'close.p': u'12 минут. Какой из десяти образов ваш?',
+    'close.p': u'14 минут. Какой из десяти образов ваш?',
 
     'home.title': u'TestMind — какой у вас образ?',
-    'home.desc': u'Бесплатный тест личности на узбекском языке. 65–85 вопросов, 12 минут: личность и интересы. В конце — ваш образ и профиль интересов.',
+    'home.desc': u'Бесплатный тест личности на узбекском языке. 75–95 вопросов, 14 минут: личность, интересы и ценности. В конце — ваш образ, профиль интересов и направления.',
     'home.h1': u'Какой у вас образ?',
-    'home.lead': u'12 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
+    'home.lead': u'14 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
     'home.scenecap': u'Центр исламской цивилизации · Ташкент',
 
     'home.num.h2': u'В цифрах',
@@ -381,7 +381,7 @@ S['ru'] = {
     'faq.h1': u'Частые вопросы',
     'faq.lead': u'Короткие ответы.',
     'faq.q1': u'Сколько времени занимает тест?',
-    'faq.a1': u'65–85 вопросов, примерно 12 минут: чем яснее ваши ответы, тем короче тест. Если прерветесь на середине, ваши ответы сохранятся на этом устройстве и вы сможете продолжить.',
+    'faq.a1': u'75–95 вопросов, примерно 14 минут: чем яснее ваши ответы, тем короче тест. Если прерветесь на середине, ваши ответы сохранятся на этом устройстве и вы сможете продолжить.',
     'faq.q2': u'Кто-нибудь увидит мой результат?',
     'faq.a2': u'Нет. Тест не спрашивает ни имени, ни возраста, и ваш результат никому не показывается. Ответы сохраняются без имени: в этой записи нет ни имени, ни email, и связать её с вами невозможно. Подробнее: <a href="privacy.html">Конфиденциальность</a>.',
     'faq.q3': u'Это научный тест?',
@@ -511,7 +511,7 @@ S['en'] = {
     'close.p': u'Five minutes. Which of the ten characters is yours?',
 
     'home.title': u'TestMind — a Big Five personality test for Uzbek teenagers',
-    'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 65–85 items, about 12 minutes: personality and interests, ten result profiles.',
+    'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 75–95 items, about 14 minutes: personality, interests and work values, ten result profiles.',
     'home.h1': u'Which character are you?',
     'home.lead': u'Just five minutes — and you will understand why some things come easily to you and others do not.',
     'home.scenecap': u'Center of Islamic Civilization · Tashkent',
@@ -591,7 +591,7 @@ S['en'] = {
     'faq.h1': u'Frequently asked questions',
     'faq.lead': u'Short answers.',
     'faq.q1': u'How long does the test take?',
-    'faq.a1': u'65–85 items, about twelve minutes: the clearer your answers, the shorter the test. If you stop halfway, your answers are kept on this device and you can continue later.',
+    'faq.a1': u'75–95 items, about fourteen minutes: the clearer your answers, the shorter the test. If you stop halfway, your answers are kept on this device and you can continue later.',
     'faq.q2': u'Will anyone see my result?',
     'faq.a2': u'No. The test asks for neither name nor age, and your result is not shown to anyone. Responses are stored without a name: the record contains no name and no email address and cannot be traced back to you. Details: <a href="privacy.html">Privacy</a>.',
     'faq.q3': u'Is this test scientific?',
