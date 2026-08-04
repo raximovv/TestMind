@@ -53,7 +53,7 @@ COMMON = {
      u'Har bir obrazning kuchli tomoni ham, ehtiyot boʻladigan joyi ham bor. '
      u'Sizniki boshqalarnikidan yaxshiroq ham, yomonroq ham emas — boshqacha.'),
     (u'Hammasi toʻgʻri kelmasligi mumkin.',
-     u'Test 50 ta savolga asoslangan, u sizni toʻliq bilmaydi. Oʻzingizga mos '
+     u'Test qisqa savollar toʻplamiga asoslangan, u sizni toʻliq bilmaydi. Oʻzingizga mos '
      u'kelgan joylarini oling, mos kelmaganini chetga qoʻying — bu ham natija.'),
     (u'Eng foydali qismi — amaliyot.',
      u'Oxirgi sahifadagi kichik vazifalar shu qoʻllanmaning maʼnosi. '

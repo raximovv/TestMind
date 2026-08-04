@@ -220,10 +220,6 @@ section{padding:60px 0}
 .faq p{margin:12px 0 0;color:var(--muted);font-size:15px}
 
 /* ---------- closing band ---------- */
-/* Said before the click, not after it: on the Russian and English pages the test
-   button leads to a test that is only in Uzbek. */
-.testlang{max-width:560px;margin:22px auto 0;font-size:13.5px;line-height:1.55;
-          color:#D6C9AE}
 .fnote{color:var(--muted);font-size:12.5px;white-space:nowrap}
 
 .close{text-align:center;background:var(--lazur-deep);color:#fff;padding:60px 20px}
@@ -231,11 +227,6 @@ section{padding:60px 0}
 .close p{color:#DCD2BE;margin:0 0 26px;font-size:17px}
 .close .btn{background:#fff;color:var(--lazur-deep)}
 .close .btn:hover{background:#F2ECE0}
-/* `.close p` above resets the margin outright, which also throws away the
-   `auto` in .testlang and left the 560px note flush against the left edge of a
-   1300px section on every ru/ and en/ page. Same specificity, so the fix has to
-   sit after it, not next to .testlang. */
-.close .testlang{margin:22px auto 0}
 
 /* ---------- footer ---------- */
 .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}

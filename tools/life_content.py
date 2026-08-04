@@ -618,7 +618,7 @@ LIFE = {
     u'voz kechasiz.'),
    (u'Hamma bilan yaxshi boʻlish', u'Ikki qarindosh urishsa, ikkalasiga ham '
     u'«haqsan» deysiz.'),
-   (u'Tashqarida koʻproq', u'Uy jimjit boʻlsa, doʻstlarникiga ketasiz.'),
+   (u'Tashqarida koʻproq', u'Uy jimjit boʻlsa, doʻstlarnikiga ketasiz.'),
    (u'Charchaganini yashirish', u'Kayfiyatingiz yoʻq kunda ham quvnoq '
     u'koʻrinasiz.'),
   ],
@@ -729,7 +729,7 @@ LIFE = {
   'weak': [
    (u'Ogʻriqni oʻziga olish', u'Doʻstingizning muammosi sizni uning oʻzidan '
     u'koʻra koʻproq qiynaydi.'),
-   (u'Ideallashtirish', u'Odamni mukammal deb bilasiz, keyin haqiqatni '
+   (u'Odamni ideallashtirish', u'Odamni mukammal deb bilasiz, keyin haqiqatni '
     u'koʻrib qattiq hafsalangiz pir boʻladi.'),
    (u'Uzoqlashib ketish', u'Ranjiganingizda tushuntirmay, jimgina yoʻqolasiz.'),
    (u'Chegara qoʻyolmaslik', u'Doʻstingiz uchun oʻz vaqtingizni butunlay '
@@ -742,7 +742,7 @@ LIFE = {
    u'Odamni tushunish va yangi yondashuv izlash bir joyda kerak boʻladi.'),
   (u'Ijtimoiy ish va nodavlat tashkilotlar', {'A': .45, 'O': .35, 'C': .20},
    u'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'),
-  (u'Sanʼat va arttеrapiya', {'O': .45, 'A': .35, 'E': .20},
+  (u'Sanʼat va art-terapiya', {'O': .45, 'A': .35, 'E': .20},
    u'Ijod orqali odamga yordam berish — ikkala kuchingiz birga ishlaydi.'),
   (u'Maxsus pedagogika', {'A': .40, 'C': .35, 'O': .25},
    u'Har bolaga alohida yoʻl kerak — siz uni topa olasiz.'),
@@ -900,3 +900,60 @@ LIFE = {
 },
 
 }
+
+
+# ---------------------------------------------------------------- translations
+#
+# Uzbek is the original. A translation carries TEXT ONLY: the trait weights that
+# produce the direction percentages stay in LIFE above, and the builder pairs
+# them onto the translated names by position. So a translation cannot move a
+# number, and it cannot silently reorder the directions either -- `careers` in a
+# translation is (name, why), with no weights to disagree about.
+#
+# An archetype missing from a translation simply has no life section on that
+# language's page, exactly as an archetype missing from LIFE has none anywhere.
+# That is what lets the content land one archetype at a time. What is NOT
+# allowed is a half-written one: check_translation() below refuses a translated
+# archetype whose bullet counts differ from the Uzbek, because that ships a page
+# with three of five strengths on it and nothing says so.
+import life_content_ru as _ru
+import life_content_en as _en
+
+LIFE_BY_LANG = {'uz': LIFE, 'ru': _ru.LIFE, 'en': _en.LIFE}
+
+LABELS = {
+    'uz': {
+        'strong': STRONG_LABEL, 'weak': WEAK_LABEL, 'career': CAREER_TITLE,
+        'disclaimer': DISCLAIMER, 'areas': AREA_TITLES,
+    },
+    'ru': _ru.LABELS,
+    'en': _en.LABELS,
+}
+
+
+def check_translation(key, lang):
+    u"""Raise unless the translated entry has the same shape as the Uzbek one."""
+    if lang == 'uz':
+        return
+    base, tr = LIFE[key], LIFE_BY_LANG[lang][key]
+    for area in ('family', 'school', 'friends'):
+        if (area in base) != (area in tr):
+            raise ValueError('%s/%s: area %r present in one language only' % (key, lang, area))
+        if area not in base:
+            continue
+        for kind in ('strong', 'weak'):
+            if len(base[area][kind]) != len(tr[area][kind]):
+                raise ValueError('%s/%s: %s.%s has %d entries, Uzbek has %d'
+                                 % (key, lang, area, kind, len(tr[area][kind]), len(base[area][kind])))
+    if len(base.get('careers', [])) != len(tr.get('careers', [])):
+        raise ValueError('%s/%s: %d directions, Uzbek has %d'
+                         % (key, lang, len(tr.get('careers', [])), len(base.get('careers', []))))
+
+
+def careers_for(key, lang):
+    u"""(name, weights, why) rows. Weights always come from the Uzbek entry."""
+    base = LIFE[key]['careers']
+    if lang == 'uz':
+        return [(n, w, why) for n, w, why in base]
+    tr = LIFE_BY_LANG[lang][key]['careers']
+    return [(tr[i][0], base[i][1], tr[i][1]) for i in range(len(base))]

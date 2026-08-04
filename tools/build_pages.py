@@ -259,13 +259,12 @@ SCRIPTS = u"""<script src="assets/characters.js"></script>
 
 def close(lang):
     t = S[lang]
-    note = (u'\n  <p class="testlang">%s</p>' % t['testlang.note']) if t['testlang.note'] else u''
     return u"""<section class="close">
   <h2>%s</h2>
   <p>%s</p>
-  <a class="btn big" href="test.html" data-cta>%s</a>%s
+  <a class="btn big" href="test.html" data-cta>%s</a>
 </section>
-""" % (t['close.h2'], t['close.p'], t['nav.cta'], note)
+""" % (t['close.h2'], t['close.p'], t['nav.cta'])
 
 
 # ---------------------------------------------------------------- home

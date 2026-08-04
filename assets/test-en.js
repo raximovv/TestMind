@@ -104,7 +104,7 @@ var TEST_EN = {
 
   steps: [
     {title: 'Take the test',
-     text: 'Be yourself and answer honestly. 50 questions, about 7 minutes.'},
+     text: 'Be yourself and answer honestly. 25–35 questions, about 5 minutes.'},
     {title: 'See your result',
      text: 'One of the ten characters will be yours — with your strengths, right there on screen.'},
     {title: 'Get your guide',
@@ -118,6 +118,9 @@ var TEST_EN = {
     seeResult:   'See the result',
     stepCount:   'Step %1 of %2',
     answerRest:  'Please answer the remaining questions.',
+    topupNote:   'Two of your sides came out almost level. A few more questions will settle which of them is stronger.',
+    lifeH:       'The full picture',
+    lifeSub:     'How your archetype shows up in everyday life.',
     resumeH1:    'Unfinished test',
     resumeP:     'An unfinished test was found on this device. Continue it?',
     resumeCount: '%1 of %2 questions answered.',
@@ -132,6 +135,8 @@ var TEST_EN = {
     shareCopy:   'Copy the link',
     copied:      'Copied ✓',
     copyFailed:  'Could not copy',
+    sharePrint:  'Print',
+    shareAgain:  'Start again',
     shareMsg:    'I took the TestMind test. My result: "%1".',
     shareInvite: 'Try it yourself: https://%1/',
     capOr:       'or by email',

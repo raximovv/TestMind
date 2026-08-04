@@ -1,4 +1,5 @@
 const puppeteer=require('puppeteer-core');
+const { settleFigureChoice } = require('./figure_choice');
 let pass=0,fail=0;
 const ok=(c,m)=>{c?(pass++,console.log('  PASS '+m)):(fail++,console.log('  FAIL '+m));};
 (async()=>{
@@ -12,6 +13,7 @@ const ok=(c,m)=>{c?(pass++,console.log('  PASS '+m)):(fail++,console.log('  FAIL
  await p.evaluate(()=>localStorage.clear()); await p.reload({waitUntil:'networkidle2'});
  await p.evaluate(()=>{state.name='Dilnoza';state.age='15';
    state.answers=ITEMS.map((x,i)=>(i%5)+1); renderReport();});
+ await settleFigureChoice(p);   // the report only paints once the figure is chosen
  await new Promise(r=>setTimeout(r,600));
  const research=posts.filter(x=>(x||'').indexOf('"research"')!==-1).map(JSON.parse);
  const completed=posts.filter(x=>(x||'').indexOf('"completed"')!==-1).map(JSON.parse);

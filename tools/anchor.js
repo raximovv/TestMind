@@ -2,6 +2,7 @@
 // real mouse that is parked at ONE screen position for the whole page: if the
 // next circle does not arrive under it, the click misses and nothing is recorded.
 const puppeteer = require('puppeteer-core');
+const { questionsOnPage } = require('./figure_choice');
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const URL = 'file:///C:/Users/Asus/TestMind-site/test.html';
 let pass = 0, fail = 0;
@@ -36,7 +37,7 @@ const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, conso
       await new Promise(r => setTimeout(r, 900));   // let the smooth scroll settle
       if (i < 4) {
         const d = await p.evaluate((idx, sy) => {
-          const row = document.getElementById('item-' + (idx + 1)).querySelector('.dots');
+          const row = document.getElementById('item-' + state.plan[idx + 1]).querySelector('.dots');
           const r = row.getBoundingClientRect();
           return Math.round((r.top + r.height / 2) - sy);
         }, i, spot.y);
@@ -66,18 +67,22 @@ const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, conso
     await p.reload({ waitUntil: 'networkidle2' });
     await p.evaluate(() => { state.page = 3; renderPage(); });
     await new Promise(r => setTimeout(r, 300));
+    // Which questions a step holds is decided by the plan, not by the step number
+    // -- step 4 is items 17,18,24,25,26, not 15..19 -- so read them off the page.
+    const asked = await questionsOnPage(p);
+    const first = asked[0];
     // The opener (mark + title + 3 cards) now sits above the questions on every
     // step, so on a phone the first question of a middle step opens below the fold.
     // A real student scrolls it into view before answering; do the same, then park
     // the mouse on its 2nd circle and never move it again.
-    await p.evaluate(() => document.getElementById('item-15').scrollIntoView({ block: 'center' }));
+    await p.evaluate(i => document.getElementById('item-' + i).scrollIntoView({ block: 'center' }), first);
     await new Promise(r => setTimeout(r, 250));
-    const spot = await p.$eval('input[name=q15][value="2"]', e => {
+    const spot = await p.$eval('input[name=q' + first + '][value="2"]', e => {
       const r = e.closest('.opt').getBoundingClientRect();
       return { x: r.left + r.width / 2, y: Math.round(r.top + r.height / 2) };
     });
     for (let i = 0; i < 5; i++) { await p.mouse.click(spot.x, spot.y); await new Promise(r => setTimeout(r, 800)); }
-    const got = await p.evaluate(() => state.answers.slice(15, 20));
+    const got = await p.evaluate(list => list.map(i => state.answers[i]), asked);
     ok(got.every(v => v === 2), label + ': all five answered from a standing mouse at '
       + Math.round(spot.y / h * 100) + '% down [' + got.join(',') + ']');
     ok(errs.length === 0, label + ': no JS errors (' + (errs[0] || 'none') + ')');

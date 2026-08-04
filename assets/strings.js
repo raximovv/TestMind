@@ -22,7 +22,9 @@ ru: {
     fig:      'Из истории: ',
     figmale:  'Мужской образ:',
     figfemale:'Женский образ:',
-    resume:   'Продолжить тест'
+    resume:   'Продолжить тест',
+    vgYours:  'Ваш образ',
+    vgNote:   'Пример результата. Свой можно сохранить картинкой и отправить друзьям.'
   },
   fam: {
     lead: 'Лидеры',
@@ -213,7 +215,9 @@ en: {
     fig:      'From history: ',
     figmale:  'Male figure:',
     figfemale:'Female figure:',
-    resume:   'Resume the test'
+    resume:   'Resume the test',
+    vgYours:  'Your character',
+    vgNote:   'A sample result. You can save your own as an image and send it to friends.'
   },
   fam: {
     lead: 'Leaders',
@@ -405,8 +409,21 @@ function tmUi(key){
   var s = STRINGS[tmLang()];
   var uz = {strength: 'Kuchli tomoni: ', watch: 'Eʼtibor bering: ',
             fig: 'Tarixdan: ', figmale: 'Erkak siymo:', figfemale: 'Ayol siymo:',
-            resume: 'Testni davom ettirish'};
+            resume: 'Testni davom ettirish',
+            vgYours: 'Sizning obrazingiz',
+            vgNote: 'Namuna natija. Oʻzingiznikini rasm qilib saqlab, '
+                    + 'doʻstlaringizga yuborishingiz mumkin.'};
   return (s && s.ui && s.ui[key]) || uz[key];
+}
+
+// The five trait names, in the reader's language. Uzbek is the base, and it is
+// the SAME wording the test's own result screen uses -- a sample result that
+// named the traits differently from the real one would be worse than no sample.
+function tmTrait(t){
+  var s = STRINGS[tmLang()];
+  var uz = {ES: 'Hissiy barqarorlik', E: 'Kirishimlilik', O: 'Yangilikka ochiqlik',
+            A: 'Kelishuvchanlik', C: 'Masʼuliyatlilik'};
+  return (s && s.traits && s.traits[t]) || uz[t];
 }
 
 function tmFam(f){

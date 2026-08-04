@@ -2,6 +2,7 @@
 // One tab per width, navigated through the pages, so 17 pages stay quick.
 const puppeteer = require('puppeteer-core');
 const fs = require('fs');
+const path = require('path');
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const BASE = 'http://localhost:8765/';
@@ -106,22 +107,35 @@ const SCAN = () => {
         if (w === WIDTHS[0]) {
           if (res.h1 !== 1) bug('h1-count', res.h1);
           if (!res.title) bug('no-title', '');
-          if (res.lang !== 'uz') bug('lang', res.lang);
+          // Expected language comes from the folder the page lives in. This used
+          // to demand 'uz' everywhere, so every correctly-tagged ru/ and en/ page
+          // was reported as a bug -- 32 of the 94 findings were this one line.
+          const wantLang = page.indexOf('ru/') === 0 ? 'ru'
+                         : page.indexOf('en/') === 0 ? 'en' : 'uz';
+          if (res.lang !== wantLang) bug('lang', res.lang + ' (expected ' + wantLang + ')');
           res.hSkips.forEach(o => bug('heading-skip', o));
-          res.links.forEach(l => allLinks.add(l));
+          res.links.forEach(l => allLinks.add(page + ' -> ' + l));
         }
       } catch (e) { bug('audit-failed', e.message); }
     }
     await p.close();
   }
 
-  for (const href of allLinks) {
+  // Resolve every href the way the browser did: against the page it was found
+  // on, with the query string dropped. Checking the raw href against the repo
+  // root reported every '../' link on a ru/ or en/ page as dead, and every
+  // 'test.html?lang=ru' too -- 62 findings, none of them real.
+  for (const entry of allLinks) {
+    const [from, href] = entry.split(' -> ');
     if (!href || /^(https?:|mailto:|tel:)/.test(href)) continue;
-    const [file, hash] = href.split('#');
-    if (file && !fs.existsSync(DIR + file)) { bug('dead-link', href, '(links)', '-'); continue; }
-    if (hash && file) {
-      const html = fs.readFileSync(DIR + file, 'utf8');
-      if (html.indexOf('id="' + hash + '"') === -1) bug('dead-anchor', href, '(links)', '-');
+    const [rawFile, hash] = href.split('#');
+    const file = rawFile.split('?')[0];
+    const rel = file ? path.posix.normalize(path.posix.join(path.posix.dirname(from), file)) : '';
+    if (rel && rel.indexOf('..') === 0) { bug('link-escapes-site', href, from, '-'); continue; }
+    if (rel && !fs.existsSync(DIR + rel)) { bug('dead-link', href + ' (from ' + from + ')', '(links)', '-'); continue; }
+    if (hash && rel) {
+      const html = fs.readFileSync(DIR + rel, 'utf8');
+      if (html.indexOf('id="' + hash + '"') === -1) bug('dead-anchor', href + ' (from ' + from + ')', '(links)', '-');
     }
   }
 

@@ -2,6 +2,7 @@
 // The 1-5 shortcut was removed on purpose; this suite now guards that it stays
 // removed WITHOUT taking native radio-group arrow keys down with it.
 const puppeteer = require('puppeteer-core');
+const { finishToReport } = require('./figure_choice');
 
 const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const URL = 'http://localhost:8765/test.html';
@@ -80,8 +81,10 @@ async function answer(p, i, v) {
     const bar = await p.$eval('.stepbar', e => e.textContent.replace(/\s+/g, ' ').trim());
     ok(!/Boshladik|Yaxshi|marrada|Miyangiz|qoldi/.test(bar) && bar.indexOf('/ 50') === -1,
       'no motivational line, no x/50, no time estimate: "' + bar + '"');
-    ok(bar.indexOf('Qadam 2 / 10') !== -1, 'shows the step they are on now: "' + bar + '"');
-    ok(bar.indexOf('Qadam 1 / 10') === -1, 'never shows step 1 in the bar');
+    // Five pages now, not ten: the core is 25 questions and only grows when the
+    // student's 2nd and 3rd traits come out level.
+    ok(bar.indexOf('Qadam 2 / 5') !== -1, 'shows the step they are on now: "' + bar + '"');
+    ok(bar.indexOf('Qadam 1 / 5') === -1, 'never shows step 1 in the bar');
     ok(await p.$eval('.stepbar', e => getComputedStyle(e).position) === 'static',
       'the bar stays put in the page, it does not follow the screen');
     ok(await p.evaluate(() => {
@@ -90,7 +93,8 @@ async function answer(p, i, v) {
       return b.bottom <= c.top + 1;
     }), 'and it sits above the questions');
     ok(await p.$eval('.backlink', e => e.tagName === 'BUTTON'), 'the back link is a real button now');
-    ok(await p.$eval('#pfill', e => e.style.width) === '10%', '5 of 50 answered fills 10%');
+    // Progress runs against the planned length (25 to start), not the item bank.
+    ok(await p.$eval('#pfill', e => e.style.width) === '20%', '5 of 25 answered fills 20%');
 
     // The bug that killed the pinned version: a bar over the content ate the taps
     // landing under it. Nothing may sit on top of an answer circle now.
@@ -111,8 +115,7 @@ async function answer(p, i, v) {
       'and the answers are still there');
 
     // The bar belongs to the questions only.
-    await p.evaluate(() => { state.answers = ITEMS.map((x, i) => (i % 5) + 1); renderReport(); });
-    await new Promise(r => setTimeout(r, 250));
+    await finishToReport(p);
     ok(!(await p.$('.stepbar')), 'no step bar on the result screen');
     await p.close();
   }
@@ -120,11 +123,7 @@ async function answer(p, i, v) {
   console.log('\n== copy-share ==');
   {
     const { p } = await open();
-    await p.evaluate(() => {
-      state.answers = ITEMS.map((x, i) => (i % 5) + 1);
-      renderReport();
-    });
-    await new Promise(r => setTimeout(r, 250));
+    await finishToReport(p);
     // Headless Chrome refuses real clipboard writes, so stub the API and check what
     // OUR code hands it. The actual paste still needs a check on a real device.
     await p.evaluate(() => {

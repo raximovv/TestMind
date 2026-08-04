@@ -4,9 +4,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bepul shaxsiyat testi — TestMind</title>
-<meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi: 50 ta savol, 7 daqiqa, roʻyxatdan oʻtmasdan. Yakunida oʻnta obrazdan bittasi va 8 sahifalik qoʻllanma.">
+<meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi: 25–35 ta savol, 5 daqiqa, roʻyxatdan oʻtmasdan. Yakunida oʻnta obrazdan bittasi va 8 sahifalik qoʻllanma.">
 <meta property="og:title" content="Bepul shaxsiyat testi — TestMind">
-<meta property="og:description" content="50 ta savol, 7 daqiqa. Ism ham, yosh ham soʻralmaydi. Yakunida obrazingiz va bepul PDF qoʻllanma.">
+<meta property="og:description" content="25–35 ta savol, 5 daqiqa. Ism ham, yosh ham soʻralmaydi. Yakunida obrazingiz va bepul PDF qoʻllanma.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="TestMind">
 <meta property="og:locale" content="uz_UZ">
@@ -175,6 +175,10 @@
         margin:0 auto 18px;max-width:1120px}
   /* Rovoq: a shallow arch on the top edge, echoing the pishtoq of a madrasa. */
   .card{border-radius:26px 26px 14px 14px;border-top:3px solid var(--lazur)}
+  /* Why the test just got longer. Sits above the card, quieter than a question. */
+  .tunote{max-width:1120px;margin:0 auto 14px;padding:13px 18px;border-radius:12px;
+          background:var(--paper);border:1px solid var(--line);
+          color:var(--muted);font-size:15px;line-height:1.55}
   .hero{border-radius:26px 26px 18px 18px}
   .capture,.rsch{border-radius:22px 22px 14px 14px;border-top:3px solid var(--lazur)}
 
@@ -581,7 +585,6 @@
 
 <script src="assets/characters.js"></script>
 <script src="assets/strings.js"></script>
-<script src="assets/life.js"></script>
 <script src="assets/test-ru.js"></script>
 <script src="assets/test-en.js"></script>
 <script id="tm-logic">
@@ -608,7 +611,11 @@ var ITEMS = [
   {d:'E',r:1,t:'Odamlarga birdan ochilib ketmayman, ichki dunyoyimni sir tutaman.'},
   {d:'A',r:1,t:'Boshqalarning nimani his qilayotgani menga unchalik qiziq emas.'},
   {d:'A',r:0,t:'Har qanday vaziyatda ham haqiqatni gapiraman.'},
-  {d:'E',r:1,t:'Hayotim bir xil va biroz zerikarli kechayotgandek tuyuladi.'},
+  // late: held out of the core block, whatever its position would otherwise earn
+  // it. A flat life reads as low mood at least as much as it reads as low
+  // sociability, so this one is closer to N than to E and should not be among the
+  // five E items every student is judged on. It still scores when it is asked.
+  {d:'E',r:1,late:1,t:'Hayotim bir xil va biroz zerikarli kechayotgandek tuyuladi.'},
   {d:'A',r:1,t:'Oʻz fikrimni yetkazish uchun boshqalarning fikriga qarshi chiqaman.'},
   {d:'C',r:0,t:'Mendan kutilganidan ham koʻproq natija koʻrsatishga harakat qilaman.'},
   {d:'N',r:0,t:'Oʻzimdan va shaxsimdan koʻpincha qoniqmayman.'},
@@ -628,6 +635,16 @@ var ITEMS = [
   {d:'E',r:0,t:'Yangi va tavakkalchilikka boy sarguzashtlarni yoqtiraman.'},
   {d:'E',r:0,t:'Hayotdan va har bir kundan chinakam zavq olaman.'},
   {d:'N',r:1,t:'Noqulay vaziyatlarda ham xijolat boʻlib, tortinib oʻtirmayman.'},
+  // Reads as Agreeableness (compare #18, "not very interested in what others are
+  // feeling", which is keyed A) and was moved there on 2026-08-03 -- then moved
+  // back the same day, because e2e caught what it costs. Every trait holds five
+  // forward and five reverse items, and that balance is what makes agreeing with
+  // everything cancel to a flat profile instead of a ranked one. Moving a single
+  // item leaves O at 5/4 and A at 5/6, so an acquiescent student comes out with
+  // O inflated and A deflated -- a bias in the archetype itself, which is worse
+  // than one item sitting under an arguable heading. Re-keying it needs a second
+  // item moving the other way, or scoring that averages the two directions
+  // instead of all items.
   {d:'O',r:1,t:'Haddan tashqari taʼsirchan va hissiyotga beriluvchan odamlarni tushunishim qiyin.'},
   {d:'A',r:1,t:'Odamlarning harakati ortida doim yashirin bir manfaat bor deb shubhalanaman.'},
   {d:'C',r:1,t:'Bergan soʻzimda va vaʼdamda tura olmayman.'},
@@ -705,6 +722,11 @@ function archetypeKeyOf(s){
 // tmArch() applies the strings.js overlay for the current language; the raw
 // ARCHETYPES table is always Uzbek.
 function tmA(k){ return (typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k]; }
+// Same for the family. FAMILIES is read directly for the colours, which are the
+// same in every language -- but reading .name off it too is how the Uzbek
+// «Gʻamxoʻrlar» ended up on the Russian and English result screens, and on the
+// shared PNG, where it is the one word a stranger sees.
+function tmF(k){ return (typeof tmFam === 'function') ? tmFam(k) : FAMILIES[k].name; }
 function archetypeOf(s){ return tmA(archetypeKeyOf(s)); }
 
 // The archetype is the two strongest traits, so it hinges entirely on which trait
@@ -735,10 +757,119 @@ function textKey(level){ return level === 'Past' ? 'past' : (level === 'Yuqori' 
 <script>
 // ---------- UI ----------
 var PAGE_SIZE = 5;
-var PAGES = Math.ceil(ITEMS.length / PAGE_SIZE);
+
+/* ---------- how long the test is ----------
+   The archetype is the top two of five traits, and the key is sorted, so the
+   first and second can swap without changing the answer. The ONLY comparison
+   that can change the archetype is between the 2nd and 3rd strongest trait.
+   Every question spent on the other three is spent confirming something that
+   was never in doubt.
+
+   So the test asks a core of five items per trait, looks at that boundary, and
+   only asks more when the two traits either side of it are close enough that
+   another few questions could genuinely swap them.
+
+   Simulated over 300,000 students (1..5 scale, per-item noise set so ten items
+   reach alpha ~= .80), against the student's own true ranking:
+
+     fixed 50 items            61.5% correct    49.2% agree across two sittings
+     this design (~32 items)   58.3%            45.5%
+     fixed 35 items            56.1%            43.1%
+
+   So it does NOT match the old fifty-item test -- it gives up about three points
+   for eighteen fewer questions, and it beats a flat cut to 35 on both accuracy
+   and length. Letting traits correlate (r = .15 and .30, which is realistic for
+   the Big Five) lowers every row by a few points and changes none of the
+   ordering. TOPUP_GATE was chosen off the same runs: accuracy is flat above 0.4
+   (0.4 -> 57.8%, 0.5 -> 58.3%, 0.8 -> 58.7%), so 0.5 buys nearly all of what is
+   there without asking a longer test of nine students in ten.
+
+   Scoring did not have to change at all: scoreAnswers already averages each
+   trait over however many of its items were answered, so a trait measured with
+   ten items and one measured with five both land on the same 1..5 scale. */
+var CORE_FWD = 3, CORE_REV = 2;   // core items per trait, out of five of each
+var TOPUP_GATE = 0.5;             // 2nd and 3rd this close on the 1..5 scale = ask more
+
+// The archetype calls the trait ES; the items measuring it are marked N.
+function itemTraitOf(t){ return t === 'ES' ? 'N' : t; }
+
+// Both keying directions are represented in the core. A core of only positively
+// worded items would measure agreement with the format as much as the trait.
+var CORE_PLAN = [], RESERVE = {};
+(function splitItems(){
+  var seen = {};
+  for (var i = 0; i < ITEMS.length; i++){
+    var it = ITEMS[i], k = it.d + (it.r ? 'r' : 'f');
+    // An item marked `late` is held back and does not count against the quota,
+    // so the next item of the same trait and keying takes its place in the core.
+    if (it.late){ (RESERVE[it.d] = RESERVE[it.d] || []).push(i); continue; }
+    seen[k] = (seen[k] || 0) + 1;
+    if (seen[k] <= (it.r ? CORE_REV : CORE_FWD)) CORE_PLAN.push(i);
+    else (RESERVE[it.d] = RESERVE[it.d] || []).push(i);
+  }
+})();
+
+/** The two traits whose order decides the archetype, when the core has left it
+ *  in doubt. Null when the 2nd is clear of the 3rd and more questions would
+ *  only confirm what the core already settled. */
+function contestedPair(answers){
+  var s = scoreAnswers(answers);
+  var ranked = TRAIT_ORDER.slice().sort(function(a, b){
+    return (s[b] - s[a]) || (TRAIT_ORDER.indexOf(a) - TRAIT_ORDER.indexOf(b));
+  });
+  if (s[ranked[1]] - s[ranked[2]] > TOPUP_GATE) return null;
+  return [ranked[1], ranked[2]];
+}
+
+/** The follow-up block for a contested pair: the held-back items of both traits,
+ *  alternating, so nobody is handed ten questions in a row about one thing.
+ *
+ *  Capped per trait rather than taking the whole reserve. The bank does not have
+ *  to hold exactly ten items per trait -- re-keying one item moves it between
+ *  traits -- and without the cap a trait carrying eleven would push the block to
+ *  eleven questions, which is five, five and a page with one question on it. */
+var TOPUP_MAX = 5;
+function topupFor(pair){
+  var a = (RESERVE[itemTraitOf(pair[0])] || []).slice(0, TOPUP_MAX);
+  var b = (RESERVE[itemTraitOf(pair[1])] || []).slice(0, TOPUP_MAX);
+  var out = [], i;
+  for (i = 0; i < Math.max(a.length, b.length); i++){
+    if (i < a.length) out.push(a[i]);
+    if (i < b.length) out.push(b[i]);
+  }
+  return out;
+}
+
 // No name and no age: the test never asks for either, so there is nothing here
 // that could identify the student even before anything is sent.
-var state = { answers: new Array(ITEMS.length).fill(0), page: 0 };
+// `plan` is the items this student is being asked, in order, as indices into
+// ITEMS. It starts as the core and is extended at most once.
+var state = { answers: new Array(ITEMS.length).fill(0), page: 0, plan: CORE_PLAN.slice() };
+function pageCount(){ return Math.ceil(state.plan.length / PAGE_SIZE); }
+
+/** Does the button at the bottom of the current page end the test?
+ *  On the last core page the honest answer is not known until every question on
+ *  it is answered, and most students do get a follow-up block -- so the label
+ *  stays "next" until we can prove otherwise. It may then improve to "see
+ *  result"; it never promises the result and then asks for more. */
+function willFinish(){
+  if (state.page < pageCount() - 1) return false;
+  if (state.plan.length > CORE_PLAN.length) return true;   // already extended: this is the end
+  var a = answeredOnPage(state.page);
+  return a.done === a.total && !contestedPair(state.answers);
+}
+
+/** Extend the plan once, if the core left the archetype in doubt. Returns true
+ *  when questions were added. */
+function extendPlan(){
+  if (state.plan.length > CORE_PLAN.length) return false;   // already extended
+  var pair = contestedPair(state.answers);
+  if (!pair) return false;
+  var add = topupFor(pair);
+  if (!add.length) return false;
+  state.plan = state.plan.concat(add);
+  return true;
+}
 var app = document.getElementById('app');
 
 // JS smooth scrolling is not covered by the CSS reduced-motion rule, so ask directly.
@@ -759,7 +890,8 @@ var SAVE_KEY = 'testmind_draft_v1';
 function saveDraft(){
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify({
-      answers: state.answers, page: state.page, aid: state.aid || '', ts: Date.now()
+      answers: state.answers, page: state.page, plan: state.plan,
+      aid: state.aid || '', ts: Date.now()
     }));
   } catch (e) {}
 }
@@ -809,6 +941,13 @@ function loadDraft(){
     var d = JSON.parse(localStorage.getItem(SAVE_KEY));
     if (!d || !Array.isArray(d.answers) || d.answers.length !== ITEMS.length) return null;
     d.answers = d.answers.map(function(v){ v = parseInt(v, 10); return (v >= 1 && v <= 5) ? v : 0; });
+    // A draft written before the test became adaptive has no plan, and a
+    // corrupted one must not be trusted to index ITEMS. Either way, fall back to
+    // the core: the extension is decided from the answers anyway, so the student
+    // is asked the same follow-up block they would have been asked before.
+    d.plan = (Array.isArray(d.plan) && d.plan.length && d.plan.every(function(i){
+      return typeof i === 'number' && i >= 0 && i < ITEMS.length;
+    })) ? d.plan : CORE_PLAN.slice();
     return d;
   } catch (e) { return null; }
 }
@@ -965,7 +1104,7 @@ var ART_GUIDE = stepArt('step-guide');
 
 var STEPS = [
   { c:'#0F6E8C', soft:'#E7EFF1', art:ART_TEST, title:'Testni topshiring',
-    text:'Oʻzingiz boʻling va samimiy javob bering. 50 ta savol, taxminan 7 daqiqa.' },
+    text:'Oʻzingiz boʻling va samimiy javob bering. 25–35 ta savol, taxminan 5 daqiqa.' },
   { c:'#C08A2E', soft:'#F8EFDC', art:ART_RESULT, title:'Natijangizni koʻring',
     text:'Oʻnta obrazdan bittasi sizniki boʻladi — kuchli tomonlaringiz bilan birga, darhol ekranda.' },
   { c:'#8A6BC1', soft:'#EFE9F8', art:ART_GUIDE, title:'Qoʻllanmangizni oling',
@@ -1015,6 +1154,28 @@ var TLANG = (function(){
   document.documentElement.setAttribute('lang', TLANG);
 })();
 
+// ---- life content, fetched in the student's language only ----
+// The three language packs are 45-67 KB each; loading all three would send a
+// student ~110 KB of text in languages they cannot read. It is also needed
+// nowhere until the report, so it loads in the background while the questions
+// are being answered rather than blocking the page the student is waiting on.
+// If it has not landed by the time the report paints, the report paints without
+// it and lifeArrived() fills the slot in when it does — the section appears late
+// rather than not at all.
+var lifeReady = false, lifeWaiting = null;
+(function loadLife(){
+  var s = document.createElement('script');
+  s.src = 'assets/life-' + TLANG + '.js';
+  s.onload = function(){
+    lifeReady = true;
+    if (lifeWaiting) { lifeWaiting(); lifeWaiting = null; }
+  };
+  // A failed load leaves lifeReady false, which reads exactly like an archetype
+  // with no entry: no heading, no empty box, and the rest of the report intact.
+  s.onerror = function(){ if (window.console) console.error('TestMind: life-' + TLANG + '.js failed to load'); };
+  document.getElementsByTagName('head')[0].appendChild(s);
+})();
+
 // The page's own wording in Uzbek. The instrument itself (ITEMS, LABELS) is data
 // above; this is only the furniture around it.
 var TT_UZ = {
@@ -1024,6 +1185,9 @@ var TT_UZ = {
   seeResult:   'Natijani koʻrish',
   stepCount:   'Qadam %1 / %2',
   answerRest:  'Qolgan savollarga javob bering.',
+  topupNote:   'Ikki tomoningiz deyarli teng chiqdi. Qaysi biri kuchliroq ekanini aniq aytish uchun yana bir necha savol beramiz.',
+  lifeH:       'Toʻliq tahlil',
+  lifeSub:     'Obrazingiz kundalik hayotda qanday koʻrinadi.',
   resumeH1:    'Yarim qolgan test',
   resumeP:     'Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?',
   resumeCount: '%1 / %2 savolga javob berilgan.',
@@ -1038,6 +1202,8 @@ var TT_UZ = {
   shareCopy:   'Havolani nusxalash',
   copied:      'Nusxalandi ✓',
   copyFailed:  'Nusxalab boʻlmadi',
+  sharePrint:  'Chop etish',
+  shareAgain:  'Qaytadan',
   shareMsg:    'Men TestMind testidan oʻtdim. Natijam: «%1».',
   shareInvite: 'Sen ham oʻzingni sinab koʻr: https://%1/',
   capOr:       'yoki emailga',
@@ -1190,15 +1356,16 @@ function introHtml(){
 }
 
 function answeredOnPage(p){
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, ITEMS.length), c = 0;
-  for (var i = from; i < to; i++) if (state.answers[i]) c++;
+  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, state.plan.length), c = 0;
+  for (var i = from; i < to; i++) if (state.answers[state.plan[i]]) c++;
   return { done: c, total: to - from };
 }
 
 function renderPage(){
   var p = state.page;
   saveDraft();
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, ITEMS.length);
+  // from/to are positions in the PLAN, not in ITEMS: state.plan[k] is the item.
+  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, state.plan.length);
   if (!sessionStart) sessionStart = Date.now();
   // Was this page already finished when it opened? If so we must NOT auto-advance —
   // otherwise editing an answer on a completed page would yank the page away.
@@ -1215,35 +1382,39 @@ function renderPage(){
           '<button class="backlink" id="prevBtn"><span aria-hidden="true">←</span> ' + T('back') + '</button>' +
           '<div class="stepright">' +
             '<div class="ptrack"><div class="pfill" id="pfill" style="width:' + pctDone() + '%"></div></div>' +
-            '<span class="stepcount">' + T('stepCount', p + 1, PAGES) + '</span>' +
+            '<span class="stepcount">' + T('stepCount', p + 1, pageCount()) + '</span>' +
           '</div>' +
         '</div></div>'
       : '') +
+    // Extra questions arrive without warning otherwise: the step count grows and
+    // the progress bar drops back. Say why, in the student's own terms -- two of
+    // their sides came out level, and this is what decides between them.
+    (from >= CORE_PLAN.length ? '<p class="tunote">' + T('topupNote') + '</p>' : '') +
     '<div class="card">';
-  for (var i = from; i < to; i++){
-    var it = ITEMS[i];
+  for (var k = from; k < to; k++){
+    var qi = state.plan[k], it = ITEMS[qi];
     // The radiogroup is labelled BY the question statement (and its help line), not
     // with a bare "N-savol": a screen reader should read the actual statement when
     // it lands on the answer scale, not just a number.
-    var labelledBy = 'qtext-' + i + (it.h ? ' qhelp-' + i : '');
-    html += '<div class="item' + (state.answers[i] ? ' done' : '') + '" id="item-' + i + '">' +
-      '<div class="qtext" id="qtext-' + i + '">' + esc(it.t) + '</div>' +
-      (it.h ? '<p class="qhelp" id="qhelp-' + i + '">' + esc(it.h) + '</p>' : '') +
+    var labelledBy = 'qtext-' + qi + (it.h ? ' qhelp-' + qi : '');
+    html += '<div class="item' + (state.answers[qi] ? ' done' : '') + '" id="item-' + qi + '">' +
+      '<div class="qtext" id="qtext-' + qi + '">' + esc(it.t) + '</div>' +
+      (it.h ? '<p class="qhelp" id="qhelp-' + qi + '">' + esc(it.h) + '</p>' : '') +
       '<div class="scale" role="radiogroup" aria-labelledby="' + labelledBy + '">' +
         '<span class="slab l" aria-hidden="true">' + LABELS[0] + '</span>' +
         '<div class="dots">';
     for (var v = 1; v <= 5; v++){
-      var sel = state.answers[i] === v ? ' sel' : '';
+      var sel = state.answers[qi] === v ? ' sel' : '';
       html += '<label class="opt s' + v + sel + '" title="' + LABELS[v-1] + '">' +
-              '<input type="radio" name="q' + i + '" value="' + v + '" aria-label="' + LABELS[v-1] + '"' +
-              (state.answers[i] === v ? ' checked' : '') + '><span class="dot"></span></label>';
+              '<input type="radio" name="q' + qi + '" value="' + v + '" aria-label="' + LABELS[v-1] + '"' +
+              (state.answers[qi] === v ? ' checked' : '') + '><span class="dot"></span></label>';
     }
     html += '</div><span class="slab r" aria-hidden="true">' + LABELS[4] + '</span></div></div>';
   }
   html += '</div>' +
     '<div class="nav">' +
       '<p class="navmsg" id="navMsg" role="status"></p>' +
-      '<button class="btn" id="nextBtn">' + (p === PAGES-1 ? T('seeResult') : T('next')) + '</button>' +
+      '<button class="btn" id="nextBtn">' + (willFinish() ? T('seeResult') : T('next')) + '</button>' +
     '</div>' +
     '<div class="tailspace" aria-hidden="true"></div>';
   app.innerHTML = html;
@@ -1267,8 +1438,10 @@ function renderPage(){
     }
   }
 
+  // Returns an ITEM index (what the DOM ids and state.answers are keyed by), or
+  // -1 when this page is finished.
   function firstUnanswered(){
-    for (var i = from; i < to; i++) if (!state.answers[i]) return i;
+    for (var i = from; i < to; i++) if (!state.answers[state.plan[i]]) return state.plan[i];
     return -1;
   }
 
@@ -1308,7 +1481,7 @@ function renderPage(){
   // Gentle auto-advance: only the first time this page becomes complete, and
   // never on the last page (seeing the result should be a deliberate tap).
   function tryAutoAdvance(){
-    if (pageWasComplete || p >= PAGES - 1) return false;
+    if (pageWasComplete || p >= pageCount() - 1) return false;
     var ap = answeredOnPage(p);
     if (ap.done !== ap.total) return false;
     pageWasComplete = true;
@@ -1363,21 +1536,33 @@ function renderPage(){
     var a = answeredOnPage(p);
     if (a.done < a.total){
       for (var i = from; i < to; i++){
-        if (!state.answers[i]){ document.getElementById('item-' + i).classList.add('warn'); }
+        var mi = state.plan[i];
+        if (!state.answers[mi]){ document.getElementById('item-' + mi).classList.add('warn'); }
       }
       var first = app.querySelector('.item.warn');
       if (first) first.scrollIntoView({behavior:'smooth', block:'center'});
       updateCount(true);
       return;
     }
-    if (p === PAGES - 1) renderReport(); else { state.page++; renderPage(); }
+    // Last planned page: either the archetype is settled and we show it, or the
+    // 2nd and 3rd traits are too close to call and the plan grows by one block.
+    if (p < pageCount() - 1){ state.page++; renderPage(); return; }
+    if (extendPlan()){ saveDraft(); state.page++; renderPage(); return; }
+    renderReport();
   };
 }
 
 function answeredCount(){
   return state.answers.filter(function(v){ return v > 0; }).length;
 }
-function pctDone(){ return Math.round(answeredCount() / ITEMS.length * 100); }
+// Against the plan, not the whole item bank: a student who is only ever asked
+// 25 questions has finished when those 25 are done. When the plan is extended
+// the bar does step back, which is honest -- there is genuinely more to do.
+function pctDone(){
+  var done = 0;
+  for (var i = 0; i < state.plan.length; i++) if (state.answers[state.plan[i]]) done++;
+  return state.plan.length ? Math.round(done / state.plan.length * 100) : 0;
+}
 
 // Still needed for the anonymous durationSec figure, even though the on-screen
 // estimate is gone.
@@ -1386,6 +1571,10 @@ var sessionStart = 0;
 function updateCount(missing){
   var fill = document.getElementById('pfill');
   if (fill) fill.style.width = pctDone() + '%';
+  // Answering the last question on the last core page can settle the archetype,
+  // which turns "next" into "see result".
+  var nb = document.getElementById('nextBtn');
+  if (nb) nb.textContent = willFinish() ? T('seeResult') : T('next');
   // The nudge belongs next to the button they just pressed, not in the bar.
   var m = document.getElementById('navMsg');
   if (m){
@@ -1433,7 +1622,7 @@ function buildShareCard(s, arch, key, cb){
   g.fillText('TestMind', M, 96);
   g.textAlign = 'right';
   g.fillStyle = '#5B7078'; g.font = '500 30px Inter, "Segoe UI", sans-serif';
-  g.fillText(fam.name, W - M, 96);
+  g.fillText(tmF(arch.fam), W - M, 96);
 
   function finish(){
     g.textAlign = 'center';
@@ -1474,9 +1663,10 @@ function buildShareCard(s, arch, key, cb){
 /** «Oʻshanda va hozir» — only for a student who took this at least RETEST_DAYS ago.
  *  Shows which traits actually moved; says so plainly when none did. */
 // ---- full life-area detail on the result screen ----
-// Same content as the archetype page, from the same generated source (life.js),
-// so a student sees everything without having to leave the result. Returns ''
-// for an archetype with no entry yet, rather than an empty heading.
+// Same content as the archetype page, from the same generated source
+// (life-<lang>.js), so a student sees everything without having to leave the
+// result. Returns '' for an archetype with no entry yet, rather than an empty
+// heading.
 function lifeHtml(archKey){
   if (typeof LIFE === 'undefined' || !LIFE[archKey]) return '';
   var d = LIFE[archKey], L = LIFE_LABELS, out = '', i, j;
@@ -1508,6 +1698,21 @@ function lifeHtml(archKey){
     out += '</ul><p class="cardisc">' + esc(L.disclaimer) + '</p>';
   }
   return '<section class="lifefull">' + out + '</section>';
+}
+
+/** Put the life section into the report, now or as soon as the pack lands.
+ *  Writes nothing at all when there is no content for this archetype, so the
+ *  heading never appears over an empty box. */
+function lifeFill(archKey){
+  function paint(){
+    var slot = document.getElementById('lifeslot');
+    if (!slot) return;                       // reader navigated away
+    var body = lifeHtml(archKey);
+    if (!body) return;
+    slot.innerHTML = '<h2 class="lifetop">' + esc(T('lifeH')) + '</h2>' +
+                     '<p class="lifetopsub">' + esc(T('lifeSub')) + '</p>' + body;
+  }
+  if (lifeReady) paint(); else lifeWaiting = paint;
 }
 
 function thenAndNowHtml(s, archKey){
@@ -1705,7 +1910,7 @@ function paintReport(s, arch, archKey, figureGender, age){
   var html =
     '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft + '">' +
       '<div class="herotop">' +
-        '<span class="famtag">' + fam.name + '</span>' +
+        '<span class="famtag">' + tmF(arch.fam) + '</span>' +
         artHtml +
       '</div>' +
       '<div class="herobody">' +
@@ -1732,13 +1937,13 @@ function paintReport(s, arch, archKey, figureGender, age){
       '</div>' +
     '</div>' +
     thenAndNowHtml(s, archKey) +
-    '<div class="actions">' +
-      '<button class="btn wide" id="shareBtn">' + T('shareSave') + '</button>' +
-      '<button class="btn ghost" id="copyBtn">' + T('shareCopy') + '</button>' +
-      '<button class="btn ghost" id="printBtn">Chop etish</button>' +
-      '<button class="btn ghost wide" id="againBtn">Qaytadan</button>' +
-    '</div>' +
-    '<div id="shareBox" class="sharebox"></div>' +
+    // Empty until the language pack is in — filled by lifeFill(), either
+    // immediately or on arrival.
+    '<div id="lifeslot"></div>' +
+    // The guide sits under everything the result actually says. It used to be
+    // directly beneath the share buttons, which put an email field in front of a
+    // reader who had not yet read a word about their own obraz -- asking for the
+    // address before giving them the thing it is offered for.
     '<div class="capture" id="capture">' +
       '<h3>' + T('guideH') + '</h3>' +
       '<p class="caplede">' + T('guideLede', arch.name) + '</p>' +
@@ -1759,16 +1964,16 @@ function paintReport(s, arch, archKey, figureGender, age){
       '<p class="capmsg" id="capMsg" role="status"></p>' +
       '<p class="capnote">' + T('capNote') + '</p>' +
     '</div>' +
-    // The long-form guidance now sits BELOW the actions: reading it is optional,
-    // sharing and downloading are not.
-    // Written long-form in Uzbek only. A machine-shaped Russian rendering of
-    // three hundred bullets would read worse than not offering it, so the
-    // section is omitted rather than half-translated.
-    (TLANG === 'uz'
-      ? '<h2 class="lifetop">Toʻliq tahlil</h2>' +
-        '<p class="lifetopsub">Obrazingiz kundalik hayotda qanday koʻrinadi.</p>' +
-        lifeHtml(archKey)
-      : '') +
+    // Controls last. Saving, printing and starting over are things a reader does
+    // AFTER reading, and putting them above the analysis offered an exit before
+    // the page had said anything -- the same mistake the guide block used to make.
+    '<div class="actions">' +
+      '<button class="btn wide" id="shareBtn">' + T('shareSave') + '</button>' +
+      '<button class="btn ghost" id="copyBtn">' + T('shareCopy') + '</button>' +
+      '<button class="btn ghost" id="printBtn">' + T('sharePrint') + '</button>' +
+      '<button class="btn ghost wide" id="againBtn">' + T('shareAgain') + '</button>' +
+    '</div>' +
+    '<div id="shareBox" class="sharebox"></div>' +
     // The per-trait breakdown was removed at the founder's request. The
     // DISCLAIMER it used to carry is kept here, outside any toggle.
     '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
@@ -1779,10 +1984,11 @@ function paintReport(s, arch, archKey, figureGender, age){
   // Recorded only after the page is built, so «Oʻshanda va hozir» compares against
   // the earlier result rather than the one just produced.
   saveHistory({ ts: Date.now(), s: s, key: archKey });
+  lifeFill(archKey);
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
     clearDraft();
-    state = { answers:new Array(ITEMS.length).fill(0), page:0 };
+    state = { answers:new Array(ITEMS.length).fill(0), page:0, plan:CORE_PLAN.slice() };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderPage();
   };
@@ -1793,7 +1999,7 @@ function paintReport(s, arch, archKey, figureGender, age){
             + 'Sen ham oʻzingni sinab koʻr: https://' + SITE_HOST + '/';
     function done(okCopied){
       btn.textContent = okCopied ? T('copied') : T('copyFailed');
-      setTimeout(function(){ btn.textContent = 'Havolani nusxalash'; }, 2200);
+      setTimeout(function(){ btn.textContent = T('shareCopy'); }, 2200);
     }
     if (navigator.clipboard && navigator.clipboard.writeText){
       navigator.clipboard.writeText(msg).then(function(){ done(true); })['catch'](function(){ done(false); });
@@ -1876,7 +2082,9 @@ function renderResume(d){
     '<div class="card">' +
       '<h1>' + T('resumeH1') + '</h1>' +
       '<p>' + T('resumeP') + '</p>' +
-      '<p class="muted">' + answered + ' / ' + ITEMS.length + ' savolga javob berilgan.</p>' +
+      // Against the length of THEIR test, not the item bank. Was also hardcoded
+      // Uzbek while a translated resumeCount sat unused beside it.
+      '<p class="muted">' + T('resumeCount', answered, d.plan.length) + '</p>' +
       '<div class="nav" style="margin-top:18px">' +
         '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
         '<button class="btn" id="resumeBtn">Davom etish</button>' +
@@ -1884,13 +2092,14 @@ function renderResume(d){
     '</div>';
   document.getElementById('resumeBtn').onclick = function(){
     state.answers = d.answers.slice();
-    state.page = Math.min(d.page || 0, PAGES - 1);
+    state.plan = d.plan.slice();
+    state.page = Math.min(d.page || 0, pageCount() - 1);
     state.aid = d.aid || '';          // keep one id across abandon -> resume -> finish
     renderPage();
   };
   document.getElementById('freshBtn').onclick = function(){
     clearDraft();
-    state = { answers:new Array(ITEMS.length).fill(0), page:0 };
+    state = { answers:new Array(ITEMS.length).fill(0), page:0, plan:CORE_PLAN.slice() };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
     renderPage();
   };

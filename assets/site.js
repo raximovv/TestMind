@@ -182,9 +182,30 @@ function buildScene(){
 
 /* ================= small vignettes for the explainer panels ================= */
 
-function vgFrame(body, w, h){
-  return '<svg viewBox="0 0 '+w+' '+h+'" xmlns="http://www.w3.org/2000/svg">'
-       + '<rect width="'+w+'" height="'+h+'" rx="16" fill="#FFFFFF"/>' + body + '</svg>';
+// The vignettes are composed on a 400x272 field, but the ink only lands in
+// x 26..373, y 42..270 of it -- an empty band 42 deep across the top and about
+// 26 down each side. The <svg> was showing the field rather than the drawing,
+// so a good part of the width the page gives these boxes went to margin and the
+// figures came out small, floating in the middle. This window is the drawing
+// plus an even margin. The box keeps its width on the page, so cropping the
+// empty band is what makes everything inside it bigger.
+var VG_VIEW = {x: 14, y: 30, w: 372, h: 242};
+
+// The sample result card carries five bars and two lines of small print, so it
+// needs a taller window than the two drawn vignettes below it.
+var VG_CARD_VIEW = {x: 14, y: 30, w: 372, h: 300};
+
+function esc(s){
+  return String(s).replace(/[&<>"]/g, function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+  });
+}
+
+function vgFrame(body, view){
+  var v = view || VG_VIEW;
+  return '<svg viewBox="'+v.x+' '+v.y+' '+v.w+' '+v.h+'" xmlns="http://www.w3.org/2000/svg">'
+       + '<rect x="'+v.x+'" y="'+v.y+'" width="'+v.w+'" height="'+v.h+'" rx="16" fill="#FFFFFF"/>'
+       + body + '</svg>';
 }
 function figAt(k, cx, footY, sc, side){
   return '<g transform="translate('+(cx-100*sc)+','+(footY-FOOT*sc)+') scale('+sc+')">'+inner(k, side)+'</g>';
@@ -204,22 +225,100 @@ var VG_CARD = 'E|C';
 // Nodirabegim; Amir Temur is the male variant and has to be asked for by name.
 var VG_CARD_FIGURE = 'male';
 
+// The five bars. Values are a plausible Tashkilotchi profile as fractions of the
+// 1..5 scale, sorted the way the result sorts them, and the two that DEFINE the
+// archetype are painted in the family colour while the other three sit in a
+// tint. That is the whole idea of the test in one picture: your two strongest
+// traits are your obraz, the other three are still yours and still shown.
+var VG_BARS = [
+  {t: 'E',  v: 0.86},
+  {t: 'C',  v: 0.80},
+  {t: 'A',  v: 0.58},
+  {t: 'ES', v: 0.52},
+  {t: 'O',  v: 0.46}
+];
+
+var VG_LABEL_W = 150, VG_LABEL_SIZE = 11.5;
+
+function vgTrait(t){ return (typeof tmTrait === 'function') ? tmTrait(t) : t; }
+function vgUi(k, fallback){
+  var s = (typeof tmUi === 'function') ? tmUi(k) : '';
+  return s || fallback;
+}
+
+// Break a sentence into lines that fit `max` user units at `size`. Nothing can
+// measure text before it is in the document, and this note is three languages
+// long, so estimate from character width -- 0.5em is close enough for Inter at
+// these sizes, and the line box has room to spare either way.
+function vgWrap(text, size, max, lines){
+  var words = String(text).split(' '), out = [], line = '', i, w;
+  for (i = 0; i < words.length; i++){
+    w = line ? line + ' ' + words[i] : words[i];
+    if (w.length * size * 0.5 > max && line){ out.push(line); line = words[i]; }
+    else line = w;
+    if (out.length === lines - 1 && i === words.length - 1) break;
+  }
+  if (line) out.push(line);
+  return out.slice(0, lines);
+}
+
 function vgResult(){
   var k = VG_CARD, side = VG_CARD_FIGURE;
-  var name = ((typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k]).name;
-  var famc = FAMILIES[ARCHETYPES[k].fam].c;
-  var b = '<ellipse cx="200" cy="252" rx="170" ry="12" fill="#0B2027" opacity=".05"/>'
-    + figAt(k, 108, 250, 0.82, side)
-    + '<g transform="translate(196,44)">'
-    + '<rect width="176" height="196" rx="14" fill="#F1F6F7" stroke="#D7E2E4"/>'
-    + '<rect width="176" height="46" rx="14" fill="' + famc + '"/>'
-    + '<rect y="32" width="176" height="14" fill="' + famc + '"/>'
-    + '<text x="88" y="30" text-anchor="middle" font-family="Bitter,Georgia,serif" '
-    + 'font-size="17" font-weight="700" fill="#FFFFFF">' + name + '</text>'
-    + '<g transform="translate(88,60) scale(0.42)">' + inner(k, side) + '</g>'
-    + '<g fill="#C6D3D8"><rect x="24" y="164" width="128" height="7" rx="3.5"/>'
-    + '<rect x="44" y="180" width="88" height="7" rx="3.5"/></g></g>';
-  return vgFrame(b, 400, 272);
+  var arch = (typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k];
+  var fam = FAMILIES[ARCHETYPES[k].fam];
+  var famName = (typeof tmFam === 'function') ? tmFam(ARCHETYPES[k].fam) : fam.name;
+  var defining = k.split('|');
+  var v = VG_CARD_VIEW, L = v.x + 20, R = v.x + v.w - 20, i, r, y;
+
+  // Portrait, in a tinted well. Clipped, because a raster figure is fitted to
+  // its own box and a few of them lean past it.
+  var cid = 'vgclip' + (++TM_UID);
+  var b = '<clipPath id="' + cid + '"><rect x="' + L + '" y="' + (v.y + 20)
+        + '" width="82" height="96" rx="12"/></clipPath>'
+    + '<rect x="' + L + '" y="' + (v.y + 20) + '" width="82" height="96" rx="12" fill="'
+    + fam.soft + '"/>'
+    + '<g clip-path="url(#' + cid + ')"><g transform="translate(' + (L + 41 - 100 * 0.40)
+    + ',' + (v.y + 22) + ') scale(0.40)">' + inner(k, side) + '</g></g>';
+
+  // Who this is.
+  var tx = L + 96;
+  b += '<text x="' + tx + '" y="' + (v.y + 40) + '" font-family="Inter,Segoe UI,sans-serif" '
+    + 'font-size="12" fill="#6E6558">' + esc(vgUi('vgYours', 'Sizning obrazingiz')) + '</text>'
+    + '<text x="' + tx + '" y="' + (v.y + 64) + '" font-family="Bitter,Georgia,serif" '
+    + 'font-size="21" font-weight="700" class="vgname" fill="' + fam.c + '">'
+    + esc(arch.name) + '</text>'
+    + '<text x="' + tx + '" y="' + (v.y + 84) + '" font-family="Inter,Segoe UI,sans-serif" '
+    + 'font-size="12" fill="#6E6558">' + esc(famName) + '</text>';
+
+  // The five bars.
+  // The label column has to hold «Эмоциональная стабильность», which is twice the
+  // length of its Uzbek original. Wide enough that no language is squeezed by
+  // default, and fitBarLabels below shrinks anything that still does not fit
+  // rather than letting it run under the bar.
+  var barL = L + VG_LABEL_W, barR = R, barW = barR - barL;
+  for (i = 0; i < VG_BARS.length; i++){
+    r = VG_BARS[i];
+    y = v.y + 140 + i * 22;
+    b += '<text x="' + L + '" y="' + (y + 4) + '" font-family="Inter,Segoe UI,sans-serif" '
+      + 'font-size="' + VG_LABEL_SIZE + '" class="vglabel" fill="#2B2620">'
+      + esc(vgTrait(r.t)) + '</text>'
+      + '<rect x="' + barL + '" y="' + (y - 4) + '" width="' + barW + '" height="8" rx="4" fill="#EFE9DD"/>'
+      + '<rect x="' + barL + '" y="' + (y - 4) + '" width="' + (barW * r.v).toFixed(1)
+      + '" height="8" rx="4" fill="' + fam.c + '"'
+      + (defining.indexOf(r.t) < 0 ? ' opacity=".38"' : '') + '/>';
+  }
+
+  // The line that says this is a sample, not somebody's real result.
+  var noteY = v.y + v.h - 34;
+  b += '<line x1="' + L + '" y1="' + (noteY - 14) + '" x2="' + R + '" y2="' + (noteY - 14)
+    + '" stroke="#E3DCCC"/>';
+  var note = vgWrap(vgUi('vgNote', 'Namuna natija.'), 10.5, R - L, 2);
+  for (i = 0; i < note.length; i++){
+    b += '<text x="' + L + '" y="' + (noteY + 4 + i * 14) + '" '
+      + 'font-family="Inter,Segoe UI,sans-serif" font-size="10.5" fill="#6E6558">'
+      + esc(note[i]) + '</text>';
+  }
+  return vgFrame(b, v);
 }
 
 // The archetype name on that card is translated, and a Russian name runs half
@@ -229,14 +328,42 @@ function vgResult(){
 // name than it needs. Re-run after the webfont lands, because Georgia's metrics
 // are not Bitter's, and always from the same starting size so repeated calls
 // cannot compound.
+//
+// Selected by class, not by being the first <text> in the card. It used to be
+// the first one; the card now opens with a "your character" label, and picking
+// by position would shrink that instead and leave the long name overflowing.
+var VG_NAME_SIZE = 21;
 function fitCardName(box){
-  var t = box.querySelector('text');
+  var t = box.querySelector('text.vgname');
   if (!t || !t.getComputedTextLength) return;
+  // Room from where the name starts to the right edge of the card.
+  var max = VG_CARD_VIEW.x + VG_CARD_VIEW.w - 20 - (parseFloat(t.getAttribute('x')) || 0);
   function fit(){
-    t.setAttribute('font-size', '17');
+    t.setAttribute('font-size', String(VG_NAME_SIZE));
     var w;
     try { w = t.getComputedTextLength(); } catch (e) { return; }
-    if (w > 156) t.setAttribute('font-size', (17 * 156 / w).toFixed(2));
+    if (w > max) t.setAttribute('font-size', (VG_NAME_SIZE * max / w).toFixed(2));
+  }
+  fit();
+  if (document.fonts && document.fonts.ready && document.fonts.ready.then)
+    document.fonts.ready.then(fit);
+  fitBarLabels(box);
+}
+
+// Same idea for the five trait names beside the bars. Uzbek and English fit the
+// column; Russian «Эмоциональная стабильность» does not, and before this it was
+// drawn straight through the bar next to it.
+function fitBarLabels(box){
+  var labels = box.querySelectorAll('text.vglabel');
+  if (!labels.length || !labels[0].getComputedTextLength) return;
+  var max = VG_LABEL_W - 10;
+  function fit(){
+    for (var i = 0; i < labels.length; i++){
+      var t = labels[i], w;
+      t.setAttribute('font-size', String(VG_LABEL_SIZE));
+      try { w = t.getComputedTextLength(); } catch (e) { return; }
+      if (w > max) t.setAttribute('font-size', (VG_LABEL_SIZE * max / w).toFixed(2));
+    }
   }
   fit();
   if (document.fonts && document.fonts.ready && document.fonts.ready.then)
@@ -251,7 +378,7 @@ function vgOthers(){
     + '<circle cx="176" cy="70" r="6"/><circle cx="200" cy="60" r="8"/><circle cx="228" cy="70" r="6"/></g>'
     + '<path d="M150 96 q50 -30 104 0" stroke="#237A5E" stroke-width="3" fill="none"'
     + ' stroke-linecap="round" stroke-dasharray="2 9" opacity=".6"/>';
-  return vgFrame(b, 400, 272);
+  return vgFrame(b);
 }
 
 // 3. A signpost: the same person, several possible directions.
@@ -274,7 +401,7 @@ function vgFuture(){
     + '<path d="M-70 168 h132 l16 15 -16 15 h-132 z" fill="#237A5E"/>'
     + '<text x="-60" y="188">Fan</text></g></g>'
     + figAt('ES|C', 120, 250, 0.86, 'female');
-  return vgFrame(b, 400, 272);
+  return vgFrame(b);
 }
 
 /* ================= character gallery ================= */
@@ -434,6 +561,91 @@ function mountFigures(){
   }
 }
 
+/* ============ Keeping your place across a language switch ============ */
+// UZ, RU and EN are three separate pages, so pressing RU is a real navigation
+// and the reader lands back at the top -- halfway down a long archetype page
+// that means losing the paragraph they were on. Note the section they were
+// reading before leaving, find the same section on the other side.
+//
+// The anchor is a heading index, not a pixel offset: a Russian paragraph is not
+// as tall as the Uzbek one, so the same y is a different sentence, but the fifth
+// <h2> is the same section in all three languages.
+
+var SPOT_KEY = 'testmind_langspot_v1';
+var spotWant = null;   // {i, f} we still owe the reader, once the page settles
+var spotAt = null;     // where we last put them, to tell our scroll from theirs
+
+function spotDocH(){ return document.documentElement.scrollHeight; }
+
+// The reader's eye sits just under the sticky nav, not at y=0.
+function spotLine(){
+  var nav = document.querySelector('.nav');
+  return nav ? nav.getBoundingClientRect().bottom : 0;
+}
+
+function spotHeads(){ return document.querySelectorAll('h2'); }
+
+// Absolute page y of a heading, or the foot of the document past the last one.
+function spotTop(hs, i){
+  return i < hs.length ? hs[i].getBoundingClientRect().top + window.pageYOffset
+                       : spotDocH();
+}
+
+function saveLangSpot(){
+  var hs = spotHeads(), line = spotLine(), y = window.pageYOffset + line;
+  var i, idx = -1, top, next, f = 0;
+  for (i = 0; i < hs.length; i++){
+    if (spotTop(hs, i) - y <= 1) idx = i; else break;
+  }
+  // idx -1 means the reader is still in the hero, above every heading; measure
+  // that stretch against the run-up to the first one.
+  top = idx < 0 ? 0 : spotTop(hs, idx);
+  next = spotTop(hs, idx + 1);
+  if (next > top) f = (y - top) / (next - top);
+  try {
+    sessionStorage.setItem(SPOT_KEY, JSON.stringify(
+      {i: idx, f: Math.max(0, Math.min(1, f)), n: hs.length, t: (new Date()).getTime()}));
+  } catch (e) {}   // private mode: the switch still works, it just starts at the top
+}
+
+function readLangSpot(){
+  var raw = null, s;
+  try {
+    raw = sessionStorage.getItem(SPOT_KEY);
+    sessionStorage.removeItem(SPOT_KEY);   // one switch, one restore
+  } catch (e) { return null; }
+  if (!raw) return null;
+  try { s = JSON.parse(raw); } catch (e) { return null; }
+  if (!s || (new Date()).getTime() - s.t > 60000) return null;   // a later visit, not this switch
+  // A different number of headings means the two pages are not the same shape
+  // and the index would point at the wrong section. Starting at the top is the
+  // honest answer there.
+  return s.n === spotHeads().length ? s : null;
+}
+
+function placeLangSpot(){
+  if (!spotWant) return;
+  var hs = spotHeads(), top = spotWant.i < 0 ? 0 : spotTop(hs, spotWant.i);
+  var y = top + spotWant.f * (spotTop(hs, spotWant.i + 1) - top) - spotLine();
+  spotAt = Math.max(0, Math.round(y));
+  window.scrollTo(0, spotAt);
+}
+
+function mountLangSpot(){
+  var sw = document.querySelectorAll('.langsw a'), i;
+  for (i = 0; i < sw.length; i++) sw[i].addEventListener('click', saveLangSpot);
+  spotWant = readLangSpot();
+  if (!spotWant) return;
+  placeLangSpot();
+  // Portraits and the built-in scenes land after this, and each one that lands
+  // above the reader pushes their section further down. Measure again once the
+  // page has stopped growing -- but only if they have not started reading and
+  // scrolled somewhere themselves.
+  window.addEventListener('load', function(){
+    if (spotAt !== null && Math.abs(window.pageYOffset - spotAt) <= 2) placeLangSpot();
+  });
+}
+
 function mountPage(){
   var scene = document.getElementById('scene');
   if (scene) scene.innerHTML = buildScene();
@@ -447,6 +659,9 @@ function mountPage(){
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   mountFigures();
   markResumeCtas();
+  // Last: the scenes above just changed the height of the page, and the spot is
+  // measured against that height.
+  mountLangSpot();
 }
 // This file is loaded at the bottom of <body>, so the DOM is already parsed — but
 // guard anyway, so nothing silently fails to render if the tag is ever moved to

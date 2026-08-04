@@ -69,17 +69,13 @@ S['uz'] = {
     'foot.disclaimer': u'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.',
 
     'close.h2': u'Tayyormisiz?',
-    'close.p': u'7 daqiqa. Oʻnta obrazdan qaysi biri sizniki?',
-
-    # A Russian or English reader is one click from a test that is not in their
-    # language. Saying so before the click is the honest thing to do.
-    'testlang.note': u'',
+    'close.p': u'5 daqiqa. Oʻnta obrazdan qaysi biri sizniki?',
 
     # ---- home
     'home.title': u'TestMind — Siz qaysi obrazsiz?',
-    'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 50 ta savol, 7 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.',
+    'home.desc': u'Oʻzbek tilidagi bepul shaxsiyat testi. 25–35 ta savol, 5 daqiqa. Yakunida oʻnta obrazdan bittasi sizniki boʻladi.',
     'home.h1': u'Siz qaysi obrazsiz?',
-    'home.lead': u'Atigi 7 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
+    'home.lead': u'Atigi 5 daqiqa — va nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
     'home.scenecap': u'Islom sivilizatsiyasi markazi · Toshkent',
 
     'home.num.h2': u'Raqamlarda',
@@ -164,7 +160,7 @@ S['uz'] = {
     'faq.h1': u'Koʻp beriladigan savollar',
     'faq.lead': u'Qisqa javoblar.',
     'faq.q1': u'Test qancha vaqt oladi?',
-    'faq.a1': u'50 ta savol, taxminan 7 daqiqa. Yarmida toʻxtasangiz, javoblaringiz shu qurilmada saqlanadi va keyin davom ettira olasiz.',
+    'faq.a1': u'25–35 ta savol, taxminan 5 daqiqa: javoblaringiz aniq boʻlsa test qisqaroq tugaydi. Yarmida toʻxtasangiz, javoblaringiz shu qurilmada saqlanadi va keyin davom ettira olasiz.',
     'faq.q2': u'Natijam kimgadir koʻrinadimi?',
     'faq.a2': u'Yoʻq. Test ismingizni ham, yoshingizni ham soʻramaydi va natijangiz hech kimga koʻrsatilmaydi. Javoblaringiz ismsiz saqlanadi: bu yozuvda ism ham, email ham boʻlmaydi va uni sizga bogʻlab boʻlmaydi. Batafsil: <a href="privacy.html">Maxfiylik</a>.',
     'faq.q3': u'Bu test ilmiymi?',
@@ -302,14 +298,12 @@ S['ru'] = {
     'foot.disclaimer': u'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.',
 
     'close.h2': u'Готовы?',
-    'close.p': u'7 минут. Какой из десяти образов ваш?',
-
-    'testlang.note': u'Тест доступен на узбекском, русском и английском. Русский и английский варианты — перевод узбекского: они подходят для самопознания, но результаты на разных языках не полностью сопоставимы.',
+    'close.p': u'5 минут. Какой из десяти образов ваш?',
 
     'home.title': u'TestMind — какой у вас образ?',
-    'home.desc': u'Бесплатный тест личности на узбекском языке. 50 вопросов, 7 минут. В конце вы получаете один из десяти образов.',
+    'home.desc': u'Бесплатный тест личности на узбекском языке. 25–35 вопросов, 5 минут. В конце вы получаете один из десяти образов.',
     'home.h1': u'Какой у вас образ?',
-    'home.lead': u'Всего 7 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
+    'home.lead': u'Всего 5 минут — и вы поймёте, почему одно даётся вам легко, а другое трудно.',
     'home.scenecap': u'Центр исламской цивилизации · Ташкент',
 
     'home.num.h2': u'В цифрах',
@@ -387,7 +381,7 @@ S['ru'] = {
     'faq.h1': u'Частые вопросы',
     'faq.lead': u'Короткие ответы.',
     'faq.q1': u'Сколько времени занимает тест?',
-    'faq.a1': u'50 вопросов, примерно 7 минут. Если прерветесь на середине, ваши ответы сохранятся на этом устройстве и вы сможете продолжить.',
+    'faq.a1': u'25–35 вопросов, примерно 5 минут: чем яснее ваши ответы, тем короче тест. Если прерветесь на середине, ваши ответы сохранятся на этом устройстве и вы сможете продолжить.',
     'faq.q2': u'Кто-нибудь увидит мой результат?',
     'faq.a2': u'Нет. Тест не спрашивает ни имени, ни возраста, и ваш результат никому не показывается. Ответы сохраняются без имени: в этой записи нет ни имени, ни email, и связать её с вами невозможно. Подробнее: <a href="privacy.html">Конфиденциальность</a>.',
     'faq.q3': u'Это научный тест?',
@@ -514,14 +508,12 @@ S['en'] = {
     'foot.disclaimer': u'Results are advisory — not a medical or psychological diagnosis.',
 
     'close.h2': u'Ready?',
-    'close.p': u'Seven minutes. Which of the ten characters is yours?',
-
-    'testlang.note': u'The test is available in Uzbek, Russian and English. The Russian and English versions are translations of the Uzbek original: they are fine for self-reflection, but results in different languages are not strictly comparable.',
+    'close.p': u'Five minutes. Which of the ten characters is yours?',
 
     'home.title': u'TestMind — a Big Five personality test for Uzbek teenagers',
-    'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 50 items, about 7 minutes, ten result profiles.',
+    'home.desc': u'A free Uzbek-language Big Five personality test for school students aged 13–18. 25–35 items, about 5 minutes, ten result profiles.',
     'home.h1': u'Which character are you?',
-    'home.lead': u'Just seven minutes — and you will understand why some things come easily to you and others do not.',
+    'home.lead': u'Just five minutes — and you will understand why some things come easily to you and others do not.',
     'home.scenecap': u'Center of Islamic Civilization · Tashkent',
 
     'home.num.h2': u'In numbers',
@@ -599,7 +591,7 @@ S['en'] = {
     'faq.h1': u'Frequently asked questions',
     'faq.lead': u'Short answers.',
     'faq.q1': u'How long does the test take?',
-    'faq.a1': u'Fifty items, about seven minutes. If you stop halfway, your answers are kept on this device and you can continue later.',
+    'faq.a1': u'25–35 items, about five minutes: the clearer your answers, the shorter the test. If you stop halfway, your answers are kept on this device and you can continue later.',
     'faq.q2': u'Will anyone see my result?',
     'faq.a2': u'No. The test asks for neither name nor age, and your result is not shown to anyone. Responses are stored without a name: the record contains no name and no email address and cannot be traced back to you. Details: <a href="privacy.html">Privacy</a>.',
     'faq.q3': u'Is this test scientific?',

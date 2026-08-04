@@ -117,23 +117,26 @@ def esc(s):
 def life_html(key, lang):
     u"""Oilada / Maktabda / Munosabatlarda plus the suggested directions.
 
-    Only Uzbek for now: this is long-form written copy, and a machine-shaped
-    Russian rendering of it would read worse than not offering it at all. The
-    section simply does not appear on the ru/ and en/ pages until it is written.
-    Returns '' for any archetype not yet written, so the ten pages keep
-    building while the content lands one at a time.
+    This is long-form written copy, so it lands one archetype and one language
+    at a time rather than all at once -- a machine-shaped rendering of it would
+    read worse than not offering it at all. Returns '' for any archetype not
+    written in this language, and that page simply has no life section, which is
+    what lets the rest of the site keep building meanwhile.
     """
-    if lang != 'uz' or key not in lc.LIFE:
+    src = lc.LIFE_BY_LANG.get(lang) or {}
+    if key not in src:
         return u''
-    d = lc.LIFE[key]
+    lc.check_translation(key, lang)     # refuse a half-written one, loudly
+    labels = lc.LABELS[lang]
+    d = src[key]
     out = u''
     for area in ('family', 'school', 'friends'):
         if area not in d:
             continue
-        title, sub = lc.AREA_TITLES[area]
+        title, sub = labels['areas'][area]
         cols = u''
-        for kind, label, cls in (('strong', lc.STRONG_LABEL, 'good'),
-                                 ('weak', lc.WEAK_LABEL, 'watch')):
+        for kind, label, cls in (('strong', labels['strong'], 'good'),
+                                 ('weak', labels['weak'], 'watch')):
             items = u''.join(
                 u'<li><b>%s</b> %s</li>' % (esc(t), esc(p)) for t, p in d[area][kind])
             cols += u'<div class="lifecol %s"><h4>%s</h4><ul>%s</ul></div>' % (cls, label, items)
@@ -141,7 +144,10 @@ def life_html(key, lang):
                 u'<div class="lifegrid">%s</div>') % (esc(title), esc(sub), cols)
 
     if d.get('careers'):
-        rows = sorted(((lc.pct(key, w), n, why) for n, w, why in d['careers']), reverse=True)
+        # Weights come from the Uzbek entry whatever the language, so the same
+        # direction shows the same percentage on all three pages.
+        rows = sorted(((lc.pct(key, w), n, why) for n, w, why in lc.careers_for(key, lang)),
+                      reverse=True)
         items = u''.join(
             u'<li class="career"><div class="carhead"><span class="carname">%s</span>'
             u'<span class="carpct">%d%%</span></div>'
@@ -150,7 +156,7 @@ def life_html(key, lang):
             for p, n, why in rows)
         out += (u'<h3 class="lifehead">%s</h3><ul class="careers">%s</ul>'
                 u'<p class="cardisc">%s</p>') % (
-            esc(lc.CAREER_TITLE), items, esc(lc.DISCLAIMER))
+            esc(labels['career']), items, esc(labels['disclaimer']))
     return out
 
 

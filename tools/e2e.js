@@ -28,18 +28,47 @@ async function open() {
 // Answer every question through the real UI, page by page.
 async function fullRun(pattern) {
   const { p, errs } = await open();
-  const total = await p.evaluate(() => ITEMS.length);
-  for (let page = 0; page < Math.ceil(total / 5); page++) {
-    for (let i = page * 5; i < Math.min((page + 1) * 5, total); i++) {
+  // The test is adaptive: item i is not on page floor(i/5) any more, and the
+  // plan grows by a block when the student's 2nd and 3rd traits come out level.
+  // So read the plan each page rather than assuming a fixed 50/5 walk.
+  for (let page = 0; page < 20; page++) {
+    // The figure-choice modal is appended to <body>, and the finished question
+    // page stays in #app behind it -- so "there are still .item elements" does
+    // NOT mean there are still questions. Check the modal first.
+    if (await p.$('.fcwrap')) break;
+    const asked = await p.evaluate(() => {
+      const el = document.querySelectorAll('#app .item');
+      return Array.prototype.map.call(el, e => parseInt(e.id.slice(5), 10));
+    });
+    if (!asked.length) break;
+    for (const i of asked) {
       await p.evaluate((i, v) => {
         document.querySelector('input[name=q' + i + '][value="' + v + '"]').click();
       }, i, pattern(i));
     }
     const next = await p.$('#nextBtn');
-    if (next) { await next.click(); await new Promise(r => setTimeout(r, 60)); }
+    if (!next) break;
+    await next.click();
+    await new Promise(r => setTimeout(r, 60));
   }
+  await settleFigureChoice(p);
   await new Promise(r => setTimeout(r, 300));
   return { p, errs };
+}
+
+// The last question is no longer the last thing between a student and the
+// result: an archetype with two illustrations asks which to draw, in a modal
+// over the finished page. Answer it the way a reader would, or nothing past
+// this point is testing the report at all.
+async function settleFigureChoice(p, gender, age) {
+  const there = await p.$('.fcwrap');
+  if (!there) return false;
+  await p.click('.fcopt input[value="' + (gender || 'female') + '"]');
+  await p.type('#fcage', String(age || 15));
+  await new Promise(r => setTimeout(r, 80));
+  await p.click('#fcgo');
+  await new Promise(r => setTimeout(r, 500));
+  return true;
 }
 
 // Answer through the real pointer path, from where the app actually puts the
@@ -61,27 +90,29 @@ async function answer(p, i, v) {
   {
     const { p, errs } = await fullRun(i => (i % 5) + 1);
     ok(errs.length === 0, 'no JS errors (' + (errs[0] || 'none') + ')');
+    // The five scores behind a <details class="deep"> toggle are gone: the result
+    // was reworked on 2026-08-02 around the figure choice and the life sections,
+    // and the toggle went with it. The CSS for it is still in test.html, unused.
+    // Characters are raster artwork inside the <svg> now, not drawn paths, so the
+    // artwork check counts what is actually there rather than shape primitives.
     const r = await p.evaluate(() => ({
       hero: !!document.querySelector('.hero'),
-      shapes: document.querySelectorAll('.herotop svg path,.herotop svg circle,.herotop svg rect,.herotop svg ellipse').length,
+      art: document.querySelectorAll('.herotop svg image,.herotop svg path').length,
       name: (document.querySelector('.archname') || {}).textContent || '',
       lines: document.querySelectorAll('.archlines li').length,
       strength: !!document.querySelector('.strength'),
-      deep: !!document.querySelector('details.deep'),
-      deepOpen: document.querySelector('details.deep').hasAttribute('open'),
       heroText: document.querySelector('.hero').textContent,
-      traits: document.querySelectorAll('details.deep .trait').length,
+      life: document.querySelectorAll('.lifefull').length,
       btns: !!document.getElementById('shareBtn') && !!document.getElementById('againBtn'),
       capture: !!document.getElementById('capEmail')
     }));
     ok(r.hero, 'hero card rendered');
-    ok(r.shapes > 25, 'character artwork present (' + r.shapes + ' shapes)');
+    ok(r.art > 0, 'character artwork present (' + r.art + ')');
     ok(r.name.length > 3, 'archetype name shown: ' + r.name);
     ok(r.lines === 2, 'two description lines');
     ok(r.strength, 'strength line shown');
-    ok(r.deep && !r.deepOpen, 'the five scores start hidden behind a closed toggle');
     ok(!/\d\.\d\s*\/\s*5/.test(r.heroText), 'no "x.x / 5" score leaks into the hero');
-    ok(r.traits === 5, 'all 5 traits inside the toggle');
+    ok(r.life === 1, 'the life sections rendered');
     ok(r.btns && r.capture, 'share, restart and email capture all present');
     await p.close();
   }
@@ -93,7 +124,9 @@ async function answer(p, i, v) {
     ok(!!(await p.$('#nextBtn')), 'question 1 is on screen immediately');
     ok((await p.$$('.item')).length === 5, 'the first five questions are rendered');
     ok((await p.$$('.step')).length === 3, 'the three step cards sit above them');
-    ok((await p.$$('.stepart svg')).length === 3, 'each step card carries its own artwork');
+    // Painted artwork now, not inline SVG -- accept either.
+    ok((await p.$$('.stepart img, .stepart svg')).length === 3,
+       'each step card carries its own artwork');
     const nums = await p.$$eval('.stepnum', els => els.map(e => e.textContent.trim()));
     ok(nums.join('|') === 'QADAM 1|QADAM 2|QADAM 3', 'steps numbered in order: ' + nums.join('|'));
     ok((await p.$$('#app input, #app textarea, #app select[name]')).length === 25,
@@ -171,8 +204,14 @@ async function answer(p, i, v) {
         if (!Array.isArray(a.lines) || a.lines.length !== 2) bad.push(k + ':lines');
         if (!FAMILIES[a.fam]) bad.push(k + ':family');
         if (!TM_ART[k]) bad.push(k + ':art');
+        // The 1500-character floor here was a proxy for "the figure is actually
+        // drawn" back when every character was hand-built vector shapes. They are
+        // painted artwork referenced by <image> now, so a valid figure is a short
+        // string. Check for the thing that matters instead: an <svg> that carries
+        // either a picture or drawn geometry.
         const svg = charSvg(k);
-        if (!svg || svg.indexOf('<svg') !== 0 || svg.length < 1500) bad.push(k + ':svg');
+        if (!svg || svg.indexOf('<svg') !== 0) bad.push(k + ':svg');
+        else if (!/<image\s|<path\s|<circle\s|<rect\s/.test(svg)) bad.push(k + ':svg-empty');
         if (/undefined|null/.test(svg)) bad.push(k + ':svg-undefined');
         fams[a.fam] = (fams[a.fam] || 0) + 1;
       });
