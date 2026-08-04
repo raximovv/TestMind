@@ -30,9 +30,14 @@
  */
 
 var SHEET_NAME = 'responses';
+// APPEND-ONLY. Rows already in the sheet were written against the old column
+// order, so a new field goes on the END and nothing above it ever moves.
+// r* are the RIASEC interest scales; they are prefixed because RIASEC also has
+// A, E and C and would otherwise land in the Big Five columns of the same row.
 var HEADERS = ['server_time', 'id', 'status', 'age', 'answered', 'total',
                'duration_sec', 'device', 'ES', 'E', 'O', 'A', 'C',
-               'archetype', 'version', 'email', 'answers'];
+               'archetype', 'version', 'email', 'answers',
+               'lang', 'near_tie', 'rR', 'rI', 'rA', 'rS', 'rE', 'rC'];
 
 var SEND_GUIDE_EMAIL = true;
 var SITE_URL = 'https://raximovv.github.io/TestMind';
@@ -40,7 +45,7 @@ var FROM_NAME = 'TestMind';
 // Bump this whenever you change this file, then open the /exec URL: it reports
 // the version, so you can tell in one second whether your new code is really
 // deployed instead of guessing from a delivered email.
-var SCRIPT_VERSION = 'pdf-v2';
+var SCRIPT_VERSION = 'riasec-v3';
 
 // Four archetypes lost their adjective ("Xotirjam Yetakchi" -> "Yetakchi").
 // A student who loaded the page before that deploy still has the old name in
@@ -273,6 +278,28 @@ function setup(){
   SpreadsheetApp.getActiveSpreadsheet().toast('Sheet "' + SHEET_NAME + '" is ready.');
 }
 
+/**
+ * RUN THIS ONCE after pasting a version that added columns to HEADERS.
+ *
+ * getSheet_() only writes the header row when the sheet is completely empty, so
+ * an existing sheet keeps whatever headers it was created with. New rows would
+ * then arrive with more values than there are column names, and the extra
+ * columns would be unlabelled -- data present but unreadable. This only widens
+ * the header row; it never touches a data row.
+ */
+function migrateHeaders(){
+  var sh = getSheet_();
+  var have = sh.getLastColumn();
+  if (have >= HEADERS.length){
+    SpreadsheetApp.getActiveSpreadsheet().toast('Headers already up to date.');
+    return;
+  }
+  sh.getRange(1, 1, 1, HEADERS.length).setValues([HEADERS]);
+  sh.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+  SpreadsheetApp.getActiveSpreadsheet()
+    .toast('Headers widened from ' + have + ' to ' + HEADERS.length + ' columns.');
+}
+
 /** Run once from the editor to authorize mail sending + preview the email. */
 function sendTestEmail(){
   var me = Session.getActiveUser().getEmail();
@@ -318,7 +345,15 @@ function doPost(e){
       String(d.archetype || ''),
       String(d.v || ''),
       String(d.email || ''),
-      "'" + String(d.answers || '')      // leading quote keeps Sheets from mangling it
+      "'" + String(d.answers || ''),     // leading quote keeps Sheets from mangling it
+      String(d.lang || ''),
+      d.near_tie === 0 || d.near_tie ? d.near_tie : '',
+      d.rR === 0 || d.rR ? d.rR : '',
+      d.rI === 0 || d.rI ? d.rI : '',
+      d.rA === 0 || d.rA ? d.rA : '',
+      d.rS === 0 || d.rS ? d.rS : '',
+      d.rE === 0 || d.rE ? d.rE : '',
+      d.rC === 0 || d.rC ? d.rC : ''
     ]);
 
     // Decide whether to email — but actually send OUTSIDE the lock (below), so a

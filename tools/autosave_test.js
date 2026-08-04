@@ -21,7 +21,16 @@ const ok=(c,m)=>{c?(pass++,console.log('  PASS '+m)):(fail++,console.log('  FAIL
  ok(research.length===1,'answers saved automatically, exactly once');
  ok(completed.length===1,'the anonymous summary row still sent');
  const r=research[0];
- ok(typeof r.answers==='string'&&r.answers.length===50,'all 50 answers present');
+ // One character per item in the bank, personality AND career. Read from the
+ // page rather than hard-coded, so adding items to either section does not
+ // silently start dropping them from the research row -- which is the data the
+ // local norms will eventually be built from.
+ const nItems=await p.evaluate(()=>ITEMS.length);
+ const nCareer=await p.evaluate(()=>CAREER_COUNT);
+ ok(typeof r.answers==='string'&&r.answers.length===nItems,
+    'every answer present ('+((r.answers||'').length)+' of '+nItems+')');
+ ok(nCareer>0&&r.answers.slice(-nCareer).replace(/0/g,'').length>0,
+    'the career answers are in the research row too');
  ok(!('name' in r)&&JSON.stringify(r).indexOf('Dilnoza')===-1,'no name in the row');
  ok(!('email' in r),'no email in the row');
  ok(r.id!==completed[0].id&&/^r-/.test(r.id),'separate random id, cannot be joined: '+r.id);
