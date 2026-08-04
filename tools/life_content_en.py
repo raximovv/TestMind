@@ -17,6 +17,13 @@ LABELS = {
     'disclaimer': (u'These percentages show how well your two strongest sides fit '
                    u'each direction. They are not a prediction: your interest, your '
                    u'opportunities and your real experience matter more.'),
+    # Result screen only -- see RESULT_CAREER_TITLE in life_content.py for why
+    # this block stops ranking there and defers to "Directions".
+    'result_career': u'Where these qualities tend to be useful',
+    'result_note': (u'This is not a recommendation and not a ranking: just areas '
+                    u'where these qualities are valued. Your actual suggestions '
+                    u'are below, under “Directions” — that section '
+                    u'also looks at your interests and your marks.'),
     'areas': {
         'family':  (u'At home',          u'At home and with the people close to you'),
         'school':  (u'At school',        u'In lessons, in exams and among classmates'),

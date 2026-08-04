@@ -22,6 +22,13 @@ const MARKER = {
 };
 const HEADING = { uz: 'Toʻliq tahlil', ru: 'Полный разбор', en: 'The full picture' };
 
+// The directions block above «Yoʻnalishlar» must disclaim itself in words, not
+// only by having dropped its numbers -- a reader who meets a list of jobs reads
+// it as advice unless told otherwise. POINTER is the name of the section that
+// IS allowed to rank, which the note has to hand off to.
+const NOT_A_REC = { uz: /tavsiya emas/, ru: /не рекомендация/, en: /not a recommendation/ };
+const POINTER = { uz: 'Yoʻnalishlar', ru: 'Направления', en: 'Directions' };
+
 let pass = 0, fail = 0;
 function check(name, ok, extra){
   if (ok) { console.log('  PASS ' + name); pass++; }
@@ -49,6 +56,8 @@ async function run(){
         heads: document.querySelectorAll('.lifefull .lifehead').length,
         careers: document.querySelectorAll('.lifefull .career').length,
         pcts: [].map.call(document.querySelectorAll('.lifefull .carpct'), e => e.textContent),
+        bars: document.querySelectorAll('.lifefull .carbar').length,
+        note: (document.querySelector('.lifefull .cardisc') || {}).textContent || '',
       };
     });
 
@@ -61,27 +70,40 @@ async function run(){
       Object.keys(MARKER).filter(l => l !== lang).every(l => got.text.indexOf(MARKER[l]) < 0));
     check('four life headings', got.heads === 4, String(got.heads));
     check('five directions', got.careers === 5, String(got.careers));
-    check('percentages present and sane',
-      got.pcts.length === 5 && got.pcts.every(t => /^\d{1,3}%$/.test(t)), got.pcts.join(' '));
+    // The directions here must not rank or score anything: «Yoʻnalishlar» is one
+    // scroll below and ranks careers from four signals rather than two traits.
+    check('no fit percentage on any direction', got.pcts.length === 0, got.pcts.join(' '));
+    check('no fit bar on any direction', got.bars === 0, String(got.bars));
+    check('the note says it is not a recommendation', NOT_A_REC[lang].test(got.note), got.note.slice(0, 60));
+    check('the note points at the ranked section', got.note.indexOf(POINTER[lang]) >= 0, got.note.slice(-60));
     await p.close();
   }
 
-  // The same student, same answers, must see the same numbers in every language:
-  // the weights live in the Uzbek entry and translations only carry text.
-  const pcts = {};
+  // These directions used to carry a percentage, and the check here was that the
+  // number came out identical in all three languages. There is no number now, so
+  // the invariant that replaces it is the one that makes "this is not a ranking"
+  // true rather than merely asserted: the same student gets the same COUNT of
+  // directions everywhere, and within each language they are in alphabetical
+  // order, which no reader can mistake for a ranking.
+  const got = {};
   for (const lang of ['uz', 'ru', 'en']){
     const p = await browser.newPage();
     await p.goto(BASE + '?lang=' + lang, { waitUntil: 'networkidle0' });
     await finishToReport(p, new Array(60).fill(4));
     await settleFigureChoice(p, 'male', 15).catch(() => {});
     await p.waitForSelector('.lifefull', { timeout: 8000 }).catch(() => {});
-    pcts[lang] = await p.evaluate(() =>
-      [].map.call(document.querySelectorAll('.lifefull .carpct'), e => e.textContent).join(' '));
+    got[lang] = await p.evaluate(() =>
+      [].map.call(document.querySelectorAll('.lifefull .carname'), e => e.textContent));
     await p.close();
   }
-  console.log('\n== percentages agree across languages ==');
-  check('uz == ru', pcts.uz === pcts.ru, pcts.uz + '  vs  ' + pcts.ru);
-  check('uz == en', pcts.uz === pcts.en, pcts.uz + '  vs  ' + pcts.en);
+  console.log('\n== directions are unranked, and the same set in every language ==');
+  check('uz count == ru count', got.uz.length === got.ru.length,
+    got.uz.length + ' vs ' + got.ru.length);
+  check('uz count == en count', got.uz.length === got.en.length,
+    got.uz.length + ' vs ' + got.en.length);
+  for (const lang of ['uz', 'ru', 'en'])
+    check(lang + ' directions are alphabetical, not ranked',
+      got[lang].join('|') === got[lang].slice().sort().join('|'), got[lang].join(', '));
 
   // A pack that arrives AFTER the report is already on screen. This is the whole
   // reason the slot exists, and on a school connection it is the normal case.

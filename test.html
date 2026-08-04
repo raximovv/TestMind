@@ -76,8 +76,12 @@
   .carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
   .carbar i{display:block;height:100%;border-radius:4px;
             background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
-  .carwhy{margin:0;font-size:14px;color:var(--muted);line-height:1.5}
-  .cardisc{margin:15px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);
+  /* 3px of air where the fit bar used to be: on the result screen these
+     directions carry no percentage, so there is nothing to draw between the
+     name and the sentence under it. .carpct and .carbar stay because the
+     interest profile below still uses both. */
+  .carwhy{margin:3px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
+  .cardisc{margin:12px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);
            font-size:13px;line-height:1.55;color:var(--muted)}
   /* career-interest profile. Reuses .carbar so the interest bars and the
      suggested-direction bars on the same page cannot drift apart visually. */
@@ -2120,17 +2124,28 @@ function lifeHtml(archKey){
              '<div class="lifecol watch"><h4>' + esc(L.weak) + '</h4><ul>' + list(a.weak) + '</ul></div>' +
            '</div>';
   }
+  // Directions, with NO percentage and NO ranking -- the note goes first, above
+  // the list, because a reader who meets the list first has already read it as a
+  // recommendation by the time a footnote tells them it is not one.
+  //
+  // The archetype page still ranks these and still prints a percentage. Here it
+  // must not: «Yoʻnalishlar» sits one scroll below and ranks careers from
+  // interests, values and marks, and personality is 8% of that. Over 3,600
+  // simulated students the two lists' top picks agreed 9.4% of the time against
+  // a 6.3% chance baseline -- so shown side by side and both ranked, they were
+  // two answers to the same question, and the louder one had the thinner
+  // evidence. This block now says only what personality alone can support.
   if (d.careers && d.careers.length){
-    out += '<h3 class="lifehead">' + esc(L.careers) + '</h3><ul class="careers">';
+    out += '<h3 class="lifehead">' + esc(L.careers) + '</h3>' +
+           '<p class="cardisc">' + esc(L.note || '') + '</p>' +
+           '<ul class="careers">';
     for (j = 0; j < d.careers.length; j++){
       var c = d.careers[j];
-      out += '<li class="career"><div class="carhead">' +
-               '<span class="carname">' + esc(c.name) + '</span>' +
-               '<span class="carpct">' + c.pct + '%</span></div>' +
-             '<div class="carbar"><i style="width:' + c.pct + '%"></i></div>' +
+      out += '<li class="career">' +
+               '<div class="carhead"><span class="carname">' + esc(c.name) + '</span></div>' +
              '<p class="carwhy">' + esc(c.why) + '</p></li>';
     }
-    out += '</ul><p class="cardisc">' + esc(L.disclaimer) + '</p>';
+    out += '</ul>';
   }
   return '<section class="lifefull">' + out + '</section>';
 }

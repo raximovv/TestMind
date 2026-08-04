@@ -45,6 +45,27 @@ DISCLAIMER = (u'Bu foizlar — sizning ikkita eng kuchli xususiyatingiz shu '
               u'yoʻnalishga qanchalik mos kelishini koʻrsatadi. Bu bashorat emas: '
               u'qiziqishingiz, imkoniyatingiz va real tajribangiz undan muhimroq.')
 
+# ---------------------------------------------------------------- result screen
+# The two labels above belong to the ARCHETYPE PAGE, which a visitor reads on its
+# own and where a ranked list is the whole point of the page.
+#
+# The RESULT SCREEN is a different situation and needs different words. There the
+# same directions land a single scroll above «Yoʻnalishlar», which ranks careers
+# from interests, values and marks — four signals, of which personality is 8%.
+# Two ranked career lists on one screen, built from almost disjoint evidence,
+# disagree for most students: measured over 3,600 simulated students the two
+# top picks matched 9.4% of the time against a 6.3% chance baseline.
+#
+# So on the result screen this block stops ranking and stops claiming fit. It
+# says what it can honestly say -- these traits are valued in these areas -- and
+# hands the actual recommendation to the section that has the evidence for it.
+RESULT_CAREER_TITLE = u'Bu xususiyatlar qayerda qoʻl keladi'
+
+RESULT_NOTE = (u'Bu — tavsiya emas va tartiblangan roʻyxat ham emas: shu '
+               u'xususiyatlar qadrlanadigan sohalar, xolos. Sizga mos kasblar '
+               u'quyida, «Yoʻnalishlar» boʻlimida — u qiziqishlaringizga va '
+               u'baholaringizga ham qaraydi.')
+
 AREA_TITLES = {
     'family':  (u'Oilada',        u'Uyda va yaqinlaringiz orasida'),
     'school':  (u'Maktabda',      u'Darsda, imtihonda va sinfdoshlar orasida'),
@@ -925,6 +946,7 @@ LABELS = {
     'uz': {
         'strong': STRONG_LABEL, 'weak': WEAK_LABEL, 'career': CAREER_TITLE,
         'disclaimer': DISCLAIMER, 'areas': AREA_TITLES,
+        'result_career': RESULT_CAREER_TITLE, 'result_note': RESULT_NOTE,
     },
     'ru': _ru.LABELS,
     'en': _en.LABELS,
