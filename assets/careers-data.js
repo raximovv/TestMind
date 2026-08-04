@@ -7,6 +7,58 @@
 // No salaries, no demand ratings, no employment forecasts: there is no Uzbek
 // labour-market data behind them and a fifteen-year-old would believe them.
 var CAREER_FAMILIES = {
+ "agriculture": {
+  "riasec": {
+   "C": 0.2,
+   "I": 0.3,
+   "R": 0.5
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.3,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "independence": 0.25,
+   "meaning": 0.3,
+   "stability": 0.25
+  }
+ },
+ "architecture": {
+  "riasec": {
+   "A": 0.5,
+   "I": 0.2,
+   "R": 0.3
+  },
+  "subjects": {
+   "art": 0.4,
+   "math": 0.3,
+   "physics": 0.3
+  },
+  "values": {
+   "creativity": 0.45,
+   "income": 0.15,
+   "independence": 0.25,
+   "meaning": 0.15
+  }
+ },
+ "arts": {
+  "riasec": {
+   "A": 0.8,
+   "E": 0.1,
+   "S": 0.1
+  },
+  "subjects": {
+   "art": 0.7,
+   "literature": 0.3
+  },
+  "values": {
+   "creativity": 0.5,
+   "independence": 0.3,
+   "meaning": 0.2
+  }
+ },
  "business": {
   "riasec": {
    "C": 0.2,
@@ -43,6 +95,24 @@ var CAREER_FAMILIES = {
    "learning": 0.35
   }
  },
+ "education": {
+  "riasec": {
+   "A": 0.2,
+   "C": 0.1,
+   "S": 0.7
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.35,
+   "meaning": 0.3,
+   "stability": 0.15
+  }
+ },
  "engineering": {
   "riasec": {
    "C": 0.1,
@@ -60,9 +130,228 @@ var CAREER_FAMILIES = {
    "stability": 0.25,
    "teamwork": 0.2
   }
+ },
+ "finance": {
+  "riasec": {
+   "C": 0.5,
+   "E": 0.2,
+   "I": 0.3
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.4,
+   "learning": 0.25,
+   "stability": 0.35
+  }
+ },
+ "hospitality": {
+  "riasec": {
+   "C": 0.2,
+   "E": 0.4,
+   "S": 0.4
+  },
+  "subjects": {
+   "economics": 0.2,
+   "english": 0.5,
+   "geography": 0.3
+  },
+  "values": {
+   "creativity": 0.2,
+   "helping": 0.25,
+   "income": 0.2,
+   "teamwork": 0.35
+  }
+ },
+ "law": {
+  "riasec": {
+   "C": 0.3,
+   "E": 0.4,
+   "S": 0.3
+  },
+  "subjects": {
+   "economics": 0.3,
+   "history": 0.4,
+   "literature": 0.3
+  },
+  "values": {
+   "income": 0.25,
+   "leadership": 0.25,
+   "meaning": 0.25,
+   "stability": 0.25
+  }
+ },
+ "logistics": {
+  "riasec": {
+   "C": 0.4,
+   "E": 0.2,
+   "R": 0.4
+  },
+  "subjects": {
+   "geography": 0.3,
+   "math": 0.4,
+   "physics": 0.3
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "stability": 0.35,
+   "teamwork": 0.2
+  }
+ },
+ "media": {
+  "riasec": {
+   "A": 0.5,
+   "E": 0.3,
+   "S": 0.2
+  },
+  "subjects": {
+   "art": 0.2,
+   "english": 0.3,
+   "literature": 0.5
+  },
+  "values": {
+   "creativity": 0.4,
+   "independence": 0.25,
+   "meaning": 0.2,
+   "teamwork": 0.15
+  }
+ },
+ "medicine": {
+  "riasec": {
+   "I": 0.4,
+   "R": 0.2,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.4,
+   "learning": 0.2,
+   "meaning": 0.25,
+   "stability": 0.15
+  }
+ },
+ "psychology": {
+  "riasec": {
+   "A": 0.1,
+   "I": 0.3,
+   "S": 0.6
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "helping": 0.45,
+   "learning": 0.25,
+   "meaning": 0.3
+  }
+ },
+ "science": {
+  "riasec": {
+   "A": 0.1,
+   "I": 0.7,
+   "R": 0.2
+  },
+  "subjects": {
+   "biology": 0.2,
+   "chemistry": 0.3,
+   "math": 0.2,
+   "physics": 0.3
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.45,
+   "meaning": 0.25
+  }
+ },
+ "sport": {
+  "riasec": {
+   "E": 0.3,
+   "R": 0.4,
+   "S": 0.3
+  },
+  "subjects": {
+   "biology": 0.6,
+   "english": 0.2,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.25,
+   "helping": 0.25,
+   "meaning": 0.2,
+   "teamwork": 0.3
+  }
  }
 };
 var CAREER_ENTRIES = {
+ "accountant": {
+  "education": "either",
+  "family": "finance",
+  "riasec": {
+   "C": 0.7,
+   "E": 0.1,
+   "I": 0.2
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "stability": 0.4,
+   "teamwork": 0.15
+  }
+ },
+ "actor": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.2,
+   "S": 0.1
+  },
+  "subjects": {
+   "art": 0.5,
+   "literature": 0.5
+  },
+  "values": {
+   "creativity": 0.5,
+   "independence": 0.2,
+   "meaning": 0.15,
+   "teamwork": 0.15
+  }
+ },
+ "agronomist": {
+  "education": "either",
+  "family": "agriculture",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.35,
+   "R": 0.5
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.3,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "independence": 0.25,
+   "meaning": 0.3,
+   "stability": 0.25
+  }
+ },
  "ai_engineer": {
   "education": "higher",
   "family": "cs",
@@ -77,10 +366,147 @@ var CAREER_ENTRIES = {
    "physics": 0.1
   },
   "values": {
-   "creativity": 0.2,
+   "creativity": 0.1,
    "income": 0.2,
    "independence": 0.25,
-   "learning": 0.35
+   "learning": 0.45
+  }
+ },
+ "animator": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.7,
+   "I": 0.2,
+   "R": 0.1
+  },
+  "subjects": {
+   "art": 0.6,
+   "cs": 0.3,
+   "literature": 0.1
+  },
+  "values": {
+   "creativity": 0.5,
+   "income": 0.1,
+   "independence": 0.2,
+   "learning": 0.2
+  }
+ },
+ "architect": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.5,
+   "I": 0.2,
+   "R": 0.3
+  },
+  "subjects": {
+   "art": 0.4,
+   "math": 0.3,
+   "physics": 0.3
+  },
+  "values": {
+   "creativity": 0.45,
+   "income": 0.15,
+   "independence": 0.25,
+   "meaning": 0.15
+  }
+ },
+ "artist": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.85,
+   "E": 0.05,
+   "I": 0.1
+  },
+  "subjects": {
+   "art": 0.8,
+   "literature": 0.2
+  },
+  "values": {
+   "creativity": 0.55,
+   "independence": 0.3,
+   "meaning": 0.15
+  }
+ },
+ "athlete": {
+  "education": "either",
+  "family": "sport",
+  "riasec": {
+   "E": 0.25,
+   "R": 0.55,
+   "S": 0.2
+  },
+  "subjects": {
+   "biology": 0.7,
+   "english": 0.15,
+   "geography": 0.15
+  },
+  "values": {
+   "income": 0.25,
+   "independence": 0.3,
+   "meaning": 0.25,
+   "teamwork": 0.2
+  }
+ },
+ "auditor": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.6,
+   "E": 0.1,
+   "I": 0.3
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.25,
+   "independence": 0.2,
+   "meaning": 0.2,
+   "stability": 0.35
+  }
+ },
+ "banker": {
+  "education": "either",
+  "family": "finance",
+  "riasec": {
+   "C": 0.4,
+   "E": 0.4,
+   "S": 0.2
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.35,
+   "leadership": 0.15,
+   "stability": 0.3,
+   "teamwork": 0.2
+  }
+ },
+ "biologist": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "I": 0.7,
+   "R": 0.2,
+   "S": 0.1
+  },
+  "subjects": {
+   "biology": 0.6,
+   "chemistry": 0.3,
+   "math": 0.1
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.4,
+   "meaning": 0.3
   }
  },
  "business_analyst": {
@@ -97,10 +523,50 @@ var CAREER_ENTRIES = {
    "math": 0.4
   },
   "values": {
-   "creativity": 0.15,
-   "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "income": 0.25,
+   "learning": 0.3,
+   "stability": 0.3,
+   "teamwork": 0.15
+  }
+ },
+ "chef": {
+  "education": "college",
+  "family": "hospitality",
+  "riasec": {
+   "A": 0.4,
+   "E": 0.2,
+   "R": 0.4
+  },
+  "subjects": {
+   "biology": 0.3,
+   "chemistry": 0.4,
+   "economics": 0.3
+  },
+  "values": {
+   "creativity": 0.4,
+   "income": 0.2,
+   "independence": 0.15,
+   "teamwork": 0.25
+  }
+ },
+ "chemist": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "C": 0.1,
+   "I": 0.7,
+   "R": 0.2
+  },
+  "subjects": {
+   "chemistry": 0.6,
+   "math": 0.2,
+   "physics": 0.2
+  },
+  "values": {
+   "income": 0.1,
+   "independence": 0.3,
+   "learning": 0.4,
+   "meaning": 0.2
   }
  },
  "civil_engineer": {
@@ -118,9 +584,69 @@ var CAREER_ENTRIES = {
   },
   "values": {
    "income": 0.25,
-   "learning": 0.3,
-   "stability": 0.25,
+   "meaning": 0.2,
+   "stability": 0.3,
+   "teamwork": 0.25
+  }
+ },
+ "coach": {
+  "education": "either",
+  "family": "sport",
+  "riasec": {
+   "E": 0.25,
+   "R": 0.35,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.6,
+   "english": 0.3,
+   "geography": 0.1
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.3,
+   "meaning": 0.2,
+   "teamwork": 0.3
+  }
+ },
+ "construction_manager": {
+  "education": "higher",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.35,
+   "R": 0.35
+  },
+  "subjects": {
+   "geography": 0.2,
+   "math": 0.4,
+   "physics": 0.4
+  },
+  "values": {
+   "income": 0.3,
+   "leadership": 0.3,
+   "stability": 0.2,
    "teamwork": 0.2
+  }
+ },
+ "copywriter": {
+  "education": "either",
+  "family": "media",
+  "riasec": {
+   "A": 0.6,
+   "E": 0.25,
+   "I": 0.15
+  },
+  "subjects": {
+   "art": 0.1,
+   "english": 0.3,
+   "literature": 0.6
+  },
+  "values": {
+   "balance": 0.1,
+   "creativity": 0.45,
+   "income": 0.15,
+   "independence": 0.3
   }
  },
  "cybersecurity": {
@@ -137,10 +663,10 @@ var CAREER_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
-   "income": 0.2,
-   "independence": 0.25,
-   "learning": 0.35
+   "income": 0.25,
+   "learning": 0.3,
+   "meaning": 0.15,
+   "stability": 0.3
   }
  },
  "data_scientist": {
@@ -162,6 +688,106 @@ var CAREER_ENTRIES = {
    "learning": 0.45
   }
  },
+ "dentist": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "I": 0.25,
+   "R": 0.4,
+   "S": 0.35
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.3,
+   "income": 0.3,
+   "independence": 0.2,
+   "stability": 0.2
+  }
+ },
+ "diplomat": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "E": 0.4,
+   "I": 0.25,
+   "S": 0.35
+  },
+  "subjects": {
+   "english": 0.4,
+   "history": 0.35,
+   "literature": 0.25
+  },
+  "values": {
+   "income": 0.2,
+   "leadership": 0.25,
+   "learning": 0.25,
+   "meaning": 0.3
+  }
+ },
+ "doctor": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "I": 0.4,
+   "R": 0.2,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.4,
+   "learning": 0.2,
+   "meaning": 0.25,
+   "stability": 0.15
+  }
+ },
+ "ecologist": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "I": 0.45,
+   "R": 0.3,
+   "S": 0.25
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.2,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.1,
+   "independence": 0.25,
+   "learning": 0.2,
+   "meaning": 0.45
+  }
+ },
+ "editor": {
+  "education": "higher",
+  "family": "media",
+  "riasec": {
+   "A": 0.45,
+   "C": 0.35,
+   "S": 0.2
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.1,
+   "literature": 0.6
+  },
+  "values": {
+   "creativity": 0.35,
+   "independence": 0.25,
+   "meaning": 0.2,
+   "stability": 0.2
+  }
+ },
  "electrical_engineer": {
   "education": "higher",
   "family": "engineering",
@@ -177,9 +803,29 @@ var CAREER_ENTRIES = {
   },
   "values": {
    "income": 0.25,
-   "learning": 0.3,
+   "learning": 0.35,
    "stability": 0.25,
-   "teamwork": 0.2
+   "teamwork": 0.15
+  }
+ },
+ "electrician": {
+  "education": "college",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.1,
+   "R": 0.7
+  },
+  "subjects": {
+   "geography": 0.1,
+   "math": 0.4,
+   "physics": 0.5
+  },
+  "values": {
+   "balance": 0.15,
+   "income": 0.3,
+   "independence": 0.25,
+   "stability": 0.3
   }
  },
  "entrepreneur": {
@@ -202,6 +848,146 @@ var CAREER_ENTRIES = {
    "stability": 0.1
   }
  },
+ "environmental_scientist": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "I": 0.5,
+   "R": 0.3,
+   "S": 0.2
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.3,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.1,
+   "independence": 0.2,
+   "learning": 0.3,
+   "meaning": 0.4
+  }
+ },
+ "event_manager": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "A": 0.3,
+   "E": 0.45,
+   "S": 0.25
+  },
+  "subjects": {
+   "art": 0.3,
+   "economics": 0.3,
+   "english": 0.4
+  },
+  "values": {
+   "creativity": 0.3,
+   "income": 0.15,
+   "leadership": 0.25,
+   "teamwork": 0.3
+  }
+ },
+ "farm_manager": {
+  "education": "either",
+  "family": "agriculture",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.35,
+   "R": 0.45
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.3,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "independence": 0.35,
+   "stability": 0.2
+  }
+ },
+ "fashion_designer": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.75,
+   "E": 0.15,
+   "R": 0.1
+  },
+  "subjects": {
+   "art": 0.7,
+   "economics": 0.15,
+   "literature": 0.15
+  },
+  "values": {
+   "creativity": 0.5,
+   "income": 0.15,
+   "independence": 0.25,
+   "leadership": 0.1
+  }
+ },
+ "financial_analyst": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.4,
+   "E": 0.1,
+   "I": 0.5
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.35,
+   "independence": 0.15,
+   "learning": 0.3,
+   "stability": 0.2
+  }
+ },
+ "fitness_trainer": {
+  "education": "college",
+  "family": "sport",
+  "riasec": {
+   "E": 0.2,
+   "R": 0.4,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.7,
+   "english": 0.2,
+   "geography": 0.1
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.3,
+   "income": 0.2,
+   "independence": 0.3
+  }
+ },
+ "food_technologist": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "C": 0.2,
+   "I": 0.45,
+   "R": 0.35
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.5,
+   "geography": 0.1
+  },
+  "values": {
+   "income": 0.2,
+   "learning": 0.3,
+   "meaning": 0.2,
+   "stability": 0.3
+  }
+ },
  "frontend_developer": {
   "education": "either",
   "family": "cs",
@@ -222,6 +1008,105 @@ var CAREER_ENTRIES = {
    "learning": 0.25
   }
  },
+ "geneticist": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.75,
+   "S": 0.1
+  },
+  "subjects": {
+   "biology": 0.6,
+   "chemistry": 0.3,
+   "math": 0.1
+  },
+  "values": {
+   "independence": 0.25,
+   "learning": 0.45,
+   "meaning": 0.3
+  }
+ },
+ "graphic_designer": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.1,
+   "R": 0.2
+  },
+  "subjects": {
+   "art": 0.7,
+   "cs": 0.15,
+   "literature": 0.15
+  },
+  "values": {
+   "creativity": 0.5,
+   "income": 0.15,
+   "independence": 0.25,
+   "teamwork": 0.1
+  }
+ },
+ "hotel_manager": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.45,
+   "S": 0.35
+  },
+  "subjects": {
+   "economics": 0.3,
+   "english": 0.5,
+   "geography": 0.2
+  },
+  "values": {
+   "helping": 0.2,
+   "income": 0.2,
+   "leadership": 0.3,
+   "teamwork": 0.3
+  }
+ },
+ "hr_specialist": {
+  "education": "either",
+  "family": "psychology",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.35,
+   "S": 0.45
+  },
+  "subjects": {
+   "economics": 0.35,
+   "history": 0.3,
+   "literature": 0.35
+  },
+  "values": {
+   "helping": 0.3,
+   "leadership": 0.2,
+   "stability": 0.2,
+   "teamwork": 0.3
+  }
+ },
+ "industrial_designer": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.5,
+   "I": 0.2,
+   "R": 0.3
+  },
+  "subjects": {
+   "art": 0.4,
+   "math": 0.3,
+   "physics": 0.3
+  },
+  "values": {
+   "creativity": 0.45,
+   "income": 0.2,
+   "independence": 0.25,
+   "learning": 0.1
+  }
+ },
  "industrial_engineer": {
   "education": "higher",
   "family": "engineering",
@@ -236,9 +1121,188 @@ var CAREER_ENTRIES = {
    "physics": 0.4
   },
   "values": {
+   "balance": 0.2,
    "income": 0.25,
-   "learning": 0.3,
-   "stability": 0.25,
+   "stability": 0.3,
+   "teamwork": 0.25
+  }
+ },
+ "interior_designer": {
+  "education": "either",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.1,
+   "R": 0.2
+  },
+  "subjects": {
+   "art": 0.6,
+   "math": 0.2,
+   "physics": 0.2
+  },
+  "values": {
+   "creativity": 0.5,
+   "income": 0.2,
+   "independence": 0.3
+  }
+ },
+ "investment_analyst": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.3,
+   "I": 0.5
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.45,
+   "independence": 0.2,
+   "leadership": 0.1,
+   "learning": 0.25
+  }
+ },
+ "journalist": {
+  "education": "either",
+  "family": "media",
+  "riasec": {
+   "A": 0.4,
+   "E": 0.35,
+   "S": 0.25
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.2,
+   "literature": 0.5
+  },
+  "values": {
+   "creativity": 0.3,
+   "independence": 0.25,
+   "learning": 0.15,
+   "meaning": 0.3
+  }
+ },
+ "judge": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "C": 0.45,
+   "E": 0.25,
+   "S": 0.3
+  },
+  "subjects": {
+   "economics": 0.25,
+   "history": 0.4,
+   "literature": 0.35
+  },
+  "values": {
+   "income": 0.15,
+   "leadership": 0.2,
+   "meaning": 0.35,
+   "stability": 0.3
+  }
+ },
+ "lab_technician": {
+  "education": "college",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.4,
+   "I": 0.5,
+   "R": 0.1
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.5,
+   "math": 0.1
+  },
+  "values": {
+   "balance": 0.2,
+   "learning": 0.25,
+   "meaning": 0.2,
+   "stability": 0.35
+  }
+ },
+ "landscape_designer": {
+  "education": "either",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.6,
+   "I": 0.1,
+   "R": 0.3
+  },
+  "subjects": {
+   "art": 0.4,
+   "biology": 0.3,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.15,
+   "creativity": 0.45,
+   "independence": 0.25,
+   "meaning": 0.15
+  }
+ },
+ "lawyer": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.4,
+   "S": 0.3
+  },
+  "subjects": {
+   "economics": 0.3,
+   "history": 0.4,
+   "literature": 0.3
+  },
+  "values": {
+   "income": 0.3,
+   "independence": 0.2,
+   "leadership": 0.25,
+   "meaning": 0.25
+  }
+ },
+ "legal_advisor": {
+  "education": "either",
+  "family": "law",
+  "riasec": {
+   "C": 0.45,
+   "E": 0.3,
+   "I": 0.25
+  },
+  "subjects": {
+   "economics": 0.35,
+   "history": 0.35,
+   "literature": 0.3
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.3,
+   "independence": 0.15,
+   "stability": 0.35
+  }
+ },
+ "logistician": {
+  "education": "either",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.45,
+   "E": 0.25,
+   "R": 0.3
+  },
+  "subjects": {
+   "geography": 0.4,
+   "math": 0.4,
+   "physics": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "stability": 0.35,
    "teamwork": 0.2
   }
  },
@@ -256,10 +1320,10 @@ var CAREER_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
-   "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "creativity": 0.35,
+   "income": 0.2,
+   "leadership": 0.25,
+   "teamwork": 0.2
   }
  },
  "mechanical_engineer": {
@@ -282,6 +1346,26 @@ var CAREER_ENTRIES = {
    "teamwork": 0.2
   }
  },
+ "methodologist": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "C": 0.4,
+   "I": 0.25,
+   "S": 0.35
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.15,
+   "learning": 0.25,
+   "meaning": 0.3,
+   "stability": 0.3
+  }
+ },
  "mobile_developer": {
   "education": "either",
   "family": "cs",
@@ -296,10 +1380,68 @@ var CAREER_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
-   "income": 0.2,
-   "independence": 0.25,
-   "learning": 0.35
+   "creativity": 0.35,
+   "income": 0.15,
+   "independence": 0.2,
+   "learning": 0.3
+  }
+ },
+ "musician": {
+  "education": "either",
+  "family": "arts",
+  "riasec": {
+   "A": 0.85,
+   "E": 0.05,
+   "S": 0.1
+  },
+  "subjects": {
+   "art": 0.7,
+   "literature": 0.3
+  },
+  "values": {
+   "creativity": 0.55,
+   "independence": 0.3,
+   "meaning": 0.15
+  }
+ },
+ "notary": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "C": 0.7,
+   "E": 0.1,
+   "S": 0.2
+  },
+  "subjects": {
+   "economics": 0.3,
+   "history": 0.4,
+   "literature": 0.3
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "independence": 0.15,
+   "stability": 0.4
+  }
+ },
+ "nurse": {
+  "education": "college",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.2,
+   "R": 0.2,
+   "S": 0.6
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.45,
+   "meaning": 0.25,
+   "stability": 0.1,
+   "teamwork": 0.2
   }
  },
  "operations_manager": {
@@ -316,10 +1458,148 @@ var CAREER_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
-   "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "income": 0.2,
+   "leadership": 0.3,
+   "stability": 0.3,
+   "teamwork": 0.2
+  }
+ },
+ "paramedic": {
+  "education": "college",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.2,
+   "R": 0.4,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.4,
+   "meaning": 0.3,
+   "stability": 0.1,
+   "teamwork": 0.2
+  }
+ },
+ "pe_teacher": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "E": 0.15,
+   "R": 0.35,
+   "S": 0.5
+  },
+  "subjects": {
+   "biology": 0.6,
+   "english": 0.2,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.25,
+   "helping": 0.35,
+   "meaning": 0.25,
+   "stability": 0.15
+  }
+ },
+ "pharmacist": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.4,
+   "I": 0.4,
+   "S": 0.2
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.5,
+   "math": 0.1
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.3,
+   "learning": 0.2,
+   "stability": 0.35
+  }
+ },
+ "photographer": {
+  "education": "either",
+  "family": "media",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.1,
+   "R": 0.2
+  },
+  "subjects": {
+   "art": 0.6,
+   "literature": 0.2,
+   "physics": 0.2
+  },
+  "values": {
+   "balance": 0.1,
+   "creativity": 0.5,
+   "income": 0.1,
+   "independence": 0.3
+  }
+ },
+ "physicist": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.8,
+   "R": 0.1
+  },
+  "subjects": {
+   "math": 0.5,
+   "physics": 0.5
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.5,
+   "meaning": 0.2
+  }
+ },
+ "physiotherapist": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "I": 0.25,
+   "R": 0.3,
+   "S": 0.45
+  },
+  "subjects": {
+   "biology": 0.7,
+   "english": 0.2,
+   "geography": 0.1
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.4,
+   "meaning": 0.25,
+   "stability": 0.2
+  }
+ },
+ "primary_teacher": {
+  "education": "either",
+  "family": "education",
+  "riasec": {
+   "A": 0.15,
+   "C": 0.1,
+   "S": 0.75
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.4,
+   "meaning": 0.3,
+   "stability": 0.1
   }
  },
  "product_manager": {
@@ -336,10 +1616,89 @@ var CAREER_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
+   "creativity": 0.2,
+   "leadership": 0.3,
+   "learning": 0.25,
+   "teamwork": 0.25
+  }
+ },
+ "prosecutor": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "C": 0.35,
+   "E": 0.45,
+   "S": 0.2
+  },
+  "subjects": {
+   "economics": 0.3,
+   "history": 0.4,
+   "literature": 0.3
+  },
+  "values": {
+   "income": 0.15,
+   "leadership": 0.25,
+   "meaning": 0.35,
+   "stability": 0.25
+  }
+ },
+ "psychologist": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.3,
+   "S": 0.6
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "helping": 0.45,
+   "learning": 0.25,
+   "meaning": 0.3
+  }
+ },
+ "researcher": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "A": 0.2,
+   "C": 0.1,
+   "I": 0.7
+  },
+  "subjects": {
+   "biology": 0.2,
+   "chemistry": 0.3,
+   "math": 0.2,
+   "physics": 0.3
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.45,
+   "meaning": 0.25
+  }
+ },
+ "restaurant_manager": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.45,
+   "S": 0.25
+  },
+  "subjects": {
+   "economics": 0.4,
+   "english": 0.3,
+   "geography": 0.3
+  },
+  "values": {
    "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "leadership": 0.3,
+   "stability": 0.15,
+   "teamwork": 0.25
   }
  },
  "robotics_engineer": {
@@ -356,10 +1715,10 @@ var CAREER_ENTRIES = {
    "physics": 0.4
   },
   "values": {
-   "income": 0.25,
-   "learning": 0.3,
-   "stability": 0.25,
-   "teamwork": 0.2
+   "creativity": 0.25,
+   "income": 0.15,
+   "independence": 0.2,
+   "learning": 0.4
   }
  },
  "sales_manager": {
@@ -382,6 +1741,85 @@ var CAREER_ENTRIES = {
    "teamwork": 0.25
   }
  },
+ "school_counselor": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "C": 0.1,
+   "I": 0.2,
+   "S": 0.7
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.45,
+   "meaning": 0.3,
+   "teamwork": 0.1
+  }
+ },
+ "school_principal": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.4,
+   "S": 0.4
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "helping": 0.2,
+   "leadership": 0.35,
+   "meaning": 0.25,
+   "stability": 0.2
+  }
+ },
+ "smm_specialist": {
+  "education": "either",
+  "family": "media",
+  "riasec": {
+   "A": 0.4,
+   "C": 0.2,
+   "E": 0.4
+  },
+  "subjects": {
+   "art": 0.2,
+   "english": 0.4,
+   "literature": 0.4
+  },
+  "values": {
+   "creativity": 0.4,
+   "income": 0.2,
+   "independence": 0.25,
+   "teamwork": 0.15
+  }
+ },
+ "social_worker": {
+  "education": "either",
+  "family": "psychology",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.1,
+   "S": 0.75
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "helping": 0.5,
+   "meaning": 0.35,
+   "teamwork": 0.15
+  }
+ },
  "software_engineer": {
   "education": "either",
   "family": "cs",
@@ -402,6 +1840,106 @@ var CAREER_ENTRIES = {
    "learning": 0.35
   }
  },
+ "speech_therapist": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.2,
+   "S": 0.65
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.2,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.45,
+   "meaning": 0.3,
+   "stability": 0.1
+  }
+ },
+ "sports_manager": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.5,
+   "S": 0.2
+  },
+  "subjects": {
+   "biology": 0.3,
+   "economics": 0.4,
+   "english": 0.3
+  },
+  "values": {
+   "balance": 0.15,
+   "income": 0.3,
+   "leadership": 0.3,
+   "teamwork": 0.25
+  }
+ },
+ "supply_chain_manager": {
+  "education": "higher",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.4,
+   "E": 0.35,
+   "R": 0.25
+  },
+  "subjects": {
+   "economics": 0.3,
+   "geography": 0.3,
+   "math": 0.4
+  },
+  "values": {
+   "income": 0.25,
+   "leadership": 0.3,
+   "stability": 0.3,
+   "teamwork": 0.15
+  }
+ },
+ "surgeon": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "I": 0.35,
+   "R": 0.4,
+   "S": 0.25
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.3,
+   "physics": 0.2
+  },
+  "values": {
+   "helping": 0.35,
+   "income": 0.15,
+   "learning": 0.25,
+   "meaning": 0.25
+  }
+ },
+ "surveyor": {
+  "education": "college",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.35,
+   "I": 0.2,
+   "R": 0.45
+  },
+  "subjects": {
+   "geography": 0.4,
+   "math": 0.4,
+   "physics": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.2,
+   "independence": 0.25,
+   "stability": 0.35
+  }
+ },
  "systems_analyst": {
   "education": "higher",
   "family": "cs",
@@ -416,10 +1954,50 @@ var CAREER_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
    "income": 0.2,
-   "independence": 0.25,
-   "learning": 0.35
+   "learning": 0.3,
+   "stability": 0.25,
+   "teamwork": 0.25
+  }
+ },
+ "tax_specialist": {
+  "education": "either",
+  "family": "finance",
+  "riasec": {
+   "C": 0.7,
+   "E": 0.2,
+   "I": 0.1
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "meaning": 0.15,
+   "stability": 0.4
+  }
+ },
+ "teacher": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "A": 0.2,
+   "C": 0.1,
+   "S": 0.7
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.35,
+   "meaning": 0.3,
+   "stability": 0.15
   }
  },
  "technician": {
@@ -440,9 +2018,308 @@ var CAREER_ENTRIES = {
    "stability": 0.35,
    "teamwork": 0.2
   }
+ },
+ "therapist": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.25,
+   "S": 0.65
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.25,
+   "literature": 0.35
+  },
+  "values": {
+   "balance": 0.1,
+   "helping": 0.45,
+   "independence": 0.15,
+   "meaning": 0.3
+  }
+ },
+ "tour_guide": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "A": 0.2,
+   "E": 0.35,
+   "S": 0.45
+  },
+  "subjects": {
+   "english": 0.4,
+   "geography": 0.4,
+   "history": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.25,
+   "independence": 0.25,
+   "teamwork": 0.3
+  }
+ },
+ "travel_agent": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "C": 0.25,
+   "E": 0.4,
+   "S": 0.35
+  },
+  "subjects": {
+   "economics": 0.1,
+   "english": 0.5,
+   "geography": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.25,
+   "income": 0.25,
+   "teamwork": 0.3
+  }
+ },
+ "tutor": {
+  "education": "either",
+  "family": "education",
+  "riasec": {
+   "E": 0.15,
+   "I": 0.25,
+   "S": 0.6
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.3,
+   "income": 0.2,
+   "independence": 0.3
+  }
+ },
+ "tv_producer": {
+  "education": "higher",
+  "family": "media",
+  "riasec": {
+   "A": 0.4,
+   "C": 0.2,
+   "E": 0.4
+  },
+  "subjects": {
+   "art": 0.3,
+   "english": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "creativity": 0.35,
+   "income": 0.15,
+   "leadership": 0.3,
+   "teamwork": 0.2
+  }
+ },
+ "university_lecturer": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.45,
+   "S": 0.45
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "helping": 0.15,
+   "independence": 0.2,
+   "learning": 0.4,
+   "meaning": 0.25
+  }
+ },
+ "urban_planner": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.3,
+   "C": 0.3,
+   "I": 0.4
+  },
+  "subjects": {
+   "art": 0.3,
+   "geography": 0.4,
+   "math": 0.3
+  },
+  "values": {
+   "creativity": 0.25,
+   "leadership": 0.2,
+   "meaning": 0.35,
+   "stability": 0.2
+  }
+ },
+ "veterinarian": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "I": 0.35,
+   "R": 0.35,
+   "S": 0.3
+  },
+  "subjects": {
+   "biology": 0.6,
+   "chemistry": 0.3,
+   "geography": 0.1
+  },
+  "values": {
+   "helping": 0.35,
+   "independence": 0.2,
+   "learning": 0.2,
+   "meaning": 0.25
+  }
+ },
+ "warehouse_manager": {
+  "education": "college",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.5,
+   "E": 0.2,
+   "R": 0.3
+  },
+  "subjects": {
+   "geography": 0.3,
+   "math": 0.5,
+   "physics": 0.2
+  },
+  "values": {
+   "balance": 0.15,
+   "income": 0.25,
+   "stability": 0.4,
+   "teamwork": 0.2
+  }
  }
 };
 var MAJOR_ENTRIES = {
+ "major_accounting": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.7,
+   "E": 0.1,
+   "I": 0.2
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.3,
+   "stability": 0.4,
+   "teamwork": 0.1
+  }
+ },
+ "major_agronomy": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.35,
+   "R": 0.5
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.3,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "independence": 0.25,
+   "meaning": 0.3,
+   "stability": 0.25
+  }
+ },
+ "major_architecture": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.5,
+   "I": 0.2,
+   "R": 0.3
+  },
+  "subjects": {
+   "art": 0.4,
+   "math": 0.3,
+   "physics": 0.3
+  },
+  "values": {
+   "creativity": 0.45,
+   "income": 0.15,
+   "independence": 0.25,
+   "meaning": 0.15
+  }
+ },
+ "major_banking": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.4,
+   "E": 0.4,
+   "I": 0.2
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.35,
+   "leadership": 0.1,
+   "stability": 0.35,
+   "teamwork": 0.2
+  }
+ },
+ "major_biology": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "I": 0.7,
+   "R": 0.2,
+   "S": 0.1
+  },
+  "subjects": {
+   "biology": 0.6,
+   "chemistry": 0.3,
+   "math": 0.1
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.4,
+   "meaning": 0.3
+  }
+ },
+ "major_biotechnology": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.65,
+   "R": 0.2
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "math": 0.1
+  },
+  "values": {
+   "income": 0.15,
+   "independence": 0.15,
+   "learning": 0.4,
+   "meaning": 0.3
+  }
+ },
  "major_business_admin": {
   "education": "higher",
   "family": "business",
@@ -457,10 +2334,30 @@ var MAJOR_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
    "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "leadership": 0.3,
+   "stability": 0.2,
+   "teamwork": 0.2
+  }
+ },
+ "major_chemistry": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "C": 0.1,
+   "I": 0.7,
+   "R": 0.2
+  },
+  "subjects": {
+   "chemistry": 0.6,
+   "math": 0.2,
+   "physics": 0.2
+  },
+  "values": {
+   "income": 0.1,
+   "independence": 0.3,
+   "learning": 0.4,
+   "meaning": 0.2
   }
  },
  "major_civil_eng": {
@@ -478,8 +2375,28 @@ var MAJOR_ENTRIES = {
   },
   "values": {
    "income": 0.25,
-   "learning": 0.3,
-   "stability": 0.25,
+   "meaning": 0.2,
+   "stability": 0.3,
+   "teamwork": 0.25
+  }
+ },
+ "major_construction_management": {
+  "education": "higher",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.35,
+   "R": 0.35
+  },
+  "subjects": {
+   "geography": 0.2,
+   "math": 0.4,
+   "physics": 0.4
+  },
+  "values": {
+   "income": 0.3,
+   "leadership": 0.3,
+   "stability": 0.2,
    "teamwork": 0.2
   }
  },
@@ -497,10 +2414,30 @@ var MAJOR_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
+   "creativity": 0.15,
    "income": 0.2,
    "independence": 0.25,
-   "learning": 0.35
+   "learning": 0.4
+  }
+ },
+ "major_culinary": {
+  "education": "either",
+  "family": "hospitality",
+  "riasec": {
+   "A": 0.4,
+   "E": 0.2,
+   "R": 0.4
+  },
+  "subjects": {
+   "biology": 0.3,
+   "chemistry": 0.4,
+   "economics": 0.3
+  },
+  "values": {
+   "creativity": 0.4,
+   "income": 0.2,
+   "independence": 0.15,
+   "teamwork": 0.25
   }
  },
  "major_data_science": {
@@ -517,10 +2454,69 @@ var MAJOR_ENTRIES = {
    "math": 0.5
   },
   "values": {
-   "creativity": 0.2,
-   "income": 0.2,
+   "income": 0.25,
+   "independence": 0.3,
+   "learning": 0.45
+  }
+ },
+ "major_dentistry": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "I": 0.25,
+   "R": 0.4,
+   "S": 0.35
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.3,
+   "income": 0.3,
+   "independence": 0.2,
+   "stability": 0.2
+  }
+ },
+ "major_ecology": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "I": 0.45,
+   "R": 0.3,
+   "S": 0.25
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.2,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.1,
    "independence": 0.25,
-   "learning": 0.35
+   "learning": 0.2,
+   "meaning": 0.45
+  }
+ },
+ "major_economics": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.3,
+   "E": 0.2,
+   "I": 0.5
+  },
+  "subjects": {
+   "economics": 0.4,
+   "geography": 0.1,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.3,
+   "independence": 0.15,
+   "learning": 0.35,
+   "meaning": 0.2
   }
  },
  "major_electrical_eng": {
@@ -538,9 +2534,107 @@ var MAJOR_ENTRIES = {
   },
   "values": {
    "income": 0.25,
-   "learning": 0.3,
+   "learning": 0.35,
    "stability": 0.25,
-   "teamwork": 0.2
+   "teamwork": 0.15
+  }
+ },
+ "major_finance": {
+  "education": "higher",
+  "family": "finance",
+  "riasec": {
+   "C": 0.5,
+   "E": 0.2,
+   "I": 0.3
+  },
+  "subjects": {
+   "cs": 0.1,
+   "economics": 0.4,
+   "math": 0.5
+  },
+  "values": {
+   "income": 0.4,
+   "independence": 0.1,
+   "learning": 0.2,
+   "stability": 0.3
+  }
+ },
+ "major_fine_arts": {
+  "education": "higher",
+  "family": "arts",
+  "riasec": {
+   "A": 0.85,
+   "E": 0.05,
+   "I": 0.1
+  },
+  "subjects": {
+   "art": 0.8,
+   "literature": 0.2
+  },
+  "values": {
+   "creativity": 0.55,
+   "independence": 0.3,
+   "meaning": 0.15
+  }
+ },
+ "major_food_technology": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "C": 0.2,
+   "I": 0.45,
+   "R": 0.35
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.5,
+   "geography": 0.1
+  },
+  "values": {
+   "income": 0.2,
+   "learning": 0.3,
+   "meaning": 0.2,
+   "stability": 0.3
+  }
+ },
+ "major_graphic_design": {
+  "education": "higher",
+  "family": "arts",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.1,
+   "R": 0.2
+  },
+  "subjects": {
+   "art": 0.7,
+   "cs": 0.15,
+   "literature": 0.15
+  },
+  "values": {
+   "creativity": 0.5,
+   "income": 0.15,
+   "independence": 0.25,
+   "teamwork": 0.1
+  }
+ },
+ "major_hotel_management": {
+  "education": "higher",
+  "family": "hospitality",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.45,
+   "S": 0.35
+  },
+  "subjects": {
+   "economics": 0.3,
+   "english": 0.5,
+   "geography": 0.2
+  },
+  "values": {
+   "helping": 0.2,
+   "income": 0.2,
+   "leadership": 0.3,
+   "teamwork": 0.3
   }
  },
  "major_info_security": {
@@ -557,10 +2651,109 @@ var MAJOR_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
+   "income": 0.25,
+   "learning": 0.3,
+   "meaning": 0.15,
+   "stability": 0.3
+  }
+ },
+ "major_interior_design": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.1,
+   "R": 0.2
+  },
+  "subjects": {
+   "art": 0.6,
+   "math": 0.2,
+   "physics": 0.2
+  },
+  "values": {
+   "creativity": 0.5,
    "income": 0.2,
+   "independence": 0.3
+  }
+ },
+ "major_international_relations": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "E": 0.4,
+   "I": 0.3,
+   "S": 0.3
+  },
+  "subjects": {
+   "english": 0.4,
+   "history": 0.35,
+   "literature": 0.25
+  },
+  "values": {
+   "income": 0.2,
+   "leadership": 0.2,
+   "learning": 0.3,
+   "meaning": 0.3
+  }
+ },
+ "major_journalism": {
+  "education": "higher",
+  "family": "media",
+  "riasec": {
+   "A": 0.4,
+   "E": 0.35,
+   "S": 0.25
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.2,
+   "literature": 0.5
+  },
+  "values": {
+   "creativity": 0.3,
    "independence": 0.25,
-   "learning": 0.35
+   "learning": 0.15,
+   "meaning": 0.3
+  }
+ },
+ "major_law": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "C": 0.35,
+   "E": 0.4,
+   "S": 0.25
+  },
+  "subjects": {
+   "economics": 0.3,
+   "history": 0.4,
+   "literature": 0.3
+  },
+  "values": {
+   "income": 0.3,
+   "leadership": 0.25,
+   "meaning": 0.3,
+   "stability": 0.15
+  }
+ },
+ "major_logistics": {
+  "education": "higher",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.45,
+   "E": 0.25,
+   "R": 0.3
+  },
+  "subjects": {
+   "geography": 0.4,
+   "math": 0.4,
+   "physics": 0.2
+  },
+  "values": {
+   "balance": 0.2,
+   "income": 0.25,
+   "stability": 0.35,
+   "teamwork": 0.2
   }
  },
  "major_management": {
@@ -577,10 +2770,10 @@ var MAJOR_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
-   "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "income": 0.25,
+   "independence": 0.2,
+   "leadership": 0.35,
+   "teamwork": 0.2
   }
  },
  "major_marketing": {
@@ -597,10 +2790,10 @@ var MAJOR_ENTRIES = {
    "math": 0.3
   },
   "values": {
-   "creativity": 0.15,
-   "income": 0.3,
-   "independence": 0.25,
-   "leadership": 0.3
+   "creativity": 0.35,
+   "income": 0.2,
+   "leadership": 0.25,
+   "teamwork": 0.2
   }
  },
  "major_mechanical_eng": {
@@ -637,10 +2830,304 @@ var MAJOR_ENTRIES = {
    "physics": 0.4
   },
   "values": {
-   "income": 0.25,
-   "learning": 0.3,
-   "stability": 0.25,
+   "creativity": 0.25,
+   "income": 0.15,
+   "independence": 0.2,
+   "learning": 0.4
+  }
+ },
+ "major_media_communications": {
+  "education": "higher",
+  "family": "media",
+  "riasec": {
+   "A": 0.4,
+   "E": 0.4,
+   "S": 0.2
+  },
+  "subjects": {
+   "art": 0.2,
+   "english": 0.4,
+   "literature": 0.4
+  },
+  "values": {
+   "creativity": 0.35,
+   "income": 0.2,
+   "independence": 0.2,
+   "teamwork": 0.25
+  }
+ },
+ "major_medicine": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "I": 0.4,
+   "R": 0.2,
+   "S": 0.4
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.4,
+   "learning": 0.2,
+   "meaning": 0.25,
+   "stability": 0.15
+  }
+ },
+ "major_music": {
+  "education": "higher",
+  "family": "arts",
+  "riasec": {
+   "A": 0.85,
+   "E": 0.05,
+   "S": 0.1
+  },
+  "subjects": {
+   "art": 0.7,
+   "literature": 0.3
+  },
+  "values": {
+   "creativity": 0.55,
+   "independence": 0.3,
+   "meaning": 0.15
+  }
+ },
+ "major_nursing": {
+  "education": "either",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.2,
+   "R": 0.2,
+   "S": 0.6
+  },
+  "subjects": {
+   "biology": 0.5,
+   "chemistry": 0.4,
+   "physics": 0.1
+  },
+  "values": {
+   "helping": 0.45,
+   "meaning": 0.25,
+   "stability": 0.1,
    "teamwork": 0.2
+  }
+ },
+ "major_pedagogy": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "A": 0.2,
+   "C": 0.1,
+   "S": 0.7
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.35,
+   "meaning": 0.3,
+   "stability": 0.15
+  }
+ },
+ "major_pharmacy": {
+  "education": "higher",
+  "family": "medicine",
+  "riasec": {
+   "C": 0.4,
+   "I": 0.4,
+   "S": 0.2
+  },
+  "subjects": {
+   "biology": 0.4,
+   "chemistry": 0.5,
+   "math": 0.1
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.3,
+   "learning": 0.2,
+   "stability": 0.35
+  }
+ },
+ "major_philology": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "A": 0.4,
+   "I": 0.25,
+   "S": 0.35
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.2,
+   "literature": 0.5
+  },
+  "values": {
+   "balance": 0.15,
+   "creativity": 0.3,
+   "learning": 0.35,
+   "meaning": 0.2
+  }
+ },
+ "major_physical_education": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "E": 0.15,
+   "R": 0.35,
+   "S": 0.5
+  },
+  "subjects": {
+   "biology": 0.6,
+   "english": 0.2,
+   "geography": 0.2
+  },
+  "values": {
+   "balance": 0.25,
+   "helping": 0.35,
+   "meaning": 0.25,
+   "stability": 0.15
+  }
+ },
+ "major_physics": {
+  "education": "higher",
+  "family": "science",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.8,
+   "R": 0.1
+  },
+  "subjects": {
+   "math": 0.5,
+   "physics": 0.5
+  },
+  "values": {
+   "independence": 0.3,
+   "learning": 0.5,
+   "meaning": 0.2
+  }
+ },
+ "major_physiotherapy": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "I": 0.25,
+   "R": 0.3,
+   "S": 0.45
+  },
+  "subjects": {
+   "biology": 0.7,
+   "english": 0.2,
+   "geography": 0.1
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.4,
+   "meaning": 0.25,
+   "stability": 0.2
+  }
+ },
+ "major_political_science": {
+  "education": "higher",
+  "family": "law",
+  "riasec": {
+   "E": 0.35,
+   "I": 0.4,
+   "S": 0.25
+  },
+  "subjects": {
+   "economics": 0.25,
+   "history": 0.45,
+   "literature": 0.3
+  },
+  "values": {
+   "independence": 0.15,
+   "leadership": 0.2,
+   "learning": 0.3,
+   "meaning": 0.35
+  }
+ },
+ "major_pr": {
+  "education": "higher",
+  "family": "media",
+  "riasec": {
+   "A": 0.3,
+   "E": 0.5,
+   "S": 0.2
+  },
+  "subjects": {
+   "economics": 0.2,
+   "english": 0.4,
+   "literature": 0.4
+  },
+  "values": {
+   "creativity": 0.3,
+   "income": 0.2,
+   "leadership": 0.3,
+   "teamwork": 0.2
+  }
+ },
+ "major_primary_education": {
+  "education": "higher",
+  "family": "education",
+  "riasec": {
+   "A": 0.15,
+   "C": 0.1,
+   "S": 0.75
+  },
+  "subjects": {
+   "english": 0.3,
+   "history": 0.3,
+   "literature": 0.4
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.4,
+   "meaning": 0.3,
+   "stability": 0.1
+  }
+ },
+ "major_psychology": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.3,
+   "S": 0.6
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "helping": 0.45,
+   "learning": 0.25,
+   "meaning": 0.3
+  }
+ },
+ "major_social_work": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "C": 0.15,
+   "I": 0.1,
+   "S": 0.75
+  },
+  "subjects": {
+   "biology": 0.4,
+   "history": 0.3,
+   "literature": 0.3
+  },
+  "values": {
+   "helping": 0.5,
+   "meaning": 0.35,
+   "teamwork": 0.15
   }
  },
  "major_software_eng": {
@@ -657,135 +3144,675 @@ var MAJOR_ENTRIES = {
    "physics": 0.2
   },
   "values": {
-   "creativity": 0.2,
-   "income": 0.2,
+   "creativity": 0.15,
+   "income": 0.25,
    "independence": 0.25,
    "learning": 0.35
+  }
+ },
+ "major_special_education": {
+  "education": "higher",
+  "family": "psychology",
+  "riasec": {
+   "A": 0.1,
+   "I": 0.2,
+   "S": 0.7
+  },
+  "subjects": {
+   "biology": 0.35,
+   "history": 0.3,
+   "literature": 0.35
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.5,
+   "meaning": 0.3
+  }
+ },
+ "major_sports_science": {
+  "education": "higher",
+  "family": "sport",
+  "riasec": {
+   "I": 0.4,
+   "R": 0.35,
+   "S": 0.25
+  },
+  "subjects": {
+   "biology": 0.7,
+   "english": 0.2,
+   "geography": 0.1
+  },
+  "values": {
+   "balance": 0.15,
+   "helping": 0.25,
+   "learning": 0.35,
+   "meaning": 0.25
+  }
+ },
+ "major_theatre": {
+  "education": "higher",
+  "family": "arts",
+  "riasec": {
+   "A": 0.7,
+   "E": 0.2,
+   "S": 0.1
+  },
+  "subjects": {
+   "art": 0.5,
+   "literature": 0.5
+  },
+  "values": {
+   "creativity": 0.5,
+   "independence": 0.2,
+   "meaning": 0.15,
+   "teamwork": 0.15
+  }
+ },
+ "major_tourism": {
+  "education": "higher",
+  "family": "hospitality",
+  "riasec": {
+   "C": 0.2,
+   "E": 0.4,
+   "S": 0.4
+  },
+  "subjects": {
+   "economics": 0.2,
+   "english": 0.5,
+   "geography": 0.3
+  },
+  "values": {
+   "balance": 0.2,
+   "helping": 0.25,
+   "income": 0.25,
+   "teamwork": 0.3
+  }
+ },
+ "major_transport": {
+  "education": "higher",
+  "family": "logistics",
+  "riasec": {
+   "C": 0.4,
+   "E": 0.2,
+   "R": 0.4
+  },
+  "subjects": {
+   "geography": 0.3,
+   "math": 0.4,
+   "physics": 0.3
+  },
+  "values": {
+   "balance": 0.15,
+   "income": 0.3,
+   "stability": 0.35,
+   "teamwork": 0.2
+  }
+ },
+ "major_urban_planning": {
+  "education": "higher",
+  "family": "architecture",
+  "riasec": {
+   "A": 0.3,
+   "C": 0.3,
+   "I": 0.4
+  },
+  "subjects": {
+   "art": 0.3,
+   "geography": 0.4,
+   "math": 0.3
+  },
+  "values": {
+   "creativity": 0.25,
+   "leadership": 0.2,
+   "meaning": 0.35,
+   "stability": 0.2
+  }
+ },
+ "major_veterinary": {
+  "education": "higher",
+  "family": "agriculture",
+  "riasec": {
+   "I": 0.35,
+   "R": 0.35,
+   "S": 0.3
+  },
+  "subjects": {
+   "biology": 0.6,
+   "chemistry": 0.3,
+   "geography": 0.1
+  },
+  "values": {
+   "helping": 0.35,
+   "independence": 0.2,
+   "learning": 0.2,
+   "meaning": 0.25
   }
  }
 };
 var TAXONOMY_NAMES = {
  "en": {
   "careers": {
+   "accountant": "Accountant",
+   "actor": "Actor",
+   "agronomist": "Agronomist",
    "ai_engineer": "AI Engineer",
+   "animator": "Animator",
+   "architect": "Architect",
+   "artist": "Artist",
+   "athlete": "Professional Athlete",
+   "auditor": "Auditor",
+   "banker": "Banking Specialist",
+   "biologist": "Biologist",
    "business_analyst": "Business Analyst",
+   "chef": "Chef",
+   "chemist": "Chemist",
    "civil_engineer": "Civil Engineer",
+   "coach": "Sports Coach",
+   "construction_manager": "Construction Manager",
+   "copywriter": "Copywriter",
    "cybersecurity": "Cybersecurity Engineer",
    "data_scientist": "Data Scientist",
+   "dentist": "Dentist",
+   "diplomat": "Diplomat",
+   "doctor": "Doctor",
+   "ecologist": "Ecologist",
+   "editor": "Editor",
    "electrical_engineer": "Electrical Engineer",
+   "electrician": "Electrician",
    "entrepreneur": "Entrepreneur",
+   "environmental_scientist": "Environmental Scientist",
+   "event_manager": "Event Manager",
+   "farm_manager": "Farm Manager",
+   "fashion_designer": "Fashion Designer",
+   "financial_analyst": "Financial Analyst",
+   "fitness_trainer": "Fitness Trainer",
+   "food_technologist": "Food Technologist",
    "frontend_developer": "Frontend Developer",
+   "geneticist": "Geneticist",
+   "graphic_designer": "Graphic Designer",
+   "hotel_manager": "Hotel Manager",
+   "hr_specialist": "HR Specialist",
+   "industrial_designer": "Industrial Designer",
    "industrial_engineer": "Industrial Engineer",
+   "interior_designer": "Interior Designer",
+   "investment_analyst": "Investment Analyst",
+   "journalist": "Journalist",
+   "judge": "Judge",
+   "lab_technician": "Laboratory Technician",
+   "landscape_designer": "Landscape Designer",
+   "lawyer": "Lawyer",
+   "legal_advisor": "Legal Advisor",
+   "logistician": "Logistics Specialist",
    "marketing_manager": "Marketing Manager",
    "mechanical_engineer": "Mechanical Engineer",
+   "methodologist": "Education Methodologist",
    "mobile_developer": "Mobile Developer",
+   "musician": "Musician",
+   "notary": "Notary",
+   "nurse": "Nurse",
    "operations_manager": "Operations Manager",
+   "paramedic": "Paramedic",
+   "pe_teacher": "PE Teacher",
+   "pharmacist": "Pharmacist",
+   "photographer": "Photographer",
+   "physicist": "Physicist",
+   "physiotherapist": "Physiotherapist",
+   "primary_teacher": "Primary School Teacher",
    "product_manager": "Product Manager",
+   "prosecutor": "Prosecutor",
+   "psychologist": "Psychologist",
+   "researcher": "Researcher",
+   "restaurant_manager": "Restaurant Manager",
    "robotics_engineer": "Robotics Engineer",
    "sales_manager": "Sales Manager",
+   "school_counselor": "School Counsellor",
+   "school_principal": "School Principal",
+   "smm_specialist": "Social Media Specialist",
+   "social_worker": "Social Worker",
    "software_engineer": "Software Engineer",
+   "speech_therapist": "Speech Therapist",
+   "sports_manager": "Sports Manager",
+   "supply_chain_manager": "Supply Chain Manager",
+   "surgeon": "Surgeon",
+   "surveyor": "Surveyor",
    "systems_analyst": "Systems Analyst",
-   "technician": "Technician"
+   "tax_specialist": "Tax Specialist",
+   "teacher": "Subject Teacher",
+   "technician": "Technician",
+   "therapist": "Therapist",
+   "tour_guide": "Tour Guide",
+   "travel_agent": "Travel Agent",
+   "tutor": "Tutor",
+   "tv_producer": "TV Producer",
+   "university_lecturer": "University Lecturer",
+   "urban_planner": "Urban Planner",
+   "veterinarian": "Veterinarian",
+   "warehouse_manager": "Warehouse Manager"
   },
   "families": {
+   "agriculture": "Agriculture, Food & Environment",
+   "architecture": "Architecture & Design",
+   "arts": "Arts & Entertainment",
    "business": "Business & Entrepreneurship",
    "cs": "Computer Science & AI",
-   "engineering": "Engineering & Robotics"
+   "education": "Education",
+   "engineering": "Engineering & Robotics",
+   "finance": "Finance & Economics",
+   "hospitality": "Hospitality & Tourism",
+   "law": "Law, Government & Diplomacy",
+   "logistics": "Logistics, Construction & Technical",
+   "media": "Media & Communication",
+   "medicine": "Medicine & Healthcare",
+   "psychology": "Psychology & Human Development",
+   "science": "Science & Research",
+   "sport": "Sports & Performance"
   },
   "majors": {
+   "major_accounting": "Accounting",
+   "major_agronomy": "Agronomy",
+   "major_architecture": "Architecture",
+   "major_banking": "Banking",
+   "major_biology": "Biology",
+   "major_biotechnology": "Biotechnology",
    "major_business_admin": "Business Administration",
+   "major_chemistry": "Chemistry",
    "major_civil_eng": "Civil Engineering",
+   "major_construction_management": "Construction Management",
    "major_cs": "Computer Engineering",
+   "major_culinary": "Culinary Arts",
    "major_data_science": "Data Science",
+   "major_dentistry": "Dentistry",
+   "major_ecology": "Ecology",
+   "major_economics": "Economics",
    "major_electrical_eng": "Electrical Power Engineering",
+   "major_finance": "Finance",
+   "major_fine_arts": "Fine Arts",
+   "major_food_technology": "Food Technology",
+   "major_graphic_design": "Graphic Design",
+   "major_hotel_management": "Hotel Management",
    "major_info_security": "Information Security",
+   "major_interior_design": "Interior Design",
+   "major_international_relations": "International Relations",
+   "major_journalism": "Journalism",
+   "major_law": "Law",
+   "major_logistics": "Logistics",
    "major_management": "Management",
    "major_marketing": "Marketing",
    "major_mechanical_eng": "Mechanical Engineering",
    "major_mechatronics": "Mechatronics and Robotics",
-   "major_software_eng": "Software Engineering"
+   "major_media_communications": "Media and Communications",
+   "major_medicine": "Medicine",
+   "major_music": "Music",
+   "major_nursing": "Nursing",
+   "major_pedagogy": "Pedagogy",
+   "major_pharmacy": "Pharmacy",
+   "major_philology": "Philology",
+   "major_physical_education": "Physical Education",
+   "major_physics": "Physics",
+   "major_physiotherapy": "Physiotherapy",
+   "major_political_science": "Political Science",
+   "major_pr": "Public Relations",
+   "major_primary_education": "Primary Education",
+   "major_psychology": "Psychology",
+   "major_social_work": "Social Work",
+   "major_software_eng": "Software Engineering",
+   "major_special_education": "Special Education",
+   "major_sports_science": "Sports Science",
+   "major_theatre": "Theatre Arts",
+   "major_tourism": "Tourism",
+   "major_transport": "Transport Systems",
+   "major_urban_planning": "Urban Planning",
+   "major_veterinary": "Veterinary Medicine"
   }
  },
  "ru": {
   "careers": {
+   "accountant": "Бухгалтер",
+   "actor": "Актёр",
+   "agronomist": "Агроном",
    "ai_engineer": "Инженер по ИИ",
+   "animator": "Аниматор",
+   "architect": "Архитектор",
+   "artist": "Художник",
+   "athlete": "Профессиональный спортсмен",
+   "auditor": "Аудитор",
+   "banker": "Банковский специалист",
+   "biologist": "Биолог",
    "business_analyst": "Бизнес-аналитик",
+   "chef": "Шеф-повар",
+   "chemist": "Химик",
    "civil_engineer": "Инженер-строитель",
+   "coach": "Спортивный тренер",
+   "construction_manager": "Руководитель строительных работ",
+   "copywriter": "Копирайтер",
    "cybersecurity": "Специалист по кибербезопасности",
    "data_scientist": "Специалист по данным",
+   "dentist": "Стоматолог",
+   "diplomat": "Дипломат",
+   "doctor": "Врач",
+   "ecologist": "Эколог",
+   "editor": "Редактор",
    "electrical_engineer": "Инженер-электрик",
+   "electrician": "Электрик",
    "entrepreneur": "Предприниматель",
+   "environmental_scientist": "Учёный-эколог",
+   "event_manager": "Event-менеджер",
+   "farm_manager": "Руководитель фермерского хозяйства",
+   "fashion_designer": "Дизайнер одежды",
+   "financial_analyst": "Финансовый аналитик",
+   "fitness_trainer": "Фитнес-тренер",
+   "food_technologist": "Технолог пищевой промышленности",
    "frontend_developer": "Frontend-разработчик",
+   "geneticist": "Генетик",
+   "graphic_designer": "Графический дизайнер",
+   "hotel_manager": "Менеджер гостиницы",
+   "hr_specialist": "HR-специалист",
+   "industrial_designer": "Промышленный дизайнер",
    "industrial_engineer": "Инженер-технолог",
+   "interior_designer": "Дизайнер интерьера",
+   "investment_analyst": "Инвестиционный аналитик",
+   "journalist": "Журналист",
+   "judge": "Судья",
+   "lab_technician": "Лаборант",
+   "landscape_designer": "Ландшафтный дизайнер",
+   "lawyer": "Адвокат",
+   "legal_advisor": "Юрисконсульт",
+   "logistician": "Логист",
    "marketing_manager": "Маркетинг-менеджер",
    "mechanical_engineer": "Инженер-механик",
+   "methodologist": "Методист",
    "mobile_developer": "Разработчик мобильных приложений",
+   "musician": "Музыкант",
+   "notary": "Нотариус",
+   "nurse": "Медсестра / медбрат",
    "operations_manager": "Операционный менеджер",
+   "paramedic": "Фельдшер скорой помощи",
+   "pe_teacher": "Учитель физкультуры",
+   "pharmacist": "Фармацевт",
+   "photographer": "Фотограф",
+   "physicist": "Физик",
+   "physiotherapist": "Физиотерапевт",
+   "primary_teacher": "Учитель начальных классов",
    "product_manager": "Продакт-менеджер",
+   "prosecutor": "Прокурор",
+   "psychologist": "Психолог",
+   "researcher": "Научный сотрудник",
+   "restaurant_manager": "Менеджер ресторана",
    "robotics_engineer": "Инженер-робототехник",
    "sales_manager": "Менеджер по продажам",
+   "school_counselor": "Школьный психолог",
+   "school_principal": "Директор школы",
+   "smm_specialist": "SMM-специалист",
+   "social_worker": "Социальный работник",
    "software_engineer": "Инженер-программист",
+   "speech_therapist": "Логопед",
+   "sports_manager": "Спортивный менеджер",
+   "supply_chain_manager": "Менеджер цепочки поставок",
+   "surgeon": "Хирург",
+   "surveyor": "Геодезист",
    "systems_analyst": "Системный аналитик",
-   "technician": "Технический специалист"
+   "tax_specialist": "Специалист по налогам",
+   "teacher": "Учитель-предметник",
+   "technician": "Технический специалист",
+   "therapist": "Психотерапевт",
+   "tour_guide": "Экскурсовод",
+   "travel_agent": "Менеджер по туризму",
+   "tutor": "Репетитор",
+   "tv_producer": "Телепродюсер",
+   "university_lecturer": "Преподаватель вуза",
+   "urban_planner": "Градостроитель",
+   "veterinarian": "Ветеринар",
+   "warehouse_manager": "Заведующий складом"
   },
   "families": {
+   "agriculture": "Сельское хозяйство, питание и экология",
+   "architecture": "Архитектура и дизайн",
+   "arts": "Искусство и творчество",
    "business": "Бизнес и предпринимательство",
    "cs": "Компьютерные науки и ИИ",
-   "engineering": "Инженерия и робототехника"
+   "education": "Образование",
+   "engineering": "Инженерия и робототехника",
+   "finance": "Финансы и экономика",
+   "hospitality": "Гостеприимство и туризм",
+   "law": "Право, государство и дипломатия",
+   "logistics": "Логистика, строительство и технические профессии",
+   "media": "Медиа и коммуникации",
+   "medicine": "Медицина и здравоохранение",
+   "psychology": "Психология и развитие человека",
+   "science": "Наука и исследования",
+   "sport": "Спорт и физическая культура"
   },
   "majors": {
+   "major_accounting": "Бухгалтерский учёт",
+   "major_agronomy": "Агрономия",
+   "major_architecture": "Архитектура",
+   "major_banking": "Банковское дело",
+   "major_biology": "Биология",
+   "major_biotechnology": "Биотехнология",
    "major_business_admin": "Бизнес-администрирование",
+   "major_chemistry": "Химия",
    "major_civil_eng": "Строительная инженерия",
+   "major_construction_management": "Управление строительством",
    "major_cs": "Компьютерный инжиниринг",
+   "major_culinary": "Кулинарное искусство",
    "major_data_science": "Анализ данных",
+   "major_dentistry": "Стоматология",
+   "major_ecology": "Экология",
+   "major_economics": "Экономика",
    "major_electrical_eng": "Электроэнергетика",
+   "major_finance": "Финансы",
+   "major_fine_arts": "Изобразительное искусство",
+   "major_food_technology": "Пищевая технология",
+   "major_graphic_design": "Графический дизайн",
+   "major_hotel_management": "Гостиничное дело",
    "major_info_security": "Информационная безопасность",
+   "major_interior_design": "Дизайн интерьера",
+   "major_international_relations": "Международные отношения",
+   "major_journalism": "Журналистика",
+   "major_law": "Юриспруденция",
+   "major_logistics": "Логистика",
    "major_management": "Менеджмент",
    "major_marketing": "Маркетинг",
    "major_mechanical_eng": "Машиностроение",
    "major_mechatronics": "Мехатроника и робототехника",
-   "major_software_eng": "Программная инженерия"
+   "major_media_communications": "Медиа и коммуникации",
+   "major_medicine": "Лечебное дело",
+   "major_music": "Музыкальное искусство",
+   "major_nursing": "Сестринское дело",
+   "major_pedagogy": "Педагогика",
+   "major_pharmacy": "Фармация",
+   "major_philology": "Филология",
+   "major_physical_education": "Физическая культура",
+   "major_physics": "Физика",
+   "major_physiotherapy": "Физиотерапия",
+   "major_political_science": "Политология",
+   "major_pr": "Связи с общественностью",
+   "major_primary_education": "Начальное образование",
+   "major_psychology": "Психология",
+   "major_social_work": "Социальная работа",
+   "major_software_eng": "Программная инженерия",
+   "major_special_education": "Специальная педагогика",
+   "major_sports_science": "Спортивная наука",
+   "major_theatre": "Театральное искусство",
+   "major_tourism": "Туризм",
+   "major_transport": "Транспортные системы",
+   "major_urban_planning": "Градостроительство",
+   "major_veterinary": "Ветеринария"
   }
  },
  "uz": {
   "careers": {
+   "accountant": "Buxgalter",
+   "actor": "Aktyor",
+   "agronomist": "Agronom",
    "ai_engineer": "Sunʼiy intellekt muhandisi",
+   "animator": "Animator",
+   "architect": "Meʼmor",
+   "artist": "Rassom",
+   "athlete": "Professional sportchi",
+   "auditor": "Auditor",
+   "banker": "Bank mutaxassisi",
+   "biologist": "Biolog",
    "business_analyst": "Biznes tahlilchi",
+   "chef": "Oshpaz",
+   "chemist": "Kimyogar",
    "civil_engineer": "Qurilish muhandisi",
+   "coach": "Sport murabbiyi",
+   "construction_manager": "Qurilish ishlari boshqaruvchisi",
+   "copywriter": "Kopirayter",
    "cybersecurity": "Kiberxavfsizlik mutaxassisi",
    "data_scientist": "Maʼlumotlar tahlilchisi",
+   "dentist": "Stomatolog",
+   "diplomat": "Diplomat",
+   "doctor": "Shifokor",
+   "ecologist": "Ekolog",
+   "editor": "Muharrir",
    "electrical_engineer": "Elektr muhandisi",
+   "electrician": "Elektrik",
    "entrepreneur": "Tadbirkor",
+   "environmental_scientist": "Ekolog-tadqiqotchi",
+   "event_manager": "Tadbirlar menejeri",
+   "farm_manager": "Fermer xoʻjaligi rahbari",
+   "fashion_designer": "Moda dizayneri",
+   "financial_analyst": "Moliyaviy tahlilchi",
+   "fitness_trainer": "Fitnes murabbiy",
+   "food_technologist": "Oziq-ovqat texnologi",
    "frontend_developer": "Frontend dasturchi",
+   "geneticist": "Genetik",
+   "graphic_designer": "Grafik dizayner",
+   "hotel_manager": "Mehmonxona menejeri",
+   "hr_specialist": "HR mutaxassisi",
+   "industrial_designer": "Sanoat dizayneri",
    "industrial_engineer": "Ishlab chiqarish muhandisi",
+   "interior_designer": "Interyer dizayneri",
+   "investment_analyst": "Investitsiya tahlilchisi",
+   "journalist": "Jurnalist",
+   "judge": "Sudya",
+   "lab_technician": "Laboratoriya mutaxassisi",
+   "landscape_designer": "Landshaft dizayneri",
+   "lawyer": "Advokat",
+   "legal_advisor": "Yuridik maslahatchi",
+   "logistician": "Logist",
    "marketing_manager": "Marketing menejeri",
    "mechanical_engineer": "Mashinasozlik muhandisi",
+   "methodologist": "Metodist",
    "mobile_developer": "Mobil ilova dasturchisi",
+   "musician": "Musiqachi",
+   "notary": "Notarius",
+   "nurse": "Hamshira",
    "operations_manager": "Operatsion menejer",
+   "paramedic": "Tez yordam feldsheri",
+   "pe_teacher": "Jismoniy tarbiya oʻqituvchisi",
+   "pharmacist": "Farmatsevt",
+   "photographer": "Fotograf",
+   "physicist": "Fizik",
+   "physiotherapist": "Reabilitolog",
+   "primary_teacher": "Boshlangʻich sinf oʻqituvchisi",
    "product_manager": "Mahsulot menejeri",
+   "prosecutor": "Prokuror",
+   "psychologist": "Psixolog",
+   "researcher": "Ilmiy tadqiqotchi",
+   "restaurant_manager": "Restoran menejeri",
    "robotics_engineer": "Robototexnika muhandisi",
    "sales_manager": "Savdo menejeri",
+   "school_counselor": "Maktab psixologi",
+   "school_principal": "Maktab direktori",
+   "smm_specialist": "SMM mutaxassisi",
+   "social_worker": "Ijtimoiy xodim",
    "software_engineer": "Dasturiy taʼminot muhandisi",
+   "speech_therapist": "Logoped",
+   "sports_manager": "Sport menejeri",
+   "supply_chain_manager": "Taʼminot zanjiri menejeri",
+   "surgeon": "Jarroh",
+   "surveyor": "Geodezist",
    "systems_analyst": "Tizim tahlilchisi",
-   "technician": "Texnik mutaxassis"
+   "tax_specialist": "Soliq mutaxassisi",
+   "teacher": "Fan oʻqituvchisi",
+   "technician": "Texnik mutaxassis",
+   "therapist": "Psixoterapevt",
+   "tour_guide": "Gid",
+   "travel_agent": "Turizm menejeri",
+   "tutor": "Repetitor",
+   "tv_producer": "Teleprodyuser",
+   "university_lecturer": "Universitet oʻqituvchisi",
+   "urban_planner": "Shaharsozlik mutaxassisi",
+   "veterinarian": "Veterinar",
+   "warehouse_manager": "Ombor mudiri"
   },
   "families": {
+   "agriculture": "Qishloq xoʻjaligi, oziq-ovqat va ekologiya",
+   "architecture": "Meʼmorchilik va dizayn",
+   "arts": "Sanʼat va ijod",
    "business": "Biznes va tadbirkorlik",
    "cs": "Kompyuter fanlari va sunʼiy intellekt",
-   "engineering": "Muhandislik va robototexnika"
+   "education": "Taʼlim",
+   "engineering": "Muhandislik va robototexnika",
+   "finance": "Moliya va iqtisodiyot",
+   "hospitality": "Mehmondoʻstlik va turizm",
+   "law": "Huquq, davlat va diplomatiya",
+   "logistics": "Logistika, qurilish va texnik kasblar",
+   "media": "Media va kommunikatsiya",
+   "medicine": "Tibbiyot va sogʻliqni saqlash",
+   "psychology": "Psixologiya va inson rivoji",
+   "science": "Fan va tadqiqot",
+   "sport": "Sport va jismoniy tarbiya"
   },
   "majors": {
+   "major_accounting": "Buxgalteriya hisobi",
+   "major_agronomy": "Agronomiya",
+   "major_architecture": "Meʼmorchilik",
+   "major_banking": "Bank ishi",
+   "major_biology": "Biologiya",
+   "major_biotechnology": "Biotexnologiya",
    "major_business_admin": "Biznes boshqaruvi",
+   "major_chemistry": "Kimyo",
    "major_civil_eng": "Qurilish muhandisligi",
+   "major_construction_management": "Qurilish boshqaruvi",
    "major_cs": "Kompyuter injiniringi",
+   "major_culinary": "Oshpazlik sanʼati",
    "major_data_science": "Maʼlumotlar tahlili",
+   "major_dentistry": "Stomatologiya",
+   "major_ecology": "Ekologiya",
+   "major_economics": "Iqtisodiyot",
    "major_electrical_eng": "Elektroenergetika",
+   "major_finance": "Moliya",
+   "major_fine_arts": "Tasviriy sanʼat",
+   "major_food_technology": "Oziq-ovqat texnologiyasi",
+   "major_graphic_design": "Grafik dizayn",
+   "major_hotel_management": "Mehmonxona ishi",
    "major_info_security": "Axborot xavfsizligi",
+   "major_interior_design": "Interyer dizayni",
+   "major_international_relations": "Xalqaro munosabatlar",
+   "major_journalism": "Jurnalistika",
+   "major_law": "Yurisprudensiya",
+   "major_logistics": "Logistika",
    "major_management": "Menejment",
    "major_marketing": "Marketing",
    "major_mechanical_eng": "Mashinasozlik",
    "major_mechatronics": "Mexatronika va robototexnika",
-   "major_software_eng": "Dasturiy injiniring"
+   "major_media_communications": "Media va kommunikatsiya",
+   "major_medicine": "Davolash ishi",
+   "major_music": "Musiqa sanʼati",
+   "major_nursing": "Hamshiralik ishi",
+   "major_pedagogy": "Pedagogika",
+   "major_pharmacy": "Farmatsiya",
+   "major_philology": "Filologiya",
+   "major_physical_education": "Jismoniy tarbiya",
+   "major_physics": "Fizika",
+   "major_physiotherapy": "Reabilitologiya",
+   "major_political_science": "Siyosatshunoslik",
+   "major_pr": "Jamoatchilik bilan aloqalar",
+   "major_primary_education": "Boshlangʻich taʼlim",
+   "major_psychology": "Psixologiya",
+   "major_social_work": "Ijtimoiy ish",
+   "major_software_eng": "Dasturiy injiniring",
+   "major_special_education": "Maxsus pedagogika",
+   "major_sports_science": "Sport fani",
+   "major_theatre": "Teatr sanʼati",
+   "major_tourism": "Turizm",
+   "major_transport": "Transport tizimlari",
+   "major_urban_planning": "Shaharsozlik",
+   "major_veterinary": "Veterinariya"
   }
  }
 };

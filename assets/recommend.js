@@ -99,7 +99,14 @@ function recSubjectFit(perf, entrySubjects){
     covered += entrySubjects[k];
   }
   if (w <= 0 || covered < REC_MIN_SUBJECT_WEIGHT) return null;
-  return sum / w;
+  // Shrink toward neutral in proportion to how much of the entry we could
+  // actually see. Without this, an entry needing three subjects the student
+  // supplied two of scores a perfect 1.00 and ties with one whose every
+  // requirement was covered -- a student with 5s in maths, CS and physics tied
+  // finance (which ignores physics) with computer science. Partial evidence is
+  // now worth proportionally less, and symmetrically: a poor mark on thin
+  // coverage is also less damning than a poor mark on full coverage.
+  return 0.5 + (sum / w - 0.5) * covered;
 }
 
 /** Personality's contribution, deliberately bounded away from zero.

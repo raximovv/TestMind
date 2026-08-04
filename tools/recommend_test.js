@@ -148,8 +148,15 @@ console.log('\n== a flat profile claims nothing ==');
   const rows = R.recRank(CAREERS, s, 'career');
   ok(rows.every(r => r.used.indexOf('riasec') === -1),
      'so the interest term is dropped and the marks decide');
+  // Coverage matters: finance needs economics this student never supplied, so
+  // it must not tie with computer science, which needs exactly what they gave.
   ok(rows[0].family === 'cs' || rows[0].family === 'engineering',
-     'strong maths/CS marks lead to a technical family (' + rows[0].family + ')');
+     'strong maths/CS/physics marks lead to a technical family (' + rows[0].family + ')');
+  const fam = {};
+  rows.forEach(r => { if (fam[r.family] === undefined) fam[r.family] = r.score; });
+  ok(fam.cs > (fam.finance || 0),
+     'and computer science beats finance, whose subjects are only partly covered ('
+     + fam.cs.toFixed(3) + ' vs ' + (fam.finance || 0).toFixed(3) + ')');
 }
 
 console.log('\n== personality can never block a career ==');
@@ -214,15 +221,15 @@ console.log('\n== values separate careers that interests score identically ==');
   const sInd = stable.findIndex(r => r.key === 'industrial_engineer');
   ok(sInd < iInd, 'industrial engineer rises for the stability-seeking student (rank '
      + (sInd + 1) + ' vs ' + (iInd + 1) + ')');
-  // KNOWN LIMITATION, asserted so it is not forgotten: entries that inherit
-  // their family's values move together, so values currently discriminate
-  // BETWEEN families far more than within one. Only the five ENTRY_VALUES
-  // overrides separate siblings. Widening those is the tuning job once real
-  // data exists.
+  // Every entry now carries its own value profile, so siblings must NOT move
+  // together. While values were inherited from the family this gap was
+  // identical under both students, and values could only ever discriminate
+  // between families.
   const iGap = iEnt - indep.find(r => r.key === 'operations_manager').score;
   const sGap = sEnt - stable.find(r => r.key === 'operations_manager').score;
-  ok(Math.abs(iGap - sGap) < 1e-6,
-     'siblings inheriting family values move in lockstep (documented limitation)');
+  ok(Math.abs(iGap - sGap) > 1e-6,
+     'siblings in one family are separated by values, not moved in lockstep ('
+     + iGap.toFixed(3) + ' vs ' + sGap.toFixed(3) + ')');
 }
 
 console.log('\n== self-reported marks count for less than real ones ==');
