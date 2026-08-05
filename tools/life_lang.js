@@ -20,7 +20,8 @@ const MARKER = {
   ru: 'Ваши сильные стороны',
   en: 'Your strengths',
 };
-const HEADING = { uz: 'Kundalik hayotda', ru: 'В повседневной жизни', en: 'In everyday life' };
+const HEADING = { uz: 'Shaxsiyatingiz haqida qisqacha', ru: 'Кратко о вашей личности',
+                  en: 'Your personality in brief' };
 
 let pass = 0, fail = 0;
 function check(name, ok, extra){
