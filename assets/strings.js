@@ -23,8 +23,7 @@ ru: {
     figmale:  'Мужской образ:',
     figfemale:'Женский образ:',
     resume:   'Продолжить тест',
-    vgYours:  'Ваш образ',
-    vgNote:   'Пример результата. Свой можно сохранить картинкой и отправить друзьям.'
+    vgYours:  'Ваш образ'
   },
   fam: {
     lead: 'Лидеры',
@@ -216,8 +215,7 @@ en: {
     figmale:  'Male figure:',
     figfemale:'Female figure:',
     resume:   'Resume the test',
-    vgYours:  'Your character',
-    vgNote:   'A sample result. You can save your own as an image and send it to friends.'
+    vgYours:  'Your character'
   },
   fam: {
     lead: 'Leaders',
@@ -410,9 +408,7 @@ function tmUi(key){
   var uz = {strength: 'Kuchli tomoni: ', watch: 'Eʼtibor bering: ',
             fig: 'Tarixdan: ', figmale: 'Erkak siymo:', figfemale: 'Ayol siymo:',
             resume: 'Testni davom ettirish',
-            vgYours: 'Sizning obrazingiz',
-            vgNote: 'Namuna natija. Oʻzingiznikini rasm qilib saqlab, '
-                    + 'doʻstlaringizga yuborishingiz mumkin.'};
+            vgYours: 'Sizning obrazingiz'};
   return (s && s.ui && s.ui[key]) || uz[key];
 }
 

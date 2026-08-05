@@ -191,9 +191,12 @@ function buildScene(){
 // empty band is what makes everything inside it bigger.
 var VG_VIEW = {x: 14, y: 30, w: 372, h: 242};
 
-// The sample result card carries five bars and two lines of small print, so it
-// needs a taller window than the two drawn vignettes below it.
-var VG_CARD_VIEW = {x: 14, y: 30, w: 372, h: 300};
+// The sample result card carries five bars, so it needs a taller window than the
+// two drawn vignettes below it. It used to be 300 to fit two lines of small
+// print under a rule; that caption is gone and the height came down with it,
+// because leaving the box at 300 would have left 68px of white under the last
+// bar and read as a rendering fault rather than as space.
+var VG_CARD_VIEW = {x: 14, y: 30, w: 372, h: 252};
 
 function esc(s){
   return String(s).replace(/[&<>"]/g, function(c){
@@ -246,22 +249,6 @@ function vgUi(k, fallback){
   return s || fallback;
 }
 
-// Break a sentence into lines that fit `max` user units at `size`. Nothing can
-// measure text before it is in the document, and this note is three languages
-// long, so estimate from character width -- 0.5em is close enough for Inter at
-// these sizes, and the line box has room to spare either way.
-function vgWrap(text, size, max, lines){
-  var words = String(text).split(' '), out = [], line = '', i, w;
-  for (i = 0; i < words.length; i++){
-    w = line ? line + ' ' + words[i] : words[i];
-    if (w.length * size * 0.5 > max && line){ out.push(line); line = words[i]; }
-    else line = w;
-    if (out.length === lines - 1 && i === words.length - 1) break;
-  }
-  if (line) out.push(line);
-  return out.slice(0, lines);
-}
-
 function vgResult(){
   var k = VG_CARD, side = VG_CARD_FIGURE;
   var arch = (typeof tmArch === 'function') ? tmArch(k) : ARCHETYPES[k];
@@ -308,16 +295,10 @@ function vgResult(){
       + (defining.indexOf(r.t) < 0 ? ' opacity=".38"' : '') + '/>';
   }
 
-  // The line that says this is a sample, not somebody's real result.
-  var noteY = v.y + v.h - 34;
-  b += '<line x1="' + L + '" y1="' + (noteY - 14) + '" x2="' + R + '" y2="' + (noteY - 14)
-    + '" stroke="#E3DCCC"/>';
-  var note = vgWrap(vgUi('vgNote', 'Namuna natija.'), 10.5, R - L, 2);
-  for (i = 0; i < note.length; i++){
-    b += '<text x="' + L + '" y="' + (noteY + 4 + i * 14) + '" '
-      + 'font-family="Inter,Segoe UI,sans-serif" font-size="10.5" fill="#6E6558">'
-      + esc(note[i]) + '</text>';
-  }
+  // A rule and two lines of small print used to sit here saying this was a
+  // sample and that you could send your own to friends. The surrounding section
+  // already says both, and the card reads as an illustration on sight, so the
+  // caption was explaining the obvious in the smallest type on the page.
   return vgFrame(b, v);
 }
 
