@@ -68,23 +68,18 @@
   .lifecol li{margin:0 0 10px;font-size:14px;line-height:1.5;color:var(--muted)}
   .lifecol li:last-child{margin-bottom:0}
   .lifecol li b{display:block;color:var(--ink)}
-  .careers{list-style:none;margin:12px 0 0;padding:0}
-  .career{margin-bottom:15px}
+  /* .car* belonged to the archetype's own list of directions, which the result
+     screen no longer shows at all -- «Yoʻnalishlar» is the one place careers
+     are named. What is left here is what the interest profile below borrowed:
+     the row header, the name, the score and the bar. .careers, .career,
+     .carwhy and .cardisc went with the list they styled. */
   .carhead{display:flex;align-items:baseline;gap:10px}
   .carname{font-weight:600}
   .carpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--lazur-deep)}
   .carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
   .carbar i{display:block;height:100%;border-radius:4px;
             background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
-  /* 3px of air where the fit bar used to be: on the result screen these
-     directions carry no percentage, so there is nothing to draw between the
-     name and the sentence under it. .carpct and .carbar stay because the
-     interest profile below still uses both. */
-  .carwhy{margin:3px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
-  .cardisc{margin:12px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);
-           font-size:13px;line-height:1.55;color:var(--muted)}
-  /* career-interest profile. Reuses .carbar so the interest bars and the
-     suggested-direction bars on the same page cannot drift apart visually. */
+  /* career-interest profile. */
   .cfull{margin:26px 0 0;text-align:left}
   .cprof{list-style:none;margin:14px 0 0;padding:0;text-align:left}
   .cprof li{margin-bottom:14px}
@@ -1610,8 +1605,8 @@ var TT_UZ = {
   careerH:     'Endi — qiziqishlaringiz',
   careerLede:  'Birinchi qism shaxsiyatingiz haqida edi. Endi qaysi ishlarni yoqtirishingizni soʻraymiz. Bu yerda toʻgʻri javob yoʻq — faqat yoqadimi yoki yoʻqmi.',
   careerTopup: 'Bir necha yoʻnalish deyarli teng chiqdi. Qaysi biri kuchliroq ekanini aniqlash uchun yana bir necha savol beramiz.',
-  lifeH:       'Toʻliq tahlil',
-  lifeSub:     'Obrazingiz kundalik hayotda qanday koʻrinadi.',
+  lifeH:       'Kundalik hayotda',
+  lifeSub:     'Nimalar yaxshi chiqadi va nimaga eʼtibor berish kerak.',
   resumeH1:    'Yarim qolgan test',
   resumeP:     'Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?',
   resumeCount: '%1 / %2 savolga javob berilgan.',
@@ -2101,53 +2096,39 @@ function buildShareCard(s, arch, key, cb){
 
 /** «Oʻshanda va hozir» — only for a student who took this at least RETEST_DAYS ago.
  *  Shows which traits actually moved; says so plainly when none did. */
-// ---- full life-area detail on the result screen ----
-// Same content as the archetype page, from the same generated source
-// (life-<lang>.js), so a student sees everything without having to leave the
-// result. Returns '' for an archetype with no entry yet, rather than an empty
-// heading.
+// ---- strengths and watch-outs on the result screen ----
+// One merged block, from the generated life-<lang>.js. Returns '' for an
+// archetype with no entry yet, rather than an empty heading.
+//
+// This used to print all three life areas -- Oilada, Maktabda, Munosabatlarda,
+// five strengths and five watch-outs each -- and then a list of directions.
+// Thirty-five items between a student and «Yoʻnalishlar», which is the part
+// they answered ninety questions to reach. The archetype pages still carry the
+// long version for anyone who wants it; four and four is what a result screen
+// can spend. The selection lives in OVERALL in life_content.py.
+//
+// The directions list is gone entirely rather than shortened. «Yoʻnalishlar»
+// one scroll below ranks careers from interests, values, marks and personality;
+// this list had only the two personality traits behind it, and over 3,600
+// simulated students the two lists' top picks agreed 9.4% of the time against a
+// 6.3% chance baseline. Two answers to one question is worse than one answer.
 function lifeHtml(archKey){
   if (typeof LIFE === 'undefined' || !LIFE[archKey]) return '';
-  var d = LIFE[archKey], L = LIFE_LABELS, out = '', i, j;
+  var d = LIFE[archKey], L = LIFE_LABELS;
   function list(items){
     var h = '', k;
     for (k = 0; k < items.length; k++)
       h += '<li><b>' + esc(items[k][0]) + '</b> ' + esc(items[k][1]) + '</li>';
     return h;
   }
-  for (i = 0; i < d.areas.length; i++){
-    var a = d.areas[i];
-    out += '<h3 class="lifehead">' + esc(a.title) +
-           '<span>' + esc(a.sub) + '</span></h3>' +
+  return '<section class="lifefull">' +
            '<div class="lifegrid">' +
-             '<div class="lifecol good"><h4>' + esc(L.strong) + '</h4><ul>' + list(a.strong) + '</ul></div>' +
-             '<div class="lifecol watch"><h4>' + esc(L.weak) + '</h4><ul>' + list(a.weak) + '</ul></div>' +
-           '</div>';
-  }
-  // Directions, with NO percentage and NO ranking -- the note goes first, above
-  // the list, because a reader who meets the list first has already read it as a
-  // recommendation by the time a footnote tells them it is not one.
-  //
-  // The archetype page still ranks these and still prints a percentage. Here it
-  // must not: «Yoʻnalishlar» sits one scroll below and ranks careers from
-  // interests, values and marks, and personality is 8% of that. Over 3,600
-  // simulated students the two lists' top picks agreed 9.4% of the time against
-  // a 6.3% chance baseline -- so shown side by side and both ranked, they were
-  // two answers to the same question, and the louder one had the thinner
-  // evidence. This block now says only what personality alone can support.
-  if (d.careers && d.careers.length){
-    out += '<h3 class="lifehead">' + esc(L.careers) + '</h3>' +
-           '<p class="cardisc">' + esc(L.note || '') + '</p>' +
-           '<ul class="careers">';
-    for (j = 0; j < d.careers.length; j++){
-      var c = d.careers[j];
-      out += '<li class="career">' +
-               '<div class="carhead"><span class="carname">' + esc(c.name) + '</span></div>' +
-             '<p class="carwhy">' + esc(c.why) + '</p></li>';
-    }
-    out += '</ul>';
-  }
-  return '<section class="lifefull">' + out + '</section>';
+             '<div class="lifecol good"><h4>' + esc(L.strong) + '</h4><ul>' +
+               list(d.strong) + '</ul></div>' +
+             '<div class="lifecol watch"><h4>' + esc(L.weak) + '</h4><ul>' +
+               list(d.weak) + '</ul></div>' +
+           '</div>' +
+         '</section>';
 }
 
 /** The career-interest result: six bars, the strongest area named, and nothing

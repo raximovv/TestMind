@@ -979,3 +979,69 @@ def careers_for(key, lang):
         return [(n, w, why) for n, w, why in base]
     tr = LIFE_BY_LANG[lang][key]['careers']
     return [(tr[i][0], base[i][1], tr[i][1]) for i in range(len(base))]
+
+
+# ---------------------------------------------------------------------------
+# The result screen's single overall strengths / watch-outs block.
+#
+# The archetype pages still show all three areas — a visitor browsing /types/
+# came to read about a character and has the patience for thirty bullets. The
+# result screen does not: a student who has just answered ninety questions met
+# «Oilada», «Maktabda» and «Munosabatlarda» stacked one after another, each with
+# five strengths and five watch-outs, and the page stopped being read long
+# before «Yoʻnalishlar» — which is the part they actually came for.
+#
+# So this picks four of each. The selection is (area, index) pairs rather than
+# text, which is the same trick careers_for() uses: the Russian and English
+# packs are parallel to the Uzbek one by index, so choosing a position here
+# chooses the right sentence in all three languages at once and a translation
+# can never quietly promote a different bullet.
+#
+# Chosen for spread, not rank: four bullets that repeat one quality in four
+# settings tell a reader less than four that name four different things, so
+# near-duplicates lose ("can't say no" and "no boundaries" are one item), and
+# each set draws on at least two areas. School-side bullets are favoured on
+# ties — the reader is fourteen and at school.
+OVERALL = {
+    'ES|A': {'strong': [('friends', 0), ('school', 0), ('family', 2), ('school', 2)],
+             'weak':   [('family', 4), ('school', 0), ('school', 1), ('friends', 2)]},
+    'ES|E': {'strong': [('family', 0), ('school', 1), ('friends', 3), ('friends', 2)],
+             'weak':   [('school', 0), ('family', 1), ('school', 4), ('friends', 1)]},
+    'E|C':  {'strong': [('school', 0), ('school', 1), ('friends', 0), ('family', 2)],
+             'weak':   [('school', 0), ('family', 0), ('family', 1), ('friends', 2)]},
+    'ES|O': {'strong': [('school', 0), ('school', 1), ('friends', 0), ('family', 0)],
+             'weak':   [('family', 0), ('school', 0), ('school', 2), ('friends', 0)]},
+    'E|O':  {'strong': [('school', 0), ('school', 1), ('friends', 0), ('family', 1)],
+             'weak':   [('family', 0), ('school', 1), ('family', 2), ('friends', 0)]},
+    'O|C':  {'strong': [('school', 1), ('school', 0), ('family', 0), ('friends', 0)],
+             'weak':   [('family', 0), ('school', 1), ('school', 2), ('friends', 0)]},
+    'E|A':  {'strong': [('school', 0), ('friends', 1), ('family', 0), ('friends', 2)],
+             'weak':   [('family', 1), ('school', 0), ('school', 1), ('friends', 1)]},
+    'O|A':  {'strong': [('family', 0), ('school', 0), ('school', 1), ('friends', 0)],
+             'weak':   [('friends', 0), ('school', 0), ('school', 3), ('friends', 3)]},
+    'ES|C': {'strong': [('family', 0), ('school', 0), ('school', 2), ('friends', 2)],
+             'weak':   [('school', 0), ('school', 2), ('family', 1), ('friends', 1)]},
+    'A|C':  {'strong': [('family', 0), ('school', 0), ('school', 1), ('friends', 0)],
+             'weak':   [('family', 2), ('school', 1), ('school', 2), ('friends', 2)]},
+}
+
+
+def overall_for(key, lang):
+    u"""{'strong': [(title, body), ...], 'weak': [...]} for the result screen.
+
+    Raises rather than silently dropping a bullet: an out-of-range index means
+    an area's list was shortened after this selection was written, and a short
+    block is exactly the kind of fault nobody notices for a month.
+    """
+    src = LIFE_BY_LANG[lang][key]
+    out = {}
+    for side in ('strong', 'weak'):
+        rows = []
+        for area, i in OVERALL[key][side]:
+            items = src[area][side]
+            if i >= len(items):
+                raise IndexError('%s/%s: %s.%s[%d] but only %d written'
+                                 % (key, lang, area, side, i, len(items)))
+            rows.append(tuple(items[i]))
+        out[side] = rows
+    return out

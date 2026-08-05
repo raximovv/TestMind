@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
-u"""Emits life.js — the browser copy of life_content.py.
+u"""Emits life-<lang>.js — the browser copy of life_content.py.
 
-The result screen in test.html needs the same Oilada / Maktabda /
-Munosabatlarda detail that the archetype pages show, but test.html is a
-standalone client-side app: it cannot read a Python module. So the module is
-compiled to JS here rather than retyped, which is the same arrangement as
-characters.js + strings.js — one source, two consumers, no way for them to
-disagree.
+test.html is a standalone client-side app and cannot read a Python module, so
+the module is compiled to JS here rather than retyped. Same arrangement as
+characters.js + strings.js: one source, two consumers, no way to disagree.
 
-The DIRECTIONS are the one place where the two consumers deliberately differ.
-The archetype page ranks them and prints a percentage; this file emits neither.
-A visitor browsing /types/ sees that list on its own, but on the result screen
-it lands a single scroll above «Yoʻnalishlar», which ranks careers from
-interests, values, marks and personality. Two ranked lists built from almost
-disjoint evidence disagree for most students, and the one with the weaker
-evidence was the one shouting a number. See RESULT_CAREER_TITLE in
-life_content.py.
+The two consumers no longer show the same thing, and both differences are
+deliberate:
+
+  AREAS.  The archetype page prints all three of Oilada / Maktabda /
+  Munosabatlarda, thirty bullets in total. Someone browsing /types/ came to
+  read about a character and will. A student who has just answered ninety
+  questions will not, and the section they gave up in sat directly above
+  «Yoʻnalishlar» — the part they came for. So this file emits one merged block
+  of four strengths and four watch-outs, chosen in OVERALL in life_content.py.
+
+  DIRECTIONS.  Not emitted at all. The archetype page still ranks them with a
+  percentage; on the result screen «Yoʻnalishlar» ranks careers one scroll
+  below from interests, values, marks and personality, and over 3,600 simulated
+  students the two lists' top picks agreed 9.4% of the time against a 6.3%
+  chance baseline. Two answers to one question, and the louder one had the
+  thinner evidence.
 
     python build_life_js.py
 """
@@ -31,37 +36,17 @@ OUT = 'C:/Users/Asus/TestMind-site/assets/life-%s.js'
 def pack(lang):
     u"""Every archetype written in this language, keyed by archetype."""
     src = lc.LIFE_BY_LANG.get(lang) or {}
-    labels = lc.LABELS[lang]
     data = {}
     for key in lc.LIFE:                      # Uzbek decides which archetypes exist
         if key not in src:
             continue                         # not written in this language yet
         lc.check_translation(key, lang)      # refuse a half-written one, loudly
-        d = src[key]
-        entry = {'areas': [], 'careers': []}
-        for area in ('family', 'school', 'friends'):
-            if area not in d:
-                continue
-            title, sub = labels['areas'][area]
-            entry['areas'].append({
-                'title': title, 'sub': sub,
-                'strong': [[t, p] for t, p in d[area]['strong']],
-                'weak': [[t, p] for t, p in d[area]['weak']],
-            })
-        # NO PERCENTAGE, AND NO RANK. The archetype page still shows both; the
-        # result screen deliberately does not, because «Yoʻnalishlar» ranks
-        # careers one scroll below from four signals rather than from two
-        # personality traits, and two disagreeing ranked lists on one screen is
-        # the thing a parent points at. See RESULT_CAREER_TITLE in
-        # life_content.py for the measurement behind that.
-        #
-        # Alphabetical, so the order cannot be read as a ranking by accident.
-        # It differs between languages because the names do, which is fine here
-        # and would not have been while these carried a number.
-        for name, weights, why in lc.careers_for(key, lang):
-            entry['careers'].append({'name': name, 'why': why})
-        entry['careers'].sort(key=lambda c: c['name'])
-        data[key] = entry
+        # One merged block, not three areas. overall_for() selects by position,
+        # so all three languages get the same four bullets rather than whichever
+        # four a translator happened to like.
+        o = lc.overall_for(key, lang)
+        data[key] = {'strong': [[t, p] for t, p in o['strong']],
+                     'weak': [[t, p] for t, p in o['weak']]}
     return data
 
 
@@ -76,27 +61,22 @@ def build():
     """
     for lang in LANGS:
         data = pack(lang)
-        # `careers`/`note` deliberately take the result-screen wording, not the
-        # archetype page's `career`/`disclaimer` -- the latter two talk about
-        # percentages that this file no longer emits.
+        # Only the two column headers survive. `career`/`result_career` and the
+        # two notes went with the directions block they introduced.
         labels = {'strong': lc.LABELS[lang]['strong'],
-                  'weak': lc.LABELS[lang]['weak'],
-                  'careers': lc.LABELS[lang]['result_career'],
-                  'note': lc.LABELS[lang]['result_note']}
+                  'weak': lc.LABELS[lang]['weak']}
         js = (u'// GENERATED by tools/build_life_js.py from life_content.py — do not edit.\n'
-              u'// Language: %s. Directions carry no percentage and no rank here: on the\n'
-              u'// result screen «Yoʻnalishlar» is the only thing that ranks careers.\n'
+              u'// Language: %s. One merged strengths/watch-outs block per archetype; the\n'
+              u'// three life areas and the directions list stay on the archetype pages.\n'
               u'var LIFE_LABELS = %s;\nvar LIFE = %s;\n' % (
                   lang,
                   json.dumps(labels, ensure_ascii=False, indent=1, sort_keys=True),
                   json.dumps(data, ensure_ascii=False, indent=1, sort_keys=True)))
         path = OUT % lang
         io.open(path, 'w', encoding='utf-8', newline='').write(js)
-        n_lines = sum(len(a['strong']) + len(a['weak'])
-                      for e in data.values() for a in e['areas'])
-        print('wrote %-14s %2d archetypes, %3d bullets, %2d directions, %3d KB'
+        n_lines = sum(len(e['strong']) + len(e['weak']) for e in data.values())
+        print('wrote %-14s %2d archetypes, %3d bullets, %3d KB'
               % (os.path.basename(path), len(data), n_lines,
-                 sum(len(e['careers']) for e in data.values()),
                  len(js.encode('utf-8')) // 1024))
 
 

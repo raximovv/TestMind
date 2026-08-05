@@ -20,14 +20,7 @@ const MARKER = {
   ru: 'Ваши сильные стороны',
   en: 'Your strengths',
 };
-const HEADING = { uz: 'Toʻliq tahlil', ru: 'Полный разбор', en: 'The full picture' };
-
-// The directions block above «Yoʻnalishlar» must disclaim itself in words, not
-// only by having dropped its numbers -- a reader who meets a list of jobs reads
-// it as advice unless told otherwise. POINTER is the name of the section that
-// IS allowed to rank, which the note has to hand off to.
-const NOT_A_REC = { uz: /tavsiya emas/, ru: /не рекомендация/, en: /not a recommendation/ };
-const POINTER = { uz: 'Yoʻnalishlar', ru: 'Направления', en: 'Directions' };
+const HEADING = { uz: 'Kundalik hayotda', ru: 'В повседневной жизни', en: 'In everyday life' };
 
 let pass = 0, fail = 0;
 function check(name, ok, extra){
@@ -53,11 +46,11 @@ async function run(){
       return {
         slot: !!slot,
         text: slot ? slot.textContent : '',
-        heads: document.querySelectorAll('.lifefull .lifehead').length,
-        careers: document.querySelectorAll('.lifefull .career').length,
-        pcts: [].map.call(document.querySelectorAll('.lifefull .carpct'), e => e.textContent),
-        bars: document.querySelectorAll('.lifefull .carbar').length,
-        note: (document.querySelector('.lifefull .cardisc') || {}).textContent || '',
+        strong: document.querySelectorAll('.lifefull .lifecol.good li').length,
+        weak: document.querySelectorAll('.lifefull .lifecol.watch li').length,
+        grids: document.querySelectorAll('.lifefull .lifegrid').length,
+        // Anything that would be a second list of jobs above «Yoʻnalishlar».
+        careers: document.querySelectorAll('.lifefull .career, .lifefull .careers').length,
       };
     });
 
@@ -68,23 +61,23 @@ async function run(){
     check('bullets are in ' + lang, got.text.indexOf(MARKER[lang]) >= 0);
     check('no other language leaked in',
       Object.keys(MARKER).filter(l => l !== lang).every(l => got.text.indexOf(MARKER[l]) < 0));
-    check('four life headings', got.heads === 4, String(got.heads));
-    check('five directions', got.careers === 5, String(got.careers));
-    // The directions here must not rank or score anything: «Yoʻnalishlar» is one
-    // scroll below and ranks careers from four signals rather than two traits.
-    check('no fit percentage on any direction', got.pcts.length === 0, got.pcts.join(' '));
-    check('no fit bar on any direction', got.bars === 0, String(got.bars));
-    check('the note says it is not a recommendation', NOT_A_REC[lang].test(got.note), got.note.slice(0, 60));
-    check('the note points at the ranked section', got.note.indexOf(POINTER[lang]) >= 0, got.note.slice(-60));
+    // One merged block, four and four. Three areas of five used to sit here and
+    // pushed «Yoʻnalishlar» off the end of what anyone read.
+    check('one merged block, not three areas', got.grids === 1, String(got.grids));
+    check('four strengths', got.strong === 4, String(got.strong));
+    check('four watch-outs', got.weak === 4, String(got.weak));
+    // «Yoʻnalishlar» is the only place on the result screen that names careers.
+    // This block is built from two personality traits and must not compete.
+    check('no second list of careers above «Yoʻnalishlar»', got.careers === 0, String(got.careers));
     await p.close();
   }
 
-  // These directions used to carry a percentage, and the check here was that the
-  // number came out identical in all three languages. There is no number now, so
-  // the invariant that replaces it is the one that makes "this is not a ranking"
-  // true rather than merely asserted: the same student gets the same COUNT of
-  // directions everywhere, and within each language they are in alphabetical
-  // order, which no reader can mistake for a ranking.
+  // OVERALL in life_content.py selects bullets by POSITION, not by text, so the
+  // same student is supposed to meet the same four strengths and the same four
+  // watch-outs whichever language they read. A browser cannot compare Uzbek to
+  // Russian, but it can catch the failure that selection style is exposed to: a
+  // translated pack that is a different length, which would silently shift every
+  // index after the gap and hand one language a different set of bullets.
   const got = {};
   for (const lang of ['uz', 'ru', 'en']){
     const p = await browser.newPage();
@@ -92,18 +85,23 @@ async function run(){
     await finishToReport(p, new Array(60).fill(4));
     await settleFigureChoice(p, 'male', 15).catch(() => {});
     await p.waitForSelector('.lifefull', { timeout: 8000 }).catch(() => {});
-    got[lang] = await p.evaluate(() =>
-      [].map.call(document.querySelectorAll('.lifefull .carname'), e => e.textContent));
+    got[lang] = await p.evaluate(() => ({
+      titles: [].map.call(document.querySelectorAll('.lifefull .lifecol li b'), e => e.textContent),
+      n: document.querySelectorAll('.lifefull .lifecol li').length,
+    }));
     await p.close();
   }
-  console.log('\n== directions are unranked, and the same set in every language ==');
-  check('uz count == ru count', got.uz.length === got.ru.length,
-    got.uz.length + ' vs ' + got.ru.length);
-  check('uz count == en count', got.uz.length === got.en.length,
-    got.uz.length + ' vs ' + got.en.length);
-  for (const lang of ['uz', 'ru', 'en'])
-    check(lang + ' directions are alphabetical, not ranked',
-      got[lang].join('|') === got[lang].slice().sort().join('|'), got[lang].join(', '));
+  console.log('\n== the same block in every language ==');
+  check('uz count == ru count', got.uz.n === got.ru.n, got.uz.n + ' vs ' + got.ru.n);
+  check('uz count == en count', got.uz.n === got.en.n, got.uz.n + ' vs ' + got.en.n);
+  for (const lang of ['uz', 'ru', 'en']){
+    check(lang + ' has a bold title on every bullet',
+      got[lang].titles.length === got[lang].n, got[lang].titles.length + ' of ' + got[lang].n);
+    // Two identical titles in one block means two positions in OVERALL resolved
+    // to the same sentence -- the reader sees three bullets where four were paid for.
+    check(lang + ' repeats no bullet',
+      new Set(got[lang].titles).size === got[lang].titles.length, got[lang].titles.join(', '));
+  }
 
   // A pack that arrives AFTER the report is already on screen. This is the whole
   // reason the slot exists, and on a school connection it is the normal case.
