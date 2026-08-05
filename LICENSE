@@ -1,0 +1,32 @@
+Copyright (c) 2025-2026 NaseebEdu. All rights reserved.
+
+TestMind is a commercial product. This repository is public so that schools,
+parents, students and researchers can inspect how the test works and what it
+does with a student's answers — transparency about an instrument given to
+minors is the point. Public visibility is not an open-source licence.
+
+No permission is granted to copy, modify, redistribute, republish or create
+derivative works from any part of this repository, including but not limited to:
+
+  - the test application and scoring logic (test.html, assets/*.js)
+  - the item banks and their translations (tools/*_content*.py)
+  - the career, major, subject and work-value taxonomy (tools/careers.py)
+  - the character artwork and the ten archetype guides (assets/characters/,
+    assets/characters.js, guides/)
+  - the site text in Uzbek, Russian and English
+
+You may read this code, link to the live site, and quote short excerpts with
+attribution for review, teaching or journalism.
+
+The test draws on publicly available frameworks — the Big Five trait model and
+the RIASEC interest model, including the U.S. Department of Labor's O*NET
+Interest Profiler, which is in the public domain. Those underlying frameworks
+are not claimed here. The items, wording, translations, taxonomy, artwork and
+scoring in this repository are original work and are claimed.
+
+Fonts under assets/fonts/ are third-party and not covered by this notice. Inter
+and Bitter are both licensed under the SIL Open Font License 1.1, which permits
+their redistribution here and governs any reuse of those two files.
+
+For licensing, school deployment, or research collaboration, contact
+naseebedu.com.
