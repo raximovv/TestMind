@@ -400,11 +400,7 @@
   .watch{margin:10px 0 0;padding:12px 14px;border-radius:11px;background:#FBF3E4;
          border:1px solid #EBDCBB;font-size:15px;line-height:1.45;text-align:left}
   .watch b{color:#8A6520}
-  .note{margin:14px 0 0;padding:13px 15px;border-radius:11px;border:1px dashed #C3D3D8;
-        background:#FBFDFD;text-align:left;font-size:13.5px;color:var(--muted);line-height:1.55}
-  .note b{color:var(--fam)}
-  .note p{margin:0}
-  .note p + p{margin-top:7px}
+  /* .note styled the near-tie box and had no other user; it went with it. */
   .figure{margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);text-align:left}
   .figlbl{font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
           color:var(--muted);margin-bottom:6px}
@@ -513,11 +509,13 @@
   @media (min-width:900px){
     .card{padding:30px 34px}
     .hero{border-radius:26px 26px 18px 18px}
-    /* Art left, all the text right. The panel is a fixed 330px rather than a
-       percentage so the illustration is the same size on a 1000px screen and a
-       1600px one -- a figure that grows with the window starts competing with
-       the name for attention. */
-    .hero{display:flex;align-items:stretch}
+    /* Text left, art right. row-reverse rather than reordering the markup: the
+       DOM keeps the illustration first, which is what the phone layout wants
+       (band on top) and what a screen reader should meet first. The panel is a
+       fixed 330px rather than a percentage so the illustration is the same size
+       on a 1000px screen and a 1600px one -- a figure that grows with the
+       window starts competing with the name for attention. */
+    .hero{display:flex;flex-direction:row-reverse;align-items:stretch}
     .herotop{flex:0 0 330px;display:flex;flex-direction:column;justify-content:flex-end;
              padding:24px 26px 0}
     .herotop svg{width:270px;margin:14px auto 0}
@@ -526,7 +524,11 @@
        it a long archetype name would push the panel narrower instead of wrapping.
        The cap is on the column, so the name, the lines and the strength box all
        stop at the same right edge as well as starting at the same left one. */
-    .herocol{flex:1 1 auto;min-width:0;max-width:720px;padding:0 34px}
+    /* margin-right:auto puts the leftover width in the gutter between the text
+       and the illustration rather than in front of the text. Without it both
+       items pack to the main-start edge -- which row-reverse puts on the RIGHT
+       -- and the column arrives wearing a 180px indent. */
+    .herocol{flex:1 1 auto;min-width:0;max-width:720px;margin-right:auto;padding:0 34px}
     .herointro{padding:30px 0 0;text-align:left}
     /* text-align:left or .strength centres its sentence while .watch, which
        sets left explicitly, does not -- two boxes the same size directly above
@@ -1659,8 +1661,6 @@ var TT_UZ = {
   strengthLbl: 'Kuchli tomoningiz:',
   watchLbl:    'Eʼtibor bering:',
   figLbl:      'Shu xususiyat kimda kuchli boʻlgan',
-  tieNote:     'Natijangiz <b>%1</b> obraziga ham juda yaqin — bu ikkisi orasidagi farq ' +
-               'juda kichik. Ikkala tavsifni ham oʻqib koʻring.',
   guideH:      'Toʻliq qoʻllanmangiz tayyor',
   guideLede:   '«%1» uchun 8 sahifalik qoʻllanma: kuchli tomonlaringiz, oʻsish ' +
                'nuqtalaringiz, maktab va kelajak yoʻnalishlari.',
@@ -2670,7 +2670,6 @@ function paintReport(s, arch, archKey, figureGender, age){
   sendResearch(function(){});
   var dateStr = todayStr();
   var fam = FAMILIES[arch.fam];
-  var tie = nearTieOf(s);
   // The archetype's own illustration unless this reader chose the other figure.
   var fv = getFigureVariant(archKey, figureGender);
   var artHtml = (fv.art && figureGender)
@@ -2704,11 +2703,11 @@ function paintReport(s, arch, archKey, figureGender, age){
       '<div class="herobody">' +
         '<p class="strength"><b>' + T('strengthLbl') + '</b> ' + arch.strength + '</p>' +
         '<p class="watch"><b>' + T('watchLbl') + '</b> ' + arch.watch + '</p>' +
-        // The snapshot line and the retake invitation were removed at the founder's
-        // request. The near-tie notice stays: it only appears when two archetypes
-        // land within NEAR_TIE_GAP, and it is what stops a borderline result being
-        // rounded into false certainty. No tie, no box.
-        (tie ? '<div class="note"><p>' + T('tieNote', tie.arch.name) + '</p></div>' : '') +
+        // The snapshot line, the retake invitation and the near-tie notice were
+        // all removed at the founder's request. nearTieOf() itself stays: it
+        // still rides along on the stats payload, and it is what a blended
+        // result would be built on if the two close archetypes are ever merged
+        // rather than announced.
         // A real Uzbek figure known for the same quality. Deliberately worded as
         // "who had this strength", never "you are this person".
         '<div class="figure">' +

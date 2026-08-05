@@ -188,8 +188,6 @@ var TEST_EN = {
     strengthLbl: 'Your strength:',
     watchLbl:    'Worth watching:',
     figLbl:      'Someone known for the same quality',
-    tieNote:     'Your result is also very close to <b>%1</b> — the difference between the two is very small. ' +
-                 'Read both descriptions.',
     guideH:      'Your full guide is ready',
     // The eight-page guides exist in Uzbek only, so the offer says so plainly
     // rather than promising an English PDF that does not exist.

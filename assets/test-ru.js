@@ -185,8 +185,6 @@ var TEST_RU = {
     strengthLbl: 'Ваша сильная сторона:',
     watchLbl:    'Обратите внимание:',
     figLbl:      'У кого это качество было сильным',
-    tieNote:     'Ваш результат очень близок и к образу <b>%1</b> — разница между ними ' +
-                 'совсем небольшая. Прочитайте оба описания.',
     guideH:      'Ваше полное руководство готово',
     // The eight-page guides exist in Uzbek only, so the offer says so plainly
     // rather than promising a Russian PDF that does not exist.
