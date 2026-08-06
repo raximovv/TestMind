@@ -93,6 +93,27 @@ img,svg{max-width:100%}
 .langsw a:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
 
+/* Between the phone rules below and a full desktop row there was nothing, and
+   the desktop row does not fit in that space: brand + back + five links +
+   switcher + CTA measure 1051px on the Uzbek pages, which are the binding case
+   (qanday-ishlaydi.html, 1051px; the ten obraz pages, 1050px). Every child is
+   either white-space:nowrap or flex:none, so nothing gave and the row simply
+   ran off the right edge of every window between 821px and 1050px -- laptops at
+   1024, and any half-screen browser. navcheck tested 360, 768 and 1280 and
+   stepped straight over the band.
+
+   So the links drop to their own row here, the same move the phone layout makes,
+   but nothing shrinks: at 1000px there is room for the full-size brand and the
+   back link's label, and taking them away would be solving a different problem.
+   The cutoff is 1080 rather than 1051 to leave headroom for the fallback font,
+   which is wider than Inter and loads on any connection that drops the woff2. */
+@media (max-width:1080px){
+  .navin{flex-wrap:wrap;height:auto;padding:10px 0;gap:12px}
+  .navlinks{order:3;flex:1 1 100%;margin-left:0;overflow-x:auto;padding-bottom:2px;
+            -webkit-overflow-scrolling:touch}
+  .langsw{margin-left:auto}
+}
+
 @media (max-width:820px){
   /* Measured at 360px with the back link in: brand + back + switcher + CTA came
      to 391px in a 360px row. The width is taken off four things a little rather

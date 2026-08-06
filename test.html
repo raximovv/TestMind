@@ -196,6 +196,19 @@
           border-radius:10px;padding:9px 16px;font-weight:600;font-size:14.5px;white-space:nowrap}
   .topcta:hover{background:var(--lazur-deep)}
   .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  /* Mirrors the same band in site.css, which this page does not load. Between
+     the phone rules below and the full row there was nothing, and the full row
+     does not fit in that space -- the Uzbek bar measures ~1050px -- so it ran
+     off the right edge of every window from 821px to 1050px. Links drop to
+     their own row; nothing shrinks, because at 1000px there is room for the
+     full-size brand and the back label. 1080 not 1051, for fallback-font
+     headroom. */
+  @media (max-width:1080px){
+    .topnavin{flex-wrap:wrap;height:auto;padding:10px 22px;gap:12px}
+    .toplinks{order:3;flex:1 1 100%;margin-left:0;overflow-x:auto;padding-bottom:2px;
+              -webkit-overflow-scrolling:touch}
+    .langsw{margin-left:auto}
+  }
   @media (max-width:820px){
     /* The switcher is shown on a phone rather than hidden. It used to be hidden
        because the pills were inert and cost nothing to drop; now that RU really

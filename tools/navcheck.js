@@ -17,7 +17,14 @@ const CHROME = 'C:/Program Files/Google/Chrome/Application/chrome.exe';
 const BASE = 'http://localhost:8765/';
 const DIR = 'C:/Users/Asus/TestMind-site/';
 const PORT = 9333;
-const WIDTHS = [360, 768, 1280];
+// 900 and 1024 are here because they were missing. The desktop nav row demands
+// ~1050px on the Uzbek pages and the wrap rules used to start at 820, so every
+// window between those two numbers -- a 1024x768 laptop, any half-screen browser
+// -- pushed the CTA off the right edge. Three widths that happened to sit either
+// side of the gap reported "no horizontal overflow" for months. 1024 is the
+// laptop; 900 is the middle of the band; 1100 is just above the wrap cutoff,
+// where the single-row layout has to start being correct again.
+const WIDTHS = [360, 768, 900, 1024, 1100, 1280];
 
 const LANGDIRS = ['', 'ru/', 'en/'];
 const PAGES = LANGDIRS.flatMap(d => fs.existsSync(DIR + d)
