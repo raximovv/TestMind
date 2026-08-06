@@ -442,14 +442,24 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 
 .careers{list-style:none;margin:14px 0 0;padding:0}
 .career{margin-bottom:16px}
-.carhead{display:flex;align-items:baseline;gap:10px}
+.carhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .carname{font-weight:600}
-.carpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;
-        color:var(--lazur-deep)}
-.carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
-.carbar i{display:block;height:100%;border-radius:4px;
-          background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
-.carwhy{margin:0;font-size:14.5px;color:var(--muted);line-height:1.5}
+/* The band replaces a percentage and a fill bar. Dot colours are the ones the
+   result screen already uses for the same three words, so the two screens are
+   one vocabulary rather than two that happen to agree. */
+.carband{margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+         font-size:12.5px;font-weight:600;letter-spacing:.2px;white-space:nowrap;
+         padding:3px 10px 3px 8px;border-radius:99px;background:var(--paper);
+         border:1px solid var(--line)}
+.carband .dot{flex:0 0 auto;width:8px;height:8px;border-radius:50%}
+.carband .dot.strong{background:#2E8B6B}
+.carband .dot.explore{background:var(--zar)}
+.carband .dot.alternative{background:#7C93A8}
+.carband.strong{color:#256F55}
+.carband.explore{color:#8A6520}
+.carband.alternative{color:#5C7186}
+/* 5px of air where the fill bar used to be. */
+.carwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
 .cardisc{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);
          font-size:13.5px;line-height:1.55;color:var(--muted)}
 

@@ -144,16 +144,17 @@ def life_html(key, lang):
                 u'<div class="lifegrid">%s</div>') % (esc(title), esc(sub), cols)
 
     if d.get('careers'):
-        # Weights come from the Uzbek entry whatever the language, so the same
-        # direction shows the same percentage on all three pages.
-        rows = sorted(((lc.pct(key, w), n, why) for n, w, why in lc.careers_for(key, lang)),
-                      reverse=True)
+        # A band, not a percentage. See BAND_STRONG in life_content.py for why
+        # the number went: the archetype knows which two traits rank highest and
+        # nothing finer, and eight of these ten pages were opening on 87%.
+        # Weights come from the Uzbek entry whatever the language, so a direction
+        # lands in the same band on all three pages.
         items = u''.join(
             u'<li class="career"><div class="carhead"><span class="carname">%s</span>'
-            u'<span class="carpct">%d%%</span></div>'
-            u'<div class="carbar"><i style="width:%d%%"></i></div>'
-            u'<p class="carwhy">%s</p></li>' % (esc(n), p, p, esc(why))
-            for p, n, why in rows)
+            u'<span class="carband %s"><i class="dot %s"></i>%s</span></div>'
+            u'<p class="carwhy">%s</p></li>'
+            % (esc(n), b, b, esc(labels['bands'][b]), esc(why))
+            for n, why, b in lc.bands_for(key, lang))
         out += (u'<h3 class="lifehead">%s</h3><ul class="careers">%s</ul>'
                 u'<p class="cardisc">%s</p>') % (
             esc(labels['career']), items, esc(labels['disclaimer']))

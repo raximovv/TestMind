@@ -14,9 +14,13 @@ LABELS = {
     'strong': u'Your strengths',
     'weak': u'Worth keeping an eye on',
     'career': u'Directions that might suit you',
-    'disclaimer': (u'These percentages show how well your two strongest sides fit '
+    'disclaimer': (u'These marks show how well your two strongest sides fit '
                    u'each direction. They are not a prediction: your interest, your '
                    u'opportunities and your real experience matter more.'),
+    # Word for word the bands the result screen uses, so one vocabulary.
+    'bands': {'strong': u'Strong match',
+              'explore': u'Worth exploring',
+              'alternative': u'Alternative'},
     # Result screen only -- see RESULT_CAREER_TITLE in life_content.py for why
     # this block stops ranking there and defers to "Directions".
     'result_career': u'Where these qualities tend to be useful',

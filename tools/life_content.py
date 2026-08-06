@@ -13,37 +13,40 @@ reader, never as faults — a 13-year-old reading "you are a coward" stops readi
 and stops trusting the strengths too.
 
 
-ON THE PERCENTAGES
-------------------
-The percentage beside each direction is NOT a measured job-fit probability.
-No such measurement exists for Uzbek adolescents — establishing it is the
-entire point of the data this site collects.
+ON THE BANDS
+------------
+The band beside each direction is NOT a measured job-fit probability. No such
+measurement exists for Uzbek adolescents — establishing it is the entire point
+of the data this site collects. It says how much of that direction's trait
+weight sits on the two traits this archetype is named for, relative to the
+strongest direction on the same page. Reproducible, checkable, and a
+description of the archetype rather than a prediction about a career.
 
-What the number actually is: a weighted sum of the archetype's trait profile.
-Each direction carries trait weights that sum to 1.0; a trait the archetype is
-defined by counts as HIGH, the other three as MID, and the percentage is the
-weighted average. So it is reproducible, it moves in the right direction when
-the weights change, and anyone can check it — but it is a description of the
-archetype, not a prediction about a career.
+These were percentages until they were not. The number was 42 + 50 * share,
+every weight is a multiple of 0.05, and so the scale could only ever land on a
+lattice 2.5 points apart — with the top direction on eight of the ten pages
+authored as 0.45/0.45 and therefore printing 87% on all eight. That is what a
+reader notices. The honest reading is not that the weights were careless but
+that an archetype carries two bits of information, which two traits rank
+highest, and two bits cannot hold up a percentage.
 
 Keep `DISCLAIMER` under the list. The site tells schools in writing that the
 test does not predict success and must not be the sole basis for choosing a
-career; a bare "84%" next to a job title contradicts that in the reader's mind
-whatever the surrounding text says.
+career; anything that looks like a score next to a job title contradicts that
+in the reader's mind whatever the surrounding text says.
 """
 
-# Trait level used for the weighted sum. HIGH is the archetype's two defining
-# traits; MID is the other three, which are not low — they are simply not what
-# this archetype is named for.
-#
-# The gap between them has to be wide enough that the weights actually separate
-# the directions. A first pass used 0.88 / 0.55 and every caring profession came
-# out at 80% — a ranking where nothing ranks is worse than no ranking.
-HIGH, MID = 0.92, 0.42
-
-DISCLAIMER = (u'Bu foizlar — sizning ikkita eng kuchli xususiyatingiz shu '
+DISCLAIMER = (u'Bu belgilar — sizning ikkita eng kuchli xususiyatingiz shu '
               u'yoʻnalishga qanchalik mos kelishini koʻrsatadi. Bu bashorat emas: '
               u'qiziqishingiz, imkoniyatingiz va real tajribangiz undan muhimroq.')
+
+# The same three words the result screen uses, so a student who reads an
+# archetype page and then takes the test meets one vocabulary, not two.
+BAND_LABELS = {
+    'strong': u'Kuchli mos keladi',
+    'explore': u'Koʻrib chiqishga arziydi',
+    'alternative': u'Muqobil variant',
+}
 
 # ---------------------------------------------------------------- result screen
 # The two labels above belong to the ARCHETYPE PAGE, which a visitor reads on its
@@ -77,11 +80,32 @@ WEAK_LABEL = u'Eʼtibor beradigan tomonlaringiz'
 CAREER_TITLE = u'Sizga mos kelishi mumkin boʻlgan yoʻnalishlar'
 
 
-def pct(key, weights):
-    u"""Weighted trait average for one direction, as a whole percent."""
+def share(key, weights):
+    u"""How much of a direction's trait weight sits on this archetype's two traits."""
     defining = set(key.split('|'))
-    total = sum(w * (HIGH if t in defining else MID) for t, w in weights.items())
-    return int(round(total * 100))
+    return sum(w for t, w in weights.items() if t in defining)
+
+
+# These pages used to print a percentage per direction, and it read as measured
+# to a point it was never measured to. The number was
+#
+#     42 + 50 * share(key, weights)
+#
+# and every weight is a multiple of 0.05, so the whole scale could only land on
+# a lattice 2.5 points apart; the top direction on eight of the ten archetypes
+# was authored as 0.45/0.45 and therefore came out at 87% on all eight. Ten
+# pages opening on the same number is what a reader notices, and the honest read
+# of that is not that the pages were careless but that the archetype carries two
+# bits of information -- which two traits rank highest -- and two bits cannot
+# support a percentage.
+#
+# So: bands, the same three the result screen uses. Banded by distance from the
+# best direction ON THIS PAGE rather than against a fixed cut, which is what
+# recBand() in recommend.js does, and for the same reason -- what a student can
+# act on is "how much weaker is this than the strongest one for my type". The
+# thresholds are wider than recommend.js's 0.04/0.10 because this scale is
+# wider: shares run 0.44 to 0.90 here against a far tighter spread there.
+BAND_STRONG, BAND_EXPLORE = 0.06, 0.16
 
 
 LIFE = {
@@ -945,7 +969,7 @@ LIFE_BY_LANG = {'uz': LIFE, 'ru': _ru.LIFE, 'en': _en.LIFE}
 LABELS = {
     'uz': {
         'strong': STRONG_LABEL, 'weak': WEAK_LABEL, 'career': CAREER_TITLE,
-        'disclaimer': DISCLAIMER, 'areas': AREA_TITLES,
+        'disclaimer': DISCLAIMER, 'areas': AREA_TITLES, 'bands': BAND_LABELS,
         'result_career': RESULT_CAREER_TITLE, 'result_note': RESULT_NOTE,
     },
     'ru': _ru.LABELS,
@@ -979,6 +1003,26 @@ def careers_for(key, lang):
         return [(n, w, why) for n, w, why in base]
     tr = LIFE_BY_LANG[lang][key]['careers']
     return [(tr[i][0], base[i][1], tr[i][1]) for i in range(len(base))]
+
+
+def bands_for(key, lang):
+    u"""[(name, why, band)] for one archetype page, strongest first.
+
+    The weights are the Uzbek ones whatever the language, so a direction lands
+    in the same band on all three pages -- a translation can move a name but
+    never a claim.
+    """
+    rows = sorted(((share(key, w), i, n, why)
+                   for i, (n, w, why) in enumerate(careers_for(key, lang))),
+                  key=lambda r: (-r[0], r[1]))     # index breaks ties, so the
+    best = rows[0][0]                              # order is stable everywhere
+    out = []
+    for sh, _, n, why in rows:
+        gap = best - sh
+        band = ('strong' if gap <= BAND_STRONG + 1e-9 else
+                'explore' if gap <= BAND_EXPLORE + 1e-9 else 'alternative')
+        out.append((n, why, band))
+    return out
 
 
 # ---------------------------------------------------------------------------

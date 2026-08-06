@@ -17,9 +17,13 @@ LABELS = {
     'strong': u'Ваши сильные стороны',
     'weak': u'На что стоит обратить внимание',
     'career': u'Направления, которые могут вам подойти',
-    'disclaimer': (u'Эти проценты показывают, насколько две ваши самые сильные '
+    'disclaimer': (u'Эти отметки показывают, насколько две ваши самые сильные '
                    u'стороны подходят этому направлению. Это не предсказание: '
                    u'ваш интерес, ваши возможности и реальный опыт важнее.'),
+    # Word for word the bands the result screen uses, so one vocabulary.
+    'bands': {'strong': u'Сильное совпадение',
+              'explore': u'Стоит рассмотреть',
+              'alternative': u'Запасной вариант'},
     # Result screen only -- see RESULT_CAREER_TITLE in life_content.py for why
     # this block stops ranking there and defers to «Направления».
     'result_career': u'Где такие качества обычно пригождаются',
