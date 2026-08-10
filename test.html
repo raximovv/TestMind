@@ -1642,9 +1642,13 @@ var TT_UZ = {
   careerTopup: 'Bir necha yoʻnalish deyarli teng chiqdi. Qaysi biri kuchliroq ekanini aniqlash uchun yana bir necha savol beramiz.',
   lifeH:       'Shaxsiyatingiz haqida qisqacha',
   lifeSub:     'Qaysi tomonlaringiz kuchli va qaysi tomonlaringizni yanada yaxshilasa boʻladi.',
+  stepNum:     'QADAM %1',
   resumeH1:    'Yarim qolgan test',
   resumeP:     'Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?',
   resumeCount: '%1 / %2 savolga javob berilgan.',
+  resumeFresh: 'Yangidan boshlash',
+  resumeGo:    'Davom etish',
+  discShort:   'Natija maslahat xarakteriga ega — hukm emas.',
   cleared:     'Javoblaringiz shu qurilmadan oʻchirildi.',
   fcLead:      'Siz uchun qaysi obraz chiqsin?',
   fcMale:      'Erkak obrazni tanlash',
@@ -1698,6 +1702,7 @@ var CHROME = {
           'privacy.html': ['Конфиденциальность', 'ru/privacy.html'],
           'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
     cta: 'Пройти тест',
+    langlabel: 'Язык сайта',
     back: 'Вернуться на сайт Naseeb Edu',
     title: 'Бесплатный тест личности — TestMind',
     foot: {'Oʻnta obraz': 'Десять образов',
@@ -1718,6 +1723,7 @@ var CHROME = {
           'privacy.html': ['Privacy', 'en/privacy.html'],
           'maktablar.html': ['For schools and parents', 'en/maktablar.html']},
     cta: 'Take the test',
+    langlabel: 'Site language',
     back: 'Back to the Naseeb Edu site',
     title: 'Free personality test — TestMind',
     foot: {'Oʻnta obraz': 'The ten characters',
@@ -1751,6 +1757,15 @@ function localiseChrome(){
                    '" lang="' + l + '" title="' + LANG_TITLE[l] + '">' + up + '</a>';
     }
     sw.innerHTML = html;
+    // The group's accessible name is the one bit of the switcher that is not a
+    // pill, so rebuilding the pills alone left a screen reader announcing it in
+    // Uzbek on all three languages.
+    var lbl = CHROME[TLANG] && CHROME[TLANG].langlabel;
+    if (lbl) sw.setAttribute('aria-label', lbl);
+    // Flag the switch before the browser leaves, so the result can be redrawn in
+    // the new language on the other side of the page load.
+    var pills = sw.querySelectorAll('a');
+    for (i = 0; i < pills.length; i++) pills[i].addEventListener('click', markLanguageSwitch);
   }
 
   var C = CHROME[TLANG];
@@ -1769,7 +1784,11 @@ function localiseChrome(){
   if (cta){ cta.textContent = C.cta; cta.setAttribute('href', 'test.html?lang=' + TLANG); }
   var vh = document.querySelector('.navback .vh');
   if (vh) vh.textContent = C.back;
-  var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li');
+  // .footbar span is in this list because the legal disclaimer lives in a bare
+  // <span> down there, and every earlier selector only reached headings, list
+  // items and paragraphs -- so the one line that must be understood was the one
+  // line left in Uzbek on a Russian page.
+  var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li, .footbar span');
   for (i = 0; i < heads.length; i++){
     var txt = heads[i].childNodes.length === 1 ? heads[i].textContent.trim() : null;
     if (txt && C.foot[txt]) heads[i].textContent = C.foot[txt];
@@ -1799,7 +1818,7 @@ function introHtml(){
       STEPS.map(function(st, i){
         return '<section class="step" style="--sc:' + st.c + ';--ss:' + st.soft + '">' +
           '<div class="stepart">' + st.art + '</div>' +
-          '<span class="stepnum">QADAM ' + (i + 1) + '</span>' +
+          '<span class="stepnum">' + T('stepNum', i + 1) + '</span>' +
           '<h2>' + st.title + '</h2>' +
           '<p>' + st.text + '</p>' +
         '</section>';
@@ -2655,6 +2674,41 @@ function askFigureChoice(archKey, cb){
 // nothing below can change it: paintReport is handed the archetype, not the
 // answers. Splitting the two is what makes "the choice cannot move the result"
 // a property of the code rather than a promise in a comment.
+// ---------- the finished result, for the life of this tab ----------
+// The language switcher is a full page load, and renderReport() has already
+// cleared the draft by the time the result is on screen -- so a reader who
+// pressed RU while looking at their result watched it vanish and the test start
+// again at question one.
+//
+// sessionStorage, not localStorage: the result should survive a reload of this
+// tab and nothing more. Close the tab and it is gone, so no finished result
+// outlives the sitting on a shared school computer.
+var RESULT_KEY = 'testmind_result_v1';
+// Restoring on ANY load would be wrong: pressing «Shaxsiyat testi» in the nav to
+// take the test again would silently show the old result instead. So the result
+// is only brought back when the reader actually pressed a language pill, which
+// sets this flag on its way out. One load, then it is spent.
+var KEEP_KEY = 'testmind_keep_result';
+function markLanguageSwitch(){ try { sessionStorage.setItem(KEEP_KEY, '1'); } catch (e) {} }
+function takeLanguageSwitch(){
+  try { var v = sessionStorage.getItem(KEEP_KEY); sessionStorage.removeItem(KEEP_KEY); return !!v; }
+  catch (e) { return false; }
+}
+function saveResult(r){ try { sessionStorage.setItem(RESULT_KEY, JSON.stringify(r)); } catch (e) {} }
+function clearResult(){ try { sessionStorage.removeItem(RESULT_KEY); } catch (e) {} }
+function loadResult(){
+  try {
+    var r = JSON.parse(sessionStorage.getItem(RESULT_KEY));
+    // Checked before it is trusted: a record from an older build, or one edited
+    // by hand, must fall through to a fresh test rather than paint half a result.
+    if (!r || !r.s || !r.archKey || !ARCHETYPES[r.archKey]) return null;
+    if (!Array.isArray(r.answers) || r.answers.length !== ITEMS.length) return null;
+    for (var k = 0; k < TRAIT_ORDER.length; k++)
+      if (typeof r.s[TRAIT_ORDER[k]] !== 'number') return null;
+    return r;
+  } catch (e) { return null; }
+}
+
 function renderReport(){
   clearDraft(); // test finished — remove the saved answers from this device
   var s = scoreAnswers(state.answers);
@@ -2676,11 +2730,15 @@ function renderReport(){
   paintReport(s, arch, archKey, '', null);
 }
 
-function paintReport(s, arch, archKey, figureGender, age){
-  sendStats('completed', s, arch, figureGender, age);
+function paintReport(s, arch, archKey, figureGender, age, restored){
+  // `restored` means this is the same result redrawn in another language, not a
+  // new one. It must not post a second completed row, a second research record
+  // or a second history entry -- otherwise every language switch would inflate
+  // the counts in the sheet.
+  if (!restored) sendStats('completed', s, arch, figureGender, age);
   // Anonymous item-level answers, saved automatically. Carries a separate random
   // id so it can never be joined to the row that holds an email address.
-  sendResearch(function(){});
+  if (!restored) sendResearch(function(){});
   var dateStr = todayStr();
   var fam = FAMILIES[arch.fam];
   // The archetype's own illustration unless this reader chose the other figure.
@@ -2787,17 +2845,21 @@ function paintReport(s, arch, archKey, figureGender, age){
     '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
     '<p class="muted">' + T('cleared') + '</p>' +
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
-    '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
+    // Through T(), not written inline: this is the one line on the result screen a
+    // reader must understand, and inline it stayed Uzbek in all three languages.
+    '<p class="muted" style="text-align:center;margin:0">' + T('discShort') + '</p>';
   app.innerHTML = html;
   // Recorded only after the page is built, so «Oʻshanda va hozir» compares against
   // the earlier result rather than the one just produced.
-  saveHistory({ ts: Date.now(), s: s, key: archKey });
+  if (!restored) saveHistory({ ts: Date.now(), s: s, key: archKey });
+  saveResult({ s: s, archKey: archKey, gender: figureGender || '', age: age || null,
+               answers: state.answers });
   lifeFill(archKey);
   subjLoad();
   recRefresh();
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
-    clearDraft();
+    clearDraft(); clearResult();
     state = { answers:new Array(ITEMS.length).fill(0), page:0,
               plan:CORE_PLAN.slice(), stage:STAGE_P_TOPUP };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
@@ -2806,8 +2868,10 @@ function paintReport(s, arch, archKey, figureGender, age){
   // Telegram is how this actually spreads here, so make the message one tap away.
   document.getElementById('copyBtn').onclick = function(){
     var btn = this;
-    var msg = 'Men TestMind testidan oʻtdim. Natijam: «' + arch.name + '».\n'
-            + 'Sen ham oʻzingni sinab koʻr: https://' + SITE_HOST + '/';
+    // Through the keys, which were already translated: pasted into Telegram this
+    // is the only sentence about TestMind a reader's friends ever see, and it was
+    // going out in Uzbek no matter which language they took the test in.
+    var msg = T('shareMsg', arch.name) + '\n' + T('shareInvite', SITE_HOST);
     function done(okCopied){
       btn.textContent = okCopied ? T('copied') : T('copyFailed');
       setTimeout(function(){ btn.textContent = T('shareCopy'); }, 2200);
@@ -2841,7 +2905,10 @@ function paintReport(s, arch, archKey, figureGender, age){
       input.focus();
       return;
     }
-    capBtn.disabled = true; capBtn.textContent = 'Yuborilmoqda…';
+    // T('sending'), not the literal: the key exists and is translated in both
+    // languages, but this line wrote past it and a Russian reader watched the
+    // button say Yuborilmoqda while they waited.
+    capBtn.disabled = true; capBtn.textContent = T('sending');
     msg.className = 'capmsg'; msg.textContent = '';
     sendLead(email, arch.name, function(okSent){
       if (okSent){
@@ -2897,8 +2964,8 @@ function renderResume(d){
       // Uzbek while a translated resumeCount sat unused beside it.
       '<p class="muted">' + T('resumeCount', answered, d.plan.length) + '</p>' +
       '<div class="nav" style="margin-top:18px">' +
-        '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
-        '<button class="btn" id="resumeBtn">Davom etish</button>' +
+        '<button class="btn ghost" id="freshBtn">' + T('resumeFresh') + '</button>' +
+        '<button class="btn" id="resumeBtn">' + T('resumeGo') + '</button>' +
       '</div>' +
     '</div>';
   document.getElementById('resumeBtn').onclick = function(){
@@ -2920,6 +2987,21 @@ function renderResume(d){
 
 function boot(){
   localiseChrome();
+  // A finished result wins over a draft: the draft is already gone by then, and
+  // this is what makes the language pills work on the result screen.
+  var r = takeLanguageSwitch() ? loadResult() : null;
+  if (r){
+    state.answers = r.answers;
+    // tmA(), so the archetype's name and text come out in the NEW language while
+    // the scores stay exactly the ones the reader earned.
+    paintReport(r.s, tmA(r.archKey), r.archKey, r.gender || '', r.age || null, true);
+    return;
+  }
+  // Not restoring means the reader is about to take a test, so any result kept
+  // from an earlier sitting in this tab is stale. Dropping it here is what stops
+  // a language switch made halfway through a RETAKE from resurrecting the old
+  // result instead of keeping the new attempt.
+  clearResult();
   var d = loadDraft();
   if (d && d.answers.some(function(v){ return v > 0; })) renderResume(d);
   else renderPage();
