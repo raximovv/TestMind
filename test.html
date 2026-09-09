@@ -496,13 +496,11 @@
   @media (min-width:900px){
     .card{padding:30px 34px}
     .hero{border-radius:26px 26px 18px 18px}
-    /* Text left, art right. row-reverse rather than reordering the markup: the
-       DOM keeps the illustration first, which is what the phone layout wants
-       (band on top) and what a screen reader should meet first. The panel is a
-       fixed 330px rather than a percentage so the illustration is the same size
-       on a 1000px screen and a 1600px one -- a figure that grows with the
-       window starts competing with the name for attention. */
-    .hero{display:flex;flex-direction:row-reverse;align-items:stretch}
+    /* Art left, all the text right. The panel is a fixed 330px rather than a
+       percentage so the illustration is the same size on a 1000px screen and a
+       1600px one -- a figure that grows with the window starts competing with
+       the name for attention. */
+    .hero{display:flex;align-items:stretch}
     .herotop{flex:0 0 330px;display:flex;flex-direction:column;justify-content:flex-end;
              padding:24px 26px 0}
     .herotop svg{width:270px;margin:14px auto 0}
@@ -511,11 +509,7 @@
        it a long archetype name would push the panel narrower instead of wrapping.
        The cap is on the column, so the name, the lines and the strength box all
        stop at the same right edge as well as starting at the same left one. */
-    /* margin-right:auto puts the leftover width in the gutter between the text
-       and the illustration rather than in front of the text. Without it both
-       items pack to the main-start edge -- which row-reverse puts on the RIGHT
-       -- and the column arrives wearing a 180px indent. */
-    .herocol{flex:1 1 auto;min-width:0;max-width:720px;margin-right:auto;padding:0 34px}
+    .herocol{flex:1 1 auto;min-width:0;max-width:720px;padding:0 34px}
     .herointro{padding:30px 0 0;text-align:left}
     /* text-align:left or .strength centres its sentence while .watch, which
        sets left explicitly, does not -- two boxes the same size directly above
