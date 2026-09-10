@@ -1,4 +1,4 @@
-/* TestMind — shared styles for every page.
+/* Naseeb Mind: shared styles for every page.
    Self-hosted fonts: the site makes no third-party request at all. */
 @font-face{font-family:'Bitter';src:url('fonts/bitter.woff2') format('woff2');
            font-weight:100 900;font-style:normal;font-display:swap}
@@ -15,7 +15,7 @@
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-/* Russian and English produce single words far longer than any Uzbek one —
+/* Russian and English produce single words far longer than any Uzbek one,
    «Конфиденциальность» is 340px in an h1 box 316px wide on a 360px phone, and
    with no break opportunity it pushes the whole page sideways. Headings and
    prose may break inside a word rather than scroll the document. */
@@ -58,7 +58,7 @@ img,svg{max-width:100%}
 .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
     clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
 
-/* TestMind sits on a subdomain of naseebedu.com; this is the route back to the
+/* Naseeb Mind sits on a subdomain of naseebedu.com; this is the route back to the
    parent platform. Left of the brand, because that is where a back control is
    looked for. Shaped like the language switcher so the bar reads as two pills
    around the wordmark rather than three unrelated controls. */
@@ -73,14 +73,21 @@ img,svg{max-width:100%}
 .nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
      backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;gap:18px;height:62px}
-.brand{font-family:var(--display);font-weight:700;font-size:23px;color:var(--lazur-deep);
-       text-decoration:none;white-space:nowrap}
+.brand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);
+       font-weight:700;font-size:23px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.brandmark{display:block;width:auto;height:30px;object-fit:contain;flex:none}
+.brand b{color:var(--lazur);font-weight:700}
 .navlinks{display:flex;gap:22px;margin-left:auto}
 .navlinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;
             padding:4px 0;border-bottom:2px solid transparent}
 .navlinks a:hover{color:var(--lazur-deep)}
 .navlinks a[aria-current="page"]{color:var(--lazur-deep);font-weight:600;
                                  border-bottom-color:var(--lazur)}
+.navlogin{color:var(--lazur-deep);font-weight:600;font-size:14.5px;text-decoration:none;
+          white-space:nowrap;padding:7px 2px}
+.navlogin:hover{text-decoration:underline}
+.navlogin:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
+.navlogin-mobile{display:none}
 
 /* Language switcher. Three short codes rather than a dropdown, because the whole
    control is then one tap on a phone and needs no JavaScript at all. */
@@ -96,7 +103,7 @@ img,svg{max-width:100%}
 /* Between the phone rules below and a full desktop row there was nothing, and
    the desktop row does not fit in that space: brand + back + five links +
    switcher + CTA measure 1051px on the Uzbek pages, which are the binding case
-   (qanday-ishlaydi.html, 1051px; the ten obraz pages, 1050px). Every child is
+   (the static pages and ten obraz pages, 1050px). Every child is
    either white-space:nowrap or flex:none, so nothing gave and the row simply
    ran off the right edge of every window between 821px and 1050px -- laptops at
    1024, and any half-screen browser. navcheck tested 360, 768 and 1280 and
@@ -107,7 +114,7 @@ img,svg{max-width:100%}
    back link's label, and taking them away would be solving a different problem.
    The cutoff is 1080 rather than 1051 to leave headroom for the fallback font,
    which is wider than Inter and loads on any connection that drops the woff2. */
-@media (max-width:1080px){
+@media (max-width:1160px){
   .navin{flex-wrap:wrap;height:auto;padding:10px 0;gap:12px}
   .navlinks{order:3;flex:1 1 100%;margin-left:0;overflow-x:auto;padding-bottom:2px;
             -webkit-overflow-scrolling:touch}
@@ -119,9 +126,21 @@ img,svg{max-width:100%}
      to 391px in a 360px row. The width is taken off four things a little rather
      than off one thing a lot -- gap 10>6, brand 23>20, and a point each off the
      switcher and CTA padding -- which lands it back under with room to spare.
-     Uzbek is the binding case; its CTA is the longest of the three. */
-  .navin{gap:6px;height:auto;padding:10px 0;flex-wrap:wrap}
-  .brand{font-size:20px}
+     Uzbek is the binding case; its CTA is the longest of the three.
+
+     The wordmark then grew from TestMind to Naseeb Mind, which is 25px wider
+     and put the row over again, so the same trick runs a second time: gap 6>5,
+     brand 20>17, half a point off the switcher's type and one off each of the
+     three paddings. That leaves about 8px in hand at 360px on the Uzbek pages,
+     whose CTA is the longest of the three.
+
+     Eight pixels is not much. The next thing that gets longer needs a different
+     answer rather than a third round of shaving -- the honest one is to drop
+     the CTA here, the way test.html already does, since a student reading a
+     page has the same button waiting at the end of it. */
+  .navin{gap:5px;height:auto;padding:10px 0;flex-wrap:wrap}
+  .brand{font-size:16px;gap:5px}
+  .brandmark{height:24px}
   .navlinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
             padding-bottom:2px;-webkit-overflow-scrolling:touch}
   .navlinks a{font-size:14.5px}
@@ -130,17 +149,19 @@ img,svg{max-width:100%}
      360px: at the desktop sizes the CTA wrapped to a row of its own and made
      the sticky header 153px tall, which is a quarter of a small phone screen.
      navcheck.js asserts they stay on one row. */
-  /* Label off, chevron only — brand + back + switcher + CTA do not fit at 360px
+  /* Label off, chevron only: brand + back + switcher + CTA do not fit at 360px
      with the words in. The link keeps its name from the hidden span, so this is
      an icon with a label, not a bare glyph. */
   .backtx{display:none}
-  .navback{padding:5px 7px}
+  .navback{padding:5px 6px}
   .langsw{margin-left:auto;padding:1px;gap:1px}
-  .langsw a,.langsw span{padding:5px 6px;font-size:11.5px}
+  .langsw a,.langsw span{padding:5px 5px;font-size:11px}
   .navin .btn{margin-left:0}
-  .navin .btn.sm{padding:9px 11px;font-size:13.5px}
+  .navin .btn.sm{padding:9px 10px;font-size:13.5px}
+  .navin .btn.sm{display:none}
+  .navlogin{display:none}
+  .navlogin-mobile{display:inline}
 }
-
 /* ---------- page header ---------- */
 .phead{background:linear-gradient(180deg,#EFE9DC 0%,#F4F0E8 100%);
        border-bottom:1px solid var(--line);padding:52px 0 46px;text-align:center}
@@ -236,7 +257,7 @@ section{padding:60px 0}
 .faq summary::-webkit-details-marker{display:none}
 .faq summary::after{content:'+';float:right;color:var(--lazur);font-weight:700;
                     font-size:20px;line-height:1}
-.faq details[open] summary::after{content:'−'}
+.faq details[open] summary::after{content:'-'}
 .faq summary:focus-visible{outline:2px solid var(--zar);outline-offset:3px;border-radius:4px}
 .faq p{margin:12px 0 0;color:var(--muted);font-size:15px}
 
@@ -262,6 +283,10 @@ section{padding:60px 0}
 .footcol a{display:inline-block;padding:4px 0;font-size:14.5px;color:var(--muted);
            text-decoration:none;overflow-wrap:anywhere}
 .footcol a:hover{color:var(--lazur-deep);text-decoration:underline}
+.legaldate{margin:-4px 0 30px;color:var(--muted);font-size:13px}
+.legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.legalnav a{display:inline-block;padding:4px 0;font-size:14px;color:var(--muted);text-decoration:none}
+.legalnav a:hover{color:var(--lazur-deep);text-decoration:underline}
 .footbar{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
          display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
          font-size:13px;color:var(--muted)}

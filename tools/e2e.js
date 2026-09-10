@@ -15,19 +15,53 @@ async function open() {
   p.on('pageerror', e => errs.push(String(e)));
   p.on('console', m => { if (m.type() === 'error') errs.push('console: ' + m.text()); });
   await p.setRequestInterception(true);
-  p.on('request', r => r.url().indexOf('script.google.com') !== -1
-    ? r.respond({ status: 200, body: '{"ok":true}' }) : r.continue());
+  p.on('request', r => {
+    if (r.url().indexOf('supabase.co') !== -1) {
+      const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'apikey,authorization,content-type,prefer',
+        'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+      };
+      if (r.method() === 'OPTIONS') return r.respond({ status: 200, headers, body: '' });
+      return r.respond({ status: 200, headers, contentType: 'application/json', body: '[]' });
+    }
+    if (r.url().indexOf('script.google.com') !== -1)
+      return r.respond({ status: 200, body: '{"ok":true}' });
+    return r.continue();
+  });
   await p.goto(URL, { waitUntil: 'networkidle2', timeout: 60000 });
-  // Clear a draft left by an earlier page, then reload: boot() has already run,
-  // and with a draft in place it shows the resume screen instead of question 1.
-  await p.evaluate(() => localStorage.clear());
+  // Use a fake local session; the requests above are stubbed, so no account or
+  // student row is created by the test suite.
+  await p.evaluate(() => {
+    localStorage.clear();
+    localStorage.setItem('naseebmind_session_v1', JSON.stringify({
+      access: 'stub', refresh: 'stub', expires: Math.floor(Date.now() / 1000) + 3600,
+      user: { id: '00000000-0000-0000-0000-000000000000', email: 'test@example.com' },
+    }));
+  });
   await p.reload({ waitUntil: 'networkidle2' });
+  await p.evaluate(() => openChallenge('personality'));
   return { p, errs };
 }
 
 // Answer every question through the real UI, page by page.
 async function fullRun(pattern) {
   const { p, errs } = await open();
+  // This suite drives the personality challenge through the real pointer UI.
+  // Fill the other five with legal values so completing personality opens the
+  // combined result, which is what the report assertions below exercise.
+  await p.evaluate(() => {
+    for (const c of CHALLENGES) {
+      if (c.key === 'personality') continue;
+      const plan = c.plan();
+      for (let j = 0; j < plan.length; j++) {
+        if (c.interaction === 'sort') state.answers[plan[j]] = Math.floor(j / 4) + 1;
+        else state.answers[plan[j]] = (j % 5) + 1;
+      }
+      const more = c.extend ? c.extend(state.answers) : [];
+      for (let j = 0; j < more.length; j++) state.answers[more[j]] = (j % 5) + 1;
+    }
+  });
   // The test is adaptive: item i is not on page floor(i/5) any more, and the
   // plan grows by a block when the student's 2nd and 3rd traits come out level.
   // So read the plan each page rather than assuming a fixed 50/5 walk.
@@ -117,18 +151,14 @@ async function answer(p, i, v) {
     await p.close();
   }
 
-  console.log('\n== the test is already running when the page loads ==');
+  console.log('\n== a challenge opens directly into its questions ==');
   {
     const { p } = await open();
     ok(!(await p.$('#startBtn')), 'no start button to press');
     ok(!!(await p.$('#nextBtn')), 'question 1 is on screen immediately');
     ok((await p.$$('.item')).length === 5, 'the first five questions are rendered');
-    ok((await p.$$('.step')).length === 3, 'the three step cards sit above them');
-    // Painted artwork now, not inline SVG -- accept either.
-    ok((await p.$$('.stepart img, .stepart svg')).length === 3,
-       'each step card carries its own artwork');
-    const nums = await p.$$eval('.stepnum', els => els.map(e => e.textContent.trim()));
-    ok(nums.join('|') === 'QADAM 1|QADAM 2|QADAM 3', 'steps numbered in order: ' + nums.join('|'));
+    ok(!!(await p.$('#hubBack')), 'the challenge has a way back to the hub');
+    ok((await p.$$('.step')).length === 0, 'the obsolete three-step opener is gone');
     ok((await p.$$('#app input, #app textarea, #app select[name]')).length === 25,
       'the only inputs are the 5 questions x 5 circles - nothing to fill in');
     const txt = await p.$eval('#app', e => e.textContent);
@@ -188,7 +218,7 @@ async function answer(p, i, v) {
     for (let i = 0; i < 5; i++) await answer(p, i, 4);
     await new Promise(r => setTimeout(r, 700));
     ok(await p.evaluate(() => state.page === 1), 'the last answer on a page advances it');
-    ok((await p.$$('.step')).length === 3, 'the three step cards stay on every step, not just the first');
+    ok(!!(await p.$('#hubBack')), 'the challenge header stays on later pages');
     ok((await p.$$('.item.done')).length === 0, 'the new page starts with nothing dimmed');
     await p.close();
   }
@@ -285,8 +315,8 @@ async function answer(p, i, v) {
     const { p } = await fullRun(function () { return 4; });
     await p.click('#againBtn');
     await new Promise(r => setTimeout(r, 150));
-    ok(await p.evaluate(() => state.page === 0), 'restart returns to the first page');
-    ok((await p.$$('.step')).length === 3, 'the opener is shown again');
+    ok(await p.evaluate(() => state.page === 0 && state.view === 'hub'), 'restart returns to the hub');
+    ok((await p.$$('.chcard')).length === 6, 'all six challenge cards are shown again');
     ok((await p.$$('.item.done')).length === 0, 'no answers carried over');
     ok(await p.evaluate(() => statsSent === false && abandonSent === false && leadSent === false),
       'all send-once flags reset for the next student');

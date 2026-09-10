@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""Work Values — what a student wants FROM a job, not what they are like.
+u"""Work Values: what a student wants FROM a job, not what they are like.
 
 THE CONSTRUCT, AND THE MISTAKE THIS FILE EXISTS TO AVOID
 --------------------------------------------------------
@@ -82,9 +82,9 @@ ITEMS = [
     ('meaning',      u'Ishim jamiyatga foyda keltirishi men uchun muhim.'),
 ]
 
-INTRO_H = u'Endi — kelajakdagi ishingiz'
+INTRO_H = u'Endi kelajakdagi ishingiz'
 INTRO_P = (u'Oxirgi qism. Kelajakdagi ishingizda nima muhim boʻlishini soʻraymiz. '
-           u'Bu qobiliyat haqida emas — faqat siz nimani xohlaysiz.')
+           u'Bu qobiliyat haqida emas, faqat siz nimani xohlaysiz.')
 
 import values_content_ru as _ru
 import values_content_en as _en

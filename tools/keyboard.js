@@ -14,14 +14,32 @@ async function open() {
   const p = await browser.newPage();
   await p.setViewport({ width: 1280, height: 900 });
   await p.setRequestInterception(true);
-  p.on('request', r => r.url().indexOf('script.google.com') !== -1
-    ? r.respond({ status: 200, body: '{"ok":true}' }) : r.continue());
+  p.on('request', r => {
+    if (r.url().indexOf('supabase.co') !== -1) {
+      const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'apikey,authorization,content-type,prefer',
+        'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+      };
+      if (r.method() === 'OPTIONS') return r.respond({ status: 200, headers, body: '' });
+      return r.respond({ status: 200, headers, contentType: 'application/json', body: '[]' });
+    }
+    if (r.url().indexOf('script.google.com') !== -1)
+      return r.respond({ status: 200, body: '{"ok":true}' });
+    return r.continue();
+  });
   const errs = [];
   p.on('pageerror', e => errs.push(String(e)));
   await p.goto(URL, { waitUntil: 'networkidle2', timeout: 60000 });
-  // clear a leftover draft and reload, or boot() shows the resume screen instead
-  await p.evaluate(() => localStorage.clear());
+  await p.evaluate(() => {
+    localStorage.clear();
+    localStorage.setItem('naseebmind_session_v1', JSON.stringify({
+      access: 'stub', refresh: 'stub', expires: Math.floor(Date.now() / 1000) + 3600,
+      user: { id: '00000000-0000-0000-0000-000000000000', email: 'test@example.com' },
+    }));
+  });
   await p.reload({ waitUntil: 'networkidle2' });
+  await p.evaluate(() => openChallenge('personality'));
   await new Promise(r => setTimeout(r, 150));
   return { p, errs };
 }
@@ -135,7 +153,7 @@ async function answer(p, i, v) {
     const txt = await p.evaluate(() => window.__copied || '');
     const archName = await p.evaluate(() => document.querySelector('.archname').textContent);
     ok(txt.length > 0, 'something was handed to the clipboard');
-    ok(/TestMind/.test(txt), 'message mentions TestMind');
+    ok(/Naseeb Mind/.test(txt), 'message mentions Naseeb Mind');
     // Read the host out of the page rather than repeating it: this assertion
     // silently rotted through the move to the custom domain, still demanding
     // raximovv.github.io long after the share message had stopped saying it.

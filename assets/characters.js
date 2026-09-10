@@ -1,4 +1,4 @@
-// TestMind — archetype definitions and character artwork.
+// Naseeb Mind: archetype definitions and character artwork.
 // Shared by the landing page (index.html) and the test (test.html), so the ten
 // characters can never drift apart between the two.
 
@@ -28,74 +28,74 @@ var TRAIT_NAMES = {ES:'Hissiy barqarorlik', E:'Kirishimlilik', O:'Yangilikka och
 
 var ARCHETYPES = {
   'ES|E': {ikat2:'#0A5670', ikat3:'#E8C25A', name:'Yetakchi', slug:'xotirjam-yetakchi', fam:'lead',
-    lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.',
+    lines:['Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz, shuning uchun odamlar sizga quloq soladi.',
            'Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz.'],
     strength:'bosim ostida toʻgʻri qaror qabul qilish.',
     watch:'Xotirjamligingiz baʼzan befarqlikdek koʻrinadi. Yaqinlaringiz sizdan koʻproq hissiyot kutayotganini sezmay qolmang.',
-    figure:{who:'Bahouddin Naqshband', years:'1318–1389', why:'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'}},
+    figure:{who:'Bahouddin Naqshband', years:'1318-1389', why:'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'}},
 
   'E|C':  {ikat2:'#12667F', ikat3:'#F0DCA8', name:'Tashkilotchi', slug:'gayratli-tashkilotchi', fam:'lead',
-    lines:['Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
+    lines:['Gapdan ishga tez oʻtasiz: rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.',
            'Atrofdagilarni ham harakatga sola olasiz.'],
     strength:'gʻoyani haqiqatga aylantirish.',
     watch:'Tez boshlaganingiz uchun baʼzan boshqalarning fikrini soʻrashni unutasiz. Eng yaxshi gʻoya doim sizniki boʻlmasligi mumkin.',
-    figure:{who:'Nodirabegim', years:'1792–1842', why:'Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan.'}},
+    figure:{who:'Nodirabegim', years:'1792-1842', why:'Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan.'}},
 
   'ES|O': {ikat2:'#563C8C', ikat3:'#E8C25A', name:'Kashfiyotchi', slug:'xotirjam-kashfiyotchi', fam:'crea',
     lines:['Notanish narsani koʻrsangiz avval sinab koʻrasiz, keyin fikr bildirasiz.',
            'Lekin sarguzashtga koʻzni yumib emas, sovuqqonlik bilan kirasiz.'],
     strength:'notanish yoʻlni xotirjam tekshirib koʻrish.',
     watch:'Yangi narsaga tez qiziqib, boshlagan ishingizni yarmida tashlab qoʻyish xavfi bor. Bittasini oxirigacha olib borib koʻring.',
-    figure:{who:'Abu Rayhon Beruniy', years:'973–1048', why:'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'}},
+    figure:{who:'Abu Rayhon Beruniy', years:'973-1048', why:'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'}},
 
   'E|O':  {ikat2:'#6B4CA6', ikat3:'#F2E3B0', name:'Ijodkor', slug:'gayratli-ijodkor', fam:'crea',
     lines:['Gʻoyalaringiz tugamaydi va ularni odamlarga gapirib berishni yaxshi koʻrasiz.',
            'Bir gʻoyani tushuntira boshlasangiz, tinglayotgan odam ham qiziqib qoladi.'],
     strength:'yangi gʻoyani odamlarga yuqtirish.',
     watch:'Gʻoya koʻp, vaqt kam. Hammasini birdan boshlasangiz, hech biri tugamasligi mumkin.',
-    figure:{who:'Zebunniso Begim', years:'1638–1702', why:'Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan.'}},
+    figure:{who:'Zebunniso Begim', years:'1638-1702', why:'Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan.'}},
 
   'O|C':  {ikat2:'#463178', ikat3:'#E0C070', name:'Uzoqni Koʻzlovchi', slug:'ijodkor-strateg', fam:'crea',
-    lines:['Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.',
-           'Gʻoyani daftarda qoldirmaysiz — jadvalga, qadamlarga aylantirasiz.'],
+    lines:['Yangi yechim topasiz va uni oxiriga ham yetkazasiz.',
+           'Gʻoyani daftarda qoldirmaysiz, uni jadvalga, qadamlarga aylantirasiz.'],
     strength:'gʻoyani aniq tizimga solish.',
     watch:'Hammasini mukammal qilishga urinish sizni sekinlashtiradi. Baʼzan «yetarlicha yaxshi» ham haqiqiy natija.',
-    figure:{who:'Mirzo Ulugʻbek', years:'1394–1449', why:'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'}},
+    figure:{who:'Mirzo Ulugʻbek', years:'1394-1449', why:'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'}},
 
   'ES|A': {ikat2:'#24735A', ikat3:'#EBD79A', name:'Ishonchli Doʻst', slug:'ishonchli-dost', fam:'care',
     lines:['Odamlar sizga sirini aytadi, chunki yoningizda oʻzini xavfsiz his qiladi.',
            'Kimdir xafa boʻlsa, koʻpincha birinchi boʻlib siz sezasiz.'],
     strength:'boshqalarni tinchlantira olish.',
     watch:'Boshqalarga yordam berib, oʻzingizga vaqt qoldirmaslik oson. «Yoʻq» deyishni ham oʻrganing.',
-    figure:{who:'Jahonotin Uvaysiy', years:'1781–1845', why:'Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan.'}},
+    figure:{who:'Jahonotin Uvaysiy', years:'1781-1845', why:'Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan.'}},
 
   'E|A':  {ikat2:'#19614A', ikat3:'#E8C25A', name:'Jamoaning Yuragi', slug:'jamoaning-yuragi', fam:'care',
     lines:['Siz kirgan xonada suhbat oʻzidan-oʻzi boshlanib ketadi.',
            'Chetda qolgan odamni sezasiz va yoningizga chaqirasiz.'],
     strength:'odamlarni birlashtirish.',
     watch:'Hamma bilan yaxshi boʻlishga urinib, oʻz fikringizni aytmay qoʻyishingiz mumkin. Sizning fikringiz ham muhim.',
-    figure:{who:'Alisher Navoiy', years:'1441–1501', why:'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'}},
+    figure:{who:'Alisher Navoiy', years:'1441-1501', why:'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'}},
 
   'O|A':  {ikat2:'#337E68', ikat3:'#E5D49C', name:'Mehribon Inson', slug:'ijodkor-insonparvar', fam:'care',
     lines:['Yangi gʻoyalar va odamlarga gʻamxoʻrlik sizda birga yashaydi.',
            'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'],
     strength:'foydali va insoniy yechim topish.',
     watch:'Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.',
-    figure:{who:'Abdulla Avloniy', years:'1878–1934', why:'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'}},
+    figure:{who:'Abdulla Avloniy', years:'1878-1934', why:'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'}},
 
   'ES|C': {ikat2:'#8E621A', ikat3:'#F3E3BE', name:'Rejali Inson', slug:'barqaror-strateg', fam:'base',
     lines:['Reja tuzasiz va rejadan chalgʻimaysiz.',
            'Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz.'],
     strength:'uzoq masofaga chidash.',
-    watch:'Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish — magʻlubiyat emas.',
-    figure:{who:'Muhammad al-Xorazmiy', years:'783–850', why:'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'}},
+    watch:'Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish magʻlubiyat emas.',
+    figure:{who:'Muhammad al-Xorazmiy', years:'783-850', why:'Murakkab masalani aniq qadamlarga boʻlgan. «Algoritm» soʻzi uning nomidan qolgan.'}},
 
   'A|C':  {ikat2:'#A5771F', ikat3:'#F5E6C0', name:'Soʻzida Turuvchi', slug:'ishonchli-tayanch', fam:'base',
-    lines:['Vaʼda berishdan oldin oʻylaysiz — chunki bergan vaʼdangizni bajarasiz.',
+    lines:['Vaʼda berishdan oldin oʻylaysiz, chunki bergan vaʼdangizni bajarasiz.',
            'Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi.'],
     strength:'soʻzida turish.',
     watch:'Hamma ishni oʻz zimmangizga olib, ortiqcha yuk koʻtarib yurasiz. Yordam soʻrash ham kuch.',
-    figure:{who:'Imom Buxoriy', years:'810–870', why:'Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan.'}}
+    figure:{who:'Imom Buxoriy', years:'810-870', why:'Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan.'}}
 };
 
 // ---------- Character illustrations ----------
@@ -135,7 +135,7 @@ function tmHand(cx, cy, flip, skin, skinD){
 
 // TEMPORARY (2026-07-29, at the founder's request): render every archetype as a
 // male figure in a doʻppi. Set to false to bring back the roʻmol and uncovered-hair
-// variants — nothing was deleted, TM_ART still carries scarf and hair colours.
+// variants. Nothing was deleted, TM_ART still carries scarf and hair colours.
 //
 // Worth revisiting: about half the students taking this are girls, and a result
 // card that shows an adult man to all of them is a card they are less likely to
@@ -143,8 +143,8 @@ function tmHand(cx, cy, flip, skin, skinD){
 var ALL_MALE = true;
 
 // ---- faces -----------------------------------------------------------------
-// Until now every figure got one hardcoded face — the same two dots, the same
-// arc for a mouth — so ten characters read as one man in ten different coats.
+// Until now every figure got one hardcoded face, the same two dots and the same
+// arc for a mouth, so ten characters read as one man in ten different coats.
 // The costume was already varied; the face was doing none of the work.
 //
 // Eyes, brows and mouth are the only three marks that still register at the
@@ -160,7 +160,7 @@ var TM_EYE = {
   wide:   function(x){ return '<circle cx="'+x+'" cy="58.8" r="4.4" fill="'+INK+'"/>'
                             + '<circle cx="'+(x+1.5)+'" cy="57.3" r="1.5" fill="#F4F7F8"/>'; },
   narrow: function(x){ return '<ellipse cx="'+x+'" cy="59" rx="3.9" ry="2.6" fill="'+INK+'"/>'; },
-  // closed and curved up — someone already laughing, no pupil at all
+  // closed and curved up: someone already laughing, no pupil at all
   glad:   function(x){ return '<path d="M'+(x-4.2)+' 60.4 q4.2 -5.2 8.4 0" stroke="'+INK+'"'
                             + ' stroke-width="2.7" fill="none" stroke-linecap="round"/>'; },
   // a lid line over the dot reads as attention; without it the same dot is blank
@@ -170,7 +170,7 @@ var TM_EYE = {
 };
 
 // Left and right path, split on the pipe. `set` drops the inner ends toward the
-// nose — at this stroke weight that reads as concentration, not as anger.
+// nose. At this stroke weight that reads as concentration, not as anger.
 var TM_BROW = {
   soft:     {w:2.6, d:'M82.5 50 q5.5 -3.5 11 0|M106.5 50 q5.5 -3.5 11 0'},
   straight: {w:2.6, d:'M82.5 49.6 h11|M106.5 49.6 h11'},
@@ -179,17 +179,17 @@ var TM_BROW = {
   heavy:    {w:3.6, d:'M82.5 50 q5.5 -3.2 11 0|M106.5 50 q5.5 -3.2 11 0'}
 };
 
-// Path only — the colour is decided per figure, see the mouth note in tmFigure.
+// Path only. The colour is decided per figure, see the mouth note in tmFigure.
 var TM_MOUTH = {
   smile: {w:2.8, d:'M92 71 q8 6.5 16 0'},
   wide:  {w:2.8, d:'M90 70.5 q10 8 20 0'},
   soft:  {w:2.6, d:'M93.5 71.5 q6.5 4.2 13 0'},
   level: {w:2.6, d:'M93.5 72 q6.5 2 13 0'},
-  // the one open mouth in the set — a lens, not an outline, so it holds at size
+  // the one open mouth in the set: a lens, not an outline, so it holds at size
   grin:  {fill:true, d:'M90 70.5 q10 9.5 20 0 q-10 3.5 -20 0z'}
 };
 
-// All ten combinations are distinct — no two archetypes share a face.
+// All ten combinations are distinct: no two archetypes share a face.
 var TM_FACE = {
   'ES|E': {eyes:'narrow', brow:'straight', mouth:'smile', blush:.20},
   'E|C':  {eyes:'wide',   brow:'set',      mouth:'wide',  blush:.30},
@@ -206,7 +206,7 @@ var TM_FACE = {
 function tmFigure(o){
   // Before anything is drawn: the uncovered-hair block runs early, so a later
   // override would leave the hair behind the body still rendered.
-  // fem:true opts an entry out of the blanket flag — used where the archetype is
+  // fem:true opts an entry out of the blanket flag, used where the archetype is
   // paired with a woman from history and a bearded man would read as an error.
   if (ALL_MALE && !o.fem && o.head !== 'doppi') o = shallowCopy(o, {head: 'doppi'});
   var skin = o.skin || '#F0C69C', skinD = o.skinD || '#DCA97B';
@@ -244,7 +244,7 @@ function tmFigure(o){
   s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="#F4F7F8"/>';
   s += '<path d="M86 90 Q100 82 114 90 L100 114 Z" fill="'+INK+'" opacity=".05"/>';
 
-  // Zarhal jiyak — the gold braid down the front opening, round the hem and at
+  // Zarhal jiyak: the gold braid down the front opening, round the hem and at
   // the cuffs. It is the most recognisable thing about a good chopon and the
   // difference between a festival coat and a work one. Drawn before the belbogʻ
   // so the sash correctly covers the middle of the placket.
@@ -295,7 +295,7 @@ function tmFigure(o){
     // carry an extended index finger instead.
     //
     // That finger was also hiding a bug. The hand sat at (146,96) while the
-    // sleeve, after the rotation, ended somewhere else entirely — a hand
+    // sleeve, after the rotation, ended somewhere else entirely, a hand
     // floating clear of its own sleeve, which only became obvious once the
     // finger stopped drawing the eye. It is placed like every other hand now:
     // on the sleeve tip, pulled ~3 back along the arm so the cuff and the hand
@@ -327,7 +327,7 @@ function tmFigure(o){
     // Chust doʻppi: black ground, four white qalampir pods, sixteen arches on the band.
     // The whole cap sits high on the crown - the band must clear the eyebrows at y=50.
     var cap = o.cap || '#141C33', capD = o.capD || '#0B1124';
-    // Crown height is the top third of the silhouette — the most visible
+    // Crown height is the top third of the silhouette, the most visible
     // difference of all at thumbnail size.
     var top = o.crown === 'tall' ? 2 : (o.crown === 'low' ? 16 : 9);
     var cw = o.crown === 'tall' ? 30 : (o.crown === 'low' ? 34 : 32);
@@ -387,7 +387,7 @@ function tmFigure(o){
         band += 'M' + (66.5 + bi * 5.7) + ' 41.8 h3.4 ';
       s += '<path d="' + band + '" stroke="#F4F7F8" stroke-width="1.6" fill="none" opacity=".9"/>';
     } else {
-      // Sixteen arches, the traditional count — described as a fortress
+      // Sixteen arches, the traditional count, described as a fortress
       // protecting the wearer. Not an arbitrary number.
       var arcs = '';
       for (i = 0; i < 16; i++) arcs += 'M' + (66.5 + i * 4.25) + ' 42.6 q2.125 -4.6 4.25 0 ';
@@ -409,7 +409,7 @@ function tmFigure(o){
     s += '<circle cx="70" cy="67" r="2.3" fill="#C9A227"/><circle cx="130" cy="67" r="2.3" fill="#C9A227"/>';
   }
 
-  // A beard is what separates a grown man from a round-faced boy at this size —
+  // A beard is what separates a grown man from a round-faced boy at this size,
   // three lengths so ten bearded figures do not read as ten copies.
   if (o.beard && !o.fem){
     var bc = o.beardc || '#4B4149', bd = o.beard;
@@ -430,7 +430,7 @@ function tmFigure(o){
   s += '<g stroke="'+INK+'" stroke-width="'+brow.w+'" fill="none" stroke-linecap="round">'
      + '<path d="'+bpath[0]+'"/><path d="'+bpath[1]+'"/></g>';
   // An ink mouth inside an ink-dark beard is invisible, which is why eight of
-  // the ten used to look alike no matter what the mouth did — only the two
+  // the ten used to look alike no matter what the mouth did, and only the two
   // unbearded faces ever showed it. On a bearded face the mouth is the gap in
   // the beard, so it is drawn light and reads at card size.
   var mouth = TM_MOUTH[f.mouth] || TM_MOUTH.smile;
@@ -668,10 +668,10 @@ function charRasterSrc(key){
 // same way tmArch() already translates the default figure. Dates never translate.
 var TM_FIGURE_VARIANTS = {
   'ES|E': {
-    male: {who: 'Bahouddin Naqshband', years: '1318–1389',
+    male: {who: 'Bahouddin Naqshband', years: '1318-1389',
            art: 'assets/characters/xotirjam-yetakchi.webp',
            why: 'Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan.'},
-    female: {who: 'Zulfiya', years: '1915–1996',
+    female: {who: 'Zulfiya', years: '1915-1996',
              art: 'assets/characters/female/xotirjam-yetakchi.webp',
              why: 'Sheʼriyati, matonati va vazmin jamoat faoliyati bilan sokin ' +
                   'kuch va yetakchilik namunasini koʻrsatgan.'}
@@ -679,21 +679,21 @@ var TM_FIGURE_VARIANTS = {
   // Nodirabegim was this archetype's original single figure and keeps her own
   // artwork untouched at the default path; the male side is a separate file.
   'E|C': {
-    male: {who: 'Amir Temur', years: '1336–1405',
+    male: {who: 'Amir Temur', years: '1336-1405',
            art: 'assets/characters/male/gayratli-tashkilotchi.webp',
            why: 'Kuchli markazlashgan davlat barpo etib, boshqaruvda tartib, ' +
                 'aniq tizim va strategiyaga tayangan.'},
-    female: {who: 'Nodirabegim', years: '1792–1842',
+    female: {who: 'Nodirabegim', years: '1792-1842',
              art: 'assets/characters/gayratli-tashkilotchi.webp',
              why: 'Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan.'}
   },
   // Beruniy was this archetype's original single figure and keeps his own artwork
   // at the default path; the female side is a separate file.
   'ES|O': {
-    male: {who: 'Abu Rayhon Beruniy', years: '973–1048',
+    male: {who: 'Abu Rayhon Beruniy', years: '973-1048',
            art: 'assets/characters/xotirjam-kashfiyotchi.webp',
            why: 'Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan.'},
-    female: {who: 'Gulbadan Begim', years: '1523–1603',
+    female: {who: 'Gulbadan Begim', years: '1523-1603',
              art: 'assets/characters/female/xotirjam-kashfiyotchi.webp',
              why: 'Ilm va safarga qiziqib, “Humoyunnoma”da oʻz davrining hayotini ' +
                   'sinchkovlik bilan yozib qoldirgan.'}
@@ -701,21 +701,21 @@ var TM_FIGURE_VARIANTS = {
   // Zebunniso Begim was this archetype's original single figure and keeps her own
   // artwork at the default path; the male side is a separate file.
   'E|O': {
-    male: {who: 'Kamoliddin Behzod', years: 'taxm. 1455–1535/36',
+    male: {who: 'Kamoliddin Behzod', years: 'taxm. 1455-1535/36',
            art: 'assets/characters/male/gayratli-ijodkor.webp',
            why: 'Miniatyura sanʼatiga jonli obrazlar va yangi kompozitsiyalar olib ' +
                 'kirib, butun bir rassomlik maktabiga kuchli taʼsir koʻrsatgan.'},
-    female: {who: 'Zebunniso Begim', years: '1638–1702',
+    female: {who: 'Zebunniso Begim', years: '1638-1702',
              art: 'assets/characters/gayratli-ijodkor.webp',
              why: 'Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan.'}
   },
   // Mirzo Ulugʻbek was this archetype's original single figure and keeps his own
   // artwork at the default path; the female side is a separate file.
   'O|C': {
-    male: {who: 'Mirzo Ulugʻbek', years: '1394–1449',
+    male: {who: 'Mirzo Ulugʻbek', years: '1394-1449',
            art: 'assets/characters/ijodkor-strateg.webp',
            why: 'Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan.'},
-    female: {who: 'Gavharshod Begim', years: 'taxm. 1378–1457',
+    female: {who: 'Gavharshod Begim', years: 'taxm. 1378-1457',
              art: 'assets/characters/female/ijodkor-strateg.webp',
              why: 'Meʼmorchilik, taʼlim va sanʼatni qoʻllab-quvvatlab, yirik ' +
                   'bunyodkorlik gʻoyalarini aniq reja va amaliy loyihalarga aylantirgan.'}
@@ -725,11 +725,11 @@ var TM_FIGURE_VARIANTS = {
   // below describes what Ibn Sino did for people, not what he was like: no claim
   // is made about the personality of anyone who is not here to be asked.
   'ES|A': {
-    male: {who: 'Abu Ali ibn Sino', years: '980–1037',
+    male: {who: 'Abu Ali ibn Sino', years: '980-1037',
            art: 'assets/characters/male/ishonchli-dost.webp',
            why: 'Tabib va olim sifatida odamlarga yordam berib, ularning salomatligi ' +
                 'va xotirjamligini asrashga xizmat qilgan.'},
-    female: {who: 'Jahonotin Uvaysiy', years: '1781–1845',
+    female: {who: 'Jahonotin Uvaysiy', years: '1781-1845',
              art: 'assets/characters/ishonchli-dost.webp',
              why: 'Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan.'}
   },
@@ -738,10 +738,10 @@ var TM_FIGURE_VARIANTS = {
   // about what she did on a stage -- carrying other peoples' cultures to an
   // audience -- not about what she was like offstage.
   'E|A': {
-    male: {who: 'Alisher Navoiy', years: '1441–1501',
+    male: {who: 'Alisher Navoiy', years: '1441-1501',
            art: 'assets/characters/jamoaning-yuragi.webp',
            why: 'Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan.'},
-    female: {who: 'Tamaraxonim', years: '1906–1991',
+    female: {who: 'Tamaraxonim', years: '1906-1991',
              art: 'assets/characters/female/jamoaning-yuragi.webp',
              why: 'Raqs va qoʻshiq orqali turli xalqlar madaniyatini tomoshabinlarga ' +
                   'yetkazib, sahnada odamlarni birlashtira olgan.'}
@@ -751,10 +751,10 @@ var TM_FIGURE_VARIANTS = {
   // about the work -- teaching, and what she gave to the art form -- not about a
   // personality nobody can now measure.
   'O|A': {
-    male: {who: 'Abdulla Avloniy', years: '1878–1934',
+    male: {who: 'Abdulla Avloniy', years: '1878-1934',
            art: 'assets/characters/ijodkor-insonparvar.webp',
            why: 'Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan.'},
-    female: {who: 'Mukarrama Turgʻunboyeva', years: '1913–1978',
+    female: {who: 'Mukarrama Turgʻunboyeva', years: '1913-1978',
              art: 'assets/characters/female/ijodkor-insonparvar.webp',
              why: 'Raqs sanʼati orqali goʻzallik va mehr ulashib, koʻplab yosh isteʼdodlarni ' +
                   'tarbiyalashga va sanʼatni rivojlantirishga xizmat qilgan.'}
@@ -764,9 +764,9 @@ var TM_FIGURE_VARIANTS = {
   // Her years are a century rather than two dates, so every language overrides
   // them -- "mil. avv." does not survive translation any more than "taxm." does.
   'ES|C': {
-    male: {who: 'Muhammad al-Xorazmiy', years: '783–850',
+    male: {who: 'Muhammad al-Xorazmiy', years: '783-850',
            art: 'assets/characters/barqaror-strateg.webp',
-           why: 'Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan.'},
+           why: 'Murakkab masalani aniq qadamlarga boʻlgan. «Algoritm» soʻzi uning nomidan qolgan.'},
     female: {who: 'Toʻmaris', years: 'mil. avv. VI asr',
              art: 'assets/characters/female/barqaror-strateg.webp',
              why: 'Qatʼiyat, mustahkam iroda va dono qarorlari bilan oʻz xalqini himoya ' +
@@ -777,10 +777,10 @@ var TM_FIGURE_VARIANTS = {
   // about the role she held -- adviser, patron, public figure -- not about a
   // disposition, which nobody can now measure.
   'A|C': {
-    male: {who: 'Imom Buxoriy', years: '810–870',
+    male: {who: 'Imom Buxoriy', years: '810-870',
            art: 'assets/characters/ishonchli-tayanch.webp',
            why: 'Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan.'},
-    female: {who: 'Saroy Mulk Xonim — Bibixonim', years: 'taxm. 1341–1408',
+    female: {who: 'Saroy Mulk Xonim (Bibixonim)', years: 'taxm. 1341-1408',
              art: 'assets/characters/female/ishonchli-tayanch.webp',
              why: 'Dono maslahatchi, maʼrifat homiysi va nufuzli davlat arbobi sifatida ' +
                   'yaqinlariga hamda jamiyatga ishonchli tayanch boʻlgan.'}
@@ -840,7 +840,7 @@ function charSvg(key, alt, side){
   // character shifted the counter for every figure drawn after it, so the ids in
   // all thirty generated pages renumbered and the diff for a one-character change
   // touched two dozen unrelated files. The ids are internal and always emitted
-  // beside the url(#…) that uses them, so the churn was harmless — just noise
+  // beside the url(#…) that uses them, so the churn was harmless, just noise
   // that hid the real change.
   var uid = key.replace(/[^A-Za-z0-9]/g, '-').toLowerCase() + '-' + (++TM_UID);
   var raster = charRasterSrc(key), fit = TM_RASTER_FIT[key];

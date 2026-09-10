@@ -1,6 +1,6 @@
 // How many RIASEC items do we actually need, and what should we REPORT?
 //
-// The Big Five side of TestMind taught us the expensive lesson: the archetype
+// The Big Five side of Naseeb Mind taught us the expensive lesson: the archetype
 // (top-2 of 5 traits) only agrees with itself about half the time on a retake,
 // and adding items barely moves it, because the instability comes from students
 // whose 2nd and 3rd traits are genuinely close -- not from measurement error.

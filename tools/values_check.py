@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""Asserts the Work Values bank — above all that it is measuring values.
+u"""Asserts the Work Values bank, above all that it is measuring values.
 
 The failure this file exists to catch is not a crash. It is an item that reads
 like a personality statement ("I learn new things quickly") slipping into a

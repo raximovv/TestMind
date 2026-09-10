@@ -77,7 +77,7 @@ h1{font-family:'Bitter',serif;font-weight:700;font-size:66px;line-height:1.06;
 <div class="bar"></div>
 <div class="wrap">
   <div class="txt">
-    <div class="mark">TestMind</div>
+    <div class="mark">Naseeb Mind</div>
     <h1>%(h1)s</h1>
     <div class="sub">%(sub)s</div>
     <div class="sub2">%(sub2)s</div>

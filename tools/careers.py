@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""Career families, careers and university majors — the structured layer.
+u"""Career families, careers and university majors: the structured layer.
 
 THE CONTRACT (same one life_content.py and riasec_content.py use)
 -----------------------------------------------------------------

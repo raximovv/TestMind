@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 u"""English text for the RIASEC item bank.
 
-TEXT ONLY — see riasec_content_ru.py for the contract. Order is meaning here:
+TEXT ONLY: see riasec_content_ru.py for the contract. Order is meaning here:
 the scale keying is paired on by position from the Uzbek original.
 """
 

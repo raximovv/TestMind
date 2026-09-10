@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""English text for the Work Values module. TEXT ONLY — see the Russian file for
+u"""English text for the Work Values module. TEXT ONLY: see the Russian file for
 the contract; order is meaning here, not presentation."""
 
 LABELS = [
@@ -36,6 +36,6 @@ ITEMS = [
     u'It matters to me that my work is useful to society.',
 ]
 
-INTRO_H = u'Now — your future job'
+INTRO_H = u'Now your future job'
 INTRO_P = ('The last part. We ask what matters to you in a future job. '
-           'This is not about ability — only about what you want.')
+           'This is not about ability, only about what you want.')

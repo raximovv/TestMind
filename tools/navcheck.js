@@ -1,4 +1,4 @@
-// Measures the nav on every page, in every language, at phone width — with no
+// Measures the nav on every page, in every language, at phone width, with no
 // npm dependencies at all.
 //
 // Why this exists: puppeteer-core cannot be installed on this machine (the Node
@@ -41,11 +41,13 @@ const PROBE = `(() => {
   const brand = document.querySelector('.brand');
   const sw = document.querySelector('.langsw');
   const cta = document.querySelector('.navin > .btn');
+  const login = document.querySelector('.navin > .navlogin');
   const links = [...document.querySelectorAll('.navlinks a')];
   // Group into visual rows by overlapping vertical span. Comparing raw .top
   // would report three rows for three items of different heights sitting side
   // by side, which is what a first attempt at this did.
-  const boxes = [brand, sw, cta].filter(Boolean).map(r)
+  const boxes = [brand, sw, login, cta].filter(Boolean).map(r)
+    .filter(b => b.width > 0 && b.height > 0)
     .sort((a, b) => a.top - b.top);
   const bands = [];
   for (const b of boxes) {
@@ -165,8 +167,8 @@ async function main() {
         problems.push(`${at}: switcher offers ${d.swLinks.length} other languages, expected 2`);
       if (!d.swCurrent)
         problems.push(`${at}: switcher does not mark the current language`);
-      if (d.navLinkCount !== 5)
-        problems.push(`${at}: ${d.navLinkCount} nav links, expected 5`);
+      if (d.navLinkCount !== 6)
+        problems.push(`${at}: ${d.navLinkCount} nav links, expected 6`);
       // 24px is the tap target the switcher must not fall below on a phone.
       if (width === 360 && d.swItems.some(i => i.h < 24))
         problems.push(`${at}: switcher item only ${Math.min(...d.swItems.map(i => i.h))}px tall`);

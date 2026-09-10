@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""Generates one page per archetype per language — ten pages x three languages.
+u"""Generates one page per archetype per language, ten pages x three languages.
 
 Driven by characters.js (the Uzbek original) and strings.js (the Russian and
 English overlay), which are the same two files the browser loads. Nothing is

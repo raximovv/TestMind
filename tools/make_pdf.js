@@ -5,7 +5,7 @@
 //   node   make_pdf.js  ishonchli-dost      (no argument = every built guide)
 //
 // Chrome is driven over the DevTools protocol using Node's built-in WebSocket
-// rather than puppeteer-core, so this needs no npm install — which matters
+// rather than puppeteer-core, so this needs no npm install, which matters
 // because npm cannot run on the dev machine (its Node install has no
 // node_modules/npm). Same guarantees as before: overflow is refused, and a PDF
 // whose content did not change is not rewritten.
@@ -34,7 +34,7 @@ const send = (method, params = {}, sessionId) => new Promise((resolve, reject) =
 async function render(call, slug) {
   const src = path.posix.join(BUILD, 'guide-' + slug + '.html');
   if (!fs.existsSync(src)) {
-    console.error('missing ' + src + ' — run build_guide.py first');
+    console.error('missing ' + src + ', run build_guide.py first');
     return false;
   }
 
@@ -64,7 +64,7 @@ async function render(call, slug) {
   const buf = Buffer.from(res.data, 'base64');
 
   // Chrome stamps /CreationDate and /ModDate into every PDF, so a rebuild with no
-  // content change still produces a different file — which would churn ~750 KB per
+  // content change still produces a different file, which would churn ~750 KB per
   // guide through git for nothing. Compare with those two fields blanked out and
   // only write when the guide itself actually changed.
   if (fs.existsSync(out) && strip(fs.readFileSync(out)) === strip(buf)) {
@@ -90,7 +90,7 @@ function strip(buf) {
   const slugs = process.argv.length > 2 ? process.argv.slice(2)
     : fs.readdirSync(BUILD).filter(f => /^guide-.*\.html$/.test(f))
         .map(f => f.replace(/^guide-|\.html$/g, ''));
-  if (!slugs.length) { console.error('nothing built — run build_guide.py first'); process.exit(1); }
+  if (!slugs.length) { console.error('nothing built, run build_guide.py first'); process.exit(1); }
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'tm-pdf-'));
   const chrome = spawn(CHROME, [
@@ -132,6 +132,6 @@ function strip(buf) {
   try { fs.rmSync(profile, { recursive: true, force: true }); } catch {}
 
   console.log('\n' + (slugs.length - bad) + '/' + slugs.length + ' written to ' + OUTDIR);
-  if (bad) { console.error('fix the overflow above — those PDFs were NOT written'); process.exit(1); }
+  if (bad) { console.error('fix the overflow above, those PDFs were NOT written'); process.exit(1); }
   process.exit(0);
 })();

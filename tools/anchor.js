@@ -18,8 +18,15 @@ const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, conso
     const errs = [];
     p.on('pageerror', e => errs.push(String(e)));
     await p.goto(URL, { waitUntil: 'networkidle2' });
-    await p.evaluate(() => localStorage.clear());
+    await p.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('naseebmind_session_v1', JSON.stringify({
+        access: 'stub', refresh: 'stub', expires: Math.floor(Date.now() / 1000) + 3600,
+        user: { id: '00000000-0000-0000-0000-000000000000', email: 'test@example.com' },
+      }));
+    });
     await p.reload({ waitUntil: 'networkidle2' });
+    await p.evaluate(() => openChallenge('personality'));
     await new Promise(r => setTimeout(r, 200));
 
     // A real student scrolls past the three step cards to question 1 first.
@@ -63,9 +70,15 @@ const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, conso
     const errs = [];
     p.on('pageerror', e => errs.push(String(e)));
     await p.goto(URL, { waitUntil: 'networkidle2' });
-    await p.evaluate(() => localStorage.clear());
+    await p.evaluate(() => {
+      localStorage.clear();
+      localStorage.setItem('naseebmind_session_v1', JSON.stringify({
+        access: 'stub', refresh: 'stub', expires: Math.floor(Date.now() / 1000) + 3600,
+        user: { id: '00000000-0000-0000-0000-000000000000', email: 'test@example.com' },
+      }));
+    });
     await p.reload({ waitUntil: 'networkidle2' });
-    await p.evaluate(() => { state.page = 3; renderPage(); });
+    await p.evaluate(() => { openChallenge('personality'); state.page = 3; renderPage(); });
     await new Promise(r => setTimeout(r, 300));
     // Which questions a step holds is decided by the plan, not by the step number
     // -- step 4 is items 17,18,24,25,26, not 15..19 -- so read them off the page.

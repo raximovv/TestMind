@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
-u"""Generates the static TestMind pages, in every language, so the nav and footer
-can never drift — between pages or between languages.
+u"""Generates the static Naseeb Mind pages, in every language, so the nav and footer
+can never drift, between pages or between languages.
 
 Uzbek is written to the repo root, Russian to ru/ and English to en/, so every
 link already shared in the wild keeps working. Page filenames are identical in
 all three languages; only the prose differs (see i18n.py).
 
 test.html and everything in assets/ are shared, single-copy files at the root.
-Pages in ru/ and en/ reach them with ../ — see localize().
+Pages in ru/ and en/ reach them with ../, see localize().
 """
 import io, json, os, re, subprocess
 
@@ -25,7 +25,7 @@ def scene_rasters():
 
     Asked of site.js rather than listed here. The cast lives in buildScene() and
     only some of the ten are illustrated, so any list kept on this side would be
-    a second copy free to drift — and a preload for a file the page never
+    a second copy free to drift, and a preload for a file the page never
     requests is a wasted download plus a console warning, while a missing one
     puts the hole back in the scene.
     """
@@ -58,15 +58,17 @@ def scene_rasters():
             _SCENE_RASTERS.append(p)
     return _SCENE_RASTERS
 
-FAVICON = ("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E"
-           "%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E"
-           "%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E"
-           "%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E"
-           "%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E")
+# All three come out of tools/build_logo.py, which cuts them from the delivered
+# artwork. The tab icon is the mark in paper on a navy tile rather than the bare
+# mark: a thin navy bird on transparency is a smudge at 16px, which is the size
+# a browser tab actually uses. favicon.ico sits in the repo root as well, for
+# the request browsers make on their own before they have read this <head>.
+FAVICON = 'assets/ui/icon.png'
+TOUCH_ICON = 'assets/ui/apple-touch-icon.png'
 
 SITE = 'https://personality.naseebedu.com'   # the CNAME file in the repo root must agree
 
-# The parent platform. TestMind is a subdomain of it, not a separate product.
+# The parent platform. Naseeb Mind is a subdomain of it, not a separate product.
 NASEEB = 'https://www.naseebedu.com/'
 BACK_ARROW = (u'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true">'
               u'<path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" '
@@ -142,19 +144,20 @@ def head(lang, title, desc, fname, extra=u''):
 <meta property="og:title" content="%s">
 <meta property="og:description" content="%s">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="TestMind">
+<meta property="og:site_name" content="Naseeb Mind">
 <meta property="og:locale" content="%s">
 <meta property="og:image" content="%s/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="%s">
+<link rel="apple-touch-icon" href="%s">
 <link rel="canonical" href="%s">%s
 <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">%s
 </head>
 <body>
-""" % (HTML_LANG[lang], title, desc, title, desc, OG_LOCALE[lang], SITE, FAVICON,
+""" % (HTML_LANG[lang], title, desc, title, desc, OG_LOCALE[lang], SITE, FAVICON, TOUCH_ICON,
        url_for(lang, fname), alts, extra)
 
 
@@ -179,13 +182,16 @@ def langsw(lang, fname):
 def nav(lang, fname, active=None):
     t = S[lang]
     items = [('index.html', t['nav.home']), ('obrazlar.html', t['nav.types']),
-             ('test.html', t['nav.test']),
-             ('qanday-ishlaydi.html', t['nav.how']), ('savollar.html', t['nav.faq'])]
+             ('test.html', t['nav.test']), ('savollar.html', t['nav.faq'])]
     active = active or fname
     links = ''
     for href, label in items:
         cur = ' aria-current="page"' if href == active else ''
         links += u'\n    <a href="%s"%s>%s</a>' % (href, cur, label)
+    login_href = UP[lang] + 'test.html?' + (
+        'auth=signin' if lang == 'uz' else 'lang=%s&auth=signin' % lang)
+    links += u'\n    <a class="navlogin-mobile" href="%s">%s</a>' % (
+        login_href, t['nav.login'])
     # The way back to the parent platform sits left of the brand, inside the
     # nav, where a back control is looked for. The nav row is full at 360px, so
     # below 820px the label is dropped and only the chevron stays -- the
@@ -194,14 +200,19 @@ def nav(lang, fname, active=None):
     return u"""<nav class="nav"><div class="wrap navin">
   <a class="navback" href="%(naseeb)s">%(arrow)s<span class="backtx">Naseeb Edu</span>
     <b class="vh">%(back)s</b></a>
-  <a class="brand" href="index.html">TestMind</a>
+  <a class="brand" href="index.html">
+    <img class="brandmark" src="assets/ui/logo.png" alt="">
+    <span>Naseeb <b>Mind</b></span>
+  </a>
   <div class="navlinks">%(links)s
   </div>
   %(langsw)s
+  <a class="navlogin" href="%(login_href)s">%(login)s</a>
   <a class="btn sm" href="test.html" data-cta>%(cta)s</a>
 </div></nav>
 """ % {'naseeb': NASEEB, 'arrow': BACK_ARROW, 'back': t['nav.back'],
-       'links': links, 'langsw': langsw(lang, fname), 'cta': t['nav.cta']}
+       'links': links, 'langsw': langsw(lang, fname), 'login_href': login_href,
+       'login': t['nav.login'], 'cta': t['nav.cta']}
 
 
 SOCIAL = u'<div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div>'
@@ -217,10 +228,9 @@ def footer(lang):
     note = u''
     return u"""<footer class="foot"><div class="wrap">
   <div class="footgrid">
-    <div class="footcol"><h2>TestMind</h2><ul>
+    <div class="footcol"><h2>Naseeb Mind</h2><ul>
       <li><a href="index.html">%(home)s</a></li>
       <li><a href="obrazlar.html">%(types10)s</a></li>
-      <li><a href="qanday-ishlaydi.html">%(how)s</a></li>
     </ul></div>
     <div class="footcol"><h2>%(test)s</h2><ul>
       <li><a href="test.html" data-cta>%(cta)s</a>%(note)s</li>
@@ -228,7 +238,6 @@ def footer(lang):
     </ul></div>
     <div class="footcol"><h2>%(about)s</h2><ul>
       <li><a href="privacy.html">%(privacy)s</a></li>
-      <li><a href="qanday-ishlaydi.html#model">%(model)s</a></li>
       <li><a href="maktablar.html">%(schools)s</a></li>
     </ul></div>
     <div class="footcol"><h2>%(contact)s</h2><ul>
@@ -236,15 +245,21 @@ def footer(lang):
     </ul>
       %(social)s</div>
   </div>
+  <nav class="legalnav" aria-label="%(legal_label)s">
+    <a href="terms.html">%(terms)s</a>
+    <a href="privacy.html">%(privacy)s</a>
+    <a href="accessibility.html">%(accessibility)s</a>
+  </nav>
   <div class="footbar">
-    <span>© 2026 TestMind</span>
+    <span>© 2026 Naseeb Mind</span>
     <span>%(disclaimer)s</span>
   </div>
 </div></footer>
-""" % {'home': t['nav.home'], 'types10': t['foot.types10'], 'how': t['nav.how'],
+""" % {'home': t['nav.home'], 'types10': t['foot.types10'],
        'test': t['foot.test'], 'cta': t['nav.cta'], 'note': note,
        'faqlong': t['foot.faqlong'], 'about': t['foot.about'],
-       'privacy': t['foot.privacy'], 'model': t['foot.model'],
+       'privacy': t['foot.privacy'], 'terms': t['foot.terms'],
+       'accessibility': t['foot.accessibility'], 'legal_label': t['foot.legal_label'],
        'schools': t['foot.schools'], 'contact': t['foot.contact'], 'naseeb': NASEEB,
        'email': EMAIL, 'social': SOCIAL, 'disclaimer': t['foot.disclaimer']}
 
@@ -274,7 +289,7 @@ HOME = u"""<header class="hero" id="top">
        lead's own max-width:640px sat flush left inside this 760px box: the text
        centred within a block that was itself 60px left of centre, so it read as
        misaligned against the h1 and the button above and below it. -->
-  <div class="center" style="padding:52px 20px 28px;max-width:760px;margin:0 auto">
+  <div class="center" style="padding:52px 20px 72px;max-width:760px;margin:0 auto">
     <h1>%(home.h1)s</h1>
     <p class="lead" style="font-size:clamp(16px,2.4vw,19px);margin-bottom:26px">
       %(home.lead)s</p>
@@ -323,25 +338,13 @@ HOME = u"""<header class="hero" id="top">
         <span class="ptag">%(home.p3.tag)s</span>
         <h2>%(home.p3.h2)s</h2>
         <p>%(home.p3.p)s</p>
-        <a class="btn ghost" href="qanday-ishlaydi.html">%(home.p3.btn)s</a>
+        <a class="btn ghost" href="test.html" data-cta>%(home.p3.btn)s</a>
       </div>
       <div class="part" id="vg-future"></div>
     </div>
   </div>
 </section>
 
-<section class="alt">
-  <div class="wrap">
-    <div class="center"><h2>%(home.why.h2)s</h2>
-      <p class="lead">%(home.why.lead)s</p></div>
-    <div class="why">
-      <div class="wcard"><h3>%(home.w1.h3)s</h3><p>%(home.w1.p)s</p></div>
-      <div class="wcard"><h3>%(home.w2.h3)s</h3><p>%(home.w2.p)s</p></div>
-      <div class="wcard"><h3>%(home.w3.h3)s</h3><p>%(home.w3.p)s</p></div>
-      <div class="wcard"><h3>%(home.w4.h3)s</h3><p>%(home.w4.p)s</p></div>
-    </div>
-  </div>
-</section>
 """
 
 # ---------------------------------------------------------------- obrazlar
@@ -425,6 +428,7 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
 </div></header>
 
 <section><div class="wrap" style="max-width:780px">
+  <p class="legaldate">%(priv.updated)s</p>
   <h2>%(priv.h.stored)s</h2>
   <p>%(priv.p.stored)s</p>
 
@@ -450,6 +454,21 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
   <h2>%(priv.h.third)s</h2>
   <p>%(priv.p.third)s</p>
 
+  <h2>%(priv.h.cookies)s</h2>
+  <p>%(priv.p.cookies)s</p>
+
+  <h2>%(priv.h.providers)s</h2>
+  <p>%(priv.p.providers)s</p>
+
+  <h2>%(priv.h.retention)s</h2>
+  <p>%(priv.p.retention)s</p>
+
+  <h2>%(priv.h.rights)s</h2>
+  <p>%(priv.p.rights)s</p>
+
+  <h2>%(priv.h.changes)s</h2>
+  <p>%(priv.p.changes)s</p>
+
   <h2>%(priv.h.result)s</h2>
   <p>%(priv.p.result)s</p>
 
@@ -459,6 +478,41 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
   <h2>%(priv.h.contact)s</h2>
   <p>%(priv.p.contact)s
      <a href="mailto:%(email)s">%(email)s</a>.</p>
+</div></section>
+"""
+
+# ---------------------------------------------------------------- terms
+TERMS = u"""<header class="phead"><div class="wrap">
+  <h1>%(terms.h1)s</h1>
+  <p class="lead">%(terms.lead)s</p>
+</div></header>
+
+<section><div class="wrap" style="max-width:780px">
+  <p class="legaldate">%(terms.updated)s</p>
+  <h2>%(terms.h.about)s</h2><p>%(terms.p.about)s</p>
+  <h2>%(terms.h.eligibility)s</h2><p>%(terms.p.eligibility)s</p>
+  <h2>%(terms.h.account)s</h2><p>%(terms.p.account)s</p>
+  <h2>%(terms.h.results)s</h2><p>%(terms.p.results)s</p>
+  <h2>%(terms.h.use)s</h2><p>%(terms.p.use)s</p>
+  <h2>%(terms.h.content)s</h2><p>%(terms.p.content)s</p>
+  <h2>%(terms.h.availability)s</h2><p>%(terms.p.availability)s</p>
+  <h2>%(terms.h.contact)s</h2><p>%(terms.p.contact)s <a href="mailto:%(email)s">%(email)s</a>.</p>
+</div></section>
+"""
+
+# ---------------------------------------------------------------- accessibility
+ACCESSIBILITY = u"""<header class="phead"><div class="wrap">
+  <h1>%(access.h1)s</h1>
+  <p class="lead">%(access.lead)s</p>
+</div></header>
+
+<section><div class="wrap" style="max-width:780px">
+  <p class="legaldate">%(access.updated)s</p>
+  <h2>%(access.h.commitment)s</h2><p>%(access.p.commitment)s</p>
+  <h2>%(access.h.current)s</h2><p>%(access.p.current)s</p>
+  <h2>%(access.h.keyboard)s</h2><p>%(access.p.keyboard)s</p>
+  <h2>%(access.h.limits)s</h2><p>%(access.p.limits)s</p>
+  <h2>%(access.h.feedback)s</h2><p>%(access.p.feedback)s <a href="mailto:%(email)s">%(email)s</a>.</p>
 </div></section>
 """
 
@@ -518,9 +572,10 @@ MAKTABLAR = u"""<header class="phead"><div class="wrap">
 PAGES = [
     ('index.html',           HOME,      'home.title',  'home.desc',  True),
     ('obrazlar.html',        OBRAZLAR,  'types.title', 'types.desc', True),
-    ('qanday-ishlaydi.html', QANDAY,    'how.title',   'how.desc',   True),
     ('savollar.html',        SAVOLLAR,  'faq.title',   'faq.desc',   True),
     ('privacy.html',         PRIVACY,   'priv.title',  'priv.desc',  False),
+    ('terms.html',           TERMS,     'terms.title', 'terms.desc', False),
+    ('accessibility.html',   ACCESSIBILITY, 'access.title', 'access.desc', False),
     ('maktablar.html',       MAKTABLAR, 'sch.title',   'sch.desc',   False),
 ]
 
@@ -536,7 +591,7 @@ def jsonld(obj):
 def site_ld(lang):
     return jsonld({
         '@context': 'https://schema.org', '@type': 'WebSite',
-        'name': 'TestMind', 'url': url_for(lang, 'index.html'),
+        'name': 'Naseeb Mind', 'url': url_for(lang, 'index.html'),
         'inLanguage': HTML_LANG[lang], 'description': S[lang]['home.desc'],
     })
 
@@ -558,7 +613,7 @@ def faq_ld(html):
 def fill(tpl, lang):
     u"""%(key)s substitution straight from the language's string table.
 
-    A key that is missing raises KeyError and stops the build — which is the
+    A key that is missing raises KeyError and stops the build, which is the
     point: a half-translated page should never reach the repo.
     """
     d = dict(S[lang])
@@ -577,7 +632,7 @@ def build_page(lang, fname, tpl, tkey, dkey, with_close):
     extra = u''
     if fname == 'index.html':
         # The scene is mounted by JS, so without this the browser cannot learn the
-        # artwork exists until site.js has downloaded, parsed and run — the figure
+        # artwork exists until site.js has downloaded, parsed and run, the figure
         # then landed about two seconds after its neighbours and visibly popped in.
         extra = u''.join(
             u'\n<link rel="preload" href="%s" as="image" type="image/webp">' % p

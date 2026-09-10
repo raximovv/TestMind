@@ -9,14 +9,14 @@ have it written about them.
 
 Each area has five strengths and five weaknesses, each a short bolded label plus
 one concrete sentence. The weaknesses are written as things that happen TO the
-reader, never as faults — a 13-year-old reading "you are a coward" stops reading,
+reader, never as faults: a 13-year-old reading "you are a coward" stops reading,
 and stops trusting the strengths too.
 
 
 ON THE BANDS
 ------------
 The band beside each direction is NOT a measured job-fit probability. No such
-measurement exists for Uzbek adolescents — establishing it is the entire point
+measurement exists for Uzbek adolescents, and establishing it is the entire point
 of the data this site collects. It says how much of that direction's trait
 weight sits on the two traits this archetype is named for, relative to the
 strongest direction on the same page. Reproducible, checkable, and a
@@ -24,7 +24,7 @@ description of the archetype rather than a prediction about a career.
 
 These were percentages until they were not. The number was 42 + 50 * share,
 every weight is a multiple of 0.05, and so the scale could only ever land on a
-lattice 2.5 points apart — with the top direction on eight of the ten pages
+lattice 2.5 points apart, with the top direction on eight of the ten pages
 authored as 0.45/0.45 and therefore printing 87% on all eight. That is what a
 reader notices. The honest reading is not that the weights were careless but
 that an archetype carries two bits of information, which two traits rank
@@ -36,7 +36,7 @@ career; anything that looks like a score next to a job title contradicts that
 in the reader's mind whatever the surrounding text says.
 """
 
-DISCLAIMER = (u'Bu belgilar — sizning ikkita eng kuchli xususiyatingiz shu '
+DISCLAIMER = (u'Bu belgilar sizning ikkita eng kuchli xususiyatingiz shu '
               u'yoʻnalishga qanchalik mos kelishini koʻrsatadi. Bu bashorat emas: '
               u'qiziqishingiz, imkoniyatingiz va real tajribangiz undan muhimroq.')
 
@@ -54,7 +54,7 @@ BAND_LABELS = {
 #
 # The RESULT SCREEN is a different situation and needs different words. There the
 # same directions land a single scroll above «Yoʻnalishlar», which ranks careers
-# from interests, values and marks — four signals, of which personality is 8%.
+# from interests, values and marks: four signals, of which personality is 8%.
 # Two ranked career lists on one screen, built from almost disjoint evidence,
 # disagree for most students: measured over 3,600 simulated students the two
 # top picks matched 9.4% of the time against a 6.3% chance baseline.
@@ -64,9 +64,9 @@ BAND_LABELS = {
 # hands the actual recommendation to the section that has the evidence for it.
 RESULT_CAREER_TITLE = u'Bu xususiyatlar qayerda qoʻl keladi'
 
-RESULT_NOTE = (u'Bu — tavsiya emas va tartiblangan roʻyxat ham emas: shu '
+RESULT_NOTE = (u'Bu tavsiya emas va tartiblangan roʻyxat ham emas: shu '
                u'xususiyatlar qadrlanadigan sohalar, xolos. Sizga mos kasblar '
-               u'quyida, «Yoʻnalishlar» boʻlimida — u qiziqishlaringizga va '
+               u'quyida, «Yoʻnalishlar» boʻlimida, u qiziqishlaringizga va '
                u'baholaringizga ham qaraydi.')
 
 AREA_TITLES = {
@@ -118,7 +118,7 @@ LIFE = {
     u'Janjal chiqqanda ovozingizni koʻtarmaysiz. Koʻpincha vaziyatni yumshatadigan '
     u'birinchi odam aynan siz boʻlasiz.'),
    (u'Sirdosh',
-    u'Aka-ukangiz yoki opa-singlingiz muammosini birinchi boʻlib sizga aytadi — '
+    u'Aka-ukangiz yoki opa-singlingiz muammosini birinchi boʻlib sizga aytadi, '
     u'chunki siz uni kattalarga yetkazmasligingizni biladi.'),
    (u'Soʻralmagan yordam',
     u'Kimningdir charchaganini koʻrsangiz, iltimos qilinishini kutmaysiz. '
@@ -135,7 +135,7 @@ LIFE = {
     u'soʻramay qoʻyasiz.'),
    (u'Mavzuni oʻzgartirish',
     u'Kelishmovchilikni hal qilish oʻrniga gapni boshqa yoqqa burasiz. Muammo '
-    u'yoʻqolmaydi — yigʻilib boradi.'),
+    u'yoʻqolmaydi, yigʻilib boradi.'),
    (u'Hammaning yukini olish',
     u'«Menga osonroq» deb uy ishlarini oʻzingiz qilib qoʻyasiz, keyin charchoq '
     u'sababini tushunmaysiz.'),
@@ -158,14 +158,14 @@ LIFE = {
     u'Atrofdagilar hayajonlanganda siz odatdagi tezligingizda ishlaysiz. Bilganingizni '
     u'unutib qoʻymaysiz.'),
    (u'Oʻqituvchi bilan munosabat',
-    u'Qarshilik koʻrsatmaysiz va vaʼdangizda turasiz — shuning uchun masʼuliyatli '
+    u'Qarshilik koʻrsatmaysiz va vaʼdangizda turasiz, shuning uchun masʼuliyatli '
     u'topshiriq koʻpincha sizga beriladi.'),
    (u'Sekin, lekin uzluksiz',
     u'Bir kechada emas, har kuni ozgina. Yil oxirida natija shu tarzda toʻplanadi.'),
   ],
   'weak': [
    (u'Savol bermaslik',
-    u'Tushunmagan joyingizni soʻrashdan tortinasiz — «sinfni ushlab qolaman» deb '
+    u'Tushunmagan joyingizni soʻrashdan tortinasiz, «sinfni ushlab qolaman» deb '
     u'oʻylaysiz. Keyin oʻsha mavzu qiyinlashib qoladi.'),
    (u'Oʻzini past baholash',
     u'Ishingizni sinfdoshingiznikidan yomonroq deb hisoblaysiz. Koʻpincha bu '
@@ -183,7 +183,7 @@ LIFE = {
  'friends': {
   'strong': [
    (u'Haqiqiy tinglovchi',
-    u'Javobingizni tayyorlab turmaysiz — chinakam eshitasiz. Buni odamlar darrov '
+    u'Javobingizni tayyorlab turmaysiz, chinakam eshitasiz. Buni odamlar darrov '
     u'sezadi.'),
    (u'Sir sizda qoladi',
     u'Sizga aytilgan gap boshqa hech kimga yetib bormaydi. Doʻstlaringiz buni '
@@ -199,7 +199,7 @@ LIFE = {
   ],
   'weak': [
    (u'Foydalanilib qolish',
-    u'Yaxshiligingizni bilgan odam undan foydalanishi mumkin — va siz buni '
+    u'Yaxshiligingizni bilgan odam undan foydalanishi mumkin va siz buni '
     u'koʻpincha oxirgi boʻlib sezasiz.'),
    (u'Chegara yoʻqligi',
     u'Yarim tunda ham telefoningiz ochiq. Oʻzingizga dam beradigan vaqt qolmaydi.'),
@@ -242,7 +242,7 @@ LIFE = {
 'ES|E': {
  'family': {
   'strong': [
-   (u'Bosim ostida qaror', u'Uyda kutilmagan muammo chiqsa, hamma sizga qaraydi — '
+   (u'Bosim ostida qaror', u'Uyda kutilmagan muammo chiqsa, hamma sizga qaraydi, '
     u'chunki siz sarosimaga tushmaysiz.'),
    (u'Mehmon kutish', u'Uyga odam kelganda suhbatni siz boshlaysiz va hech kim '
     u'chetda qolmaydi.'),
@@ -257,7 +257,7 @@ LIFE = {
     u'qoldiradi. Yaqinlaringiz sizdan koʻproq hissiyot kutadi.'),
    (u'Oʻz tashvishini aytmaslik', u'Hammaning muammosini eshitasiz, oʻzingiznikini '
     u'hech kimga aytmaysiz.'),
-   (u'Soʻralmasdan boshqarish', u'Vaziyatni tez oʻz qoʻlingizga olasiz — baʼzan '
+   (u'Soʻralmasdan boshqarish', u'Vaziyatni tez oʻz qoʻlingizga olasiz, baʼzan '
     u'oilangiz shunchaki tinglashingizni kutayotgan boʻladi.'),
    (u'«Sen bardoshlisan» yorligʻi', u'Sizdan hech kim holingizni soʻramay qoʻyadi, '
     u'chunki doim yaxshi koʻrinasiz.'),
@@ -271,7 +271,7 @@ LIFE = {
     u'bu eng qiyin narsa.'),
    (u'Guruh yetakchisi', u'Jamoa adashib qolganda yoʻnalishni koʻrsatadigan odam '
     u'siz boʻlasiz.'),
-   (u'Imtihonda barqarorlik', u'Bilganingizni hayajondan unutmaysiz — bu bilimdan '
+   (u'Imtihonda barqarorlik', u'Bilganingizni hayajondan unutmaysiz, bu bilimdan '
     u'kam ahamiyatli emas.'),
    (u'Nizoni hal qilish', u'Sinfdoshlar urishib qolsa, oʻqituvchi sizni chaqiradi.'),
    (u'Oʻqituvchilar ishonchi', u'Masʼuliyatli topshiriq koʻpincha sizga beriladi.'),
@@ -306,14 +306,14 @@ LIFE = {
     u'yaqin doʻst kam.'),
    (u'Yordam soʻrash qiyinligi', u'Doim beruvchi tomon boʻlasiz, olishni bilmaysiz.'),
    (u'Boshqarib yuborish', u'Doʻstona uchrashuv ham sizning rejangiz boʻyicha '
-    u'oʻtadi — baʼzan boshqalar ham tanlashni xohlaydi.'),
+    u'oʻtadi, baʼzan boshqalar ham tanlashni xohlaydi.'),
    (u'Hissiy suhbatni qisqartirish', u'Doʻstingiz dardini aytganda tezda yechim '
     u'taklif qilasiz, u esa faqat eshitilishini kutgandi.'),
   ],
  },
  'careers': [
   (u'Boshqaruv va menejment', {'E': .45, 'ES': .45, 'C': .10},
-   u'Bosim ostida qaror qabul qilish va odamlarni ergashtirish — bu ishning '
+   u'Bosim ostida qaror qabul qilish va odamlarni ergashtirish bu ishning '
    u'kundalik mazmuni. Rejalashtirish tomonini alohida oʻrganishingiz kerak.'),
   (u'Huquq va advokatura', {'ES': .40, 'E': .35, 'C': .25},
    u'Qarshi tomon ovozini koʻtarganda ham siz koʻtarmaysiz. Sud zalida bu '
@@ -332,7 +332,7 @@ LIFE = {
 'E|C': {
  'family': {
   'strong': [
-   (u'Uydagi tadbir sizdan', u'Tugʻilgan kun yoki mehmon — reja, roʻyxat va '
+   (u'Uydagi tadbir sizdan', u'Tugʻilgan kun yoki mehmon, reja, roʻyxat va '
     u'vaqt jadvali sizda tayyor.'),
    (u'Aytilgan ish bajariladi', u'Onangiz soʻragan narsani esdan chiqarmaysiz.'),
    (u'Boshqalarni harakatga solish', u'Uyda hamma yotgan kunda ham siz turib '
@@ -346,7 +346,7 @@ LIFE = {
     u'yuborasiz. Uyda bu ranjitadi.'),
    (u'Sekinroqlarga sabrsizlik', u'Ukangiz sekin qilayotgan ishni tortib olib '
     u'oʻzingiz bajarasiz.'),
-   (u'Fikr soʻramaslik', u'Rejani tuzib boʻlgach eʼlon qilasiz — oilangiz '
+   (u'Fikr soʻramaslik', u'Rejani tuzib boʻlgach eʼlon qilasiz, oilangiz '
     u'muhokamaga ulgurmaydi.'),
    (u'Dam olishni bilmaslik', u'Bekor oʻtirgan kuningiz oʻzingizni aybdor '
     u'his qilasiz.'),
@@ -393,7 +393,7 @@ LIFE = {
     u'variantingiz gʻolib chiqadi.'),
    (u'Qatʼiyatsizlarga sabrsizlik', u'«Bilmadim» deb turgan doʻstingizga '
     u'jahlingiz chiqadi.'),
-   (u'Chuqur suhbatga vaqt yoʻq', u'Doim harakatdasiz — jimgina oʻtirib '
+   (u'Chuqur suhbatga vaqt yoʻq', u'Doim harakatdasiz, jimgina oʻtirib '
     u'gaplashish siyrak boʻladi.'),
    (u'Faqat ish boʻyicha yaqinlik', u'Doʻstlik ham loyihaga oʻxshab qoladi.'),
    (u'Yordamni qabul qilmaslik', u'«Oʻzim uddalayman» deysiz, hatto uddalay '
@@ -402,7 +402,7 @@ LIFE = {
  },
  'careers': [
   (u'Loyiha boshqaruvi', {'C': .45, 'E': .45, 'ES': .10},
-   u'Rejani odamlarga taqsimlash va muddatni ushlab turish — sizda tabiiy.'),
+   u'Rejani odamlarga taqsimlash va muddatni ushlab turish sizda tabiiy.'),
   (u'Tadbirkorlik va biznes', {'E': .45, 'C': .40, 'O': .15},
    u'Gapdan ishga tez oʻtasiz va boshqalarni ham qoʻzgʻata olasiz. Yangi '
    u'gʻoya izlash tomonini rivojlantirishingiz kerak.'),
@@ -559,7 +559,7 @@ LIFE = {
   (u'Media, blogerlik, jurnalistika', {'E': .45, 'O': .40, 'ES': .15},
    u'Kamera yoki mikrofon oldida tabiiy qolasiz.'),
   (u'Marketing va reklama', {'E': .40, 'O': .40, 'C': .20},
-   u'Yangi gʻoyani odamlarga yuqtirish — bu kasbning butun mazmuni.'),
+   u'Yangi gʻoyani odamlarga yuqtirish bu kasbning butun mazmuni.'),
   (u'Aktyorlik va sahna', {'E': .40, 'O': .30, 'ES': .30},
    u'Odamlar oldida oʻzingizni erkin his qilasiz.'),
   (u'Ijodiy fanlar oʻqituvchisi', {'E': .35, 'A': .35, 'O': .30},
@@ -595,7 +595,7 @@ LIFE = {
  },
  'school': {
   'strong': [
-   (u'Loyiha oxirigacha', u'Boshlagan ishingizni tugatasiz — sinfda bu kam.'),
+   (u'Loyiha oxirigacha', u'Boshlagan ishingizni tugatasiz, sinfda bu kam.'),
    (u'Original yechim', u'Hammadan boshqacha, lekin ishlaydigan yoʻl topasiz.'),
    (u'Aniq rejalashtirish', u'Katta topshiriqni haftalarga boʻlasiz.'),
    (u'Yuqori sifat', u'Sizning ishingiz koʻrinishidan ham puxta.'),
@@ -634,7 +634,7 @@ LIFE = {
   (u'Muhandislik va texnika', {'O': .45, 'C': .45, 'ES': .10},
    u'Yangi yechim topasiz va uni chizmagacha, hisobgacha olib borasiz.'),
   (u'Meʼmorchilik', {'O': .40, 'C': .40, 'E': .20},
-   u'Gʻoya va oʻlchov bir odamda birga boʻlishi shart — bu siz.'),
+   u'Gʻoya va oʻlchov bir odamda birga boʻlishi shart, bu siz.'),
   (u'Dasturlash va tizim loyihalash', {'O': .40, 'C': .40, 'ES': .20},
    u'Murakkab masalani aniq qadamlarga boʻlish sizga tabiiy.'),
   (u'Ilmiy tadqiqot', {'O': .45, 'C': .35, 'ES': .20},
@@ -710,11 +710,11 @@ LIFE = {
  },
  'careers': [
   (u'Oʻqituvchilik va tarbiya', {'E': .45, 'A': .45, 'C': .10},
-   u'Sinfni birlashtirish va har bir bolani koʻrish — sizning kuchingiz.'),
+   u'Sinfni birlashtirish va har bir bolani koʻrish sizning kuchingiz.'),
   (u'HR va jamoa bilan ishlash', {'E': .45, 'A': .40, 'ES': .15},
    u'Odamlar orasidagi keskinlikni sezasiz va hal qilasiz.'),
   (u'Jurnalistika va muloqot', {'E': .45, 'O': .30, 'A': .25},
-   u'Notanish odam sizga ochiladi — bu suhbat olishning yarmi.'),
+   u'Notanish odam sizga ochiladi, bu suhbat olishning yarmi.'),
   (u'Mehmondoʻstlik va turizm', {'E': .40, 'A': .35, 'C': .25},
    u'Odamni qulay his qildirish sizda oʻz-oʻzidan chiqadi.'),
   (u'Jamoat tashkilotlari va volontyorlik', {'A': .35, 'E': .30, 'O': .20, 'C': .15},
@@ -788,9 +788,9 @@ LIFE = {
   (u'Ijtimoiy ish va nodavlat tashkilotlar', {'A': .45, 'O': .35, 'C': .20},
    u'Muammoni koʻrganingizda avval odamlar haqida oʻylaysiz.'),
   (u'Sanʼat va art-terapiya', {'O': .45, 'A': .35, 'E': .20},
-   u'Ijod orqali odamga yordam berish — ikkala kuchingiz birga ishlaydi.'),
+   u'Ijod orqali odamga yordam berish: ikkala kuchingiz birga ishlaydi.'),
   (u'Maxsus pedagogika', {'A': .40, 'C': .35, 'O': .25},
-   u'Har bolaga alohida yoʻl kerak — siz uni topa olasiz.'),
+   u'Har bolaga alohida yoʻl kerak, siz uni topa olasiz.'),
   (u'Adabiyot va tarjima', {'O': .40, 'A': .30, 'C': .30},
    u'Soʻz orqali odamning ichki dunyosini yetkazish sizga yaqin.'),
  ],
@@ -810,7 +810,7 @@ LIFE = {
    (u'Reja buzilganda', u'Kutilmagan oʻzgarish sizni boshqalardan koʻra '
     u'koʻproq bezovta qiladi, tashqaridan bilinmasa ham.'),
    (u'Hissiyotni aytmaslik', u'Sevgi va tashvishni soʻz bilan emas, ish bilan '
-    u'koʻrsatasiz — oilangiz buni har doim ham tushunmaydi.'),
+    u'koʻrsatasiz, oilangiz buni har doim ham tushunmaydi.'),
    (u'Dam olishni kechiktirish', u'«Avval ish» deb, hech qachon dam olmaysiz.'),
    (u'Qatʼiylik', u'Bir marta qaror qilgan narsangizni oʻzgartirish qiyin.'),
    (u'Yordam soʻramaslik', u'Ogʻir boʻlsa ham oʻzingiz koʻtarasiz.'),
@@ -820,7 +820,7 @@ LIFE = {
   'strong': [
    (u'Uzoq masofaga chidash', u'Uch oylik tayyorgarlik sizni qoʻrqitmaydi.'),
    (u'Imtihonda barqaror', u'Hayajon bilimingizni oʻchirmaydi.'),
-   (u'Jadval boʻyicha oʻqish', u'Har kuni ozgina — va yil oxirida natija koʻrinadi.'),
+   (u'Jadval boʻyicha oʻqish', u'Har kuni ozgina va yil oxirida natija koʻrinadi.'),
    (u'Ishonchli jamoadosh', u'Sizga topshirilgan qism albatta tayyor boʻladi.'),
    (u'Tartibli daftar', u'Yozganingizni istalgan vaqtda topasiz.'),
   ],
@@ -837,7 +837,7 @@ LIFE = {
  },
  'friends': {
   'strong': [
-   (u'Soʻzida turish', u'Aytgan vaqtingizda kelasiz — har safar.'),
+   (u'Soʻzida turish', u'Aytgan vaqtingizda kelasiz, har safar.'),
    (u'Sirni saqlash', u'Sizga aytilgan gap sizda qoladi.'),
    (u'Qiyinchilikda yoningizda', u'Doʻstingizga ogʻir kunda birinchi boʻlib '
     u'siz kelasiz.'),
@@ -859,7 +859,7 @@ LIFE = {
   (u'Muhandislik va qurilish', {'C': .50, 'ES': .40, 'O': .10},
    u'Uzoq muddatli, aniqlik talab qiladigan ish sizga toʻgʻri keladi.'),
   (u'Moliya va buxgalteriya', {'C': .55, 'ES': .30, 'A': .15},
-   u'Diqqat va barqarorlik — bu ishning ikki asosiy talabi.'),
+   u'Diqqat va barqarorlik bu ishning ikki asosiy talabi.'),
   (u'Tibbiyot va jarrohlik', {'ES': .40, 'C': .35, 'A': .25},
    u'Bosim ostida qoʻlingiz titramaydi va tartibga qatʼiy amal qilasiz.'),
   (u'Huquq va notariat', {'C': .40, 'E': .35, 'ES': .25},
@@ -900,7 +900,7 @@ LIFE = {
    (u'Jamoada ishonchli boʻgʻin', u'Sizning qismingiz albatta tayyor boʻladi.'),
   ],
   'weak': [
-   (u'Ortiqcha yuk', u'Guruhning ishini oxirida siz tugatasiz — har safar.'),
+   (u'Ortiqcha yuk', u'Guruhning ishini oxirida siz tugatasiz, har safar.'),
    (u'Oʻzini koʻrsatmaslik', u'Qilgan ishingizni boshqa birov oʻziniki qilib '
     u'aytsa ham indamaysiz.'),
    (u'Xato qilishdan qoʻrqish', u'Kimnidir umidsizlikka solishdan '
@@ -915,13 +915,13 @@ LIFE = {
    (u'Tayanch doʻst', u'Ogʻir kunda birinchi boʻlib sizga qoʻngʻiroq qilishadi.'),
    (u'Sir saqlash', u'Sizdan hech narsa chiqmaydi.'),
    (u'Eslab qolish', u'Doʻstingizning imtihon sanasini oʻzidan yaxshiroq bilasiz.'),
-   (u'Xolis maslahat', u'Yoqimli emas, foydali gapni aytasiz — lekin yumshoq.'),
+   (u'Xolis maslahat', u'Yoqimli emas, foydali gapni aytasiz, lekin yumshoq.'),
    (u'Uzoq sodiqlik', u'Doʻstlikni birinchi boʻlib uzmaysiz.'),
   ],
   'weak': [
    (u'Foydalanilish', u'Yaxshiligingizni bilgan odam undan foydalanadi, siz '
     u'esa sezmaganga olasiz.'),
-   (u'Chegara yoʻqligi', u'Har qanday vaqtda yordamga tayyorsiz — oʻzingizga '
+   (u'Chegara yoʻqligi', u'Har qanday vaqtda yordamga tayyorsiz, oʻzingizga '
     u'zarar boʻlsa ham.'),
    (u'Xafalikni yigʻish', u'Ranjishlarni ichingizda toʻplaysiz, keyin birdan '
     u'uzoqlashasiz.'),
@@ -932,11 +932,11 @@ LIFE = {
  },
  'careers': [
   (u'Hamshiralik va tibbiy yordam', {'A': .45, 'C': .45, 'ES': .10},
-   u'Gʻamxoʻrlik va aniqlik bir vaqtda kerak — ikkalasi ham sizda bor.'),
+   u'Gʻamxoʻrlik va aniqlik bir vaqtda kerak, ikkalasi ham sizda bor.'),
   (u'Buxgalteriya va boshqaruv hisobi', {'C': .55, 'A': .30, 'ES': .15},
    u'Sinchkovlik va halollik bu ishning asosi.'),
   (u'Boshlangʻich sinf oʻqituvchisi', {'A': .40, 'E': .30, 'C': .30},
-   u'Sabr va izchillik — kichik bolalar bilan ishlashning butun mazmuni.'),
+   u'Sabr va izchillik kichik bolalar bilan ishlashning butun mazmuni.'),
   (u'Kutubxona, arxiv, hujjatchilik', {'C': .40, 'A': .35, 'O': .25},
    u'Tartib va ishonch talab qilinadigan sokin ish sizga yaqin.'),
   (u'Ijtimoiy himoya va gʻamxoʻrlik xizmatlari', {'A': .40, 'C': .25, 'ES': .20, 'E': .15},
@@ -1028,12 +1028,12 @@ def bands_for(key, lang):
 # ---------------------------------------------------------------------------
 # The result screen's single overall strengths / watch-outs block.
 #
-# The archetype pages still show all three areas — a visitor browsing /types/
+# The archetype pages still show all three areas, a visitor browsing /types/
 # came to read about a character and has the patience for thirty bullets. The
 # result screen does not: a student who has just answered ninety questions met
 # «Oilada», «Maktabda» and «Munosabatlarda» stacked one after another, each with
 # five strengths and five watch-outs, and the page stopped being read long
-# before «Yoʻnalishlar» — which is the part they actually came for.
+# before «Yoʻnalishlar», which is the part they actually came for.
 #
 # So this picks four of each. The selection is (area, index) pairs rather than
 # text, which is the same trick careers_for() uses: the Russian and English
@@ -1045,7 +1045,7 @@ def bands_for(key, lang):
 # settings tell a reader less than four that name four different things, so
 # near-duplicates lose ("can't say no" and "no boundaries" are one item), and
 # each set draws on at least two areas. School-side bullets are favoured on
-# ties — the reader is fourteen and at school.
+# ties: the reader is fourteen and at school.
 OVERALL = {
     'ES|A': {'strong': [('friends', 0), ('school', 0), ('family', 2), ('school', 2)],
              'weak':   [('family', 4), ('school', 0), ('school', 1), ('friends', 2)]},

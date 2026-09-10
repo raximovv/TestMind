@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""Russian text for the Work Values module. TEXT ONLY — the dimension each item
+u"""Russian text for the Work Values module. TEXT ONLY: the dimension each item
 belongs to lives in values_content.py and is paired on BY POSITION, so the order
 here is meaning, not presentation."""
 
@@ -37,6 +37,6 @@ ITEMS = [
     u'Мне важно, чтобы моя работа приносила пользу обществу.',
 ]
 
-INTRO_H = u'Теперь — ваша будущая работа'
+INTRO_H = u'Теперь ваша будущая работа'
 INTRO_P = (u'Последняя часть. Спросим, что для вас важно в будущей работе. '
-           u'Это не про способности — только про то, чего вы хотите сами.')
+           u'Это не про способности, только про то, чего вы хотите сами.')

@@ -1,4 +1,4 @@
-// TestMind — transparent career and major recommendation.
+// Naseeb Mind: transparent career and major recommendation.
 //
 // No model, no AI, no learned weights. Every number here can be traced by hand,
 // which matters more than sophistication: a school will be asked "why did it say

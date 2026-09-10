@@ -26,7 +26,7 @@ LABELS = {
     'result_career': u'Where these qualities tend to be useful',
     'result_note': (u'This is not a recommendation and not a ranking: just areas '
                     u'where these qualities are valued. Your actual suggestions '
-                    u'are below, under “Directions” — that section '
+                    u'are below, under “Directions”, that section '
                     u'also looks at your interests and your marks.'),
     'areas': {
         'family':  (u'At home',          u'At home and with the people close to you'),
@@ -113,8 +113,8 @@ LIFE = {
   ],
   'weak': [
    (u"Hiding what you need", u"Saying \u201cI do not need anything\u201d often enough, you stop asking even when you really do."),
-   (u"Changing the subject", u"Instead of settling a disagreement you steer the talk elsewhere. It does not go away \u2014 it collects."),
-   (u"Carrying everyone else", u"\u201cIt is easier if I do it\u201d \u2014 so you do the housework yourself, and then cannot work out why you are tired."),
+   (u"Changing the subject", u"Instead of settling a disagreement you steer the talk elsewhere. It does not go away: it collects."),
+   (u"Carrying everyone else", u"\u201cIt is easier if I do it\u201d, so you do the housework yourself, and then cannot work out why you are tired."),
    (u"Not showing you are hurt", u"When something stings you go quiet. Your family does not know why, and it looks as though they have missed something."),
    (u"Hard to say no", u"You do what is asked even when it breaks your own plans. Afterwards it feels tight, because no time was left for you."),
   ],
@@ -137,14 +137,14 @@ LIFE = {
  },
  'friends': {
   'strong': [
-   (u"A real listener", u"You are not preparing your answer \u2014 you are actually listening. People notice at once."),
+   (u"A real listener", u"You are not preparing your answer; you are actually listening. People notice at once."),
    (u"A secret stays with you", u"What is said to you goes no further. Your friends have tested that."),
    (u"You make peace", u"When two friends fall out, the one who talks to both is usually you."),
    (u"Friendship that lasts", u"Your friendships run for years. You are not the one who lets them go."),
    (u"No judgement", u"Even someone who got it wrong is not afraid to tell you. That is why they tell you."),
   ],
   'weak': [
-   (u"Being taken advantage of", u"Someone who knows how kind you are can use it \u2014 and you are usually the last to notice."),
+   (u"Being taken advantage of", u"Someone who knows how kind you are can use it, and you are usually the last to notice."),
    (u"No boundary", u"Your phone is open at midnight too. No time is left over for you."),
    (u"Storing up hurt", u"You say nothing about what stung, then suddenly pull away. Your friend does not know why."),
    (u"Wanting to please everyone", u"You keep your view to yourself and agree with the majority. Your view was needed too."),
@@ -173,7 +173,7 @@ LIFE = {
   'weak': [
    (u"Looking as if you do not care", u"Your calm leaves the impression that it makes no difference to you. The people close to you want more feeling."),
    (u"Silent about your own worries", u"You hear out everyone else's problem and tell nobody yours."),
-   (u"Taking over unasked", u"You take a situation in hand quickly \u2014 and sometimes your family only wanted you to listen."),
+   (u"Taking over unasked", u"You take a situation in hand quickly, and sometimes your family only wanted you to listen."),
    (u"The \u201cyou are strong\u201d label", u"People stop asking how you are, because you always look fine."),
    (u"Avoiding the emotional talk", u"Where there are tears you are uncomfortable, and you turn the subject to something practical."),
   ],
@@ -182,12 +182,12 @@ LIFE = {
   'strong': [
    (u"Speaking in front of the class", u"Your voice does not shake in a presentation. For most people that is the hardest thing."),
    (u"Leading the group", u"When the team has lost its way, you are the one who points somewhere."),
-   (u"Steady in an exam", u"You do not lose what you knew to nerves \u2014 that is worth no less than the knowledge."),
+   (u"Steady in an exam", u"You do not lose what you knew to nerves, and that is worth no less than the knowledge."),
    (u"Settling a dispute", u"If classmates fall out, the teacher calls you."),
    (u"Teachers rely on you", u"The responsible job often comes to you."),
   ],
   'weak': [
-   (u"Absorbing the group's work", u"\u201cIt will be faster\u201d \u2014 so you do all of it. The team learns nothing."),
+   (u"Absorbing the group's work", u"\u201cIt will be faster\u201d, so you do all of it. The team learns nothing."),
    (u"Not asking for help", u"Admitting you did not understand feels like losing the lead."),
    (u"Drowning out the quiet ones", u"When you speak, the shy classmate does not speak at all."),
    (u"Bored in a slow lesson", u"When a topic is repeated your attention fades and you miss the easy part."),
@@ -206,7 +206,7 @@ LIFE = {
    (u"Never showing the hard part", u"Your friends cannot picture you struggling with anything."),
    (u"Everyone at the same distance", u"You are on good terms with many people and close to very few."),
    (u"Asking is difficult", u"You are always the one who gives, and you do not know how to take."),
-   (u"Taking charge", u"Even meeting friends runs to your plan \u2014 and sometimes other people want to choose."),
+   (u"Taking charge", u"Even meeting friends runs to your plan, and sometimes other people want to choose."),
    (u"Cutting the feelings short", u"A friend tells you what is wrong and you offer a solution straight away, when they wanted to be heard."),
   ],
  },
@@ -224,16 +224,16 @@ LIFE = {
 'E|C': {
  'family': {
   'strong': [
-   (u'The party runs on you', u'A birthday or guests coming over — the plan, the list and the timing are already ready in your head.'),
+   (u'The party runs on you', u'A birthday or guests coming over: the plan, the list and the timing are already ready in your head.'),
    (u'What you are asked gets done', u'You do not forget the thing your mother asked you for.'),
-   (u'You get the house moving', u'On a day when everyone at home is lying around, you get up and start — and it spreads.'),
+   (u'You get the house moving', u'On a day when everyone at home is lying around, you get up and start, and it spreads.'),
    (u'You think ahead', u'You buy the thing before it runs out.'),
    (u'You break big jobs down', u'Spring cleaning at your house does not happen in one day; it happens to a plan.'),
   ],
   'weak': [
    (u'The order voice', u'When you are in a hurry it comes out as an instruction, not a request. At home that stings.'),
    (u'Impatience with slower people', u'You take the job your younger brother is doing slowly and do it yourself.'),
-   (u'You do not ask', u'You announce the plan once it is finished — your family never gets to discuss it.'),
+   (u'You do not ask', u'You announce the plan once it is finished, and your family never gets to discuss it.'),
    (u'You cannot rest', u'On a day you did nothing, you feel guilty.'),
    (u'Mess gets to you', u'Other people\u2019s untidiness bothers you more than it needs to.'),
   ],
@@ -247,7 +247,7 @@ LIFE = {
    (u'Talk turns into work', u'Your plan does not stay on paper.'),
   ],
   'weak': [
-   (u'You take it all on', u'Because you do not trust it will get done, you take the team\u2019s work too — and then you are worn out.'),
+   (u'You take it all on', u'Because you do not trust it will get done, you take the team\u2019s work too, and then you are worn out.'),
    (u'You miss the better idea', u'Your plan is already made, so a better suggestion goes past you.'),
    (u'A broken plan ruins the day', u'When the timetable changes without warning, your mood drops.'),
    (u'Too much at once', u'You sign up for three clubs and end up with time for none of them.'),
@@ -259,19 +259,19 @@ LIFE = {
    (u'The plan comes from you', u'You are the one who answers “so where are we going?”'),
    (u'You show up on time', u'You do not run late, and your friends count on it.'),
    (u'You bring the energy', u'The group picks up when you walk in.'),
-   (u'Practical help', u'Instead of sympathy you say what to do — and then help do it.'),
+   (u'Practical help', u'Instead of sympathy you say what to do, and then help do it.'),
    (u'New people', u'Your circle widens quickly.'),
   ],
   'weak': [
    (u'Your plan wins', u'Even when your friends want something else, your version is the one that happens.'),
    (u'Impatience with the undecided', u'The friend who keeps saying “I don\u2019t mind\u201d makes you snap.'),
-   (u'No time for the long talk', u'You are always moving — just sitting and talking happens rarely.'),
+   (u'No time for the long talk', u'You are always moving, so just sitting and talking happens rarely.'),
    (u'Closeness through tasks', u'Friendship starts to look like another project.'),
    (u'You will not be helped', u'You say “I have got it” even when you have not.'),
   ],
  },
  'careers': [
-  (u'Project management', u'Splitting a plan across people and holding a deadline — that is already how you work.'),
+  (u'Project management', u'Splitting a plan across people and holding a deadline: that is already how you work.'),
   (u'Business and entrepreneurship', u'You move from talk to action fast and can pull others with you. The idea-finding side is what you would need to build.'),
   (u'Events and logistics', u'Holding a hundred small details at once does not tire you.'),
   (u'Sales and client work', u'Starting a conversation with a stranger and carrying an agreement through to the end.'),
@@ -284,7 +284,7 @@ LIFE = {
  'family': {
   'strong': [
    (u'Change does not shake you', u'Moving house or starting a new school does not hit you the way it hits other people.'),
-   (u'You bring the new thing home', u'The book, the dish or the idea nobody in the family had heard of — you are the one who found it.'),
+   (u'You bring the new thing home', u'The book, the dish or the idea nobody in the family had heard of: you are the one who found it.'),
    (u'You ask calmly', u'You are not shy about asking an adult “why is it like that?”, and you do not turn it into an argument.'),
    (u'No panic', u'Even when something is wrong at home, your mood does not fall through the floor.'),
    (u'Curious about your family\u2019s past', u'You genuinely want to hear your grandfather\u2019s stories.'),
@@ -359,7 +359,7 @@ LIFE = {
  },
  'school': {
   'strong': [
-   (u'You finish the project', u'You finish what you started — in a classroom that is rare.'),
+   (u'You finish the project', u'You finish what you started, and in a classroom that is rare.'),
    (u'Your own solution', u'You find a route unlike anyone else’s that still works.'),
    (u'Precise planning', u'You split a big assignment across weeks.'),
    (u'High quality', u'Your work looks solid before anyone has read a line of it.'),
@@ -391,7 +391,7 @@ LIFE = {
  },
  'careers': [
   (u'Engineering and technology', u'You find the new solution and carry it all the way to the drawing and the numbers.'),
-  (u'Architecture', u'Idea and exact measurement have to live in the same person — that is you.'),
+  (u'Architecture', u'Idea and exact measurement have to live in the same person, and that is you.'),
   (u'Programming and systems design', u'Breaking a complex problem into precise steps is natural to you.'),
   (u'Scientific research', u'Long work whose result arrives late does not frighten you.'),
   (u'Product and project design', u'You turn an idea into a schedule. Explaining it to a team is the side you would need to build.'),
@@ -450,7 +450,7 @@ LIFE = {
   ],
  },
  'careers': [
-  (u'Teaching and education', u'Holding a class together and seeing every child in it — that is your strength.'),
+  (u'Teaching and education', u'Holding a class together and seeing every child in it: that is your strength.'),
   (u'HR and people management', u'You feel the tension between people, and you take it out of the room.'),
   (u'Journalism and communications', u'A stranger opens up to you, and that is half of an interview.'),
   (u'Hospitality and tourism', u'Making a person comfortable comes out of you without effort.'),
@@ -494,7 +494,7 @@ LIFE = {
  },
  'friends': {
   'strong': [
-   (u'The deep conversation', u'Small talk does not hold you — you ask about the thing that matters.'),
+   (u'The deep conversation', u'Small talk does not hold you, so you ask about the thing that matters.'),
    (u'You take people as they are', u'A friend tells you even the thing they are most ashamed of.'),
    (u'You pick up on it', u'You hear the mood in someone’s voice.'),
    (u'A friendship of its own kind', u'Your friendship does not look like anybody else’s.'),
@@ -503,7 +503,7 @@ LIFE = {
   'weak': [
    (u'You take on the hurt', u'Your friend’s problem torments you more than it torments them.'),
    (u'You idealise people', u'You see someone as flawless, and when the truth shows, the disappointment is heavy.'),
-   (u'You drift away without saying', u'When you are hurt you do not explain — you quietly disappear.'),
+   (u'You drift away without saying', u'When you are hurt you do not explain; you quietly disappear.'),
    (u'No boundary', u'For a friend you give your time away completely.'),
    (u'You avoid the conflict', u'Rather than say what the problem is, you let the friendship cool.'),
   ],
@@ -511,7 +511,7 @@ LIFE = {
  'careers': [
   (u'Psychology and therapy', u'Understanding a person and looking for a new approach are both needed in the same place here.'),
   (u'Social work and NGOs', u'When you see a problem, the people inside it are what you think about first.'),
-  (u'Art and art therapy', u'Helping someone through creative work — both of your strengths working at once.'),
+  (u'Art and art therapy', u'Helping someone through creative work: both of your strengths working at once.'),
   (u'Special-needs teaching', u'Every child needs their own route, and you are able to find it.'),
   (u'Literature and translation', u'Carrying a person’s inner world across in words is close to you.'),
  ],
@@ -530,8 +530,8 @@ LIFE = {
   ],
   'weak': [
    (u'When the plan breaks', u'An unexpected change unsettles you more than it does other people, even when none of it shows.'),
-   (u'Doing instead of saying', u'You show love and worry by doing things rather than saying them — and your family does not always read it that way.'),
-   (u'Rest keeps getting postponed', u'“Work first” — and the rest never arrives.'),
+   (u'Doing instead of saying', u'You show love and worry by doing things rather than saying them, and your family does not always read it that way.'),
+   (u'Rest keeps getting postponed', u'“Work first”, and the rest never arrives.'),
    (u'Firmness', u'Changing a decision you have already made is hard for you.'),
    (u'You carry it alone', u'Even when it is heavy, you pick it up yourself.'),
   ],
@@ -540,7 +540,7 @@ LIFE = {
   'strong': [
    (u'You last the distance', u'Three months of preparation does not frighten you.'),
    (u'Steady in the exam', u'Nerves do not wipe out what you know.'),
-   (u'You study to a schedule', u'A little every day — and by the end of the year it shows.'),
+   (u'You study to a schedule', u'A little every day, and by the end of the year it shows.'),
    (u'A teammate who can be relied on', u'The part given to you will be finished, without fail.'),
    (u'An orderly notebook', u'You can find what you wrote whenever you need it.'),
   ],
@@ -554,7 +554,7 @@ LIFE = {
  },
  'friends': {
   'strong': [
-   (u'You are where you said you would be', u'You arrive at the time you named — every time.'),
+   (u'You are where you said you would be', u'You arrive at the time you named, every time.'),
    (u'What you are told stays with you', u'Nothing that was trusted to you travels further.'),
    (u'There on the hard day', u'You are the first to reach a friend on their hard day.'),
    (u'Friendships that last', u'Your friend from childhood is still your friend.'),
@@ -604,7 +604,7 @@ LIFE = {
    (u'The dependable link in a team', u'Your part will be ready, without fail.'),
   ],
   'weak': [
-   (u'The extra load', u'The group’s work gets finished by you at the end — every time.'),
+   (u'The extra load', u'The group’s work gets finished by you at the end, every time.'),
    (u'You do not put yourself forward', u'Even when somebody presents your work as their own, you say nothing.'),
    (u'Afraid of getting it wrong', u'You are afraid of letting somebody down, so you do not take the risk.'),
    (u'The question stays unasked', u'Not wanting to take up time, you leave what you did not understand alone.'),
@@ -616,19 +616,19 @@ LIFE = {
    (u'The friend they lean on', u'On a hard day, you are the first person they call.'),
    (u'Nothing leaks', u'Whatever is trusted to you goes no further.'),
    (u'You hold the dates', u'You know when your friend’s exam is better than they do.'),
-   (u'Honest advice', u'You say the useful thing rather than the pleasant one — but you say it gently.'),
+   (u'Honest advice', u'You say the useful thing rather than the pleasant one, but you say it gently.'),
    (u'Long loyalty', u'You are never the one who ends a friendship first.'),
   ],
   'weak': [
    (u'Your kindness gets used', u'Someone who knows how kind you are makes use of it, and you act as though you had not noticed.'),
-   (u'Ready at any hour', u'You will come and help whenever you are asked — even when it costs you.'),
+   (u'Ready at any hour', u'You will come and help whenever you are asked, even when it costs you.'),
    (u'The hurt stays inside', u'You collect the slights within you, and then pull away all at once.'),
    (u'You do not mention your own trouble', u'Your friends think everything is always fine with you.'),
    (u'You agree to what does not suit you', u'Even an invitation that is wrong for you gets a yes.'),
   ],
  },
  'careers': [
-  (u'Nursing and patient care', u'Care and precision are needed at the same time — you have both.'),
+  (u'Nursing and patient care', u'Care and precision are needed at the same time, and you have both.'),
   (u'Accounting and management accounts', u'Thoroughness and honesty are what this work is built on.'),
   (u'Primary school teaching', u'Patience and consistency are the whole of working with small children.'),
   (u'Libraries, archives and records', u'Quiet work that asks for order and for being trusted is close to you.'),

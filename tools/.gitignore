@@ -4,5 +4,8 @@ __pycache__/
 *.pyc
 # screenshot / scratch artifacts a test run might drop
 *.png
+# except the delivered logo artwork: build_logo.py cuts every icon on the
+# site out of it, so without this the assets can never be rebuilt.
+!logo-source.png
 # generated intermediate for the PDF guide (the PDF itself is committed)
 build/

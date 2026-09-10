@@ -1,4 +1,4 @@
-// TestMind — shared page scripts. Requires characters.js to be loaded first.
+// Naseeb Mind: shared page scripts. Requires characters.js to be loaded first.
 // ES5 string concat on purpose: plenty of school phones here still run an old
 // Android browser.
 
@@ -644,7 +644,7 @@ function mountPage(){
   // measured against that height.
   mountLangSpot();
 }
-// This file is loaded at the bottom of <body>, so the DOM is already parsed — but
+// This file is loaded at the bottom of <body>, so the DOM is already parsed, but
 // guard anyway, so nothing silently fails to render if the tag is ever moved to
 // <head> or given defer/async.
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountPage);

@@ -7,7 +7,7 @@
  * rather than applied half way.
  *
  * NOTE ON VALIDITY: a translation of the Uzbek instrument, not a separately
- * validated English one. Fine for self-reflection, which is what TestMind
+ * validated English one. Fine for self-reflection, which is what Naseeb Mind
  * offers; results in different languages are not strictly comparable.
  *
  * Written for Uzbek students who read English comfortably: plain wording, no
@@ -104,9 +104,9 @@ var TEST_EN = {
 
   steps: [
     {title: 'Take the test',
-     text: 'Be yourself and answer honestly. First about you, then your interests and what you want from work — 75–95 questions, about 14 minutes.'},
+     text: 'Be yourself and answer honestly. The six challenges can be completed in any order and across several sittings.'},
     {title: 'See your result',
-     text: 'One of the ten characters will be yours — with your strengths, right there on screen.'},
+     text: 'One of the ten characters will be yours, with your strengths, right there on screen.'},
     {title: 'Get your guide',
      text: 'If you like, leave an email at the end and we will send a detailed guide to your character.'}
   ],
@@ -116,12 +116,13 @@ var TEST_EN = {
     back:        'Back',
     next:        'Next',
     seeResult:   'See the result',
+    finishChallenge: 'Finish challenge',
     stepCount:   'Step %1 of %2',
     answerRest:  'Please answer the remaining questions.',
     topupNote:   'Two of your sides came out almost level. A few more questions will settle which of them is stronger.',
     guideLangNote: 'The guide is currently available in Uzbek only.',
     recH:        'Directions',
-    recSub:      'Based on your answers today. Not a verdict — a place to start looking.',
+    recSub:      'Based on your answers today. Not a verdict, just a place to start looking.',
     recAreas:    'Areas close to you',
     recMajors:   'Majors worth exploring',
     recCareers:  'Careers worth a look',
@@ -131,17 +132,17 @@ var TEST_EN = {
     edu_higher:  'university',
     edu_college: 'college / technical',
     edu_either:  'college or university',
-    whyLead:     '%1 — because:',
+    whyLead:     '%1, because:',
     whyInterest: 'your %1 and %2 interests are strong;',
     whyValue:    'and \'%1\' matters to you in a job.',
     recDisclaimer: 'This list is a starting point for exploring, not a prediction about your future. Interests and marks both change.',
     careerResH:  'Your interests',
-    careerResSub:'This shows which activities you enjoy — not what you are able to do.',
+    careerResSub:'This shows which activities you enjoy, not what you are able to do.',
     careerTop:   'Your strongest area for now is %1. Start looking there.',
-    careerTie:   'But %1 is almost as strong — look at that one too.',
+    careerTie:   'But %1 is almost as strong, so look at that one too.',
     careerCaveat:'Between 13 and 18 interests are still changing. This is a snapshot of today, not a choice for life.',
-    careerH:     'Now — your interests',
-    careerLede:  'The first part was about your personality. Now we ask which activities you enjoy. There are no right answers here — only whether you would like it or not.',
+    careerH:     'Now your interests',
+    careerLede:  'The first part was about your personality. Now we ask which activities you enjoy. There are no right answers here, only whether you would like it or not.',
     careerTopup: 'A few areas came out almost level. A few more questions will settle which of them is stronger.',
     lifeH:       'Your personality in brief',
     lifeSub:     'Which sides are strong, and which you could develop further.',
@@ -165,17 +166,17 @@ var TEST_EN = {
     copyFailed:  'Could not copy',
     sharePrint:  'Print',
     shareAgain:  'Start again',
-    shareMsg:    'I took the TestMind test. My result: "%1".',
+    shareMsg:    'I took the Naseeb Mind test. My result: "%1".',
     shareInvite: 'Try it yourself: https://%1/',
     capOr:       'or by email',
-    capNote:     'You do not need an email to download — it is only for sending the guide to your inbox. ' +
+    capNote:     'You do not need an email to download: it is only for sending the guide to your inbox. ' +
                  'Email is optional and is never given to anyone else. ' +
                  'If you are under 18, talk it over with a parent or a teacher.',
     capSentH:    'Your request has been sent',
     capFailed:   'Could not send. Check your internet connection and try again.',
     sending:     'Sending…',
     tnAgain:     'You also took this test on <b>%1</b>.',
-    tnSame:      '<p>All five of your qualities are almost the same. That is a result too — it means you know yourself well.</p>',
+    tnSame:      '<p>All five of your qualities are almost the same. That is a result too: it means you know yourself well.</p>',
     tnArch:      '<p class="tnarch">Back then your character was "%1". A change of character is not a mistake; it is a sign of growth.</p>',
     grew:        'has grown',
     mid:         'Middle',
@@ -191,6 +192,75 @@ var TEST_EN = {
     guideTg:     'Get it on Telegram',
     emailAria:   'Your email address',
     send:        'Send',
-    or:          'or'
+    or:          'or',
+
+    // ---- the six challenges ----
+    hubH:        'Six challenges',
+    hubSub:      'Each one is taken on its own, in any order, whenever you like. Your answers are saved.',
+    hubStart:    'Start',
+    hubResume:   'Continue',
+    hubRetake:   'Take it again',
+    hubDone:     'Finished',
+    hubOf:       '%1 of %2',
+    hubQuestions:'%1 questions',
+    hubCards:    '%1 cards',
+    hubPuzzles:  '%1 puzzles',
+    hubResult:   'See your full result',
+    hubLeft:     '%1 to go',
+    hubBack:     'Back to the challenges',
+    hubGreeting: 'Welcome',
+
+    chPersonality:  'Personality',
+    chPersonalityB: 'Fifty statements about how you usually are. There are no right answers and no better score.',
+    chInterests:    'Interests',
+    chInterestsB:   'Which kinds of work appeal to you. Not about ability, only about whether you would like it.',
+    chValues:       'What matters at work',
+    chValuesB:      'What you want from a future job.',
+    chReasoning:    'Problem solving',
+    chReasoningB:   'Twelve puzzles. Work out the rule running along the rows, then pick the tile that belongs in the empty corner. No words.',
+
+    // ---- account ----
+    authGateH:   'Start the challenges',
+    authH:       'Create an account',
+    authHIn:     'Sign in',
+    authSub:     'You do not have to take all six in one day. An account saves your answers so you can carry on later.',
+    authDialogSub:'Enter your email and a password of at least six characters.',
+    authClose:   'Close',
+    authWhy:     'Take it again in a year and you will see both results side by side. That is what the account is for.',
+    authHaveNo:  'No account yet? Create one',
+    authHaveYes: 'Already have an account? Sign in',
+    authSignIn:  'Sign in',
+    authSignUp:  'Create account',
+    authEmail:   'Email',
+    authPassword:'Password',
+    authWorking: 'One moment',
+    authSignOut: 'Sign out',
+    authConfirm: 'We sent you an email. Follow the link, then sign in here.',
+    authNoName:  'We do not ask for your name, phone number, or date of birth. The account needs only an email and password.',
+
+    errBadCredentials: 'That email and password do not match.',
+    errEmailTaken:     'That email already has an account. Sign in instead.',
+    errWeakPassword:   'That password is too short. Use at least six characters.',
+    errBadEmail:       'That email address does not look right.',
+    errTooMany:        'Too many attempts. Try again in a few minutes.',
+    errOffline:        'You appear to be offline. Reconnect and try again.',
+    errUnreachable:    'Could not reach the server. Try again.',
+    errSignedOut:      'Your session has ended. Sign in again.',
+    errFailed:         'Something went wrong. Try again.',
+
+    // ---- the card sort ----
+    sortLeft:    'Cards still to place',
+    sortHow:     'Pick a card, then tap the level you want it in. You can change your mind at any point.',
+    sortNeed:    'Place every card. Each level can contain as many cards as you think belong there.',
+    sortCount:   '%1 placed',
+    sortPlace:   'Now choose the level for this card.',
+    sortMove:    'Move the card "%1"',
+
+    // ---- reasoning ----
+    mxPuzzle:    'Puzzle %1 of %2',
+    mxNotIq:     'This is not an IQ test and there is no IQ score here. It is a count of the puzzles you worked out, nothing more. There is no Uzbek sample behind it, so putting a score on it would be dishonest.',
+    mxBandStrong:     'Strong',
+    mxBandMixed:      'Mixed',
+    mxBandDeveloping: 'Developing'
   }
 };

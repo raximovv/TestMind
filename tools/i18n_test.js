@@ -120,7 +120,7 @@ for (const L of [ru, en]) {
   // Dates are not language-dependent and must survive the overlay untouched.
   ok(code + ': figure years kept from the base',
      KEYS.every(k => L.tmArch(k).figure.years === uz.ARCHETYPES[k].figure.years));
-  // slug drives the URL — a translated slug would 404.
+  // slug drives the URL, a translated slug would 404.
   ok(code + ': slugs unchanged',
      KEYS.every(k => L.tmArch(k).slug === uz.ARCHETYPES[k].slug));
   ok(code + ': families and their notes translated',
