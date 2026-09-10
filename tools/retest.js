@@ -1,5 +1,5 @@
 // «Oʻshanda va hozir»: a student who retakes the test months later is shown what
-// moved. Easy to get wrong in ways nobody would notice — comparing against the
+// moved. Easy to get wrong in ways nobody would notice, comparing against the
 // result just produced, showing up for a first-timer, or firing on a same-day
 // retake where a "change" is noise. Each of those is checked here.
 const puppeteer = require('puppeteer-core');
@@ -25,7 +25,9 @@ async function open(browser) {
 /** Finish the test with a chosen answer value on every item. */
 const finish = (page, v) => page.evaluate(val => {
   state.answers = ITEMS.map(() => val);
-  renderReport();
+  const s = scoreAnswers(state.answers);
+  const key = archetypeKeyOf(s);
+  paintReport(s, archetypeOf(s), key, 'female', 15);
 }, v);
 
 /** Write a fake earlier result, `days` ago, with every trait at `val`. */
@@ -53,7 +55,7 @@ const block = page => page.evaluate(() => {
     ok(await block(page) === null, 'no «Oʻshanda va hozir» block on a first result');
     ok(errors.length === 0, 'no JS errors (' + (errors.join(' | ') || 'none') + ')');
     const invite = await page.evaluate(() => document.body.innerText);
-    ok(/testni yana bir marta ishlab/.test(invite), 'first-timer is invited back with a concrete month');
+    ok(!/testni yana bir marta ishlab/.test(invite), 'the removed retake invitation stays absent');
     ok(await page.evaluate(() => JSON.parse(localStorage.getItem('testmind_history_v1')).length === 1),
       'the result is recorded for next time');
     await page.close();
@@ -111,7 +113,7 @@ const block = page => page.evaluate(() => {
     await finish(page, 5);
     const t = await block(page);
     // Comparing new-against-new would find no change at all and print the
-    // "nothing moved" line — the failure mode this whole test exists for.
+    // "nothing moved" line, the failure mode this whole test exists for.
     ok(!/oʻsha-oʻsha/i.test(t || ''), 'a 1 -> 5 shift is not reported as "unchanged"');
     const hist = await page.evaluate(() => JSON.parse(localStorage.getItem('testmind_history_v1')));
     ok(hist.length === 2, 'both results are kept in the local history');

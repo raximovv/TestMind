@@ -3,25 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bepul shaxsiyat testi — TestMind</title>
-<meta name="description" content="Oʻzbek tilidagi bepul shaxsiyat testi: 75–95 ta savol, 14 daqiqa, roʻyxatdan oʻtmasdan. Shaxsiyat, qiziqish va qadriyatlar; yakunida obrazingiz va yoʻnalishlar.">
-<meta property="og:title" content="Bepul shaxsiyat testi — TestMind">
-<meta property="og:description" content="75–95 ta savol, 14 daqiqa. Ism ham, yosh ham soʻralmaydi. Yakunida obrazingiz va bepul PDF qoʻllanma.">
+<title>Bepul shaxsiyat testi | Naseeb Mind</title>
+<meta name="description" content="Oʻzbek, rus va ingliz tilidagi oltita bepul sinov: shaxsiyat, qiziqishlar, ish qadriyatlari, maktab va mantiq. Hisobingiz natijalarni saqlaydi.">
+<meta property="og:title" content="Bepul shaxsiyat testi | Naseeb Mind">
+<meta property="og:description" content="Olti sinovni istalgan tartibda bajaring. Hisobingiz javoblarni saqlaydi; yakunda obrazingiz va batafsil tahlil ochiladi.">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="TestMind">
+<meta property="og:site_name" content="Naseeb Mind">
 <meta property="og:locale" content="uz_UZ">
 <meta property="og:image" content="https://personality.naseebedu.com/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="canonical" href="https://personality.naseebedu.com/test.html">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230F6E8C'/%3E%3Cpath d='M15 34 Q15 11 32 11 Q49 11 49 34 Z' fill='%23fff'/%3E%3Crect x='13' y='38' width='38' height='11' rx='3.5' fill='%23fff'/%3E%3Cpath d='M32 16 q4 6 0 11 q-4 -5 0 -11z' fill='%230F6E8C'/%3E%3C/svg%3E">
+<link rel="icon" href="assets/ui/icon.png">
+<link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
 <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <style>
   /* Self-hosted so the page makes NO third-party request and renders on a slow
      school connection without waiting on fonts.googleapis.com. Both are variable
      fonts: one file per family covers every weight we use.
-     Latin subset only — it is the subset that contains U+02BB, the ʻ in oʻ / gʻ. */
+     Latin subset only: it is the subset that contains U+02BB, the ʻ in oʻ / gʻ. */
   @font-face{font-family:'Bitter';src:url('assets/fonts/bitter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
   @font-face{font-family:'Inter';src:url('assets/fonts/inter.woff2') format('woff2');
@@ -30,14 +31,14 @@
      Declared here because the test is a standalone page that does not load
      site.css. */
   :root{
-    --lazur:#8A6A3F;      /* bronze — primary */
+    --lazur:#8A6A3F;      /* bronze, primary */
     --lazur-deep:#6B5230;
     --ink:#2B2620;        /* warm near-black text */
     --paper:#F4F0E8;      /* warm cream background */
     --card:#FDFCF9;
     --line:#E3DCCC;
     --zar:#C9A961;        /* gold accent, used sparingly */
-    --viol:#8A6BC1;       /* violet — disagree side of scale */
+    --viol:#8A6BC1;       /* violet, disagree side of scale */
     --viol-soft:#DCD2EE;
     --lazur-soft:#D9C7A4;
     --muted:#6E6558;
@@ -89,30 +90,7 @@
         border-left:4px solid var(--lazur);font-size:15.5px;line-height:1.6}
   .ctop b{color:var(--lazur-deep)}
   .cattr{margin:14px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}
-
-  /* ---- subject entry + recommendations ---- */
-  .subjbox{margin:18px 0 0;padding:18px 18px 16px;border-radius:16px;background:var(--paper);
            border:1px solid var(--line);text-align:left}
-  .subjbox h3{margin:0 0 4px;font-family:var(--display);font-size:19px;color:var(--ink)}
-  .subjlede{margin:0 0 14px;font-size:14.5px;line-height:1.55;color:var(--muted)}
-  .scaletabs{display:flex;gap:6px;margin:0 0 14px;flex-wrap:wrap}
-  .scaletab{flex:1 1 auto;min-width:88px;padding:8px 10px;border-radius:10px;cursor:pointer;
-            border:1px solid var(--line);background:var(--card);color:var(--muted);
-            font:inherit;font-size:13.5px;text-align:center}
-  .scaletab.on{background:var(--lazur);border-color:var(--lazur);color:#fff;font-weight:600}
-  .subjrow{display:flex;align-items:center;gap:10px;padding:7px 0;border-top:1px solid var(--line)}
-  .subjrow:first-of-type{border-top:0}
-  .subjname{flex:1 1 auto;font-size:14.5px;line-height:1.35}
-  .subjopts{display:flex;gap:5px;flex:0 0 auto}
-  .subjopt{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);
-           background:var(--card);color:var(--muted);font:inherit;font-size:14px;cursor:pointer;
-           font-variant-numeric:tabular-nums}
-  .subjopt.on{background:var(--lazur-deep);border-color:var(--lazur-deep);color:#fff;font-weight:700}
-  .subjnum{width:74px;padding:7px 8px;border-radius:9px;border:1px solid var(--line);
-           background:var(--card);font:inherit;font-size:14px;text-align:center}
-  .subjclear{margin-top:12px;background:none;border:0;padding:0;color:var(--lazur-deep);
-             font:inherit;font-size:13.5px;text-decoration:underline;cursor:pointer}
-  .subjhint{margin:10px 0 0;font-size:12.5px;line-height:1.5;color:var(--muted)}
 
   .recgrid{list-style:none;margin:12px 0 0;padding:0}
   .recgrid li{display:flex;align-items:flex-start;gap:9px;padding:8px 0;
@@ -132,9 +110,6 @@
            border:1px solid #EBDCBB;font-size:14.5px;line-height:1.6;color:#6E5520}
   .recempty{margin:12px 0 0;font-size:14.5px;line-height:1.6;color:var(--muted)}
   @media (max-width:430px){
-    .subjrow{flex-wrap:wrap}
-    .subjname{flex:1 0 100%;margin-bottom:4px}
-    .subjopt{width:38px}
   }
   @media (max-width:700px){ .lifegrid{grid-template-columns:1fr} }
   @media print{ .lifefull,.cfull{page-break-inside:auto} .lifegrid{grid-template-columns:1fr 1fr} }
@@ -148,7 +123,7 @@
      not load site.css. Values mirror .nav in site.css. */
   /* Route back to the parent platform, left of the brand. Mirrors .navback in
      site.css; the label drops below 820px because the row is full at 360px.
-     Named .navback, NOT .backlink — this file already has a .backlink further
+     Named .navback, NOT .backlink: this file already has a .backlink further
      down for the ORQAGA button in the step bar, and the collision handed this
      link that button's uppercase-bronze styling with no pill at all. */
   .vh{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
@@ -163,8 +138,10 @@
   .topnav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);
           backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
   .topnavin{max-width:1340px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:18px;height:62px}
-  .topbrand{font-family:var(--display);font-weight:700;font-size:23px;color:var(--lazur-deep);
-            text-decoration:none;white-space:nowrap}
+  .topbrand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);
+            font-weight:700;font-size:23px;color:var(--ink);text-decoration:none;white-space:nowrap}
+  .brandmark{display:block;width:auto;height:30px;object-fit:contain;flex:none}
+  .topbrand b{color:var(--lazur);font-weight:700}
   .toplinks{display:flex;gap:22px;margin-left:auto}
   .toplinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;
               padding:4px 0;border-bottom:2px solid transparent}
@@ -196,6 +173,11 @@
           border-radius:10px;padding:9px 16px;font-weight:600;font-size:14.5px;white-space:nowrap}
   .topcta:hover{background:var(--lazur-deep)}
   .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .toplogin{color:var(--lazur-deep);font-weight:600;font-size:14.5px;text-decoration:none;
+            white-space:nowrap;padding:7px 2px}
+  .toplogin:hover{text-decoration:underline}
+  .toplogin:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
+  .toplogin-mobile{display:none}
   /* Mirrors the same band in site.css, which this page does not load. Between
      the phone rules below and the full row there was nothing, and the full row
      does not fit in that space -- the Uzbek bar measures ~1050px -- so it ran
@@ -203,7 +185,7 @@
      their own row; nothing shrinks, because at 1000px there is room for the
      full-size brand and the back label. 1080 not 1051, for fallback-font
      headroom. */
-  @media (max-width:1080px){
+  @media (max-width:1160px){
     .topnavin{flex-wrap:wrap;height:auto;padding:10px 22px;gap:12px}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;overflow-x:auto;padding-bottom:2px;
               -webkit-overflow-scrolling:touch}
@@ -222,8 +204,9 @@
        Width comes off four things a little rather than one thing a lot, which is
        the same trade site.css makes at this width. */
     .topnavin{gap:6px;height:auto;padding:10px 14px;flex-wrap:wrap}
-    .topbrand{font-size:20px}
-    /* Chevron only — the row has no width to spare. Name stays on the .vh span. */
+    .topbrand{font-size:19px;gap:5px}
+    .brandmark{height:24px}
+    /* Chevron only: the row has no width to spare. Name stays on the .vh span. */
     .backtx{display:none}
     .navback{padding:5px 7px}
     .langsw{padding:1px;gap:1px;margin-left:auto}
@@ -233,6 +216,8 @@
        the switcher from fitting on one row. It stays on desktop, where it
        costs nothing and keeps the bar looking like every other page's. */
     .topcta{display:none}
+    .toplogin{display:none}
+    .toplogin-mobile{display:inline}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
     .toplinks a{font-size:14.5px}
@@ -335,7 +320,7 @@
   .opt.s1 .dot,.opt.s5 .dot{width:clamp(44px,11.6vw,54px);height:clamp(44px,11.6vw,54px);font-size:20px}
   .opt.s2 .dot,.opt.s4 .dot{width:clamp(37px,9.9vw,45px);height:clamp(37px,9.9vw,45px);font-size:17px}
   /* 34px min, not 31px: with .opt's 5px padding this brings the smallest tap area
-     to 44px on a 360px phone — the comfort floor for a thumb. */
+     to 44px on a 360px phone, the comfort floor for a thumb. */
   .opt.s3 .dot{width:clamp(34px,8.2vw,37px);height:clamp(34px,8.2vw,37px);font-size:14px}
   /* resting ring colours: warm on the disagree side, teal on the agree side */
   .opt.s1 .dot,.opt.s2 .dot{border-color:var(--viol-soft)}
@@ -420,9 +405,131 @@
   .figwho{font-family:var(--display);font-weight:700;font-size:18px;color:var(--fam)}
   .figyr{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-left:6px}
   .figwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
+  /* ================= the hub, the gate, and the two new interactions =================
+     Everything below arrived with the six-challenge rebuild. It reuses the
+     existing tokens rather than introducing a palette: the test page is
+     standalone and does not load site.css, so a second set of colours here
+     would be a second thing to keep in step. */
+
+  .hubsub{margin:8px auto 0;max-width:52ch;color:var(--muted);font-size:15.5px;line-height:1.55}
+  .hubwho{text-align:center;margin:0 0 18px;font-size:13.5px;color:var(--muted)}
+  .hubauth{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap}
+  .hubauth .btn{padding:10px 18px;font-size:14px}
+  .linkbtn{background:none;border:0;padding:0;font:inherit;color:var(--lazur-deep);
+           text-decoration:underline;cursor:pointer}
+  .linkbtn:hover{color:var(--ink)}
+
+  .chlist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  .chcard{display:flex;gap:14px;align-items:flex-start;
+          background:var(--card);border:1px solid var(--line);border-radius:14px;
+          padding:16px 16px 16px 14px}
+  /* A finished challenge stays legible rather than greying out: a student
+     rereading what they already answered should not feel it has been retired. */
+  .chcard.is-done{border-color:var(--lazur-soft);background:#FBF8F1}
+  .chnum{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;
+         font-family:var(--display);font-weight:700;font-size:16px;
+         background:var(--lazur-soft);color:var(--lazur-deep)}
+  .chcard.is-done .chnum{background:var(--lazur);color:#fff}
+  .chbody{flex:1 1 auto;min-width:0}
+  .chbody h3{margin:2px 0 4px;font-family:var(--display);font-size:19px}
+  .chbody p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
+  .chmeta{margin-top:6px !important;font-size:13px;color:var(--lazur-deep)}
+  .chside{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+  .chdone{font-size:13px;color:var(--lazur-deep);font-weight:600}
+  .chpart{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .chgo{padding:9px 16px;font-size:14.5px}
+  /* Under about 560px the button below the text reads better than a narrow
+     column squeezed against it. */
+  @media (max-width:560px){
+    .chcard{flex-wrap:wrap}
+    .chside{flex-direction:row;align-items:center;width:100%;justify-content:space-between;
+            margin-top:4px}
+  }
+
+  .chhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 4px}
+  .chhnum{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .starthead.chstart{margin:4px 0 22px}
+  .starthead.chstart h1{font-size:clamp(23px,5.6vw,32px)}
+
+  /* ---- the account gate and modal ---- */
+  body.modal-open{overflow:hidden}
+  .authoverlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
+               padding:18px;background:rgba(26,31,34,.46);backdrop-filter:blur(4px)}
+  .authdialog{position:relative;width:min(100%,500px);max-height:calc(100vh - 36px);overflow:auto;
+              background:var(--card);border:1px solid var(--line);border-radius:20px;
+              box-shadow:0 22px 70px rgba(23,28,31,.22);padding:34px 40px 32px}
+  .authclose{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;
+             border:1px solid var(--line);background:#fff;color:var(--muted);font:inherit;
+             font-size:25px;line-height:1;cursor:pointer}
+  .authclose:hover{background:var(--paper);color:var(--ink)}
+  .authclose:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .authdialog h2{margin:3px 38px 8px;text-align:center;font-size:clamp(27px,6vw,36px)}
+  .authdialogsub{margin:0 auto 24px;max-width:38ch;text-align:center;color:var(--muted);
+                 font-size:14.5px;line-height:1.5}
+  .authcard{max-width:none;margin:0;display:flex;flex-direction:column}
+  .authlab{font-size:13.5px;color:var(--muted);margin:0 0 5px}
+  .authin{font:inherit;font-size:16px;padding:13px 14px;margin:0 0 16px;
+          border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+  .authin:focus{outline:2px solid var(--lazur);outline-offset:1px;border-color:var(--lazur)}
+  .autherr{margin:0 0 12px;min-height:1.2em;font-size:14px;color:#9B2C2C}
+  .autherr.ok{color:var(--lazur-deep)}
+  .authcard .btn{width:100%;border-radius:999px;padding:14px 22px}
+  .authswap{margin:14px auto 0;font-size:14px}
+  .authnote{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+  @media (max-width:520px){
+    .authoverlay{padding:10px;align-items:flex-end}
+    .authdialog{max-height:calc(100vh - 20px);padding:30px 22px 24px;border-radius:20px 20px 12px 12px}
+  }
+
+  /* ---- challenge 5, the card sort ---- */
+  .sorthow,.sortstem{max-width:60ch;margin:0 auto 10px;text-align:center;font-size:14.5px;
+                     color:var(--muted);line-height:1.55}
+  .sortstem{color:var(--ink);font-weight:600}
+  .sorttray{background:var(--card);border:1px dashed var(--line);border-radius:14px;
+            padding:12px;margin:0 0 16px}
+  .sorttray.is-empty{opacity:.55}
+  .sorttrayh{margin:0 0 8px;font-size:13px;text-transform:uppercase;letter-spacing:.04em;
+             color:var(--muted);font-family:var(--body);font-weight:600}
+  .sortslots{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;min-height:34px}
+  .sortcard{font:inherit;font-size:14px;line-height:1.35;text-align:left;cursor:pointer;
+            background:#fff;border:1px solid var(--line);border-radius:10px;
+            padding:9px 11px;max-width:100%;color:var(--ink)}
+  .sortcard:hover{border-color:var(--lazur)}
+  .sortcard.picked{border-color:var(--lazur);background:var(--lazur-soft);
+                   box-shadow:0 0 0 2px var(--lazur-soft)}
+  .sortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+  .sortlv{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
+  /* While a card is picked, the levels are the thing to aim at, so they lift. A
+     full level deliberately does NOT lift: it cannot accept the card. */
+  .sortgrid.arming .sortlv{border-color:var(--lazur);cursor:pointer}
+  .sortpickhint{min-height:20px;margin:12px 0 0;text-align:center;color:var(--lazur-deep);font-size:14px;font-weight:600}
+  .sortlvh{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:0 0 8px}
+  .sortlvh h3{margin:0;font-family:var(--display);font-size:15.5px}
+  .sortcount{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .sortfull{color:var(--lazur-deep);font-weight:600}
+
+  /* ---- challenge 6, the matrices ---- */
+  .mxcard{display:grid;gap:18px;justify-items:center}
+  /* currentColor: the puzzles are drawn in whatever colour the text is, so they
+     follow the palette rather than carrying one of their own. */
+  .mxgrid{width:min(320px,86vw);color:var(--ink)}
+  .mxgrid svg{width:100%;height:auto;display:block}
+  .mxopts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(340px,92vw)}
+  .mxopt{position:relative;cursor:pointer;border:1px solid var(--line);border-radius:10px;
+         background:#fff;color:var(--ink);display:grid;place-items:center;padding:4px}
+  .mxopt input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+  .mxopt:hover{border-color:var(--lazur)}
+  .mxopt.sel{border-color:var(--lazur);background:var(--lazur-soft);
+             box-shadow:0 0 0 2px var(--lazur-soft)}
+  .mxopt input:focus-visible + .mxtile{outline:2px solid var(--lazur);outline-offset:2px;
+                                       border-radius:6px}
+  .mxtile{display:block;width:100%}
+  .mxtile svg{width:100%;height:auto;display:block}
+  @media (max-width:380px){ .mxopts{grid-template-columns:repeat(2,1fr)} }
+
   /* ---- the opener, sitting above question 1. No form, no start button. ---- */
   .starthead{text-align:center;margin:6px 0 26px}
-  .startmark{display:block;width:58px;height:58px;margin:0 auto 14px}
+  .startmark{display:block;width:auto;height:66px;max-width:72px;margin:0 auto 14px;object-fit:contain}
   .starthead h1{font-size:clamp(27px,7vw,40px);margin:0}
   .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin:0 0 26px}
   /* Tint on the top of the card behind the artwork, white underneath the words,
@@ -457,7 +564,7 @@
            color:var(--sc);background:var(--card);border-radius:99px;padding:4px 11px;margin:0 0 9px}
   .step h2{font-size:18px;margin:0 0 6px;color:var(--ink)}
   .step p{font-size:14.5px;color:var(--muted);margin:0}
-  /* «Oʻshanda va hozir» — shown only to a student who took the test months ago. */
+  /* «Oʻshanda va hozir»: shown only to a student who took the test months ago. */
   .thennow{background:var(--paper);border:1px solid var(--line);border-radius:14px;
            padding:18px 20px;margin-bottom:16px}
   .tnlbl{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
@@ -483,7 +590,7 @@
   .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
                 border-radius:9px;background:#FBFDFD;color:var(--ink)}
   .caprow input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
-  /* On a phone the field and button never fit side by side — stack them full width.
+  /* On a phone the field and button never fit side by side, so stack them full width.
      flex-basis must be reset here: in a column container it would size the HEIGHT. */
   @media (max-width:520px){
     .caprow{flex-direction:column}
@@ -498,7 +605,7 @@
   .capdone{display:flex;gap:10px;align-items:flex-start}
   .capdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;color:#fff;
                  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
-  /* Full site footer, mirrored from site.css so every page — including the test —
+  /* Full site footer, mirrored from site.css so every page, including the test,
      ends the same way (the test page does not load site.css). */
   .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}
   .footgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:28px}
@@ -507,6 +614,10 @@
   .footcol li{margin-bottom:4px}
   .footcol a{display:inline-block;padding:4px 0;font-size:14.5px;color:var(--muted);text-decoration:none;overflow-wrap:anywhere}
   .footcol a:hover{color:var(--lazur-deep);text-decoration:underline}
+  .legaldate{margin:-4px 0 30px;color:var(--muted);font-size:13px}
+  .legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+  .legalnav a{display:inline-block;padding:4px 0;font-size:14px;color:var(--muted);text-decoration:none}
+  .legalnav a:hover{color:var(--lazur-deep);text-decoration:underline}
   .footbar{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
            display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--muted)}
   .footbar a{color:var(--muted)}
@@ -515,20 +626,18 @@
        border-radius:50%;background:var(--lazur);color:#fff;flex:0 0 auto}
   .soc svg{width:20px;height:20px;display:block}
   /* ---------------------------------------------------------------------------
-     Wide layout. The page fills the screen — cards, bands and the question rows
+     Wide layout. The page fills the screen: cards, bands and the question rows
      all run the full width. Running TEXT does not: a paragraph set 1100px wide
      is unreadable, so every block of prose keeps a normal measure and centres
      inside its full-width card. */
   @media (min-width:900px){
     .card{padding:30px 34px}
     .hero{border-radius:26px 26px 18px 18px}
-    /* Text left, art right. row-reverse rather than reordering the markup: the
-       DOM keeps the illustration first, which is what the phone layout wants
-       (band on top) and what a screen reader should meet first. The panel is a
-       fixed 330px rather than a percentage so the illustration is the same size
-       on a 1000px screen and a 1600px one -- a figure that grows with the
-       window starts competing with the name for attention. */
-    .hero{display:flex;flex-direction:row-reverse;align-items:stretch}
+    /* Art left, all the text right. The panel is a fixed 330px rather than a
+       percentage so the illustration is the same size on a 1000px screen and a
+       1600px one -- a figure that grows with the window starts competing with
+       the name for attention. */
+    .hero{display:flex;align-items:stretch}
     .herotop{flex:0 0 330px;display:flex;flex-direction:column;justify-content:flex-end;
              padding:24px 26px 0}
     .herotop svg{width:270px;margin:14px auto 0}
@@ -537,11 +646,7 @@
        it a long archetype name would push the panel narrower instead of wrapping.
        The cap is on the column, so the name, the lines and the strength box all
        stop at the same right edge as well as starting at the same left one. */
-    /* margin-right:auto puts the leftover width in the gutter between the text
-       and the illustration rather than in front of the text. Without it both
-       items pack to the main-start edge -- which row-reverse puts on the RIGHT
-       -- and the column arrives wearing a 180px indent. */
-    .herocol{flex:1 1 auto;min-width:0;max-width:720px;margin-right:auto;padding:0 34px}
+    .herocol{flex:1 1 auto;min-width:0;max-width:720px;padding:0 34px}
     .herointro{padding:30px 0 0;text-align:left}
     /* text-align:left or .strength centres its sentence while .watch, which
        sets left explicitly, does not -- two boxes the same size directly above
@@ -640,13 +745,16 @@
 <body>
 <nav class="topnav"><div class="topnavin">
   <a class="navback" href="https://www.naseebedu.com/"><svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="true"><path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg><span class="backtx">Naseeb Edu</span><b class="vh">Naseeb Edu saytiga qaytish</b></a>
-  <a class="topbrand" href="index.html">TestMind</a>
+  <a class="topbrand" href="index.html">
+    <img class="brandmark" src="assets/ui/logo.png" alt="">
+    <span>Naseeb <b>Mind</b></span>
+  </a>
   <div class="toplinks">
     <a href="index.html">Bosh sahifa</a>
     <a href="obrazlar.html">Obrazlar</a>
     <a href="test.html" aria-current="page">Shaxsiyat testi</a>
-    <a href="qanday-ishlaydi.html">Qanday ishlaydi</a>
     <a href="savollar.html">Savollar</a>
+    <a class="toplogin-mobile" href="test.html?auth=signin">Kirish</a>
   </div>
   <!-- Rebuilt by localiseChrome() once the language is known, because which pill
        is current depends on ?lang=. This is the no-JS fallback. -->
@@ -655,6 +763,7 @@
     <a href="test.html?lang=ru" hreflang="ru" lang="ru" title="Русский">RU</a>
     <a href="test.html?lang=en" hreflang="en" lang="en" title="English">EN</a>
   </div>
+  <a class="toplogin" href="test.html?auth=signin">Kirish</a>
   <a class="topcta" href="test.html">Testni boshlash</a>
 </div></nav>
 <div class="wrap">
@@ -662,10 +771,9 @@
 </div>
 <footer class="foot"><div class="wrap">
   <div class="footgrid">
-    <div class="footcol"><h2>TestMind</h2><ul>
+    <div class="footcol"><h2>Naseeb Mind</h2><ul>
       <li><a href="index.html">Bosh sahifa</a></li>
       <li><a href="obrazlar.html">Oʻnta obraz</a></li>
-      <li><a href="qanday-ishlaydi.html">Qanday ishlaydi</a></li>
     </ul></div>
     <div class="footcol"><h2>Test</h2><ul>
       <li><a href="test.html">Testni boshlash</a></li>
@@ -673,7 +781,6 @@
     </ul></div>
     <div class="footcol"><h2>Maʼlumot</h2><ul>
       <li><a href="privacy.html">Maxfiylik</a></li>
-      <li><a href="qanday-ishlaydi.html#model">Test qaysi modelga asoslangan</a></li>
       <li><a href="maktablar.html">Maktablar va ota-onalar uchun</a></li>
     </ul></div>
     <div class="footcol"><h2>Bogʻlanish</h2><ul>
@@ -681,9 +788,14 @@
     </ul>
       <div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div></div>
   </div>
+  <nav class="legalnav" aria-label="Huquqiy maʼlumotlar">
+    <a href="terms.html">Foydalanish shartlari</a>
+    <a href="privacy.html">Maxfiylik</a>
+    <a href="accessibility.html">Qulay foydalanish</a>
+  </nav>
   <div class="footbar">
-    <span>© 2026 TestMind</span>
-    <span>Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.</span>
+    <span>© 2026 Naseeb Mind</span>
+    <span>Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.</span>
   </div>
 </div></footer>
 
@@ -693,8 +805,12 @@
 <script src="assets/test-en.js"></script>
 <script src="assets/career.js"></script>
 <script src="assets/values.js"></script>
+<script src="assets/school.js"></script>
+<script src="assets/wil.js"></script>
+<script src="assets/matrix.js"></script>
+<script src="assets/account.js"></script>
 <script id="tm-logic">
-// ---------- TestMind v1.0 logic (frozen items + draft key) ----------
+// ---------- Naseeb Mind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
 
 var ITEMS = [
@@ -808,6 +924,61 @@ var VALUES_COUNT = ITEMS.length - VALUES_START;
 var VALUES_META = (typeof VALUE_LANGS !== 'undefined') ? VALUE_LANGS.uz : null;
 var VALUES_LABELS = VALUES_META ? VALUES_META.labels.slice() : null;
 
+/* ---------- three more banks, appended the same way ----------
+
+   The test is now six challenges rather than one long run, and the three banks
+   below are the second half of it. They are appended to ITEMS for one reason:
+   `state.answers` is a flat array parallel to ITEMS, so every scorer already
+   written keeps working untouched, and a new challenge cannot renumber an old
+   one's answers.
+
+   Each carries its own sec marker, and every loop over ITEMS is bounded to its
+   own block, so a scorer never has to know the others exist:
+
+       sec 's'   school subjects   agreement scale, cost items reverse keyed
+       sec 'w'   work importance   five-point importance scale
+       sec 'm'   reasoning         one right answer, stored 1..8
+
+   Note that only 'm' is not answered on a five point scale like everything
+   above it; the renderer gives it a separate puzzle interaction. */
+var SCHOOL_START = ITEMS.length;
+(function appendSchool(){
+  var pack = (typeof SCHOOL_LANGS !== 'undefined') && SCHOOL_LANGS.uz;
+  if (!pack) return;
+  for (var i = 0; i < pack.items.length; i++){
+    var it = pack.items[i];
+    ITEMS.push({ sec: 's', sub: it.s, facet: it.f, r: it.r, t: it.t });
+  }
+})();
+var SCHOOL_COUNT = ITEMS.length - SCHOOL_START;
+var SCHOOL_META = (typeof SCHOOL_LANGS !== 'undefined') ? SCHOOL_LANGS.uz : null;
+var SCHOOL_LABELS = SCHOOL_META ? SCHOOL_META.labels.slice() : null;
+
+var WIL_START = ITEMS.length;
+(function appendWil(){
+  var pack = (typeof WIL_LANGS !== 'undefined') && WIL_LANGS.uz;
+  if (!pack) return;
+  for (var i = 0; i < pack.cards.length; i++){
+    var c = pack.cards[i];
+    ITEMS.push({ sec: 'w', card: c.c, wv: c.v, t: c.t });
+  }
+})();
+var WIL_COUNT = ITEMS.length - WIL_START;
+var WIL_META = (typeof WIL_LANGS !== 'undefined') ? WIL_LANGS.uz : null;
+
+var MATRIX_START = ITEMS.length;
+(function appendMatrix(){
+  if (typeof MATRIX_ITEMS === 'undefined') return;
+  for (var i = 0; i < MATRIX_ITEMS.length; i++){
+    var m = MATRIX_ITEMS[i];
+    // The puzzle itself is figural, so there is no `t` to translate: grid and
+    // options are SVG drawn in currentColor and inherit the page palette.
+    ITEMS.push({ sec: 'm', mid: m.id, grid: m.grid, options: m.options,
+                 answer: m.answer, difficulty: m.difficulty });
+  }
+})();
+var MATRIX_COUNT = ITEMS.length - MATRIX_START;
+
 /** Work-value profile, CENTRED ON THE STUDENT'S OWN MEAN.
  *
  *  Almost every teenager calls almost every value important, so absolute levels
@@ -820,7 +991,11 @@ var VALUES_LABELS = VALUES_META ? VALUES_META.labels.slice() : null;
 function scoreValues(answers){
   if (!VALUES_COUNT) return {};
   var sums = {}, counts = {}, i, d, n = 0, total = 0;
-  for (i = VALUES_START; i < ITEMS.length; i++){
+  // Bounded to the values block, NOT to ITEMS.length. Values used to be the
+  // last bank and this loop ran to the end of the array; three banks now sit
+  // after it, and an unbounded loop would score school and reasoning answers as
+  // work values.
+  for (i = VALUES_START; i < VALUES_START + VALUES_COUNT; i++){
     var v = answers[i];
     if (!v) continue;
     d = ITEMS[i].vd;
@@ -836,16 +1011,132 @@ function scoreValues(answers){
 
 function valuesAnswered(answers){
   var n = 0;
-  for (var i = VALUES_START; i < ITEMS.length; i++) if (answers[i]) n++;
+  for (var i = VALUES_START; i < VALUES_START + VALUES_COUNT; i++) if (answers[i]) n++;
+  return n;
+}
+
+/* ---------- the three later banks score themselves ----------
+   Each is bounded to its own block of ITEMS and returns {} when the challenge
+   has not been taken, so a result screen can tell "not done yet" apart from
+   "done, and the answer was flat". */
+
+/** Per subject: what the student thinks they can do, what they enjoy, and what
+ *  it costs them, each 1..5, plus a `fit` that combines the three.
+ *
+ *  Cost is stored reverse keyed already (r:1), so a student who dreads a subject
+ *  scores LOW on cost and that pulls `fit` down. Reading the raw answer here
+ *  instead would make dread look like evidence for the subject. */
+function scoreSchool(answers){
+  if (!SCHOOL_COUNT) return {};
+  var out = {}, any = false, i;
+  for (i = SCHOOL_START; i < SCHOOL_START + SCHOOL_COUNT; i++){
+    var v = answers[i];
+    if (!v) continue;
+    any = true;
+    var it = ITEMS[i], row = out[it.sub] || (out[it.sub] = {});
+    row[it.facet] = it.r ? (6 - v) : v;
+  }
+  if (!any) return {};
+  for (var sub in out){
+    if (!Object.prototype.hasOwnProperty.call(out, sub)) continue;
+    var r = out[sub], parts = [], k;
+    for (k = 0; k < SCHOOL_FACETS.length; k++)
+      if (r[SCHOOL_FACETS[k]] !== undefined) parts.push(r[SCHOOL_FACETS[k]]);
+    var total = 0;
+    for (k = 0; k < parts.length; k++) total += parts[k];
+    r.fit = parts.length ? total / parts.length : 0;
+  }
+  return out;
+}
+
+function schoolAnswered(answers){
+  var n = 0;
+  for (var i = SCHOOL_START; i < SCHOOL_START + SCHOOL_COUNT; i++) if (answers[i]) n++;
+  return n;
+}
+
+/** Which level each work importance card was placed in, counted per level.
+ *  The counts are descriptive only: unlike a forced-choice sort, every level
+ *  can hold as many cards as the student thinks belong there. */
+function wilCounts(answers){
+  var counts = [0, 0, 0, 0, 0];
+  for (var i = WIL_START; i < WIL_START + WIL_COUNT; i++){
+    var v = answers[i];
+    if (v >= 1 && v <= 5) counts[v - 1]++;
+  }
+  return counts;
+}
+
+function wilAnswered(answers){
+  var n = 0;
+  for (var i = WIL_START; i < WIL_START + WIL_COUNT; i++) if (answers[i]) n++;
+  return n;
+}
+
+/** Six work values, ranked. Each card contributes the level it was put in.
+ *  We average each value's cards rather than multiplying totals, so values with
+ *  two, three or six statements are comparable without imposing a distribution
+ *  on the student. */
+function scoreWil(answers){
+  if (!WIL_COUNT) return {};
+  var sums = {}, seen = {}, any = false, i;
+  for (i = 0; i < WIL_VALUES.length; i++){ sums[WIL_VALUES[i]] = 0; seen[WIL_VALUES[i]] = 0; }
+  for (i = WIL_START; i < WIL_START + WIL_COUNT; i++){
+    var v = answers[i];
+    if (!v) continue;
+    any = true;
+    sums[ITEMS[i].wv] += v;
+    seen[ITEMS[i].wv]++;
+  }
+  if (!any) return {};
+  for (i = 0; i < WIL_VALUES.length; i++)
+    sums[WIL_VALUES[i]] = seen[WIL_VALUES[i]] ? sums[WIL_VALUES[i]] / seen[WIL_VALUES[i]] : 0;
+  return sums;
+}
+
+/** Correct out of twelve, and the band it falls in.
+ *
+ *  Answers are stored 1..8 rather than 0..7 because a zero answer is how every
+ *  other bank says "not answered yet", and option one of eight is a real answer.
+ *
+ *  This is a count and a band. It is NOT an IQ and there is no quotient here to
+ *  print: there is no Uzbek sample behind it, and a number that looks like an IQ
+ *  gets believed like one. */
+function scoreMatrix(answers){
+  if (!MATRIX_COUNT) return {};
+  var correct = 0, asked = 0, per = {};
+  for (var i = MATRIX_START; i < MATRIX_START + MATRIX_COUNT; i++){
+    var v = answers[i];
+    if (!v) continue;
+    asked++;
+    var right = (v - 1) === ITEMS[i].answer;
+    per[ITEMS[i].mid] = right;
+    if (right) correct++;
+  }
+  if (!asked) return {};
+  return { correct: correct, total: MATRIX_COUNT, per: per,
+           band: (typeof matrixBand === 'function') ? matrixBand(correct) : null };
+}
+
+function matrixAnswered(answers){
+  var n = 0;
+  for (var i = MATRIX_START; i < MATRIX_START + MATRIX_COUNT; i++) if (answers[i]) n++;
   return n;
 }
 var CAREER_META = (typeof CAREER_LANGS !== 'undefined') ? CAREER_LANGS.uz : null;
 var CAREER_LABELS = CAREER_META ? CAREER_META.labels.slice() : null;
 
-/** Which response labels this item is answered on. */
+/** Which response labels this item is answered on.
+ *
+ *  Null means the item is NOT answered on a five point scale: the reasoning
+ *  puzzles have one right answer out of eight. Work importance uses its own
+ *  five-point importance labels. */
 function labelsFor(it){
   if (it && it.sec === 'c' && CAREER_LABELS) return CAREER_LABELS;
   if (it && it.sec === 'v' && VALUES_LABELS) return VALUES_LABELS;
+  if (it && it.sec === 's') return SCHOOL_LABELS || LABELS;
+  if (it && it.sec === 'w') return WIL_META && WIL_META.levels ? WIL_META.levels : LABELS;
+  if (it && it.sec === 'm') return null;
   return LABELS;
 }
 
@@ -1124,24 +1415,158 @@ function careerTopup(answers){
 // `plan` is the items this student is being asked, in order, as indices into
 // ITEMS. It starts as the personality core and grows one stage at a time.
 var STAGE_P_TOPUP = 0, STAGE_C_CORE = 1, STAGE_C_TOPUP = 2, STAGE_V_CORE = 3, STAGE_DONE = 4;
+
+/* ================= the six challenges =================
+
+   The test used to be one continuous run that grew a stage at a time. It is now
+   six challenges a student takes one by one, in any order, over as many sittings
+   as they like, and the run-on stages above survive INSIDE the first two
+   challenges rather than across the whole test.
+
+   What deliberately did not change: `state.answers` is still one flat array
+   parallel to ITEMS. Challenges own RANGES of that array, never their own copy,
+   so every scorer written for the old flow keeps working and no challenge can
+   renumber another's answers.
+
+   `plan()` is the questions a challenge opens with; `extend()` is the follow-up
+   block it may add once those are answered, and returns [] for the four
+   challenges that ask a fixed set. Only personality and interests are adaptive,
+   because only they have a reserve to draw on. */
+function rangePlan(start, count){
+  var out = [];
+  for (var i = start; i < start + count; i++) out.push(i);
+  return out;
+}
+
+var CHALLENGES = [
+  { key: 'personality', n: 1, interaction: 'scale',
+    plan: function(){ return CORE_PLAN.slice(); },
+    extend: function(answers){
+      var pair = contestedPair(answers);
+      return pair ? topupFor(pair) : [];
+    },
+    answered: function(answers){
+      var n = 0;
+      for (var i = 0; i < ITEMS.length; i++) if (!ITEMS[i].sec && answers[i]) n++;
+      return n;
+    } },
+
+  { key: 'interests', n: 2, interaction: 'scale',
+    plan: function(){ return CAREER_CORE.slice(); },
+    extend: function(answers){ return careerTopup(answers); },
+    answered: function(answers){ return careerAnswered(answers); } },
+
+  { key: 'values', n: 3, interaction: 'scale',
+    plan: function(){ return rangePlan(VALUES_START, VALUES_COUNT); },
+    extend: function(){ return []; },
+    answered: function(answers){ return valuesAnswered(answers); } },
+
+  { key: 'school', n: 4, interaction: 'scale',
+    plan: function(){ return rangePlan(SCHOOL_START, SCHOOL_COUNT); },
+    extend: function(){ return []; },
+    answered: function(answers){ return schoolAnswered(answers); } },
+
+  // Standard five-point importance ratings, one statement at a time.
+  { key: 'workimportance', n: 5, interaction: 'scale',
+    plan: function(){ return rangePlan(WIL_START, WIL_COUNT); },
+    extend: function(){ return []; },
+    answered: function(answers){ return wilAnswered(answers); } },
+
+  // The one challenge with right and wrong answers.
+  { key: 'reasoning', n: 6, interaction: 'matrix',
+    plan: function(){ return rangePlan(MATRIX_START, MATRIX_COUNT); },
+    extend: function(){ return []; },
+    answered: function(answers){ return matrixAnswered(answers); } },
+];
+
+// Challenges whose bank failed to load are dropped rather than shown as a card
+// that cannot be opened. A missing bank is a deployment mistake, and a student
+// should meet five working challenges rather than six with one broken.
+CHALLENGES = CHALLENGES.filter(function(c){ return c.plan().length > 0; });
+
+function challengeBy(key){
+  for (var i = 0; i < CHALLENGES.length; i++)
+    if (CHALLENGES[i].key === key) return CHALLENGES[i];
+  return null;
+}
+
+function challengeOwns(c, index){
+  var sec = ITEMS[index] && ITEMS[index].sec;
+  if (c.key === 'personality') return !sec;
+  if (c.key === 'interests') return sec === 'c';
+  if (c.key === 'values') return sec === 'v';
+  if (c.key === 'school') return sec === 's';
+  if (c.key === 'workimportance') return sec === 'w';
+  if (c.key === 'reasoning') return sec === 'm';
+  return false;
+}
+
+function clearChallengeAnswers(c, answers){
+  for (var i = 0; i < ITEMS.length; i++)
+    if (challengeOwns(c, i)) answers[i] = 0;
+}
+
+/** How many questions a challenge holds in total, follow-up included once it
+ *  has been decided. Used for the progress bar and the hub cards. */
+function challengeTotal(c, answers){
+  return c.plan().length + (c.extend ? c.extend(answers).length : 0);
+}
+
+/** Is this challenge finished?
+ *
+ *  For the four scale challenges that is every question answered. The card sort
+ *  is finished when every card has been placed, whatever distribution the
+ *  student chose. */
+function challengeDone(c, answers){
+  if (c.interaction === 'sort'){
+    return wilAnswered(answers) === WIL_COUNT;
+  }
+  var plan = c.plan();
+  for (var j = 0; j < plan.length; j++) if (!answers[plan[j]]) return false;
+  // A challenge with a follow-up is not done until the follow-up is too.
+  var more = c.extend ? c.extend(answers) : [];
+  for (var k = 0; k < more.length; k++) if (!answers[more[k]]) return false;
+  return true;
+}
+
+function allChallengesDone(answers){
+  for (var i = 0; i < CHALLENGES.length; i++)
+    if (!challengeDone(CHALLENGES[i], answers)) return false;
+  return true;
+}
+
 var state = { answers: new Array(ITEMS.length).fill(0), page: 0,
-              plan: CORE_PLAN.slice(), stage: STAGE_P_TOPUP };
-function pageCount(){ return Math.ceil(state.plan.length / PAGE_SIZE); }
+              plan: CORE_PLAN.slice(), stage: STAGE_P_TOPUP,
+              // null means the hub is on screen rather than a challenge.
+              challenge: null, view: 'hub' };
+function pageCount(){
+  var size = (typeof challengePageSize === 'function')
+    ? challengePageSize(state.challenge ? challengeBy(state.challenge) : null) : PAGE_SIZE;
+  return Math.ceil(state.plan.length / size);
+}
 
 /** Does the button at the bottom of the current page end the test?
  *  On the last core page the honest answer is not known until every question on
  *  it is answered, and most students do get a follow-up block -- so the label
  *  stays "next" until we can prove otherwise. It may then improve to "see
  *  result"; it never promises the result and then asks for more. */
+/** Does the button at the bottom of this page end the CHALLENGE?
+ *
+ *  It used to mean "end the test", and the honest answer was unknowable until
+ *  the last core page was fully answered. That subtlety survives: the two
+ *  adaptive challenges may still grow a follow-up block once their opening
+ *  questions are in, so on the last page the label stays "next" until we can
+ *  prove no follow-up is coming. It never promises the end and then asks for
+ *  more. */
 function willFinish(){
   if (state.page < pageCount() - 1) return false;
-  if (state.stage >= STAGE_DONE) return true;
-  // Only the very last stage can end the test. While personality questions are
-  // still being answered the career block is certain to follow, so the button
-  // must not offer a result it is not about to give.
-  // The career top-up is no longer the end: values always follow it.
-  if (state.stage === STAGE_V_CORE) return !VALUES_COUNT;
-  return false;
+  var c = state.challenge ? challengeBy(state.challenge) : null;
+  if (!c || !c.extend) return true;
+  // Only decidable once every question on screen is answered; before that the
+  // follow-up is computed from a half-filled sheet and would be wrong.
+  var a = answeredOnPage(state.page);
+  if (a.done < a.total) return false;
+  return c.extend(state.answers).length === 0;
 }
 
 /** Advance to the next stage that actually has questions in it, and append them.
@@ -1212,7 +1637,7 @@ function todayStr(){
 }
 
 // ---------- Local draft save (this device only; wrapped so a blocked/full
-//            localStorage never breaks the test — it just runs without saving) ----------
+//            localStorage never breaks the test, it just runs without saving) ----------
 var SAVE_KEY = 'testmind_draft_v1';
 function saveDraft(){
   try {
@@ -1227,11 +1652,15 @@ function clearDraft(){ try { localStorage.removeItem(SAVE_KEY); } catch (e) {} }
 // ---------- Result history, for «then and now» (this device only) ----------
 // Agreeableness and Conscientiousness both start rising between 14 and 16, so a
 // student who retakes this months later has a real chance of seeing themselves
-// move. That is the most honest lesson the test can teach — "this is a snapshot"
+// move. That is the most honest lesson the test can teach: "this is a snapshot"
 // stops being a disclaimer and becomes something they can watch happen.
 // Stored locally and never sent anywhere: scores + date, no answers, no id.
 var HIST_KEY = 'testmind_history_v1';
 var RETEST_DAYS = 60;          // below this, a change is noise, not development
+// Completed personality attempts loaded from the account. Kept in memory rather
+// than copied into localStorage so signing out leaves no account history behind.
+var accountHistory = [];
+var currentPersonalityTs = 0;
 function loadHistory(){
   try {
     var h = JSON.parse(localStorage.getItem(HIST_KEY));
@@ -1249,9 +1678,12 @@ function saveHistory(entry){
 }
 /** The most recent earlier result that is far enough back to be meaningful. */
 function previousResult(){
-  var h = loadHistory();
+  var h = loadHistory().concat(accountHistory).sort(function(a, b){ return a.ts - b.ts; });
+  // When the displayed result came from Supabase, compare from the date that
+  // attempt was actually completed, not from the day it happened to be opened.
+  var reference = currentPersonalityTs || Date.now();
   for (var i = h.length - 1; i >= 0; i--){
-    if (Date.now() - h[i].ts >= RETEST_DAYS * 864e5) return h[i];
+    if (reference - h[i].ts >= RETEST_DAYS * 864e5) return h[i];
   }
   return null;
 }
@@ -1262,12 +1694,19 @@ function dateOf(ts){
 }
 var MONTHS_UZ = ['yanvar','fevral','mart','aprel','may','iyun',
                  'iyul','avgust','sentabr','oktabr','noyabr','dekabr'];
-/** "sentabr 2026" — the month n months from today, for a concrete retest date. */
+/** "sentabr 2026": the month n months from today, for a concrete retest date. */
 function loadDraft(){
   try {
     var d = JSON.parse(localStorage.getItem(SAVE_KEY));
     if (!d || !Array.isArray(d.answers) || d.answers.length !== ITEMS.length) return null;
-    d.answers = d.answers.map(function(v){ v = parseInt(v, 10); return (v >= 1 && v <= 5) ? v : 0; });
+    d.answers = d.answers.map(function(v, i){
+      v = parseInt(v, 10);
+      // Scale answers and the card sort use 1..5; a matrix stores one of up to
+      // eight options. Treating every answer as a scale erased options 6..8 on
+      // reload and made a partly finished reasoning challenge step backwards.
+      var max = ITEMS[i] && ITEMS[i].sec === 'm' ? 8 : 5;
+      return (v >= 1 && v <= max) ? v : 0;
+    });
     // A draft written before the test became adaptive has no plan, and a
     // corrupted one must not be trusted to index ITEMS. Either way, fall back to
     // the core: the extension is decided from the answers anyway, so the student
@@ -1292,7 +1731,7 @@ function loadDraft(){
 }
 
 // ---------- Anonymous usage stats (Google Sheet via Apps Script) ----------
-// Sends NO name, NO age and NO individual answers — only anonymous totals, so a
+// Sends NO name, NO age and NO individual answers, only anonymous totals, so a
 // child can never be identified from the sheet. Leave SHEET_URL empty to disable;
 // the test then behaves exactly as before and the privacy text adjusts itself.
 var SHEET_URL  = 'https://script.google.com/macros/s/AKfycbykz3hl6NJllpdhipaj1Xt9LwE3i7t8wG_cH5xW_1aoh21BZGolo9HnjmKuIRkmY-kQ-g/exec';
@@ -1305,11 +1744,11 @@ var TM_VERSION = '2.0';
 var SITE_HOST = 'personality.naseebedu.com';
 // Telegram bot that delivers results. Change this one line when the real bot is
 // created (the @username, without the @).
-var TG_BOT = 'TestMind_demo_bot';
+var TG_BOT = 'Naseeb Mind_demo_bot';
 // TEMPORARY (2026-07-29): the bot is deliberately not running, so the "get it on
 // Telegram" option is hidden. A button that opens a bot which never answers reads
 // as broken, which is worse than not offering it. Set back to true the moment
-// bot.py is up — nothing else needs changing.
+// bot.py is up. Nothing else needs changing.
 var SHOW_TELEGRAM = false;
 var GUIDE_DIR = 'guides/';          // the per-archetype PDF guides, built by tools/
 var statsSent = false, abandonSent = false;
@@ -1422,7 +1861,7 @@ function sendResearch(done){
 // Capture drop-off: report an unfinished attempt when the page is closed/hidden.
 // NOTE for Sheet analysis: switching apps fires 'abandoned', and if the student
 // comes back and finishes, a later 'completed' row is written too. Both rows carry
-// the SAME attempt id (anonId), so reconcile per id — an id with a 'completed' row
+// the SAME attempt id (anonId), so reconcile per id: an id with a 'completed' row
 // was NOT abandoned. Counting raw 'abandoned' rows overstates drop-off.
 window.addEventListener('pagehide', function(){ sendStats('abandoned'); });
 document.addEventListener('visibilitychange', function(){
@@ -1430,15 +1869,9 @@ document.addEventListener('visibilitychange', function(){
 });
 
 // ---------- start screen artwork ----------
-// Drawn inline rather than loaded: the start screen must paint on the first frame
-// over a school connection, and the page makes no third-party request.
-var BRAND_MARK =
-  '<svg class="startmark" viewBox="0 0 64 64" aria-hidden="true">' +
-    '<rect width="64" height="64" rx="16" fill="#0F6E8C"/>' +
-    '<path d="M15 34 Q15 11 32 11 Q49 11 49 34 Z" fill="#fff"/>' +
-    '<rect x="13" y="38" width="38" height="11" rx="3.5" fill="#fff"/>' +
-    '<path d="M32 16 q4 6 0 11 q-4 -5 0 -11z" fill="#0F6E8C"/>' +
-  '</svg>';
+// Reuse the official transparent mark so the account gate, challenge hub and
+// first challenge screen all carry the same Naseeb Mind identity as the nav.
+var BRAND_MARK = '<img class="startmark" src="assets/ui/logo.png" alt="">';
 
 // The three step illustrations. Each is dropped into the same 112x92 box inside
 // the same 120x100 viewBox, so all three art panels are exactly the same height
@@ -1461,11 +1894,11 @@ var ART_GUIDE = stepArt('step-guide');
 
 var STEPS = [
   { c:'#0F6E8C', soft:'#E7EFF1', art:ART_TEST, title:'Testni topshiring',
-    text:'Oʻzingiz boʻling va samimiy javob bering. Avval shaxsiyat, keyin qiziqish, oxirida qadriyat savollari — 75–95 ta, taxminan 14 daqiqa.' },
+    text:'Oʻzingiz boʻling va samimiy javob bering. Olti sinovni istalgan tartibda va bir necha marta davomida bajarishingiz mumkin.' },
   { c:'#C08A2E', soft:'#F8EFDC', art:ART_RESULT, title:'Natijangizni koʻring',
-    text:'Oʻnta obrazdan bittasi sizniki boʻladi — kuchli tomonlaringiz bilan birga, darhol ekranda.' },
+    text:'Oʻnta obrazdan bittasi sizniki boʻladi: kuchli tomonlaringiz bilan birga, darhol ekranda.' },
   { c:'#8A6BC1', soft:'#EFE9F8', art:ART_GUIDE, title:'Qoʻllanmangizni oling',
-    text:'Xohlasangiz, oxirida email qoldiring — obrazingiz uchun batafsil qoʻllanmani yuboramiz.' }
+    text:'Xohlasangiz, oxirida email qoldiring: obrazingiz uchun batafsil qoʻllanmani yuboramiz.' }
 ];
 
 // ---------- language ----------
@@ -1497,7 +1930,7 @@ var TLANG = (function(){
   // ITEMS.length here made every Russian and English page fall back to Uzbek
   // wholesale the moment the career items existed.
   if (!L.items || L.items.length !== CAREER_START){
-    if (window.console) console.error('TestMind: ' + TLANG + ' item list is ' +
+    if (window.console) console.error('Naseeb Mind: ' + TLANG + ' item list is ' +
       ((L.items || []).length) + ', expected ' + CAREER_START + ' - staying in Uzbek');
     TLANG = 'uz';
     return;
@@ -1524,7 +1957,7 @@ var TLANG = (function(){
   var pack = CAREER_LANGS[TLANG];
   if (!pack || TLANG === 'uz') return;
   if (!pack.items || pack.items.length !== CAREER_COUNT){
-    if (window.console) console.error('TestMind: ' + TLANG + ' career list is ' +
+    if (window.console) console.error('Naseeb Mind: ' + TLANG + ' career list is ' +
       ((pack.items || []).length) + ', expected ' + CAREER_COUNT + ' - staying in Uzbek');
     return;
   }
@@ -1539,7 +1972,7 @@ var TLANG = (function(){
   var pack = VALUE_LANGS[TLANG];
   if (!pack || TLANG === 'uz') return;
   if (!pack.items || pack.items.length !== VALUES_COUNT){
-    if (window.console) console.error('TestMind: ' + TLANG + ' value list is ' +
+    if (window.console) console.error('Naseeb Mind: ' + TLANG + ' value list is ' +
       ((pack.items || []).length) + ', expected ' + VALUES_COUNT + ' - staying in Uzbek');
     return;
   }
@@ -1548,13 +1981,43 @@ var TLANG = (function(){
   VALUES_META = pack;
 })();
 
+// Same treatment for the two banks added with the six challenges. Both are
+// swapped by POSITION and refuse to swap at all if the counts disagree, because
+// a half-translated bank would silently move a question onto another subject.
+(function applySchoolLanguage(){
+  if (!SCHOOL_COUNT || typeof SCHOOL_LANGS === 'undefined') return;
+  var pack = SCHOOL_LANGS[TLANG];
+  if (!pack || TLANG === 'uz') return;
+  if (!pack.items || pack.items.length !== SCHOOL_COUNT){
+    if (window.console) console.error('Naseeb Mind: ' + TLANG + ' school list is ' +
+      ((pack.items || []).length) + ', expected ' + SCHOOL_COUNT + ' - staying in Uzbek');
+    return;
+  }
+  for (var i = 0; i < SCHOOL_COUNT; i++) ITEMS[SCHOOL_START + i].t = pack.items[i].t;
+  SCHOOL_LABELS = pack.labels.slice();
+  SCHOOL_META = pack;
+})();
+
+(function applyWilLanguage(){
+  if (!WIL_COUNT || typeof WIL_LANGS === 'undefined') return;
+  var pack = WIL_LANGS[TLANG];
+  if (!pack || TLANG === 'uz') return;
+  if (!pack.cards || pack.cards.length !== WIL_COUNT){
+    if (window.console) console.error('Naseeb Mind: ' + TLANG + ' work importance list is ' +
+      ((pack.cards || []).length) + ', expected ' + WIL_COUNT + ' - staying in Uzbek');
+    return;
+  }
+  for (var i = 0; i < WIL_COUNT; i++) ITEMS[WIL_START + i].t = pack.cards[i].t;
+  WIL_META = pack;
+})();
+
 // ---- life content, fetched in the student's language only ----
 // The three language packs are 45-67 KB each; loading all three would send a
 // student ~110 KB of text in languages they cannot read. It is also needed
 // nowhere until the report, so it loads in the background while the questions
 // are being answered rather than blocking the page the student is waiting on.
 // If it has not landed by the time the report paints, the report paints without
-// it and lifeArrived() fills the slot in when it does — the section appears late
+// it and lifeArrived() fills the slot in when it does, so the section appears late
 // rather than not at all.
 // The taxonomy and the engine are 84 KB together and are needed NOWHERE until
 // the report. Loading them in <head> pushed the payload a student waits on
@@ -1576,7 +2039,7 @@ var recReady = false, recWaiting = null;
     // '' when the taxonomy is absent -- the report loses its Directions section
     // and keeps everything else, rather than breaking.
     s.onerror = (function(u){ return function(){
-      if (window.console) console.error('TestMind: ' + u + ' failed to load');
+      if (window.console) console.error('Naseeb Mind: ' + u + ' failed to load');
     }; })(srcs[i]);
     document.getElementsByTagName('head')[0].appendChild(s);
   }
@@ -1592,7 +2055,7 @@ var lifeReady = false, lifeWaiting = null;
   };
   // A failed load leaves lifeReady false, which reads exactly like an archetype
   // with no entry: no heading, no empty box, and the rest of the report intact.
-  s.onerror = function(){ if (window.console) console.error('TestMind: life-' + TLANG + '.js failed to load'); };
+  s.onerror = function(){ if (window.console) console.error('Naseeb Mind: life-' + TLANG + '.js failed to load'); };
   document.getElementsByTagName('head')[0].appendChild(s);
 })();
 
@@ -1603,12 +2066,13 @@ var TT_UZ = {
   back:        'Orqaga',
   next:        'Keyingi',
   seeResult:   'Natijani koʻrish',
+  finishChallenge: 'Sinovni tugatish',
   stepCount:   'Qadam %1 / %2',
   answerRest:  'Qolgan savollarga javob bering.',
   topupNote:   'Ikki tomoningiz deyarli teng chiqdi. Qaysi biri kuchliroq ekanini aniq aytish uchun yana bir necha savol beramiz.',
   guideLangNote: '',   // the guides ARE Uzbek; nothing to disclose here
   recH:        'Yoʻnalishlar',
-  recSub:      'Hozirgi javoblaringiz asosida. Bu hukm emas — qidirish uchun boshlangʻich nuqta.',
+  recSub:      'Hozirgi javoblaringiz asosida. Bu hukm emas, qidirish uchun boshlangʻich nuqta.',
   recAreas:    'Sizga yaqin sohalar',
   recMajors:   'Koʻrib chiqishga arziydigan yoʻnalishlar',
   recCareers:  'Tanishib koʻrsangiz boʻladigan kasblar',
@@ -1618,33 +2082,27 @@ var TT_UZ = {
   edu_higher:  'oliy taʼlim',
   edu_college: 'kollej / texnikum',
   edu_either:  'kollej yoki oliy',
-  whyLead:     '%1 — chunki:',
+  whyLead:     '%1, chunki:',
   whyInterest: 'qiziqishlaringizda %1 va %2 kuchli;',
-  whySubject:  'baholaringiz esa %1 boʻyicha kuchli.',
   whyValue:    'ishda siz uchun «%1» muhim.',
-  recConflict: 'Diqqat: qiziqishlaringiz %1 tomonga, baholaringiz esa %2 tomonga qaraydi. Ikkala yoʻl ham koʻrib chiqishga arziydi — bu ziddiyat emas, tanlov.',
-  recNoSubjects: 'Baholaringizni kiritsangiz, tavsiyalar aniqroq boʻladi.',
-  recDisclaimer: 'Bu roʻyxat — qidirish uchun boshlangʻich nuqta, kelajagingiz haqidagi bashorat emas. Qiziqishlar ham, baholar ham oʻzgaradi.',
-  subjH:       'Maktab baholaringiz',
-  subjLede:    'Bilganlaringizni kiriting — hammasi shart emas. Bilmagan fanni tashlab keting.',
-  subjFive:    '5 ballik',
-  subjHundred: '100 ballik',
-  subjSelf:    'Taxminan',
-  subjClear:   'Hammasini tozalash',
-  subjHint:    'Baholar faqat shu qurilmada saqlanadi va hech qayerga yuborilmaydi.',
+  recDisclaimer: 'Bu roʻyxat qidirish uchun boshlangʻich nuqta, kelajagingiz haqidagi bashorat emas. Qiziqishlar ham, baholar ham oʻzgaradi.',
   careerResH:  'Qiziqishlaringiz',
-  careerResSub:'Qaysi ish turlari sizga yoqishini koʻrsatadi — qobiliyatingizni emas.',
-  careerTop:   'Hozircha eng kuchli yoʻnalishingiz — %1. Bu yerdan qidirib boshlang.',
-  careerTie:   'Lekin %1 ham deyarli shunday kuchli — ikkalasiga ham qarang.',
-  careerCaveat:'13–18 yoshda qiziqishlar hali oʻzgaradi. Bu — bugungi surat, umrbod tanlov emas.',
-  careerH:     'Endi — qiziqishlaringiz',
-  careerLede:  'Birinchi qism shaxsiyatingiz haqida edi. Endi qaysi ishlarni yoqtirishingizni soʻraymiz. Bu yerda toʻgʻri javob yoʻq — faqat yoqadimi yoki yoʻqmi.',
+  careerResSub:'Qaysi ish turlari sizga yoqishini koʻrsatadi, qobiliyatingizni emas.',
+  careerTop:   'Hozircha eng kuchli yoʻnalishingiz: %1. Bu yerdan qidirib boshlang.',
+  careerTie:   'Lekin %1 ham deyarli shunday kuchli, ikkalasiga ham qarang.',
+  careerCaveat:'13-18 yoshda qiziqishlar hali oʻzgaradi. Bu bugungi surat, umrbod tanlov emas.',
+  careerH:     'Endi qiziqishlaringiz',
+  careerLede:  'Birinchi qism shaxsiyatingiz haqida edi. Endi qaysi ishlarni yoqtirishingizni soʻraymiz. Bu yerda toʻgʻri javob yoʻq, faqat yoqadimi yoki yoʻqmi.',
   careerTopup: 'Bir necha yoʻnalish deyarli teng chiqdi. Qaysi biri kuchliroq ekanini aniqlash uchun yana bir necha savol beramiz.',
   lifeH:       'Shaxsiyatingiz haqida qisqacha',
   lifeSub:     'Qaysi tomonlaringiz kuchli va qaysi tomonlaringizni yanada yaxshilasa boʻladi.',
+  stepNum:     'QADAM %1',
   resumeH1:    'Yarim qolgan test',
   resumeP:     'Bu qurilmada tugallanmagan test topildi. Davom ettirasizmi?',
   resumeCount: '%1 / %2 savolga javob berilgan.',
+  resumeFresh: 'Yangidan boshlash',
+  resumeGo:    'Davom etish',
+  discShort:   'Natija maslahat xarakteriga ega, hukm emas.',
   cleared:     'Javoblaringiz shu qurilmadan oʻchirildi.',
   fcLead:      'Siz uchun qaysi obraz chiqsin?',
   fcMale:      'Erkak obrazni tanlash',
@@ -1658,18 +2116,18 @@ var TT_UZ = {
   copyFailed:  'Nusxalab boʻlmadi',
   sharePrint:  'Chop etish',
   shareAgain:  'Qaytadan',
-  shareMsg:    'Men TestMind testidan oʻtdim. Natijam: «%1».',
+  shareMsg:    'Men Naseeb Mind testidan oʻtdim. Natijam: «%1».',
   shareInvite: 'Sen ham oʻzingni sinab koʻr: https://%1/',
   capOr:       'yoki emailga',
-  capNote:     'Yuklab olish uchun email kerak emas — u faqat qoʻllanmani pochtangizga yuborish uchun. ' +
+  capNote:     'Yuklab olish uchun email kerak emas: u faqat qoʻllanmani pochtangizga yuborish uchun. ' +
                'Email ixtiyoriy va boshqa hech kimga berilmaydi. ' +
                '18 yoshga toʻlmagan boʻlsangiz, ota-onangiz yoki oʻqituvchingiz bilan maslahatlashing.',
   capSentH:    'Soʻrovingiz yuborildi',
   capFailed:   'Yuborib boʻlmadi. Internetni tekshirib, qayta urinib koʻring.',
   sending:     'Yuborilmoqda…',
   tnAgain:     'Siz bu testni <b>%1</b> kuni ham ishlagansiz.',
-  tnSame:      '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija — demak, oʻzingizni yaxshi bilar ekansiz.</p>',
-  tnArch:      '<p class="tnarch">Oʻshanda obrazingiz «%1» edi. Obraz oʻzgarishi — xato emas, oʻsish belgisi.</p>',
+  tnSame:      '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija, demak, oʻzingizni yaxshi bilar ekansiz.</p>',
+  tnArch:      '<p class="tnarch">Oʻshanda obrazingiz «%1» edi. Obraz oʻzgarishi xato emas, oʻsish belgisi.</p>',
   grew:        'oʻsibdi',
   strengthLbl: 'Kuchli tomoningiz:',
   watchLbl:    'Eʼtibor bering:',
@@ -1682,7 +2140,76 @@ var TT_UZ = {
   emailAria:   'Email manzilingiz',
   send:        'Yuborish',
   or:          'yoki',
-  mid:         'Oʻrta'
+  mid:         'Oʻrta',
+
+  // ---- the six challenges ----
+  hubH:        'Oltita sinov',
+  hubSub:      'Har birini alohida yechasiz. Xohlagan tartibda, xohlagan vaqtda. Javoblaringiz saqlanadi.',
+  hubStart:    'Boshlash',
+  hubResume:   'Davom etish',
+  hubRetake:   'Qayta yechish',
+  hubDone:     'Tugallandi',
+  hubOf:       '%1 / %2',
+  hubQuestions:'%1 ta savol',
+  hubCards:    '%1 ta karta',
+  hubPuzzles:  '%1 ta jumboq',
+  hubResult:   'Umumiy natijani koʻrish',
+  hubLeft:     'Yana %1 ta sinov qoldi',
+  hubBack:     'Sinovlarga qaytish',
+  hubGreeting: 'Xush kelibsiz',
+
+  chPersonality:  'Shaxsiyat',
+  chPersonalityB: 'Oʻzingiz odatda qanday ekaningiz haqida ellikta gap. Toʻgʻri javob ham, yaxshi natija ham yoʻq.',
+  chInterests:    'Qiziqishlar',
+  chInterestsB:   'Qanday ishlarni yoqtirishingiz. Qobiliyat haqida emas, faqat yoqadimi yoki yoʻqmi.',
+  chValues:       'Ishda nima muhim',
+  chValuesB:      'Kelajakdagi ishingizdan nimani kutasiz.',
+  chReasoning:    'Mantiq',
+  chReasoningB:   'Oʻn ikkita jumboq. Qatorlar boʻylab qanday qoida borligini toping va boʻsh katakka mos keladiganini tanlang. Soʻz yoʻq.',
+
+  // ---- account ----
+  authGateH:   'Sinovlarni boshlang',
+  authH:       'Hisob yarating',
+  authHIn:     'Hisobingizga kiring',
+  authSub:     'Oltita sinovni bir kunda yechish shart emas. Hisob javoblaringizni saqlaydi, keyin davom etasiz.',
+  authDialogSub:'Email va kamida olti belgili parol kiriting.',
+  authClose:   'Yopish',
+  authWhy:     'Bir yildan keyin qayta yechsangiz, ikkala natijani yonma-yon koʻrasiz. Buning uchun hisob kerak.',
+  authHaveNo:  'Hisobingiz yoʻqmi? Roʻyxatdan oʻting',
+  authHaveYes: 'Hisobingiz bormi? Kiring',
+  authSignIn:  'Kirish',
+  authSignUp:  'Roʻyxatdan oʻtish',
+  authEmail:   'Email',
+  authPassword:'Parol',
+  authWorking: 'Kutib turing',
+  authSignOut: 'Chiqish',
+  authConfirm: 'Emailingizga xat yubordik. Havolani bosing, keyin shu yerdan kiring.',
+  authNoName:  'Ism, telefon va tugʻilgan sana soʻralmaydi. Hisob uchun faqat email va parol.',
+
+  errBadCredentials: 'Email yoki parol notoʻgʻri.',
+  errEmailTaken:     'Bu email allaqachon roʻyxatdan oʻtgan. Kiring.',
+  errWeakPassword:   'Parol juda qisqa. Kamida olti belgi boʻlsin.',
+  errBadEmail:       'Email notoʻgʻri yozilgan.',
+  errTooMany:        'Juda koʻp urinish boʻldi. Bir necha daqiqadan keyin qayta urinib koʻring.',
+  errOffline:        'Internet yoʻq. Ulanib, qayta urinib koʻring.',
+  errUnreachable:    'Serverga ulanib boʻlmadi. Qayta urinib koʻring.',
+  errSignedOut:      'Seansingiz tugadi. Qaytadan kiring.',
+  errFailed:         'Nimadir notoʻgʻri ketdi. Qayta urinib koʻring.',
+
+  // ---- the card sort ----
+  sortLeft:    'Joylashtirilmagan kartalar',
+  sortHow:     'Kartani tanlang, soʻng qaysi darajaga qoʻyishni bosing. Fikringizni istalgan payt oʻzgartirasiz.',
+  sortNeed:    'Barcha kartalarni joylashtiring. Har bir darajada istagancha karta boʻlishi mumkin.',
+  sortCount:   '%1 ta joylashtirildi',
+  sortPlace:   'Endi bu kartani qaysi darajaga qoʻyishni tanlang.',
+  sortMove:    '«%1» kartasini koʻchirish',
+
+  // ---- reasoning ----
+  mxPuzzle:    'Jumboq %1 / %2',
+  mxNotIq:     'Bu IQ testi emas va bu yerda IQ ball yoʻq. Bu faqat nechta jumboqni yechganingiz. Oʻzbek namunasi boʻyicha meʼyor yoʻq, shuning uchun ball chiqarish notoʻgʻri boʻlardi.',
+  mxBandStrong:     'Kuchli',
+  mxBandMixed:      'Oʻrtacha',
+  mxBandDeveloping: 'Rivojlanmoqda'
 };
 
 // The nav and footer are static markup in this file, written in Uzbek. When the
@@ -1693,41 +2220,51 @@ var CHROME = {
     nav: {'index.html': ['Главная', 'ru/index.html'],
           'obrazlar.html': ['Образы', 'ru/obrazlar.html'],
           'test.html': ['Тест личности', 'test.html?lang=ru'],
-          'qanday-ishlaydi.html': ['Как это работает', 'ru/qanday-ishlaydi.html'],
           'savollar.html': ['Вопросы', 'ru/savollar.html'],
           'privacy.html': ['Конфиденциальность', 'ru/privacy.html'],
+          'terms.html': ['Условия использования', 'ru/terms.html'],
+          'accessibility.html': ['Доступность', 'ru/accessibility.html'],
           'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
     cta: 'Пройти тест',
+    login: 'Войти',
+    langlabel: 'Язык сайта',
     back: 'Вернуться на сайт Naseeb Edu',
-    title: 'Бесплатный тест личности — TestMind',
+    title: 'Бесплатный тест личности | Naseeb Mind',
     foot: {'Oʻnta obraz': 'Десять образов',
            'Test': 'Тест',
            'Koʻp beriladigan savollar': 'Частые вопросы',
            'Maʼlumot': 'Информация',
+           'Foydalanish shartlari': 'Условия использования',
+           'Qulay foydalanish': 'Доступность',
            'Test qaysi modelga asoslangan': 'На какой модели основан тест',
            'Bogʻlanish': 'Связаться',
-           'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
-             'Результат носит рекомендательный характер — это не медицинский и не психологический диагноз.'}
+           'Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.':
+             'Результат носит рекомендательный характер, это не медицинский и не психологический диагноз.'}
   },
   en: {
     nav: {'index.html': ['Home', 'en/index.html'],
           'obrazlar.html': ['Characters', 'en/obrazlar.html'],
           'test.html': ['The test', 'test.html?lang=en'],
-          'qanday-ishlaydi.html': ['How it works', 'en/qanday-ishlaydi.html'],
           'savollar.html': ['FAQ', 'en/savollar.html'],
           'privacy.html': ['Privacy', 'en/privacy.html'],
+          'terms.html': ['Terms & Conditions', 'en/terms.html'],
+          'accessibility.html': ['Accessibility', 'en/accessibility.html'],
           'maktablar.html': ['For schools and parents', 'en/maktablar.html']},
     cta: 'Take the test',
+    login: 'Log in',
+    langlabel: 'Site language',
     back: 'Back to the Naseeb Edu site',
-    title: 'Free personality test — TestMind',
+    title: 'Free personality test | Naseeb Mind',
     foot: {'Oʻnta obraz': 'The ten characters',
            'Test': 'Test',
            'Koʻp beriladigan savollar': 'Frequently asked questions',
            'Maʼlumot': 'About',
+           'Foydalanish shartlari': 'Terms & Conditions',
+           'Qulay foydalanish': 'Accessibility',
            'Test qaysi modelga asoslangan': 'What the test is based on',
            'Bogʻlanish': 'Contact',
-           'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.':
-             'Results are advisory — not a medical or psychological diagnosis.'}
+           'Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.':
+             'Results are advisory, not a medical or psychological diagnosis.'}
   }
 };
 
@@ -1751,12 +2288,27 @@ function localiseChrome(){
                    '" lang="' + l + '" title="' + LANG_TITLE[l] + '">' + up + '</a>';
     }
     sw.innerHTML = html;
+    // The group's accessible name is the one bit of the switcher that is not a
+    // pill, so rebuilding the pills alone left a screen reader announcing it in
+    // Uzbek on all three languages.
+    var lbl = CHROME[TLANG] && CHROME[TLANG].langlabel;
+    if (lbl) sw.setAttribute('aria-label', lbl);
+    // Flag the switch before the browser leaves, so the result can be redrawn in
+    // the new language on the other side of the page load.
+    var pills = sw.querySelectorAll('a');
+    for (i = 0; i < pills.length; i++) pills[i].addEventListener('click', markLanguageSwitch);
   }
 
   var C = CHROME[TLANG];
-  if (!C) return;                       // Uzbek: the static markup is already right
+  var accountLinks = document.querySelectorAll('.toplogin, .toplogin-mobile');
+  var loginHref = 'test.html' + (TLANG === 'uz' ? '?auth=signin' : '?lang=' + TLANG + '&auth=signin');
+  for (i = 0; i < accountLinks.length; i++){
+    accountLinks[i].textContent = C ? C.login : 'Kirish';
+    accountLinks[i].setAttribute('href', loginHref);
+  }
+  if (!C) return;                       // Uzbek: the remaining static markup is already right
 
-  var a, links = document.querySelectorAll('.toplinks a, .foot a');
+  var a, links = document.querySelectorAll('.toplinks a:not(.toplogin-mobile), .foot a');
   for (i = 0; i < links.length; i++){
     a = links[i];
     var file = (a.getAttribute('href') || '').split('/').pop().split('?')[0];
@@ -1769,7 +2321,11 @@ function localiseChrome(){
   if (cta){ cta.textContent = C.cta; cta.setAttribute('href', 'test.html?lang=' + TLANG); }
   var vh = document.querySelector('.navback .vh');
   if (vh) vh.textContent = C.back;
-  var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li');
+  // .footbar span is in this list because the legal disclaimer lives in a bare
+  // <span> down there, and every earlier selector only reached headings, list
+  // items and paragraphs -- so the one line that must be understood was the one
+  // line left in Uzbek on a Russian page.
+  var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li, .footbar span');
   for (i = 0; i < heads.length; i++){
     var txt = heads[i].childNodes.length === 1 ? heads[i].textContent.trim() : null;
     if (txt && C.foot[txt]) heads[i].textContent = C.foot[txt];
@@ -1799,7 +2355,7 @@ function introHtml(){
       STEPS.map(function(st, i){
         return '<section class="step" style="--sc:' + st.c + ';--ss:' + st.soft + '">' +
           '<div class="stepart">' + st.art + '</div>' +
-          '<span class="stepnum">QADAM ' + (i + 1) + '</span>' +
+          '<span class="stepnum">' + T('stepNum', i + 1) + '</span>' +
           '<h2>' + st.title + '</h2>' +
           '<p>' + st.text + '</p>' +
         '</section>';
@@ -1807,25 +2363,445 @@ function introHtml(){
     '</div>';
 }
 
+/* ================= the hub, the gate, and getting between them =================
+
+   Three screens now sit in front of the questions: an account gate, a hub
+   listing the six challenges, and the challenge itself. render() is the only
+   thing that decides which is on screen, so there is one place to look when the
+   wrong one appears. */
+
+var CH_STRINGS = {
+  personality: ['chPersonality', 'chPersonalityB'],
+  interests:   ['chInterests', 'chInterestsB'],
+  values:      ['chValues', 'chValuesB'],
+  reasoning:   ['chReasoning', 'chReasoningB'],
+};
+
+// Challenges 4 and 5 carry their own title and blurb in their bank, already
+// translated. Reading them from there rather than restating them in TT_UZ means
+// the question bank and the card that opens it cannot describe it differently.
+function challengeTitle(c){
+  if (c.key === 'school' && SCHOOL_META && SCHOOL_META.title) return SCHOOL_META.title;
+  if (c.key === 'workimportance' && WIL_META && WIL_META.title) return WIL_META.title;
+  return T(CH_STRINGS[c.key][0]);
+}
+
+function challengeBlurb(c){
+  if (c.key === 'school' && SCHOOL_META && SCHOOL_META.blurb) return SCHOOL_META.blurb;
+  if (c.key === 'workimportance' && WIL_META && WIL_META.blurb) return WIL_META.blurb;
+  return T(CH_STRINGS[c.key][1]);
+}
+
+// "48 questions" is wrong for twenty cards you sort and twelve puzzles you
+// solve, and a student reading "20 questions" then meeting a card sort is
+// entitled to feel misled.
+function challengeSize(c){
+  var n = c.plan().length;
+  if (c.interaction === 'matrix') return T('hubPuzzles', n);
+  return T('hubQuestions', n);
+}
+
+// One puzzle to a screen: a matrix needs the whole width on a phone. All rating
+// challenges use the same familiar five-item page rhythm.
+function challengePageSize(c){
+  if (!c) return PAGE_SIZE;
+  if (c.interaction === 'matrix') return 1;
+  return PAGE_SIZE;
+}
+
+function currentChallenge(){ return state.challenge ? challengeBy(state.challenge) : null; }
+
+function openChallenge(key){
+  var c = challengeBy(key);
+  if (!c) return;
+  // "Retake" means a fresh sitting. The completed attempt remains append-only
+  // in Supabase, while this working sheet is cleared for the new answers.
+  if (challengeDone(c, state.answers)) clearChallengeAnswers(c, state.answers);
+  state.challenge = key;
+  state.view = 'challenge';
+  state.plan = c.plan();
+  // A challenge whose opening block is already answered gets its follow-up
+  // straight away, so a student returning to it lands on the questions still to
+  // do rather than on a "next" button that silently grows the test.
+  var opening = state.plan.slice(), everyOpeningAnswered = true, i;
+  for (i = 0; i < opening.length; i++) if (!state.answers[opening[i]]) everyOpeningAnswered = false;
+  if (everyOpeningAnswered && c.extend){
+    var more = c.extend(state.answers);
+    if (more.length) state.plan = state.plan.concat(more);
+  }
+  // Resume where they stopped, not at question one.
+  var size = challengePageSize(c);
+  state.page = 0;
+  for (i = 0; i < state.plan.length; i++){
+    if (!state.answers[state.plan[i]]){ state.page = Math.floor(i / size); break; }
+  }
+  render();
+}
+
+function backToHub(){
+  saveDraft();
+  syncProgress();
+  state.challenge = null;
+  state.view = 'hub';
+  render();
+}
+
+/** A challenge has just been completed. */
+function finishChallenge(){
+  var c = currentChallenge();
+  saveDraft();
+  if (c) saveAttempt(c);
+  if (c && c.key === 'personality') currentPersonalityTs = Date.now();
+  state.challenge = null;
+  // Six of six means the result is finally worth showing; anything less returns
+  // to the hub, because a partial result would be read as the real one.
+  state.view = allChallengesDone(state.answers) ? 'result' : 'hub';
+  render();
+}
+
+function render(){
+  if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn()) return renderAuth();
+  if (state.view === 'result') return renderReport();
+  var c = currentChallenge();
+  if (state.view === 'challenge' && c){
+    if (c.interaction === 'sort') return renderSort();
+    if (c.interaction === 'matrix') return renderMatrix();
+    return renderPage();
+  }
+  return renderHub();
+}
+
+// ------------------------------------------------------------------ the hub --
+function renderHub(){
+  var done = 0, i;
+  var cards = '';
+  for (i = 0; i < CHALLENGES.length; i++){
+    var c = CHALLENGES[i];
+    var finished = challengeDone(c, state.answers);
+    if (finished) done++;
+    var answered = c.answered(state.answers);
+    var total = challengeTotal(c, state.answers);
+    var started = answered > 0 && !finished;
+    var action = finished ? T('hubRetake') : (started ? T('hubResume') : T('hubStart'));
+    var status = finished
+      ? '<span class="chdone">' + esc(T('hubDone')) + '</span>'
+      : (started ? '<span class="chpart">' + esc(T('hubOf', answered, total)) + '</span>' : '');
+    cards +=
+      '<li class="chcard' + (finished ? ' is-done' : '') + '">' +
+        '<div class="chnum" aria-hidden="true">' + c.n + '</div>' +
+        '<div class="chbody">' +
+          '<h3>' + esc(challengeTitle(c)) + '</h3>' +
+          '<p>' + esc(challengeBlurb(c)) + '</p>' +
+          '<p class="chmeta">' + esc(challengeSize(c)) + '</p>' +
+        '</div>' +
+        '<div class="chside">' + status +
+          '<button class="btn chgo" data-ch="' + esc(c.key) + '">' + esc(action) + '</button>' +
+        '</div>' +
+      '</li>';
+  }
+  var left = CHALLENGES.length - done;
+  var user = (typeof NMAccount !== 'undefined' && NMAccount.user()) || null;
+
+  app.innerHTML =
+    '<div class="starthead">' + BRAND_MARK +
+      '<h1>' + esc(T('hubH')) + '</h1>' +
+      '<p class="hubsub">' + esc(T('hubSub')) + '</p>' +
+    '</div>' +
+    (user ? '<p class="hubwho">' + esc(user.email || '') +
+            ' <button class="linkbtn" id="signOut">' + esc(T('authSignOut')) + '</button></p>' :
+            '<div class="hubwho hubauth">' +
+              '<button class="btn" type="button" id="hubSignUp">' + esc(T('authSignUp')) + '</button>' +
+              '<button class="linkbtn" type="button" id="hubSignIn">' + esc(T('authSignIn')) + '</button>' +
+            '</div>') +
+    '<ol class="chlist">' + cards + '</ol>' +
+    '<div class="nav">' +
+      (left === 0
+        ? '<button class="btn" id="hubResult">' + esc(T('hubResult')) + '</button>'
+        : '<p class="navmsg">' + esc(T('hubLeft', left)) + '</p>') +
+    '</div>' +
+    '<div class="tailspace" aria-hidden="true"></div>';
+
+  var buttons = app.querySelectorAll('.chgo');
+  for (i = 0; i < buttons.length; i++){
+    buttons[i].onclick = function(){
+      if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn()){
+        authMode = 'signup';
+        renderAuth(true);
+        return;
+      }
+      openChallenge(this.getAttribute('data-ch'));
+    };
+  }
+  var res = document.getElementById('hubResult');
+  if (res) res.onclick = function(){
+    if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn()){
+      authMode = 'signup';
+      renderAuth(true);
+      return;
+    }
+    state.view = 'result'; render();
+  };
+  var join = document.getElementById('hubSignUp');
+  if (join) join.onclick = function(){ authMode = 'signup'; renderAuth(true); };
+  var enter = document.getElementById('hubSignIn');
+  if (enter) enter.onclick = function(){ authMode = 'signin'; renderAuth(true); };
+  var out = document.getElementById('signOut');
+  if (out) out.onclick = function(){
+    NMAccount.signOut().then(function(){
+      state.answers = new Array(ITEMS.length).fill(0);
+      state.challenge = null; state.view = 'hub';
+      accountHistory = []; currentPersonalityTs = 0;
+      clearDraft();
+      render();
+    });
+  };
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+// --------------------------------------------------------------- the gate ----
+var authMode = 'signup';
+
+function renderAuth(openDialog){
+  var existing = document.getElementById('authDialog');
+  if (existing) existing.remove();
+  document.body.classList.remove('modal-open');
+  if (!openDialog){
+    renderHub();
+    return;
+  }
+  var signUp = authMode === 'signup';
+  if (!app.querySelector('.chlist')) renderHub();
+  document.body.classList.add('modal-open');
+  app.insertAdjacentHTML('beforeend',
+    '<div class="authoverlay" id="authDialog">' +
+      '<section class="authdialog" role="dialog" aria-modal="true" aria-labelledby="authDialogTitle">' +
+      '<button class="authclose" id="authClose" type="button" aria-label="' + esc(T('authClose')) + '">&times;</button>' +
+      '<h2 id="authDialogTitle">' + esc(T(signUp ? 'authH' : 'authHIn')) + '</h2>' +
+      '<p class="authdialogsub">' + esc(T('authDialogSub')) + '</p>' +
+      '<form class="authcard" id="authForm" novalidate>' +
+      '<label class="authlab" for="authEmail">' + esc(T('authEmail')) + '</label>' +
+      '<input class="authin" id="authEmail" type="email" autocomplete="email" ' +
+        'inputmode="email" required>' +
+      '<label class="authlab" for="authPass">' + esc(T('authPassword')) + '</label>' +
+      '<input class="authin" id="authPass" type="password" required ' +
+        'autocomplete="' + (signUp ? 'new-password' : 'current-password') + '">' +
+      '<p class="autherr" id="authErr" role="alert"></p>' +
+      '<button class="btn" type="submit" id="authGo">' +
+        esc(T(signUp ? 'authSignUp' : 'authSignIn')) + '</button>' +
+      '<button class="linkbtn authswap" type="button" id="authSwap">' +
+        esc(T(signUp ? 'authHaveYes' : 'authHaveNo')) + '</button>' +
+      '<p class="authnote">' + esc(T('authNoName')) + '</p>' +
+      '</form>' +
+      '</section>' +
+    '</div>');
+
+  var close = function(){ renderAuth(false); };
+  document.getElementById('authClose').onclick = close;
+  document.getElementById('authDialog').onclick = function(ev){
+    if (ev.target === this) close();
+  };
+  document.getElementById('authSwap').onclick = function(){
+    authMode = signUp ? 'signin' : 'signup';
+    renderAuth(true);
+  };
+
+  document.getElementById('authForm').onsubmit = function(ev){
+    ev.preventDefault();
+    var email = document.getElementById('authEmail').value.trim();
+    var pass = document.getElementById('authPass').value;
+    var err = document.getElementById('authErr');
+    var go = document.getElementById('authGo');
+    err.textContent = '';
+    go.disabled = true;
+    go.textContent = T('authWorking');
+
+    var done = function(){ go.disabled = false; go.textContent = T(signUp ? 'authSignUp' : 'authSignIn'); };
+    var fail = function(e){
+      done();
+      var key = 'err' + (e && e.code ? e.code.replace(/(^|-)([a-z])/g, function(m, d, ch){ return ch.toUpperCase(); }) : 'Failed');
+      err.textContent = T(key) || T('errFailed');
+    };
+
+    var run = signUp ? NMAccount.signUp(email, pass) : NMAccount.signIn(email, pass);
+    run.then(function(result){
+      // Sign-up with email confirmation still switched on returns no session.
+      // Saying "welcome" and showing the hub would be a lie: they cannot sign in
+      // until they click the link.
+      if (signUp && result && result.confirm){
+        done();
+        err.classList.add('ok');
+        err.textContent = T('authConfirm');
+        return;
+      }
+      state.view = 'hub';
+      document.body.classList.remove('modal-open');
+      // Anything already saved server-side wins over this device's draft: a
+      // student signing in on a new phone should find their work, not a blank.
+      pullSaved().then(render, render);
+    }, fail);
+  };
+  window.setTimeout(function(){ document.getElementById('authEmail').focus(); }, 0);
+}
+
+document.addEventListener('keydown', function(ev){
+  if (ev.key === 'Escape' && document.getElementById('authDialog')) renderAuth(false);
+});
+
+function wireTopLogin(){
+  var links = document.querySelectorAll('.toplogin, .toplogin-mobile');
+  for (var i = 0; i < links.length; i++) links[i].onclick = function(ev){
+    ev.preventDefault();
+    if (typeof NMAccount !== 'undefined' && NMAccount.signedIn()){
+      state.view = 'hub';
+      render();
+      return;
+    }
+    authMode = 'signin';
+    renderAuth(true);
+  };
+}
+
+/* ---------------- talking to the account ----------------
+   Every one of these is best effort. The test has always worked with no network
+   at all, saving to localStorage, and it still must: a student on a school
+   connection that drops must not lose a challenge they just finished. So a
+   failed sync is swallowed and the draft stays put. */
+function pullSaved(){
+  if (typeof NMAccount === 'undefined' || !NMAccount.signedIn()) return Promise.resolve();
+  return Promise.all([
+    NMAccount.attempts().catch(function(){ return []; }),
+    NMAccount.progress().catch(function(){ return []; }),
+  ]).then(function(both){
+    var attempts = both[0] || [], progress = both[1] || [], i;
+    accountHistory = [];
+    for (i = 0; i < attempts.length; i++){
+      var hist = attempts[i], hs = hist.scores, hts = Date.parse(hist.completed_at || '') || 0;
+      if (hist.challenge !== 'personality' || !hs || !hts) continue;
+      var valid = true;
+      for (var hk = 0; hk < TRAIT_ORDER.length; hk++)
+        if (typeof hs[TRAIT_ORDER[hk]] !== 'number') valid = false;
+      if (valid) accountHistory.push({ ts: hts, s: hs, key: archetypeKeyOf(hs) });
+    }
+    // A progress row can be newer than the latest completed attempt when the
+    // student is retaking a challenge. Pick by time, not merely by row type.
+    var latest = {};
+    for (i = 0; i < attempts.length; i++){
+      var a = attempts[i];
+      var at = Date.parse(a.completed_at || '') || 0;
+      if (!latest[a.challenge] || at > latest[a.challenge].ts)
+        latest[a.challenge] = { ts: at, answers: a.answers };
+    }
+    for (i = 0; i < progress.length; i++){
+      var p = progress[i], pt = Date.parse(p.updated_at || '') || 0;
+      if (!latest[p.challenge] || pt > latest[p.challenge].ts)
+        latest[p.challenge] = { ts: pt, answers: p.answers };
+    }
+
+    // A newer local draft is the copy that survived a dropped connection. Do
+    // not overwrite it merely because the network has come back.
+    var local = loadDraft();
+    for (i = 0; i < CHALLENGES.length; i++){
+      var c = CHALLENGES[i], remote = latest[c.key];
+      if (!remote) continue;
+      if (local && local.ts > remote.ts && c.answered(local.answers) > 0) continue;
+      clearChallengeAnswers(c, state.answers);
+      applyAnswers(remote.answers);
+      if (c.key === 'personality') currentPersonalityTs = remote.ts;
+    }
+  }).catch(function(){});
+}
+
+// Answers arrive as {itemIndex: value}. Anything out of range is dropped rather
+// than trusted: the bank may have grown since the row was written.
+function applyAnswers(map){
+  if (!map) return;
+  for (var k in map){
+    if (!Object.prototype.hasOwnProperty.call(map, k)) continue;
+    var i = parseInt(k, 10), v = map[k];
+    if (i >= 0 && i < ITEMS.length && v > 0) state.answers[i] = v;
+  }
+}
+
+function answersFor(c){
+  var out = {}, plan = c.plan(), i;
+  var more = c.extend ? c.extend(state.answers) : [];
+  for (i = 0; i < plan.length; i++) if (state.answers[plan[i]]) out[plan[i]] = state.answers[plan[i]];
+  for (i = 0; i < more.length; i++) if (state.answers[more[i]]) out[more[i]] = state.answers[more[i]];
+  return out;
+}
+
+function scoresFor(c){
+  if (c.key === 'personality') return scoreAnswers(state.answers);
+  if (c.key === 'interests') return scoreCareer(state.answers);
+  if (c.key === 'values') return scoreValues(state.answers);
+  if (c.key === 'school') return scoreSchool(state.answers);
+  if (c.key === 'workimportance') return scoreWil(state.answers);
+  if (c.key === 'reasoning') return scoreMatrix(state.answers);
+  return {};
+}
+
+function saveAttempt(c){
+  if (typeof NMAccount === 'undefined' || !NMAccount.signedIn()) return;
+  NMAccount.saveAttempt(c.key, '1', answersFor(c), scoresFor(c)).catch(function(){});
+}
+
+var progressTimer = null;
+function syncProgress(){
+  if (progressTimer){ clearTimeout(progressTimer); progressTimer = null; }
+  var c = currentChallenge();
+  if (!c) return;
+  if (typeof NMAccount === 'undefined' || !NMAccount.signedIn()) return;
+  if (challengeDone(c, state.answers)) return;
+  NMAccount.saveProgress(c.key, answersFor(c)).catch(function(){});
+}
+
+function queueProgressSync(){
+  if (progressTimer) clearTimeout(progressTimer);
+  progressTimer = setTimeout(syncProgress, 1200);
+}
+
+// The header that replaced the old three-step opener. A challenge is its own
+// screen now, so it says which one you are in and how to leave.
+function challengeHeader(c){
+  return '<div class="chhead">' +
+      '<button class="backlink" id="hubBack"><span aria-hidden="true">&#8592;</span> ' +
+        esc(T('hubBack')) + '</button>' +
+      '<span class="chhnum">' + esc(T('hubOf', c.n, CHALLENGES.length)) + '</span>' +
+    '</div>' +
+    '<div class="starthead chstart">' +
+      '<h1>' + esc(challengeTitle(c)) + '</h1>' +
+      '<p class="hubsub">' + esc(challengeBlurb(c)) + '</p>' +
+    '</div>';
+}
+
+function wireHubBack(){
+  var b = document.getElementById('hubBack');
+  if (b) b.onclick = backToHub;
+}
+
 function answeredOnPage(p){
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, state.plan.length), c = 0;
+  var size = challengePageSize(currentChallenge());
+  var from = p * size, to = Math.min(from + size, state.plan.length), c = 0;
   for (var i = from; i < to; i++) if (state.answers[state.plan[i]]) c++;
   return { done: c, total: to - from };
 }
 
 function renderPage(){
   var p = state.page;
+  var chal = currentChallenge();
   saveDraft();
   // from/to are positions in the PLAN, not in ITEMS: state.plan[k] is the item.
-  var from = p * PAGE_SIZE, to = Math.min(from + PAGE_SIZE, state.plan.length);
+  var size = challengePageSize(chal);
+  var from = p * size, to = Math.min(from + size, state.plan.length);
   if (!sessionStart) sessionStart = Date.now();
-  // Was this page already finished when it opened? If so we must NOT auto-advance —
+  // Was this page already finished when it opened? If so we must NOT auto-advance,
   // otherwise editing an answer on a completed page would yank the page away.
   var pageWasComplete = answeredOnPage(p).done === answeredOnPage(p).total;
   var html =
-    // The opener (mark + title + the three step cards) stays on every step, not
-    // just the first, so the "what happens" explainer never disappears mid-test.
-    introHtml() +
+    // The three-step opener is gone: it explained a single continuous run, and
+    // the hub now does that job before a challenge is opened at all. What stays
+    // on every page is which challenge you are in and the way back out.
+    challengeHeader(chal) +
     // The step bar only appears from step 2 on. On step 1 there is nothing to go
     // back to and no progress to show yet, so it would just be a dead bar above the
     // first questions; it slides in once the student finishes a page.
@@ -1844,19 +2820,11 @@ function renderPage(){
     // different reasons now, so the note has to say which one applies.
     (pTopupHere(from) ? '<p class="tunote">' + T('topupNote') + '</p>' : '') +
     (cTopupHere(from) ? '<p class="tunote">' + T('careerTopup') + '</p>' : '') +
-    // The hand-over. Without it the student goes from "I worry about small
-    // things — do you agree?" straight to "Build a table out of wood", answered
-    // on a scale that has quietly changed from agree/disagree to like/dislike.
-    (careerStartsAt() === from
-      ? '<div class="secintro"><h2>' + esc(T('careerH')) + '</h2>' +
-        '<p>' + esc(T('careerLede')) + '</p></div>'
-      : '') +
-    // ...and again into the values block, where the scale changes a third time,
-    // from like/dislike to how-important.
-    (valuesStartAt() === from && VALUES_META
-      ? '<div class="secintro"><h2>' + esc(VALUES_META.introH) + '</h2>' +
-        '<p>' + esc(VALUES_META.introP) + '</p></div>'
-      : '') +
+    // The two mid-test hand-over cards are gone. They existed because the scale
+    // changed underneath the student halfway through one long run, from
+    // agree/disagree to like/dislike to how-important. Each of those blocks is
+    // now a challenge of its own with its own opening screen, so the hand-over
+    // has nothing left to hand over.
     '<div class="card">';
   for (var k = from; k < to; k++){
     var qi = state.plan[k], it = ITEMS[qi], LAB = labelsFor(it);
@@ -1881,12 +2849,13 @@ function renderPage(){
   html += '</div>' +
     '<div class="nav">' +
       '<p class="navmsg" id="navMsg" role="status"></p>' +
-      '<button class="btn" id="nextBtn">' + (willFinish() ? T('seeResult') : T('next')) + '</button>' +
+      '<button class="btn" id="nextBtn">' + (willFinish() ? T('finishChallenge') : T('next')) + '</button>' +
     '</div>' +
     '<div class="tailspace" aria-hidden="true"></div>';
   app.innerHTML = html;
   window.scrollTo({top:0, behavior:'auto'});
 
+  wireHubBack();
   updateCount();
 
   // Repaint one item from state (0 = unanswered, so nothing is highlighted).
@@ -1966,6 +2935,7 @@ function renderPage(){
     paintItem(idx);
     updateCount();
     saveDraft();
+    queueProgressSync();
     if (val && mayAdvance && wasCurrent && !tryAutoAdvance()) goToNextUnanswered(idx);
   }
 
@@ -1976,7 +2946,7 @@ function renderPage(){
     //
     // Chrome fires a synthetic 'click' for arrow-key selection too, so 'click' alone
     // cannot mean "they tapped it". Keyboard-generated clicks report detail 0; only a
-    // real tap toggles an answer off, and only a real tap moves them on — an arrow
+    // real tap toggles an answer off, and only a real tap moves them on, since an arrow
     // key is someone still choosing along the scale.
     radios[r].onclick = function(e){
       var idx = parseInt(this.name.slice(1), 10);
@@ -2011,12 +2981,232 @@ function renderPage(){
       updateCount(true);
       return;
     }
-    // Last planned page: either the archetype is settled and we show it, or the
-    // 2nd and 3rd traits are too close to call and the plan grows by one block.
+    syncProgress();
+    // Last planned page: either this challenge is settled and we go back to the
+    // hub, or it is one of the two adaptive ones and is still in doubt, in which
+    // case the plan grows by one block and the student keeps going.
     if (p < pageCount() - 1){ state.page++; renderPage(); return; }
-    if (extendPlan()){ saveDraft(); state.page++; renderPage(); return; }
-    renderReport();
+    if (chal && chal.extend){
+      var more = chal.extend(state.answers), fresh = [], i;
+      for (i = 0; i < more.length; i++)
+        if (state.plan.indexOf(more[i]) < 0) fresh.push(more[i]);
+      if (fresh.length){
+        state.plan = state.plan.concat(fresh);
+        saveDraft();
+        state.page++;
+        renderPage();
+        return;
+      }
+    }
+    finishChallenge();
   };
+}
+
+/* ==================== challenge 5: the card sort ====================
+
+   Twenty cards into five levels. The levels describe importance, but the number
+   of cards in each is up to the student: a real perspective is not forced into
+   five equal buckets.
+
+   Tap a card, then tap a level. Not drag and drop -- this is answered on a phone
+   by a fourteen year old, and dragging a card into a column on a 360px screen is
+   a fight. Tapping is also the only version that works from a keyboard without a
+   second implementation.
+
+   state.answers holds the LEVEL each card is in, 1..5, and 0 for not yet placed,
+   which is the same "0 means unanswered" convention every other bank uses. */
+var sortPicked = null;
+
+function renderSort(){
+  var c = currentChallenge();
+  var counts = wilCounts(state.answers);
+  var levels = (WIL_META && WIL_META.levels) || [];
+  var stem = (WIL_META && WIL_META.stem) || '';
+  var i, idx;
+
+  var unplaced = '';
+  for (i = 0; i < WIL_COUNT; i++){
+    idx = WIL_START + i;
+    if (state.answers[idx]) continue;
+    unplaced += sortCard(idx);
+  }
+
+  var columns = '';
+  for (var lv = 1; lv <= 5; lv++){
+    var held = '';
+    for (i = 0; i < WIL_COUNT; i++){
+      idx = WIL_START + i;
+      if (state.answers[idx] === lv) held += sortCard(idx);
+    }
+    columns +=
+      '<section class="sortlv" data-lv="' + lv + '">' +
+        '<header class="sortlvh">' +
+          '<h3>' + esc(levels[lv - 1] || '') + '</h3>' +
+          '<span class="sortcount">' + esc(T('sortCount', counts[lv - 1])) + '</span>' +
+        '</header>' +
+        '<ul class="sortslots">' + held + '</ul>' +
+      '</section>';
+  }
+
+  app.innerHTML =
+    challengeHeader(c) +
+    '<p class="sorthow">' + esc(T('sortHow')) + ' ' + esc(T('sortNeed')) + '</p>' +
+    '<p class="sortstem">' + esc(stem) + '</p>' +
+    '<section class="sorttray' + (unplaced ? '' : ' is-empty') + '">' +
+      '<h3 class="sorttrayh">' + esc(T('sortLeft')) + '</h3>' +
+      '<ul class="sortslots">' + unplaced + '</ul>' +
+    '</section>' +
+    '<p class="sortpickhint" id="sortHint" role="status"></p>' +
+    '<div class="sortgrid">' + columns + '</div>' +
+    '<div class="nav">' +
+      '<p class="navmsg" id="navMsg" role="status"></p>' +
+      '<button class="btn" id="sortDone">' + esc(T('finishChallenge')) + '</button>' +
+    '</div>' +
+    '<div class="tailspace" aria-hidden="true"></div>';
+
+  wireHubBack();
+
+  var cards = app.querySelectorAll('.sortcard');
+  for (i = 0; i < cards.length; i++){
+    cards[i].onclick = function(){
+      var mine = parseInt(this.getAttribute('data-i'), 10);
+      sortPicked = (sortPicked === mine) ? null : mine;
+      paintPicked();
+    };
+  }
+  var lanes = app.querySelectorAll('.sortlv');
+  for (i = 0; i < lanes.length; i++){
+    lanes[i].onclick = function(ev){
+      if (sortPicked === null) return;
+      var lv = parseInt(this.getAttribute('data-lv'), 10);
+      state.answers[sortPicked] = lv;
+      sortPicked = null;
+      saveDraft();
+      queueProgressSync();
+      renderSort();
+      ev.stopPropagation();
+    };
+  }
+  var tray = app.querySelector('.sorttray');
+  if (tray) tray.onclick = function(){
+    if (sortPicked === null) return;
+    state.answers[sortPicked] = 0;      // back to unplaced
+    sortPicked = null;
+    saveDraft();
+    queueProgressSync();
+    renderSort();
+  };
+
+  document.getElementById('sortDone').onclick = function(){
+    if (!challengeDone(c, state.answers)){
+      document.getElementById('navMsg').textContent = T('sortNeed');
+      var firstBad = app.querySelector('.sorttray');
+      if (firstBad) firstBad.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    finishChallenge();
+  };
+
+  paintPicked();
+  window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+function sortCard(idx){
+  return '<li><button type="button" class="sortcard" data-i="' + idx + '" ' +
+    'aria-label="' + esc(T('sortMove', ITEMS[idx].t)) + '">' +
+    esc(ITEMS[idx].t) + '</button></li>';
+}
+
+function paintPicked(){
+  var cards = app.querySelectorAll('.sortcard');
+  for (var i = 0; i < cards.length; i++){
+    var mine = parseInt(cards[i].getAttribute('data-i'), 10);
+    if (mine === sortPicked) cards[i].classList.add('picked');
+    else cards[i].classList.remove('picked');
+  }
+  var grid = app.querySelector('.sortgrid');
+  if (grid){
+    if (sortPicked === null) grid.classList.remove('arming');
+    else grid.classList.add('arming');
+  }
+  var hint = document.getElementById('sortHint');
+  if (hint) hint.textContent = sortPicked === null ? '' : T('sortPlace');
+}
+
+/* ==================== challenge 6: the matrices ====================
+
+   One puzzle to a screen. Eight options, one right. Answers are stored 1..8 so
+   that option one is not mistaken for "unanswered".
+
+   Nothing here is scored on screen: a student who sees "wrong" after puzzle
+   three answers the remaining nine differently, and the count would stop meaning
+   what it means. */
+function renderMatrix(){
+  var c = currentChallenge();
+  var p = state.page;
+  var idx = state.plan[p];
+  var it = ITEMS[idx];
+  var opts = '', i;
+
+  for (i = 0; i < it.options.length; i++){
+    var sel = state.answers[idx] === (i + 1);
+    opts +=
+      '<label class="mxopt' + (sel ? ' sel' : '') + '">' +
+        '<input type="radio" name="mx' + idx + '" value="' + (i + 1) + '"' +
+          (sel ? ' checked' : '') + ' aria-label="' + (i + 1) + '">' +
+        '<span class="mxtile">' + it.options[i] + '</span>' +
+      '</label>';
+  }
+
+  app.innerHTML =
+    challengeHeader(c) +
+    '<div class="stepbar"><div class="stepbarin">' +
+      (p > 0 ? '<button class="backlink" id="prevBtn"><span aria-hidden="true">&#8592;</span> ' +
+               esc(T('back')) + '</button>' : '<span></span>') +
+      '<div class="stepright">' +
+        '<div class="ptrack"><div class="pfill" style="width:' + pctDone() + '%"></div></div>' +
+        '<span class="stepcount">' + esc(T('mxPuzzle', p + 1, state.plan.length)) + '</span>' +
+      '</div>' +
+    '</div></div>' +
+    '<div class="card mxcard">' +
+      '<div class="mxgrid" role="img">' + it.grid + '</div>' +
+      '<div class="mxopts" role="radiogroup" aria-label="' +
+        esc(T('mxPuzzle', p + 1, state.plan.length)) + '">' + opts + '</div>' +
+    '</div>' +
+    '<div class="nav">' +
+      '<p class="navmsg" id="navMsg" role="status"></p>' +
+      '<button class="btn" id="nextBtn">' +
+        esc(p === state.plan.length - 1 ? T('finishChallenge') : T('next')) + '</button>' +
+    '</div>' +
+    '<div class="tailspace" aria-hidden="true"></div>';
+
+  wireHubBack();
+  var prev = document.getElementById('prevBtn');
+  if (prev) prev.onclick = function(){ state.page--; renderMatrix(); };
+
+  var inputs = app.querySelectorAll('.mxopt input');
+  for (i = 0; i < inputs.length; i++){
+    inputs[i].onchange = function(){
+      state.answers[idx] = parseInt(this.value, 10);
+      saveDraft();
+      queueProgressSync();
+      var labels = app.querySelectorAll('.mxopt'), k;
+      for (k = 0; k < labels.length; k++) labels[k].classList.remove('sel');
+      this.parentNode.classList.add('sel');
+      document.getElementById('navMsg').textContent = '';
+    };
+  }
+
+  document.getElementById('nextBtn').onclick = function(){
+    if (!state.answers[idx]){
+      document.getElementById('navMsg').textContent = T('answerRest');
+      return;
+    }
+    syncProgress();
+    if (p < state.plan.length - 1){ state.page++; renderMatrix(); return; }
+    finishChallenge();
+  };
+  window.scrollTo({ top: 0, behavior: 'auto' });
 }
 
 function answeredCount(){
@@ -2041,7 +3231,7 @@ function updateCount(missing){
   // Answering the last question on the last core page can settle the archetype,
   // which turns "next" into "see result".
   var nb = document.getElementById('nextBtn');
-  if (nb) nb.textContent = willFinish() ? T('seeResult') : T('next');
+  if (nb) nb.textContent = willFinish() ? T('finishChallenge') : T('next');
   // The nudge belongs next to the button they just pressed, not in the bar.
   var m = document.getElementById('navMsg');
   if (m){
@@ -2066,11 +3256,11 @@ function wrapText(g, text, x, y, maxW, lineH, maxLines){
 }
 
 // Portrait card for Telegram/Instagram. The character is rasterised from the same
-// inline SVG the page uses, via a data: URI — no network request, so the canvas
+// inline SVG the page uses, via a data: URI, with no network request, so the canvas
 // stays untainted and toBlob() keeps working. If it ever fails to decode we still
 // return a usable card without the figure rather than no card at all.
 function buildShareCard(s, arch, key, cb){
-  // Draw only after Bitter/Inter have loaded — on a slow connection an early tap on
+  // Draw only after Bitter/Inter have loaded: on a slow connection an early tap on
   // "Rasm qilib saqlash" would rasterise the card in a fallback font. On the result
   // screen the fonts are almost always ready already, so this resolves immediately.
   function draw(){
@@ -2086,7 +3276,7 @@ function buildShareCard(s, arch, key, cb){
 
   g.textAlign = 'left';
   g.fillStyle = fam.c; g.font = '700 46px Bitter, Georgia, serif';
-  g.fillText('TestMind', M, 96);
+  g.fillText('Naseeb Mind', M, 96);
   g.textAlign = 'right';
   g.fillStyle = '#5B7078'; g.font = '500 30px Inter, "Segoe UI", sans-serif';
   g.fillText(tmF(arch.fam), W - M, 96);
@@ -2127,7 +3317,7 @@ function buildShareCard(s, arch, key, cb){
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(draw); else draw();
 }
 
-/** «Oʻshanda va hozir» — only for a student who took this at least RETEST_DAYS ago.
+/** «Oʻshanda va hozir»: only for a student who took this at least RETEST_DAYS ago.
  *  Shows which traits actually moved; says so plainly when none did. */
 // ---- strengths and watch-outs on the result screen ----
 // One merged block, from the generated life-<lang>.js. Returns '' for an
@@ -2216,99 +3406,6 @@ function careerHtml(answers){
          '<section class="cfull">' + out + '</section>';
 }
 
-/* ================= subject entry + recommendations =================
-   The subject form lives HERE, on the result page, rather than as a fourth
-   section of the test. Three reasons, in order of weight:
-
-   1. The test is already ~86 questions. A fourth compulsory block would be paid
-      for by every student, including the ones who do not know their marks.
-   2. Recommendations appear FIRST, from interests and values alone, and visibly
-      sharpen when marks are added. That earns the extra effort instead of
-      demanding it, and it shows the student why marks matter.
-   3. It makes "no subject data" the ordinary path rather than the exception --
-      which is the path the engine was built and tested for.
-
-   Marks are kept on the device only, in their own key, and are never sent.  */
-var SUBJ_KEY = 'testmind_subjects_v1';
-var subjScale = 'mark_five';
-var subjMarks = {};                       // {subjectKey: rawValue}
-
-function subjLoad(){
-  try {
-    var d = JSON.parse(localStorage.getItem(SUBJ_KEY));
-    if (!d || typeof d !== 'object') return;
-    if (SUBJECT_SCALES.scales[d.scale]) subjScale = d.scale;
-    if (d.marks && typeof d.marks === 'object'){
-      for (var k in d.marks) if (d.marks.hasOwnProperty(k)){
-        // Only known subjects, only usable numbers. A corrupted store must not
-        // be able to inject a subject the taxonomy has never heard of.
-        if (indexOfKey(SUBJECT_KEYS, k) < 0) continue;
-        var v = parseFloat(d.marks[k]);
-        if (!isNaN(v)) subjMarks[k] = v;
-      }
-    }
-  } catch (e) {}
-}
-function subjSave(){
-  try { localStorage.setItem(SUBJ_KEY,
-    JSON.stringify({ scale: subjScale, marks: subjMarks })); } catch (e) {}
-}
-function indexOfKey(arr, k){
-  for (var i = 0; i < arr.length; i++) if (arr[i] === k) return i;
-  return -1;
-}
-
-/** {subject: {score 0..1, weight}} for the engine, or null when nothing entered.
- *  Mirrors subjects.py: clamp rather than reject, and self-report is worth less
- *  than a real mark. */
-function subjPerformance(){
-  var sc = SUBJECT_SCALES.scales[subjScale];
-  var w = SUBJECT_SCALES.weights[subjScale];
-  var out = {}, n = 0, k, v;
-  for (k in subjMarks) if (subjMarks.hasOwnProperty(k)){
-    v = subjMarks[k];
-    if (v === null || v === undefined || isNaN(v)) continue;
-    if (v < sc.min) v = sc.min;
-    if (v > sc.max) v = sc.max;
-    out[k] = { score: (v - sc.min) / (sc.max - sc.min), weight: w };
-    n++;
-  }
-  return n ? out : null;
-}
-
-function subjFormHtml(){
-  var sc = SUBJECT_SCALES.scales[subjScale];
-  var names = TAXONOMY_NAMES[recLang()].subjects;
-  var tabs = [['mark_five', T('subjFive')], ['mark_hundred', T('subjHundred')],
-              ['confidence', T('subjSelf')]];
-  var h = '<div class="subjbox"><h3>' + esc(T('subjH')) + '</h3>' +
-          '<p class="subjlede">' + esc(T('subjLede')) + '</p>' +
-          '<div class="scaletabs">';
-  for (var i = 0; i < tabs.length; i++)
-    h += '<button type="button" class="scaletab' + (subjScale === tabs[i][0] ? ' on' : '') +
-         '" data-scale="' + tabs[i][0] + '">' + esc(tabs[i][1]) + '</button>';
-  h += '</div>';
-  for (var s = 0; s < SUBJECT_KEYS.length; s++){
-    var key = SUBJECT_KEYS[s], cur = subjMarks[key];
-    h += '<div class="subjrow"><span class="subjname">' + esc(names[key]) + '</span>' +
-         '<span class="subjopts">';
-    if (subjScale === 'mark_hundred'){
-      h += '<input class="subjnum" type="number" inputmode="numeric" min="0" max="100" ' +
-           'data-subj="' + key + '" value="' + (cur === undefined ? '' : cur) + '" ' +
-           'aria-label="' + esc(names[key]) + '">';
-    } else {
-      for (var v = sc.min; v <= sc.max; v++)
-        h += '<button type="button" class="subjopt' + (cur === v ? ' on' : '') +
-             '" data-subj="' + key + '" data-val="' + v + '" ' +
-             'aria-label="' + esc(names[key]) + ' ' + v + '">' + v + '</button>';
-    }
-    h += '</span></div>';
-  }
-  h += '<button type="button" class="subjclear" id="subjClear">' + esc(T('subjClear')) + '</button>' +
-       '<p class="subjhint">' + esc(T('subjHint')) + '</p></div>';
-  return h;
-}
-
 function recLang(){ return TAXONOMY_NAMES[TLANG] ? TLANG : 'uz'; }
 
 /** One sentence naming what actually drove the top recommendation.
@@ -2325,15 +3422,7 @@ function recWhy(row, kind, signals){
       var ks = [], k;
       for (k in entry.riasec) ks.push(k);
       ks.sort(function(a, b){ return entry.riasec[b] - entry.riasec[a]; });
-      bits.push(T('whyInterest', tmRiasecName(ks[0]), tmRiasecName(ks[1])));
-    } else if (d.part === 'subjects' && d.value >= 0.55){
-      var best = [], sk;
-      for (sk in entry.subjects) if (subjMarks[sk] !== undefined) best.push(sk);
-      best.sort(function(a, b){ return entry.subjects[b] - entry.subjects[a]; });
-      if (best.length) bits.push(T('whySubject',
-        L.subjects[best[0]] + (best[1] ? ', ' + L.subjects[best[1]] : '')));
-    } else if (d.part === 'values' && d.value >= 0.6 && VALUES_META){
-      var vs = [], vk;
+      bits.push(T('whyInterest', tmRiasecName(ks[0]), tmRiasecName(ks[1])));      var vs = [], vk;
       for (vk in entry.values) vs.push(vk);
       vs.sort(function(a, b){ return entry.values[b] - entry.values[a]; });
       bits.push(T('whyValue', VALUES_META.names[vs[0]]));
@@ -2367,7 +3456,7 @@ function recommendHtml(){
   var riasec = careerAnswered(state.answers) >= CAREER_CORE.length
     ? scoreCareer(state.answers) : null;
   var values = valuesAnswered(state.answers) ? scoreValues(state.answers) : null;
-  var perf = subjPerformance();
+  var perf = null;   // subject marks were removed; the engine reweights without them
   var big5 = scoreAnswers(state.answers);
   if (!riasec && !perf) return '';                 // nothing to build a ranking on
 
@@ -2399,26 +3488,6 @@ function recommendHtml(){
   var why = recWhy(careers[0], 'career', signals);
   if (why) h += '<p class="recwhy">' + esc(why) + '</p>';
 
-  // Disagreement between what they enjoy and what they are graded on. Shown
-  // because it is the most useful thing here, not hidden because it is untidy.
-  if (riasec && perf){
-    var implied = subjImpliedInterests(perf);
-    var conf = recConflicts(signals, implied), ci = null, cm = null, ck;
-    // recConflicts reports each disagreeing scale AND which side is higher.
-    // Naming only the first one produced a sentence that said "your interests
-    // point to X" when X was in fact where the MARKS pointed. Name both sides
-    // or say nothing.
-    for (ck = 0; ck < conf.length; ck++){
-      if (!ci && conf[ck].side === 'interest') ci = conf[ck];
-      if (!cm && conf[ck].side === 'marks') cm = conf[ck];
-    }
-    if (ci && cm)
-      h += '<p class="recconf">' +
-           esc(T('recConflict', tmRiasecName(ci.scale), tmRiasecName(cm.scale))) + '</p>';
-  }
-  if (!perf) h += '<p class="recempty">' + esc(T('recNoSubjects')) + '</p>';
-
-  h += subjFormHtml();
   h += '<p class="cattr">' + esc(T('recDisclaimer')) + '</p>';
   return h + '</section>';
 }
@@ -2427,26 +3496,6 @@ function recommendHtml(){
  *  subjects.interest_profile_from_subjects(). Kept here rather than in
  *  recommend.js because it needs the subject affinities, which the taxonomy
  *  file carries for families, not subjects. */
-var SUBJ_AFFINITY = {
-  math: {I: .6, C: .4}, physics: {I: .6, R: .4}, cs: {I: .5, R: .3, C: .2},
-  biology: {I: .7, S: .3}, chemistry: {I: .7, R: .3}, economics: {E: .5, C: .3, I: .2},
-  english: {S: .4, A: .3, E: .3}, literature: {A: .6, S: .4},
-  history: {I: .4, S: .3, A: .3}, geography: {I: .4, R: .3, S: .3}, art: {A: .8, R: .2}
-};
-function subjImpliedInterests(perf){
-  var sums = {}, ws = {}, k, s;
-  for (k in perf) if (perf.hasOwnProperty(k) && SUBJ_AFFINITY[k]){
-    for (s in SUBJ_AFFINITY[k]){
-      var c = SUBJ_AFFINITY[k][s] * perf[k].weight;
-      sums[s] = (sums[s] || 0) + perf[k].score * c;
-      ws[s] = (ws[s] || 0) + c;
-    }
-  }
-  var out = {};
-  for (s in ws) if (ws[s] > 0) out[s] = sums[s] / ws[s];
-  return out;
-}
-
 /** Redraw only the recommendation block, so entering a mark does not rebuild
  *  the whole report and throw the reader back to the top of the page. */
 function recRefresh(){
@@ -2460,31 +3509,6 @@ function recRefresh(){
 function recBind(){
   var slot = document.getElementById('recslot');
   if (!slot) return;
-  var tabs = slot.querySelectorAll('.scaletab'), i;
-  for (i = 0; i < tabs.length; i++) tabs[i].onclick = function(){
-    var next = this.getAttribute('data-scale');
-    if (next === subjScale) return;
-    // Marks do not survive a scale change: a 4 on the five-point scale is not a
-    // 4 out of a hundred, and silently reinterpreting it would be a wrong mark
-    // the student never entered.
-    subjScale = next; subjMarks = {}; subjSave(); recRefresh();
-  };
-  var opts = slot.querySelectorAll('.subjopt');
-  for (i = 0; i < opts.length; i++) opts[i].onclick = function(){
-    var k = this.getAttribute('data-subj'), v = parseFloat(this.getAttribute('data-val'));
-    if (subjMarks[k] === v) delete subjMarks[k];    // tap again to unset
-    else subjMarks[k] = v;
-    subjSave(); recRefresh();
-  };
-  var nums = slot.querySelectorAll('.subjnum');
-  for (i = 0; i < nums.length; i++) nums[i].onchange = function(){
-    var k = this.getAttribute('data-subj'), v = parseFloat(this.value);
-    if (this.value === '' || isNaN(v)) delete subjMarks[k];
-    else subjMarks[k] = v;
-    subjSave(); recRefresh();
-  };
-  var clear = document.getElementById('subjClear');
-  if (clear) clear.onclick = function(){ subjMarks = {}; subjSave(); recRefresh(); };
 }
 
 /** Put the life section into the report, now or as soon as the pack lands.
@@ -2514,7 +3538,7 @@ function thenAndNowHtml(s, archKey){
 
   var body;
   if (!moved.length){
-    body = '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija — ' +
+    body = '<p>Beshta xususiyatingiz ham deyarli oʻsha-oʻsha. Bu ham natija, ' +
            'demak, oʻzingizni yaxshi bilar ekansiz.</p>';
   } else {
     body = '<ul class="tnlist">' + moved.map(function(m){
@@ -2655,8 +3679,43 @@ function askFigureChoice(archKey, cb){
 // nothing below can change it: paintReport is handed the archetype, not the
 // answers. Splitting the two is what makes "the choice cannot move the result"
 // a property of the code rather than a promise in a comment.
+// ---------- the finished result, for the life of this tab ----------
+// The language switcher is a full page load, and renderReport() has already
+// cleared the draft by the time the result is on screen -- so a reader who
+// pressed RU while looking at their result watched it vanish and the test start
+// again at question one.
+//
+// sessionStorage, not localStorage: the result should survive a reload of this
+// tab and nothing more. Close the tab and it is gone, so no finished result
+// outlives the sitting on a shared school computer.
+var RESULT_KEY = 'testmind_result_v1';
+// Restoring on ANY load would be wrong: pressing «Shaxsiyat testi» in the nav to
+// take the test again would silently show the old result instead. So the result
+// is only brought back when the reader actually pressed a language pill, which
+// sets this flag on its way out. One load, then it is spent.
+var KEEP_KEY = 'testmind_keep_result';
+function markLanguageSwitch(){ try { sessionStorage.setItem(KEEP_KEY, '1'); } catch (e) {} }
+function takeLanguageSwitch(){
+  try { var v = sessionStorage.getItem(KEEP_KEY); sessionStorage.removeItem(KEEP_KEY); return !!v; }
+  catch (e) { return false; }
+}
+function saveResult(r){ try { sessionStorage.setItem(RESULT_KEY, JSON.stringify(r)); } catch (e) {} }
+function clearResult(){ try { sessionStorage.removeItem(RESULT_KEY); } catch (e) {} }
+function loadResult(){
+  try {
+    var r = JSON.parse(sessionStorage.getItem(RESULT_KEY));
+    // Checked before it is trusted: a record from an older build, or one edited
+    // by hand, must fall through to a fresh test rather than paint half a result.
+    if (!r || !r.s || !r.archKey || !ARCHETYPES[r.archKey]) return null;
+    if (!Array.isArray(r.answers) || r.answers.length !== ITEMS.length) return null;
+    for (var k = 0; k < TRAIT_ORDER.length; k++)
+      if (typeof r.s[TRAIT_ORDER[k]] !== 'number') return null;
+    return r;
+  } catch (e) { return null; }
+}
+
 function renderReport(){
-  clearDraft(); // test finished — remove the saved answers from this device
+  clearDraft(); // test finished, remove the saved answers from this device
   var s = scoreAnswers(state.answers);
   var arch = archetypeOf(s);
   var archKey = archetypeKeyOf(s);
@@ -2676,11 +3735,15 @@ function renderReport(){
   paintReport(s, arch, archKey, '', null);
 }
 
-function paintReport(s, arch, archKey, figureGender, age){
-  sendStats('completed', s, arch, figureGender, age);
+function paintReport(s, arch, archKey, figureGender, age, restored){
+  // `restored` means this is the same result redrawn in another language, not a
+  // new one. It must not post a second completed row, a second research record
+  // or a second history entry -- otherwise every language switch would inflate
+  // the counts in the sheet.
+  if (!restored) sendStats('completed', s, arch, figureGender, age);
   // Anonymous item-level answers, saved automatically. Carries a separate random
   // id so it can never be joined to the row that holds an email address.
-  sendResearch(function(){});
+  if (!restored) sendResearch(function(){});
   var dateStr = todayStr();
   var fam = FAMILIES[arch.fam];
   // The archetype's own illustration unless this reader chose the other figure.
@@ -2733,7 +3796,7 @@ function paintReport(s, arch, archKey, figureGender, age){
       '</div>' +      // .herocol
     '</div>' +
     thenAndNowHtml(s, archKey) +
-    // Empty until the language pack is in — filled by lifeFill(), either
+    // Empty until the language pack is in, filled by lifeFill(), either
     // immediately or on arrival.
     '<div id="lifeslot"></div>' +
     // The interest profile sits under the personality analysis: the student came
@@ -2755,7 +3818,7 @@ function paintReport(s, arch, archKey, figureGender, age){
       // it is not news.
       (T('guideLangNote')
         ? '<p class="caplang">' + esc(T('guideLangNote')) + '</p>' : '') +
-      // Straight download first — it needs neither Telegram nor an email address.
+      // Straight download first: it needs neither Telegram nor an email address.
       '<a class="btn pdf" href="' + GUIDE_DIR + arch.slug + '.pdf" download>' +
         T('guidePdf') + '</a>' +
       (SHOW_TELEGRAM
@@ -2787,27 +3850,33 @@ function paintReport(s, arch, archKey, figureGender, age){
     '<p class="muted" style="margin-top:16px">' + DISCLAIMER + '</p>' +
     '<p class="muted">' + T('cleared') + '</p>' +
     // Short form stays visible: the full disclaimer must not be hidden behind a toggle.
-    '<p class="muted" style="text-align:center;margin:0">Natija maslahat xarakteriga ega — hukm emas.</p>';
+    // Through T(), not written inline: this is the one line on the result screen a
+    // reader must understand, and inline it stayed Uzbek in all three languages.
+    '<p class="muted" style="text-align:center;margin:0">' + T('discShort') + '</p>';
   app.innerHTML = html;
   // Recorded only after the page is built, so «Oʻshanda va hozir» compares against
   // the earlier result rather than the one just produced.
-  saveHistory({ ts: Date.now(), s: s, key: archKey });
+  if (!restored) saveHistory({ ts: Date.now(), s: s, key: archKey });
+  saveResult({ s: s, archKey: archKey, gender: figureGender || '', age: age || null,
+               answers: state.answers });
   lifeFill(archKey);
-  subjLoad();
   recRefresh();
   window.scrollTo({top:0, behavior:'auto'});
   document.getElementById('againBtn').onclick = function(){
-    clearDraft();
+    clearDraft(); clearResult();
     state = { answers:new Array(ITEMS.length).fill(0), page:0,
-              plan:CORE_PLAN.slice(), stage:STAGE_P_TOPUP };
+              plan:CORE_PLAN.slice(), stage:STAGE_P_TOPUP,
+              challenge:null, view:'hub' };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
-    renderPage();
+    render();
   };
   // Telegram is how this actually spreads here, so make the message one tap away.
   document.getElementById('copyBtn').onclick = function(){
     var btn = this;
-    var msg = 'Men TestMind testidan oʻtdim. Natijam: «' + arch.name + '».\n'
-            + 'Sen ham oʻzingni sinab koʻr: https://' + SITE_HOST + '/';
+    // Through the keys, which were already translated: pasted into Telegram this
+    // is the only sentence about Naseeb Mind a reader's friends ever see, and it was
+    // going out in Uzbek no matter which language they took the test in.
+    var msg = T('shareMsg', arch.name) + '\n' + T('shareInvite', SITE_HOST);
     function done(okCopied){
       btn.textContent = okCopied ? T('copied') : T('copyFailed');
       setTimeout(function(){ btn.textContent = T('shareCopy'); }, 2200);
@@ -2841,13 +3910,16 @@ function paintReport(s, arch, archKey, figureGender, age){
       input.focus();
       return;
     }
-    capBtn.disabled = true; capBtn.textContent = 'Yuborilmoqda…';
+    // T('sending'), not the literal: the key exists and is translated in both
+    // languages, but this line wrote past it and a Russian reader watched the
+    // button say Yuborilmoqda while they waited.
+    capBtn.disabled = true; capBtn.textContent = T('sending');
     msg.className = 'capmsg'; msg.textContent = '';
     sendLead(email, arch.name, function(okSent){
       if (okSent){
         // "Yuborildi" (sent), not "qabul qilindi" (received): the no-cors request
         // resolves without telling us the server actually stored it, so we can only
-        // honestly say it left the device — never that it was confirmed received.
+        // honestly say it left the device, never that it was confirmed received.
         document.getElementById('capture').innerHTML =
           '<div class="capdone"><span class="tick" aria-hidden="true">✓</span><div>' +
             '<h3 style="margin:0 0 4px">' + T('capSentH') + '</h3>' +
@@ -2874,9 +3946,9 @@ function paintReport(s, arch, archKey, figureGender, age){
     function show(url){
       btn.disabled = false; btn.textContent = 'Rasm qilib saqlash';
       box.innerHTML =
-        '<img class="shareimg" src="' + url + '" alt="TestMind natija kartasi">' +
+        '<img class="shareimg" src="' + url + '" alt="Naseeb Mind natija kartasi">' +
         '<p class="muted">Telefonda saqlash uchun rasmni bosib turing, yoki tugmani bosing.</p>' +
-        '<a class="btn" download="testmind-natija.png" href="' + url + '">Yuklab olish</a>';
+        '<a class="btn" download="naseebmind-natija.png" href="' + url + '">Yuklab olish</a>';
       box.scrollIntoView({behavior:'smooth', block:'nearest'});
     }
     buildShareCard(s, arch, archKey, function(canvas){
@@ -2897,8 +3969,8 @@ function renderResume(d){
       // Uzbek while a translated resumeCount sat unused beside it.
       '<p class="muted">' + T('resumeCount', answered, d.plan.length) + '</p>' +
       '<div class="nav" style="margin-top:18px">' +
-        '<button class="btn ghost" id="freshBtn">Yangidan boshlash</button>' +
-        '<button class="btn" id="resumeBtn">Davom etish</button>' +
+        '<button class="btn ghost" id="freshBtn">' + T('resumeFresh') + '</button>' +
+        '<button class="btn" id="resumeBtn">' + T('resumeGo') + '</button>' +
       '</div>' +
     '</div>';
   document.getElementById('resumeBtn').onclick = function(){
@@ -2907,22 +3979,60 @@ function renderResume(d){
     state.stage = d.stage;
     state.page = Math.min(d.page || 0, pageCount() - 1);
     state.aid = d.aid || '';          // keep one id across abandon -> resume -> finish
-    renderPage();
+    render();
   };
   document.getElementById('freshBtn').onclick = function(){
     clearDraft();
     state = { answers:new Array(ITEMS.length).fill(0), page:0,
-              plan:CORE_PLAN.slice(), stage:STAGE_P_TOPUP };
+              plan:CORE_PLAN.slice(), stage:STAGE_P_TOPUP,
+              challenge:null, view:'hub' };
     statsSent = false; abandonSent = false; leadSent = false; researchSent = false;  // new attempt = new row + new id
-    renderPage();
+    render();
   };
 }
 
 function boot(){
   localiseChrome();
+  wireTopLogin();
+  // A finished result wins over a draft: the draft is already gone by then, and
+  // this is what makes the language pills work on the result screen.
+  var r = takeLanguageSwitch() ? loadResult() : null;
+  if (r){
+    state.answers = r.answers;
+    // tmA(), so the archetype's name and text come out in the NEW language while
+    // the scores stay exactly the ones the reader earned.
+    paintReport(r.s, tmA(r.archKey), r.archKey, r.gender || '', r.age || null, true);
+    return;
+  }
+  // Not restoring means the reader is about to take a test, so any result kept
+  // from an earlier sitting in this tab is stale. Dropping it here is what stops
+  // a language switch made halfway through a RETAKE from resurrecting the old
+  // result instead of keeping the new attempt.
+  clearResult();
+  // The draft is loaded silently instead of behind a "carry on?" screen. That
+  // screen existed because one long run had one place to resume from and the
+  // student could not see where they had got to. The hub shows exactly that for
+  // all six challenges, so asking the question again would be asking it twice.
   var d = loadDraft();
-  if (d && d.answers.some(function(v){ return v > 0; })) renderResume(d);
-  else renderPage();
+  if (d && d.answers && d.answers.some(function(v){ return v > 0; })){
+    state.answers = d.answers.slice();
+    state.aid = d.aid || '';
+  }
+  state.challenge = null;
+  state.view = 'hub';
+  var authRequest = /[?&]auth=(signin|signup)/.exec(location.search);
+  if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn() && authRequest){
+    authMode = authRequest[1];
+    renderAuth(true);
+  } else {
+    render();
+  }
+  // Anything saved to the account outranks this device's draft, but it arrives
+  // over the network, so the hub paints first and corrects itself when the rows
+  // land rather than holding a blank screen until they do.
+  if (typeof NMAccount !== 'undefined' && NMAccount.signedIn()){
+    pullSaved().then(function(){ if (state.view === 'hub') render(); });
+  }
 }
 
 boot();

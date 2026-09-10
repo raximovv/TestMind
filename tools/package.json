@@ -1,14 +1,15 @@
 {
-  "name": "testmind-tools",
+  "name": "naseebmind-tools",
   "version": "1.0.0",
   "private": true,
-  "description": "Build + verification tooling for the TestMind site (dev only; not served).",
+  "description": "Build + verification tooling for the Naseeb Mind site (dev only; not served).",
   "scripts": {
     "test:e2e": "node e2e.js",
     "test:keyboard": "node keyboard.js",
     "test:capture": "node capture.js",
     "test:autosave": "node autosave_test.js",
     "test:anchor": "node anchor.js",
+    "test:hub": "node hub_shots.js",
     "audit": "node audit.js"
   },
   "devDependencies": {

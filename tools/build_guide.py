@@ -3,7 +3,7 @@
 
 The short lines come from characters.js so the PDF can never contradict the
 site; the long form comes from guide_content.py. Output is ONE self-contained
-file — the two fonts inlined as base64 and nothing else — so it renders the same
+file (the two fonts inlined as base64 and nothing else) so it renders the same
 over file://, on a server, or inside Chrome's PDF printer with no network at all.
 
 The guides are text. No illustration, no colour, no boxes or rules beyond one
@@ -22,7 +22,7 @@ sys.path.insert(0, HERE)
 from guide_content import COMMON, GUIDES, TRAIT_CARDS
 
 # Printed on the cover and on every page footer, and it is the only place a
-# guide names the site — a student who downloads the PDF has no other way back.
+# guide names the site, a student who downloads the PDF has no other way back.
 # Keep in step with SITE in build_pages.py and SITE_HOST in test.html.
 SITE = 'personality.naseebedu.com'
 
@@ -188,7 +188,7 @@ b{font-weight:600}
 .disc{position:absolute;left:19mm;right:19mm;bottom:16mm;font-size:8.6pt}
 """
 
-DISCLAIMER = (u'Bu natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis '
+DISCLAIMER = (u'Bu natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis '
               u'emas. Test Big Five (Katta beshlik) modeliga asoslangan.')
 
 
@@ -202,7 +202,7 @@ def build(key):
 
     def page(inner, cls=''):
         n = len(pages) + 1               # cover is page 1, numbering starts after it
-        head = (u'<div class="rh"><span>TestMind · Shaxsiyat qoʻllanmasi</span>'
+        head = (u'<div class="rh"><span>Naseeb Mind · Shaxsiyat qoʻllanmasi</span>'
                 u'<span class="r">%s</span></div>' % esc(a['name']))
         foot = (u'<div class="rf"><span>%s</span><span class="pno">%d</span></div>'
                 % (SITE, n))
@@ -212,7 +212,7 @@ def build(key):
     # ---- 1. cover ----------------------------------------------------------
     # No logo mark, no illustration, no disc, no gradient. A title page.
     pages.append(u"""<section class="page cover"><div class="cvin">
-  <div class="mark">TestMind</div>
+  <div class="mark">Naseeb Mind</div>
   <div class="kick">%s</div>
   <h1 class="cvname">%s</h1>
   <div class="cvfam">%s oilasi</div>
@@ -226,7 +226,7 @@ def build(key):
         u'<div class="num"><div class="n">%d.</div><div><h3>%s</h3><p>%s</p></div></div>'
         % (i + 1, esc(t), esc(b)) for i, (t, b) in enumerate(g['howto']))
     # The two cards are the archetype's two traits, described once in
-    # TRAIT_CARDS — so «Xotirjam» reads identically in all four ES guides.
+    # TRAIT_CARDS, so «Xotirjam» reads identically in all four ES guides.
     cards = u''.join(
         u'<div class="card"><div class="tag">%s</div><h3>%s</h3><p>%s</p></div>'
         % (esc(a['traits'][i]), esc(TRAIT_CARDS[t][0]), esc(TRAIT_CARDS[t][1]))
@@ -251,7 +251,7 @@ def build(key):
         u'<div class="str"><h3>%s <span>%02d</span></h3><p>%s</p></div>'
         % (esc(t), i + 1, esc(b)) for i, (t, b) in enumerate(g['strengths']))
     page(u"""<h2 class="h2">Kuchli tomonlaringiz</h2>
-<p class="sub">Bularni siz oʻzingiz sezmasligingiz mumkin — atrofdagilar sezadi.</p>
+<p class="sub">Bularni siz oʻzingiz sezmasligingiz mumkin, atrofdagilar sezadi.</p>
 <div class="fill"><div>%s</div>
 <div class="note"><p><b>Bir jumlada:</b> %s</p></div>
 <div class="warn"><div class="lbl">Ikkinchi tomoni</div>
@@ -264,7 +264,7 @@ def build(key):
         u'<div class="do"><div class="lbl">Shu hafta sinab koʻring</div><p>%s</p></div></div>'
         % (esc(t), esc(b), esc(act)) for t, b, act in g['growth'])
     page(u"""<h2 class="h2">Oʻsish nuqtalari</h2>
-<p class="sub">Bular kamchilik emas — kuchli tomoningizning teskari tomoni.</p>
+<p class="sub">Bular kamchilik emas, kuchli tomoningizning teskari tomoni.</p>
 <div class="fill">%s</div>""" % grow)
 
     # ---- 6. school + people ------------------------------------------------
@@ -302,7 +302,7 @@ def build(key):
     css = CSS % {'bitter': font64('bitter.woff2'), 'inter': font64('inter.woff2'),
                  }
     html = (u'<!doctype html>\n<html lang="uz"><head><meta charset="utf-8">\n'
-            u'<title>%s — TestMind qoʻllanma</title>\n<style>%s</style>\n'
+            u'<title>%s | Naseeb Mind qoʻllanma</title>\n<style>%s</style>\n'
             u'</head><body>\n%s\n</body></html>\n'
             % (esc(a['name']), css, u'\n'.join(pages)))
 

@@ -9,8 +9,8 @@ const BASE = 'http://localhost:8765/';
 const DIR = 'C:/Users/Asus/TestMind-site/';
 const WIDTHS = [360, 768, 1280];
 
-// Root plus each translated folder. Russian and English are longer than Uzbek —
-// German-problem territory — so a nav that fits in Uzbek is not evidence that it
+// Root plus each translated folder. Russian and English are longer than Uzbek:
+// German-problem territory, so a nav that fits in Uzbek is not evidence that it
 // fits at all, and these pages have to be measured, not assumed.
 const LANGDIRS = ['', 'ru/', 'en/'];
 const PAGES = LANGDIRS.flatMap(d => fs.existsSync(DIR + d)

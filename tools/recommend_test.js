@@ -102,7 +102,7 @@ const PROFILES = [
     subjects: marks({ art: 5, cs: 4, math: 3 }, 'confidence'),
     big5: big5({ O: 5 }) },
 
-  { id: 10, label: 'Interests only — skipped values, subjects and personality',
+  { id: 10, label: 'Interests only: skipped values, subjects and personality',
     riasec: riasec({ C: 5, I: 4, E: 3, R: 3, S: 2, A: 2 }),
     values: null, subjects: null, big5: null },
 ];

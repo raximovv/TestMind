@@ -1,11 +1,11 @@
-// TestMind — Russian and English text for everything that characters.js and
+// Naseeb Mind: Russian and English text for everything that characters.js and
 // site.js render at runtime.
 //
 // Uzbek is not in here: characters.js already holds it, and it stays the base
 // that the other two languages override. A key missing from ru/en therefore
 // falls back to Uzbek rather than to an empty page.
 //
-// Read at build time as well — build_archetypes.py evaluates this file to
+// Read at build time as well: build_archetypes.py evaluates this file to
 // generate the ten obraz-*.html pages in each language, so the page and the
 // browser can never disagree about what an archetype is called.
 //
@@ -47,7 +47,7 @@ ru: {
   arch: {
     'ES|E': {
       name: 'Лидер',
-      lines: ['Даже когда обстановка накаляется, вы не повышаете голос — поэтому вас слушают.',
+      lines: ['Даже когда обстановка накаляется, вы не повышаете голос, поэтому вас слушают.',
               'Когда группа сбивается с пути, направление обычно показываете вы.'],
       strength: 'принимать верные решения под давлением.',
       watch: 'Ваше спокойствие иногда выглядит как безразличие. Не пропустите момент, когда близкие ждут от вас больше чувств.',
@@ -56,7 +56,7 @@ ru: {
     },
     'E|C': {
       name: 'Организатор',
-      lines: ['Вы быстро переходите от слов к делу — пока другие ещё обсуждают план, вы уже начали.',
+      lines: ['Вы быстро переходите от слов к делу: пока другие ещё обсуждают план, вы уже начали.',
               'И умеете расшевелить остальных.'],
       strength: 'превращать идею в реальность.',
       watch: 'Из-за быстрого старта вы иногда забываете спросить мнение других. Лучшая идея не всегда ваша.',
@@ -75,7 +75,7 @@ ru: {
     'E|O': {
       name: 'Творец',
       lines: ['Идеи у вас не заканчиваются, и вы любите рассказывать о них людям.',
-              'Стоит вам начать объяснять идею — слушающий тоже загорается.'],
+              'Стоит вам начать объяснять идею, и слушающий тоже загорается.'],
       strength: 'заражать людей новой идеей.',
       watch: 'Идей много, времени мало. Если начать всё сразу, можно не закончить ничего.',
       figure: {who: 'Зебуннисо Бегим',
@@ -83,10 +83,10 @@ ru: {
     },
     'O|C': {
       name: 'Дальновидный',
-      lines: ['Вы находите новое решение — и доводите его до конца.',
+      lines: ['Вы находите новое решение и доводите его до конца.',
               'Идея не остаётся в тетради: вы превращаете её в график и шаги.'],
       strength: 'приводить идею в чёткую систему.',
-      watch: 'Стремление сделать всё идеально вас замедляет. Иногда «достаточно хорошо» — тоже настоящий результат.',
+      watch: 'Стремление сделать всё идеально вас замедляет. Иногда «достаточно хорошо» тоже настоящий результат.',
       figure: {who: 'Мирзо Улугбек',
                why: 'Мечтал сосчитать звёзды, построил обсерваторию и внёс в каталог 1018 из них.'}
     },
@@ -122,16 +122,16 @@ ru: {
       lines: ['Вы составляете план и не отвлекаетесь от него.',
               'Там, где остальные сдались, вы всё ещё работаете.'],
       strength: 'выдерживать длинную дистанцию.',
-      watch: 'Когда план рушится, вам тяжело. Иногда сменить путь — не поражение.',
+      watch: 'Когда план рушится, вам тяжело. Иногда сменить путь не значит проиграть.',
       figure: {who: 'Мухаммад аль-Хорезми',
-               why: 'Разложил сложную задачу на точные шаги — слово «алгоритм» осталось от его имени.'}
+               why: 'Разложил сложную задачу на точные шаги. Слово «алгоритм» осталось от его имени.'}
     },
     'A|C': {
       name: 'Человек Слова',
-      lines: ['Вы думаете, прежде чем пообещать, — потому что обещанное выполняете.',
+      lines: ['Вы думаете, прежде чем пообещать, потому что обещанное выполняете.',
               'Поэтому важное дело чаще всего поручают именно вам.'],
       strength: 'держать своё слово.',
-      watch: 'Взваливая на себя всё, вы несёте лишний груз. Просить помощи — тоже сила.',
+      watch: 'Взваливая на себя всё, вы несёте лишний груз. Просить помощи не слабость, а сила.',
       figure: {who: 'Имам Бухари',
                why: 'Строго проверял каждое предание и включал в свод только достоверные.'}
     }
@@ -163,7 +163,7 @@ ru: {
     'E|O': {
       // years carries a qualifier here, so it is translated too; Zebunniso's is
       // bare numerals and inherits the Uzbek.
-      male: {who: 'Камолиддин Бехзод', years: 'ок. 1455–1535/36',
+      male: {who: 'Камолиддин Бехзод', years: 'ок. 1455-1535/36',
              why: 'Он привнёс в миниатюрную живопись живые образы и новые композиции, оказав сильное влияние на целую художественную школу.'},
       female: {who: 'Зебуннисо Бегим',
                why: 'Из дома Бабуридов; под псевдонимом «Махфи» написала целый диван стихов.'}
@@ -171,7 +171,7 @@ ru: {
     'O|C': {
       male: {who: 'Мирзо Улугбек',
              why: 'Мечтал сосчитать звёзды, построил обсерваторию и внёс в каталог 1018 из них.'},
-      female: {who: 'Гавхаршад Бегим', years: 'ок. 1378–1457',
+      female: {who: 'Гавхаршад Бегим', years: 'ок. 1378-1457',
                why: 'Она поддерживала архитектуру, образование и искусство, превращая масштабные культурные идеи в чёткие планы и крупные строительные проекты.'}
     },
     'ES|A': {
@@ -194,14 +194,14 @@ ru: {
     },
     'ES|C': {
       male: {who: 'Мухаммад аль-Хорезми',
-             why: 'Разложил сложную задачу на точные шаги — слово «алгоритм» осталось от его имени.'},
+             why: 'Разложил сложную задачу на точные шаги. Слово «алгоритм» осталось от его имени.'},
       female: {who: 'Томирис', years: 'VI век до н. э.',
                why: 'Благодаря решительности, сильной воле и мудрым решениям она защищала свой народ и показала пример устойчивого лидерства.'}
     },
     'A|C': {
       male: {who: 'Имам Бухари',
              why: 'Строго проверял каждое предание и включал в свод только достоверные.'},
-      female: {who: 'Сарай Мульк Ханум — Бибиханым', years: 'ок. 1341–1408',
+      female: {who: 'Сарай Мульк Ханум (Бибиханым)', years: 'ок. 1341-1408',
                why: 'Как мудрая советница, покровительница просвещения и влиятельная государственная деятельница, она была надёжной опорой для окружающих и общества.'}
     }
   }
@@ -239,7 +239,7 @@ en: {
   arch: {
     'ES|E': {
       name: 'Leader',
-      lines: ['Even when things heat up you do not raise your voice — which is why people listen to you.',
+      lines: ['Even when things heat up you do not raise your voice, which is why people listen to you.',
               'When a group loses its way, you are usually the one who points out the direction.'],
       strength: 'making the right call under pressure.',
       watch: 'Your calm can read as indifference. Do not miss the moment when the people close to you want more feeling from you.',
@@ -248,7 +248,7 @@ en: {
     },
     'E|C': {
       name: 'Organiser',
-      lines: ['You move from talk to action quickly — while others are still discussing the plan, you have started.',
+      lines: ['You move from talk to action quickly: while others are still discussing the plan, you have started.',
               'And you can get the people around you moving too.'],
       strength: 'turning an idea into something real.',
       watch: 'Because you start fast, you sometimes forget to ask what others think. The best idea will not always be yours.',
@@ -275,7 +275,7 @@ en: {
     },
     'O|C': {
       name: 'Visionary',
-      lines: ['You find a new answer — and you see it through to the end.',
+      lines: ['You find a new answer, and you see it through to the end.',
               'The idea does not stay in the notebook: you turn it into a schedule and a set of steps.'],
       strength: 'giving an idea a clear structure.',
       watch: 'Trying to make everything perfect slows you down. Sometimes "good enough" is a real result too.',
@@ -316,11 +316,11 @@ en: {
       strength: 'lasting the distance.',
       watch: 'When the plan breaks, you struggle. Changing route is sometimes not a defeat.',
       figure: {who: 'Muhammad al-Khwarizmi',
-               why: 'Broke a complex problem into exact steps — the word "algorithm" comes from his name.'}
+               why: 'Broke a complex problem into exact steps. The word "algorithm" comes from his name.'}
     },
     'A|C': {
       name: 'True to Their Word',
-      lines: ['You think before you promise — because a promise you make, you keep.',
+      lines: ['You think before you promise, because a promise you make, you keep.',
               'Which is why the thing that matters is usually handed to you.'],
       strength: 'keeping your word.',
       watch: 'Taking every task on yourself means carrying more than your share. Asking for help is also a strength.',
@@ -348,7 +348,7 @@ en: {
                why: 'Curious about learning and travel, she carefully recorded the life of her time in the “Humayun-nama.”'}
     },
     'E|O': {
-      male: {who: 'Kamal al-Din Behzad', years: 'c. 1455–1535/36',
+      male: {who: 'Kamal al-Din Behzad', years: 'c. 1455-1535/36',
              why: 'He brought vivid figures and innovative compositions to miniature painting, strongly influencing an entire school of artists.'},
       female: {who: 'Zebunniso Begim',
                why: 'Of the Mughal house; wrote a complete divan of poetry under the pen name "Makhfi".'}
@@ -356,7 +356,7 @@ en: {
     'O|C': {
       male: {who: 'Mirzo Ulugbek',
              why: 'Set out to count the stars, built an observatory, and catalogued 1,018 of them.'},
-      female: {who: 'Gawhar Shad Begum', years: 'c. 1378–1457',
+      female: {who: 'Gawhar Shad Begum', years: 'c. 1378-1457',
                why: 'She supported architecture, education, and the arts, turning ambitious cultural ideas into clear plans and major building projects.'}
     },
     'ES|A': {
@@ -379,14 +379,14 @@ en: {
     },
     'ES|C': {
       male: {who: 'Muhammad al-Khwarizmi',
-             why: 'Broke a complex problem into exact steps — the word "algorithm" comes from his name.'},
+             why: 'Broke a complex problem into exact steps. The word "algorithm" comes from his name.'},
       female: {who: 'Tomyris', years: '6th century BCE',
                why: 'With determination, strong will, and wise decisions, she defended her people and showed an example of steady leadership.'}
     },
     'A|C': {
       male: {who: 'Imam al-Bukhari',
              why: 'Checked every account rigorously and admitted only the reliable ones into his collection.'},
-      female: {who: 'Saray Mulk Khanum — Bibi Khanum', years: 'c. 1341–1408',
+      female: {who: 'Saray Mulk Khanum (Bibi Khanum)', years: 'c. 1341-1408',
                why: 'As a wise adviser, patron of education, and influential public figure, she provided dependable support to those around her and to society.'}
     }
   }

@@ -1,4 +1,4 @@
-// Simulates a cheap Android on a slow connection — the device most Uzbek students
+// Simulates a cheap Android on a slow connection, the device most Uzbek students
 // actually own (89% of internet users there are mobile-only). Desktop Chrome at a
 // 390px viewport is NOT this: it has no CPU limit, no latency, and no data cost.
 //
@@ -24,6 +24,21 @@ const note = m => { warn++; console.log('  WARN ' + m); };
 async function measure(browser, path) {
   const page = await browser.newPage();
   await page.setViewport(VIEWPORT);
+  await page.setRequestInterception(true);
+  page.on('request', r => {
+    if (r.url().indexOf('supabase.co') !== -1) {
+      const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'apikey,authorization,content-type,prefer',
+        'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+      };
+      if (r.method() === 'OPTIONS') return r.respond({ status: 200, headers, body: '' });
+      return r.respond({ status: 200, headers, contentType: 'application/json', body: '[]' });
+    }
+    if (r.url().indexOf('script.google.com') !== -1)
+      return r.respond({ status: 200, body: '{"ok":true}' });
+    return r.continue();
+  });
   const client = await page.target().createCDPSession();
   await client.send('Network.enable');
   await client.send('Network.emulateNetworkConditions', NET);
@@ -55,10 +70,26 @@ async function measure(browser, path) {
               (bytes / 1024).toFixed(0) + ' KB over the wire');
   heavy.forEach(([n, b]) => console.log('    heavy: ' + n + ' ' + (b / 1024).toFixed(0) + ' KB'));
   ok(paint < 3000, 'something is on screen within 3s (' + paint + 'ms)');
-  ok(bytes < 400 * 1024, 'first load stays under 400 KB (' + (bytes / 1024).toFixed(0) + ' KB)');
+  // The local preview server does not gzip text, while GitHub Pages does. This
+  // uncompressed ceiling still catches accidental video/bitmap payloads and is
+  // sized for the six challenge banks now available from the hub.
+  ok(bytes < 650 * 1024, 'uncompressed first load stays under 650 KB (' +
+     (bytes / 1024).toFixed(0) + ' KB)');
+
+  ok((await page.$$('.chcard')).length === 6, 'all challenges are visible before registration');
+  await page.click('.chgo');
+  ok(!!(await page.$('#authForm')), 'the account modal opens on the cheap phone');
+  await page.evaluate(() => {
+    localStorage.setItem('naseebmind_session_v1', JSON.stringify({
+      access: 'stub', refresh: 'stub', expires: Math.floor(Date.now() / 1000) + 3600,
+      user: { id: '00000000-0000-0000-0000-000000000000', email: 'test@example.com' },
+    }));
+  });
+  await page.reload({ waitUntil: 'load', timeout: 120000 });
+  await page.evaluate(() => openChallenge('personality'));
 
   console.log('\n== can a thumb actually hit the answer circles ==');
-  // The radio itself is opacity:0 / pointer-events:none — measuring it would be
+  // The radio itself is opacity:0 / pointer-events:none, measuring it would be
   // measuring nothing. `.opt` is the label that actually receives the tap, and its
   // padding counts towards the hit area even though the ring looks smaller.
   const taps = await page.evaluate(() => {
@@ -78,7 +109,7 @@ async function measure(browser, path) {
   // 44px is the long-standing minimum comfortable touch target; 24px is the floor.
   ok(taps.min >= 24, 'no answer target below the 24px floor (smallest ' + taps.min.toFixed(0) + 'px)');
   ok(taps.stolen === 0, 'every visible option receives its own tap (' + taps.stolen + ' intercepted)');
-  if (taps.min < 44) note('smallest target is ' + taps.min.toFixed(0) + 'px — under the 44px comfort guideline');
+  if (taps.min < 44) note('smallest target is ' + taps.min.toFixed(0) + 'px, under the 44px comfort guideline');
 
   console.log('\n== is the question text readable at arm\'s length ==');
   const type = await page.evaluate(() => {
@@ -96,7 +127,9 @@ async function measure(browser, path) {
   const t1 = Date.now();
   await page.evaluate(() => {
     state.answers = ITEMS.map((it, i) => (i % 5) + 1);
-    renderReport();
+    const s = scoreAnswers(state.answers);
+    const key = archetypeKeyOf(s);
+    paintReport(s, archetypeOf(s), key, 'female', 15);
   });
   await new Promise(r => setTimeout(r, 400));
   const render = Date.now() - t1;
@@ -114,14 +147,14 @@ async function measure(browser, path) {
   ok(pdf.kb > 0, 'the guide is reachable from the result screen');
   // Measured breakdown of the 778 KB guide (2026-07-27), so nobody re-derives it:
   //   ~303 KB embedded font subsets (Chrome embeds one per page, ~30 in total)
-  //   ~167 KB the cover artwork — 4 KB of SVG, but the tiled ikat pattern expands
+  //   ~167 KB the cover artwork, 4 KB of SVG, but the tiled ikat pattern expands
   //   ~308 KB the actual page content
   // Not worth optimising yet: the fonts and the artwork ARE the design, and two of
   // the three delivery routes (Telegram file, email attachment) never make the
   // student download it over the web at all. Revisit if it passes ~1 MB.
   ok(pdf.kb < 1024, 'the guide stays under 1 MB (' + pdf.kb + ' KB)');
   if (pdf.kb > 500) note(pdf.kb + ' KB is ~' + (pdf.kb * 8 / 400).toFixed(0) +
-                         's on slow 4G — acceptable, but do not let it grow');
+                         's on slow 4G, acceptable, but do not let it grow');
 
   await page.close();
   await browser.close();

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-u"""The career-interest item bank (RIASEC) — Uzbek original.
+u"""The career-interest item bank (RIASEC), Uzbek original.
 
 WHAT THIS MEASURES, AND WHY IT IS NOT THE BIG FIVE
 --------------------------------------------------
@@ -7,7 +7,7 @@ The Big Five test measures personality. This measures *interests*, and for the
 question a student is actually asking -- "what should I study, what should I
 become" -- interests are the better instrument: they predict educational and
 occupational choice better than personality does, and they add information over
-and above both personality and ability. TestMind's Big Five result should end up
+and above both personality and ability. Naseeb Mind's Big Five result should end up
 supporting this one, not the other way round.
 
 Six scales, from Holland's model:
@@ -35,7 +35,7 @@ item here names an activity a teenager in Uzbekistan can actually imagine.
 
 What we must NOT use: the brief public-domain RIASEC marker scales of Armstrong,
 Allison & Rounds (2008) are free to researchers and practitioners for
-NON-COMMERCIAL use only. TestMind is sold to schools. They are off limits, and
+NON-COMMERCIAL use only. Naseeb Mind is sold to schools. They are off limits, and
 they are the first thing a search turns up, so this is written down here rather
 than left to memory.
 

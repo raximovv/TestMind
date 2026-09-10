@@ -1,5 +1,5 @@
 /**
- * TestMind — Google Sheet collector + guide-email sender.
+ * Naseeb Mind: Google Sheet collector + guide-email sender.
  *
  * WHAT IT DOES
  *  - Logs every submission as a row (unchanged from before).
@@ -21,7 +21,7 @@
  *
  * DEPLOY (do this after pasting)
  *  1. Save.
- *  2. Run `sendTestEmail` once from the editor — Google will ask you to authorize
+ *  2. Run `sendTestEmail` once from the editor, Google will ask you to authorize
  *     sending mail; approve it. It sends a sample to your own address so you can
  *     see the result before students do.
  *  3. Deploy -> Manage deployments -> (edit the existing Web App) -> Version: New
@@ -41,7 +41,7 @@ var HEADERS = ['server_time', 'id', 'status', 'age', 'answered', 'total',
 
 var SEND_GUIDE_EMAIL = true;
 var SITE_URL = 'https://raximovv.github.io/TestMind';
-var FROM_NAME = 'TestMind';
+var FROM_NAME = 'Naseeb Mind';
 // Bump this whenever you change this file, then open the /exec URL: it reports
 // the version, so you can tell in one second whether your new code is really
 // deployed instead of guessing from a delivered email.
@@ -115,14 +115,14 @@ var GUIDES = {
     "fam": "Yetakchilar",
     "color": "#0F6E8C",
     "lines": [
-      "Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz — shuning uchun odamlar sizga quloq soladi.",
+      "Vaziyat qizib ketganda ham ovozingizni koʻtarmaysiz, shuning uchun odamlar sizga quloq soladi.",
       "Guruh adashib qolganda yoʻnalishni koʻrsatadigan odam odatda siz boʻlasiz."
     ],
     "strength": "bosim ostida toʻgʻri qaror qabul qilish.",
     "watch": "Xotirjamligingiz baʼzan befarqlikdek koʻrinadi. Yaqinlaringiz sizdan koʻproq hissiyot kutayotganini sezmay qolmang.",
     "figure": {
       "who": "Bahouddin Naqshband",
-      "years": "1318–1389",
+      "years": "1318-1389",
       "why": "Odamlarni majburlab emas, oʻz namunasi bilan ergashtirgan."
     }
   },
@@ -131,14 +131,14 @@ var GUIDES = {
     "fam": "Yetakchilar",
     "color": "#0F6E8C",
     "lines": [
-      "Gapdan ishga tez oʻtasiz — rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.",
+      "Gapdan ishga tez oʻtasiz: rejani boshqalar hali muhokama qilayotganda siz boshlab yuborgan boʻlasiz.",
       "Atrofdagilarni ham harakatga sola olasiz."
     ],
     "strength": "gʻoyani haqiqatga aylantirish.",
     "watch": "Tez boshlaganingiz uchun baʼzan boshqalarning fikrini soʻrashni unutasiz. Eng yaxshi gʻoya doim sizniki boʻlmasligi mumkin.",
     "figure": {
       "who": "Nodirabegim",
-      "years": "1792–1842",
+      "years": "1792-1842",
       "why": "Qoʻqonda adabiy muhitni uyushtirgan, madrasa va masjidlar qurdirgan."
     }
   },
@@ -154,7 +154,7 @@ var GUIDES = {
     "watch": "Yangi narsaga tez qiziqib, boshlagan ishingizni yarmida tashlab qoʻyish xavfi bor. Bittasini oxirigacha olib borib koʻring.",
     "figure": {
       "who": "Abu Rayhon Beruniy",
-      "years": "973–1048",
+      "years": "973-1048",
       "why": "Notanish oʻlkalarni ham, notanish fanlarni ham sovuqqonlik bilan oʻrgangan."
     }
   },
@@ -170,7 +170,7 @@ var GUIDES = {
     "watch": "Gʻoya koʻp, vaqt kam. Hammasini birdan boshlasangiz, hech biri tugamasligi mumkin.",
     "figure": {
       "who": "Zebunniso Begim",
-      "years": "1638–1702",
+      "years": "1638-1702",
       "why": "Boburiylar xonadonidan; «Maxfiy» taxallusi bilan butun bir devon yozgan."
     }
   },
@@ -179,14 +179,14 @@ var GUIDES = {
     "fam": "Ijodkorlar",
     "color": "#6B4FA8",
     "lines": [
-      "Yangi yechim topasiz — va uni oxiriga ham yetkazasiz.",
-      "Gʻoyani daftarda qoldirmaysiz — jadvalga, qadamlarga aylantirasiz."
+      "Yangi yechim topasiz va uni oxiriga ham yetkazasiz.",
+      "Gʻoyani daftarda qoldirmaysiz, uni jadvalga, qadamlarga aylantirasiz."
     ],
     "strength": "gʻoyani aniq tizimga solish.",
     "watch": "Hammasini mukammal qilishga urinish sizni sekinlashtiradi. Baʼzan «yetarlicha yaxshi» ham haqiqiy natija.",
     "figure": {
       "who": "Mirzo Ulugʻbek",
-      "years": "1394–1449",
+      "years": "1394-1449",
       "why": "Yulduzlarni sanashni orzu qilgan, rasadxona qurgan va 1018 tasini roʻyxatga olgan."
     }
   },
@@ -202,7 +202,7 @@ var GUIDES = {
     "watch": "Boshqalarga yordam berib, oʻzingizga vaqt qoldirmaslik oson. «Yoʻq» deyishni ham oʻrganing.",
     "figure": {
       "who": "Jahonotin Uvaysiy",
-      "years": "1781–1845",
+      "years": "1781-1845",
       "why": "Shoira va ustoz; Nodirabegimga sheʼr ilmini oʻrgatgan."
     }
   },
@@ -218,7 +218,7 @@ var GUIDES = {
     "watch": "Hamma bilan yaxshi boʻlishga urinib, oʻz fikringizni aytmay qoʻyishingiz mumkin. Sizning fikringiz ham muhim.",
     "figure": {
       "who": "Alisher Navoiy",
-      "years": "1441–1501",
+      "years": "1441-1501",
       "why": "Oʻz tilida yozib, butun bir xalqni bir-biriga yaqinlashtirgan."
     }
   },
@@ -234,7 +234,7 @@ var GUIDES = {
     "watch": "Boshqalarning muammosini oʻzingizniki qilib olasiz. Hammasini yolgʻiz hal qilishingiz shart emas.",
     "figure": {
       "who": "Abdulla Avloniy",
-      "years": "1878–1934",
+      "years": "1878-1934",
       "why": "Adabiyot, teatr, jurnalistika va taʼlimni xalq manfaatiga xizmat qildirgan."
     }
   },
@@ -247,11 +247,11 @@ var GUIDES = {
       "Boshqalar taslim boʻlgan joyda siz hali ishlab turasiz."
     ],
     "strength": "uzoq masofaga chidash.",
-    "watch": "Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish — magʻlubiyat emas.",
+    "watch": "Reja buzilganda qiynalasiz. Baʼzan yoʻlni oʻzgartirish magʻlubiyat emas.",
     "figure": {
       "who": "Muhammad al-Xorazmiy",
-      "years": "783–850",
-      "why": "Murakkab masalani aniq qadamlarga boʻlgan — «algoritm» soʻzi uning nomidan qolgan."
+      "years": "783-850",
+      "why": "Murakkab masalani aniq qadamlarga boʻlgan. «Algoritm» soʻzi uning nomidan qolgan."
     }
   },
   "Soʻzida Turuvchi": {
@@ -259,14 +259,14 @@ var GUIDES = {
     "fam": "Ishonchlilar",
     "color": "#A2731F",
     "lines": [
-      "Vaʼda berishdan oldin oʻylaysiz — chunki bergan vaʼdangizni bajarasiz.",
+      "Vaʼda berishdan oldin oʻylaysiz, chunki bergan vaʼdangizni bajarasiz.",
       "Shuning uchun muhim ish koʻpincha aynan sizga topshiriladi."
     ],
     "strength": "soʻzida turish.",
     "watch": "Hamma ishni oʻz zimmangizga olib, ortiqcha yuk koʻtarib yurasiz. Yordam soʻrash ham kuch.",
     "figure": {
       "who": "Imom Buxoriy",
-      "years": "810–870",
+      "years": "810-870",
       "why": "Har bir rivoyatni qatʼiy tekshirib, faqat ishonchlisini kitobiga kiritgan."
     }
   }
@@ -356,7 +356,7 @@ function doPost(e){
       d.rC === 0 || d.rC ? d.rC : ''
     ]);
 
-    // Decide whether to email — but actually send OUTSIDE the lock (below), so a
+    // Decide whether to email, but actually send OUTSIDE the lock (below), so a
     // slow send never blocks another student's submission.
     if (SEND_GUIDE_EMAIL && String(d.status || '') === 'lead'){
       var email = String(d.email || '').trim();
@@ -405,11 +405,11 @@ function sendGuideEmail_(email, archName){
   var opts = {
     to: email,
     name: FROM_NAME,
-    subject: '«' + archName + '» — TestMind natijangiz va qoʻllanmangiz',
+    subject: '«' + archName + '»: Naseeb Mind natijangiz va qoʻllanmangiz',
     htmlBody: guideEmailHtml_(archName)
   };
   // Attach the 8-page PDF. If fetching it fails for any reason the email must
-  // still go out — the body always carries the download link as well.
+  // still go out, the body always carries the download link as well.
   var pdf = guidePdf_(archName);
   if (pdf) opts.attachments = [pdf];
   MailApp.sendEmail(opts);
@@ -433,8 +433,8 @@ function testGuideFetch(){
   Logger.log('HTTP  : ' + r.getResponseCode());
   Logger.log('bytes : ' + n);
   Logger.log(r.getResponseCode() === 200 && n > 10000
-    ? 'OK — attachments will work.'
-    : 'PROBLEM — the PDF could not be fetched.');
+    ? 'OK: attachments will work.'
+    : 'PROBLEM: the PDF could not be fetched.');
 }
 
 function guidePdf_(archName){
@@ -443,7 +443,7 @@ function guidePdf_(archName){
     if (r.getResponseCode() !== 200) return null;
     var blob = r.getBlob();
     if (blob.getBytes().length < 10000) return null;   // not a real PDF
-    return blob.setName('TestMind-' + GUIDES[archName].slug + '.pdf');
+    return blob.setName('Naseeb Mind-' + GUIDES[archName].slug + '.pdf');
   } catch (err) {
     return null;
   }
@@ -455,7 +455,7 @@ function esc_(s){
   });
 }
 
-// Table layout + inline styles only — Gmail strips <style>, external CSS and SVG.
+// Table layout + inline styles only, Gmail strips <style>, external CSS and SVG.
 function guideEmailHtml_(name){
   var g = GUIDES[name];
   var c = g.color, soft = '#F1F6F7';
@@ -470,7 +470,7 @@ function guideEmailHtml_(name){
   + '<table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:14px;overflow:hidden;font-family:Arial,Helvetica,sans-serif">'
   + '<tr><td style="height:6px;background:' + c + '"></td></tr>'
   + '<tr><td style="padding:26px 32px 8px">'
-  + '<div style="font-family:Georgia,serif;font-weight:bold;font-size:22px;color:' + c + '">TestMind</div>'
+  + '<div style="font-family:Georgia,serif;font-weight:bold;font-size:22px;color:' + c + '">Naseeb Mind</div>'
   + '<div style="font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:' + c + ';margin-top:14px">' + esc_(g.fam) + '</div>'
   + '<div style="font-family:Georgia,serif;font-size:30px;font-weight:bold;color:' + c + ';line-height:1.15;margin:4px 0 16px">' + esc_(name) + '</div>'
   + lines
@@ -485,25 +485,25 @@ function guideEmailHtml_(name){
   + '<div style="font-family:Georgia,serif;font-weight:bold;font-size:17px;color:' + c + ';margin-top:6px">' + esc_(g.figure.who)
   + ' <span style="font-family:Arial;font-weight:normal;font-size:13px;color:#5B7078">' + esc_(g.figure.years) + '</span></div>'
   + '<p style="margin:5px 0 0;font-size:14px;line-height:1.5;color:#5B7078">' + esc_(g.figure.why) + '</p></div>'
-  + '<p style="margin:22px 0 14px;font-size:14px;line-height:1.55;color:#5B7078">Toʻliq qoʻllanmangiz — 8 sahifa — shu xatga <b>PDF fayl</b> sifatida biriktirilgan. Ochilmasa, quyidagi tugma orqali yuklab olishingiz mumkin.</p>'
+  + '<p style="margin:22px 0 14px;font-size:14px;line-height:1.55;color:#5B7078">Toʻliq qoʻllanmangiz (8 sahifa) shu xatga <b>PDF fayl</b> sifatida biriktirilgan. Ochilmasa, quyidagi tugma orqali yuklab olishingiz mumkin.</p>'
   + '<a href="' + guideUrl_(name) + '" style="display:inline-block;background:' + c + ';color:#ffffff;text-decoration:none;font-size:15px;font-weight:bold;padding:12px 24px;border-radius:10px">Qoʻllanmani yuklab olish (PDF)</a>'
   + '<div style="margin-top:14px"><a href="' + SITE_URL + '/" style="color:' + c + ';font-size:14px">Saytga qaytish</a></div>'
   + '</td></tr>'
   + '<tr><td style="padding:22px 32px 26px;border-top:1px solid #E2EBEC;font-size:12px;line-height:1.6;color:#8A9AA0">'
-  + 'Bu xatni oldingiz, chunki TestMind natijangizni koʻrgach, uni email orqali soʻradingiz.<br>'
+  + 'Bu xatni oldingiz, chunki Naseeb Mind natijangizni koʻrgach, uni email orqali soʻradingiz.<br>'
   + 'Savollar: <a href="mailto:raximovrahim1@gmail.com" style="color:#8A9AA0">raximovrahim1@gmail.com</a><br>'
-  + 'Natija maslahat xarakteriga ega — tibbiy yoki psixologik tashxis emas.'
+  + 'Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.'
   + '</td></tr>'
   + '</table></td></tr></table></div>';
 }
 
 /** Lets you sanity-check the deployment by opening the URL in a browser.
- *  `version` tells you WHICH code the Web App is actually serving — pasting new
+ *  `version` tells you WHICH code the Web App is actually serving, pasting new
  *  code is not enough, the deployment must be re-published as a NEW version, and
  *  without this stamp the only way to notice is to read a delivered email. */
 function doGet(){
   return json_({ ok: true, version: SCRIPT_VERSION,
-                 msg: 'TestMind collector is live. Post JSON here.' });
+                 msg: 'Naseeb Mind collector is live. Post JSON here.' });
 }
 
 function json_(obj){
