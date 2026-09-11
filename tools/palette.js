@@ -1,8 +1,9 @@
 // The palette, in both themes, in both places it is declared.
 //
-// Naseeb Mind has one palette with two themes. The light values are its own; the
-// dark values are Naseeb Edu's dark theme, copied token for token, which is why
-// the accent turns purple at night.
+// Naseeb Mind has one palette with two themes. The light values are its own. The
+// dark GROUNDS are Naseeb Edu's, as they stand on upstream/main -- navy, not the
+// plum a stale local branch still carries. The dark ACCENT is Naseeb Mind's own
+// gold, because that is what the Naseeb Mind card keeps inside Edu's chrome.
 //
 // The thing worth guarding is DRIFT. Every token is written out twice -- in
 // assets/site.css for the generated pages, and again inside test.html, which is

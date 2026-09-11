@@ -228,9 +228,13 @@ var NMAccount = (function () {
       });
     },
 
+    // Google only. Sign in with Apple needs a paid Apple Developer membership
+    // before the credential can even be created, so it is not offered; the
+    // whitelist is here so a stray call cannot send a student to an authorize
+    // URL for a provider that was never configured.
     signInWithProvider: function (provider, redirectTo) {
       provider = String(provider || '').toLowerCase();
-      if (provider !== 'google' && provider !== 'apple') {
+      if (provider !== 'google') {
         return Promise.reject(apiError(400, null, 'failed'));
       }
       var target = redirectTo || (location.origin + location.pathname + '?auth=signin');
