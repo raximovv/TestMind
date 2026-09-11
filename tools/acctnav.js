@@ -300,8 +300,7 @@ const shot = (page) => page.evaluate(() => {
   // header onto a third row, and a 137px sticky header then sat on top of the
   // first question, so tapping an answer hit the nav instead. Height is the
   // symptom; being covered is the bug, so this checks the bug.
-  console.log('
--- the header does not sit on the page');
+  console.log('\n-- the header does not sit on the page');
   for (const w of [360, 390, 768]) {
     await page.setViewport({ width: w, height: 844 });
     for (const url of ['index.html', 'test.html']) {
@@ -309,17 +308,28 @@ const shot = (page) => page.evaluate(() => {
       const got = await page.evaluate(() => {
         const bar = document.querySelector('.nav, .topnav');
         const h = Math.round(bar.getBoundingClientRect().height);
+        // Rows, not pixels: the two headers are built differently and a pixel
+        // budget that fits one is arbitrary for the other. What went wrong was
+        // a THIRD row, so that is what is counted. Controls inside one row do
+        // not share a top (a 30px pill and a 38px brand sit differently), so
+        // tops within 22px of each other are the same row.
+        const tops = [...bar.querySelectorAll(':scope > * > *')]
+          .filter((e) => e.offsetParent)
+          .map((e) => Math.round(e.getBoundingClientRect().top))
+          .sort((a, b) => a - b);
+        let rows = 0, last = -99;
+        tops.forEach((t) => { if (t - last > 22) { rows++; last = t; } });
         // The first thing a reader would try to touch, wherever it is.
         const target = document.querySelector('#app .chgo, .btn.big, main a.btn, .chgo');
         if (!target) return { h, covered: false, what: 'nothing to tap' };
         target.scrollIntoView({ block: 'center' });
         const r = target.getBoundingClientRect();
         const at = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
-        return { h, covered: !!(at && at.closest('.nav, .topnav')),
+        return { h, rows, covered: !!(at && at.closest('.nav, .topnav')),
                  what: target.textContent.trim().slice(0, 20) };
       });
       ok(!got.covered, `${url} @${w}: the header (${got.h}px) does not cover "${got.what}"`);
-      ok(got.h <= 112, `${url} @${w}: and stays ${got.h}px, under two rows of controls`);
+      ok(got.rows <= 2, `${url} @${w}: and stays ${got.rows} rows (${got.h}px)`);
     }
   }
   await page.setViewport({ width: 1280, height: 900 });

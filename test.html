@@ -57,6 +57,8 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
     --lazur-deep:#6B5230;
     --lazur-press:#6B5230;
     --lazur-soft:#D9C7A4;
+    --soft-line:#D9C7A4;    /* the same tint used as a LINE, not a fill */
+    --line-strong:#E3DCCC;  /* a control outline, not a divider */
     --ink:#2B2620;   /* warm near-black text */
     --paper:#F4F0E8;   /* warm cream background */
     --card:#FDFCF9;
@@ -101,7 +103,9 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
     --on-accent:#10202D;   /* ...light accent on navy, so the ink flips */               /* --accent */
     --lazur-press:#EFCB8A;         /* --accent-hover */
     --lazur-deep:#E3B86A;          /* --accent-deep: link and emphasis TEXT */
-    --lazur-soft:#1C3241;          /* --surface-soft */
+    --lazur-soft:#1C3241;
+    --soft-line:rgba(227,184,106,.45);  /* the accent as a ring: --surface-soft is a fill and vanishes as a line */
+    --line-strong:rgba(181,199,211,.34); /* Edu --border-strong: --border is a divider, this is an outline */          /* --surface-soft */
     --ink:#F7F7F7;                 /* --text */
     --paper:#10202D;               /* --canvas */
     --card:#162936;                /* --surface */
@@ -149,6 +153,8 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
     --lazur-press:#EFCB8A;
     --lazur-deep:#E3B86A;
     --lazur-soft:#1C3241;
+    --soft-line:rgba(227,184,106,.45);  /* the accent as a ring: --surface-soft is a fill and vanishes as a line */
+    --line-strong:rgba(181,199,211,.34); /* Edu --border-strong: --border is a divider, this is an outline */
     --ink:#F7F7F7;
     --paper:#10202D;
     --card:#162936;
@@ -268,13 +274,25 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .rfigsw button.is-active{background:var(--lazur);color:var(--on-accent)}
   .rfigsw button:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   .rfig h4{margin:0 0 4px;font-family:var(--display);font-size:16px}
-  .rfig h4 small{margin-left:7px;font-family:var(--body);font-size:12.5px;
-                 font-weight:400;color:var(--muted)}
+  .rfig h4 small{white-space:nowrap;margin-left:7px;font-family:var(--body);
+                 font-size:12.5px;font-weight:400;color:var(--muted)}
   .rfig p{margin:0 0 8px;font-size:14px;line-height:1.55}
-  .rfiglink{display:inline-block;font-size:13.5px;font-weight:600;
-            color:var(--lazur-deep);text-decoration:none}
-  .rfiglink:hover{text-decoration:underline}
-  .rfiglink:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
+  /* The way out to a real article about a real person: the globe, the name of
+     the site, and an arrow. Under the description rather than beside the name,
+     so the reader meets the person first. The same button as .afigwiki on the
+     archetype pages -- it is the same link to the same article. */
+  .rfiglink{display:inline-flex;align-items:center;gap:9px;min-height:46px;
+            box-sizing:border-box;padding:6px 13px 6px 9px;
+            border:1px solid var(--line-strong);border-radius:9px;
+            background:var(--card);color:var(--ink);font-family:var(--body);
+            font-size:14px;font-weight:600;line-height:1.2;text-decoration:none}
+  /* The whole globe, never cropped: it is the part a reader recognises
+     without reading anything. */
+  .rfiglink img{display:block;width:32px;height:32px;object-fit:contain;flex:none}
+  .rfiglink i{font-style:normal;font-size:17px;line-height:1;color:var(--lazur-deep)}
+  .rfiglink:hover{background:var(--hoverbg);border-color:var(--lazur-deep);
+                  color:var(--lazur-deep)}
+  .rfiglink:focus-visible{outline:3px solid var(--zar);outline-offset:3px}
   @media (max-width:480px){
     .rfig{flex-wrap:wrap}
     .rfigart{flex:0 0 auto}
@@ -350,7 +368,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .rpoly{margin:0;display:grid;gap:8px;justify-items:center}
   .rpoly svg{width:100%;max-width:330px;height:auto}
   .rpoly .ring{fill:none;stroke:var(--line);stroke-width:1;opacity:.9}
-  .rpoly .ring.edge{stroke:var(--lazur-soft);stroke-width:1.4;opacity:1}
+  .rpoly .ring.edge{stroke:var(--soft-line);stroke-width:1.4;opacity:1}
   .rpoly .spoke{stroke:var(--line);stroke-width:1;opacity:.55}
   /* Translucent, NOT the flat soft tone it used to be: an opaque fill hid every
      ring that fell inside the shape, so the reader lost the scale exactly where
@@ -541,7 +559,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
            font:inherit;font-size:14.5px;font-weight:600;line-height:1.2;
            text-decoration:none;cursor:pointer;white-space:nowrap;
            transition:background .15s ease,border-color .15s ease}
-  .acctbtn:hover{background:var(--hoverbg);border-color:var(--lazur-soft)}
+  .acctbtn:hover{background:var(--hoverbg);border-color:var(--soft-line)}
   .acctbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   /* Fixed 30px and flex:none. The disc is the thing that identifies the control
      at a glance, so it must not shrink when a long Russian name pushes on it. */
@@ -579,6 +597,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
     .acctnm{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
             overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
     .acctav{width:28px;height:28px}
+    .acctcar{display:none}
     .acctmenu{min-width:210px}
   }
   /* Mirrors the same band in site.css, which this page does not load. Between
@@ -707,8 +726,11 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
        padding:5px;cursor:pointer;border-radius:50%;user-select:none;
        -webkit-tap-highlight-color:transparent}
   .opt input{position:absolute;opacity:0;pointer-events:none}
-  .dot{display:flex;align-items:center;justify-content:center;border-radius:50%;
-       background:transparent;border:2.5px solid var(--line);
+  /* .opt .dot, not .dot: the career legend further up this file uses the same
+     class for a 10px coloured dot, and unscoped this handed it a 2.5px ring and
+     a transparent fill it was never meant to have. */
+  .opt .dot{display:flex;align-items:center;justify-content:center;border-radius:50%;
+       background:transparent;border:2.5px solid var(--line-strong);
        transition:background .15s ease,border-color .15s ease,transform .12s ease}
   /* A tick inside the chosen circle: colour alone is not enough to read at a
      glance, and it is what makes the choice feel confirmed. */
@@ -720,7 +742,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .opt.s3 .dot{width:clamp(34px,8.2vw,37px);height:clamp(34px,8.2vw,37px);font-size:14px}
   /* resting ring colours: warm on the disagree side, teal on the agree side */
   .opt.s1 .dot,.opt.s2 .dot{border-color:var(--viol-soft)}
-  .opt.s4 .dot,.opt.s5 .dot{border-color:var(--lazur-soft)}
+  .opt.s4 .dot,.opt.s5 .dot{border-color:var(--soft-line)}
   .opt.s3 .dot{border-color:var(--line)}
   .opt:hover .dot{transform:scale(1.08)}
   .opt.s1:hover .dot,.opt.s2:hover .dot{border-color:var(--viol)}
@@ -821,7 +843,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
           padding:16px 16px 16px 14px}
   /* A finished challenge stays legible rather than greying out: a student
      rereading what they already answered should not feel it has been retired. */
-  .chcard.is-done{border-color:var(--lazur-soft);background:var(--raised)}
+  .chcard.is-done{border-color:var(--soft-line);background:var(--raised)}
   .chnum{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;
          font-family:var(--display);font-weight:700;font-size:16px;
          background:var(--lazur-soft);color:var(--lazur-deep)}
@@ -881,6 +903,14 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .authprovider svg{width:20px;height:20px;flex:none}
   .authswap{margin:14px auto 0;font-size:14px}
   .authnote{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+  /* The parental acknowledgment. A real <label> wrapping a real checkbox, so
+     the whole sentence is the target -- a 20px box is a poor thing to ask a
+     phone user to hit. */
+  .authcheck{display:flex;gap:10px;align-items:flex-start;margin:2px 0 16px;
+             font-size:14px;line-height:1.45;color:var(--ink);cursor:pointer}
+  .authcheck input{flex:none;width:20px;height:20px;margin:0;
+                   accent-color:var(--lazur);cursor:pointer}
+  .authcheck input:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
   @media (max-width:520px){
     .authoverlay{padding:10px;align-items:flex-end}
     .authdialog{max-height:calc(100vh - 20px);padding:30px 22px 24px;border-radius:20px 20px 12px 12px}
@@ -901,7 +931,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
             padding:9px 11px;max-width:100%;color:var(--ink)}
   .sortcard:hover{border-color:var(--lazur)}
   .sortcard.picked{border-color:var(--lazur);background:var(--lazur-soft);
-                   box-shadow:0 0 0 2px var(--lazur-soft)}
+                   box-shadow:0 0 0 2px var(--soft-line)}
   .sortgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
   .sortlv{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
   /* While a card is picked, the levels are the thing to aim at, so they lift. A
@@ -925,7 +955,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .mxopt input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
   .mxopt:hover{border-color:var(--lazur)}
   .mxopt.sel{border-color:var(--lazur);background:var(--lazur-soft);
-             box-shadow:0 0 0 2px var(--lazur-soft)}
+             box-shadow:0 0 0 2px var(--soft-line)}
   .mxopt input:focus-visible + .mxtile{outline:2px solid var(--lazur);outline-offset:2px;
                                        border-radius:6px}
   .mxtile{display:block;width:100%}
@@ -992,8 +1022,8 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .btn.tg:hover{background:#1C86B8}
   .capor{text-align:center;color:var(--muted);font-size:13px;margin:12px 0}
   .caprow{display:flex;gap:10px;flex-wrap:wrap}
-  .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line);
-                border-radius:9px;background:#FBFDFD;color:var(--ink)}
+  .caprow input{flex:1 1 190px;min-width:0;padding:11px 12px;font:inherit;border:1px solid var(--line-strong);
+                border-radius:9px;background:var(--card);color:var(--ink)}
   .caprow input:focus-visible{outline:2px solid var(--lazur);outline-offset:1px}
   /* On a phone the field and button never fit side by side, so stack them full width.
      flex-basis must be reset here: in a column container it would size the HEIGHT. */
@@ -1212,8 +1242,8 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
 
 <script src="assets/characters.js?v=100242de"></script>
 <script src="assets/strings.js?v=4cb528e7"></script>
-<script src="assets/test-ru.js?v=cae0cc06"></script>
-<script src="assets/test-en.js?v=da4185d5"></script>
+<script src="assets/test-ru.js?v=da44e481"></script>
+<script src="assets/test-en.js?v=2ac30d4f"></script>
 <script src="assets/career.js?v=ae52d57f"></script>
 <script src="assets/values.js?v=66d7d5e6"></script>
 <script src="assets/school.js?v=410a10d2"></script>
@@ -1221,7 +1251,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
 <script src="assets/matrix.js?v=18519e1d"></script>
 <script>var MATRIX_ART_SRC = "assets/matrix-art.js";</script>
 <script src="assets/figure-wiki.js?v=8afd3ca2"></script>
-<script src="assets/account.js?v=711bd93c"></script>
+<script src="assets/account.js?v=19f7a656"></script>
 <script src="assets/header.js?v=fc5c5d8e"></script>
 <script id="tm-logic">
 // ---------- Naseeb Mind v1.0 logic (frozen items + draft key) ----------
@@ -2627,7 +2657,6 @@ var TT_UZ = {
   authSignIn:  'Kirish',
   authOr:      'yoki',
   authGoogle:  'Google orqali kirish',
-  authApple:   'Apple orqali kirish',
   authSignUp:  'Roʻyxatdan oʻtish',
   authEmail:   'Email',
   authPassword:'Parol',
@@ -2635,6 +2664,7 @@ var TT_UZ = {
   authSignOut: 'Chiqish',
   authConfirm: 'Emailingizga xat yubordik. Havolani bosing, keyin shu yerdan kiring.',
   authNoName:  'Ism, telefon va tugʻilgan sana soʻralmaydi. Hisob uchun faqat email va parol.',
+  authGuardian:'18 yoshga toʻlmagan boʻlsam, ota-onam yoki oʻqituvchim bilan maslahatlashdim.',
 
   errBadCredentials: 'Email yoki parol notoʻgʻri.',
   errEmailTaken:     'Bu email allaqachon roʻyxatdan oʻtgan. Kiring.',
@@ -2645,6 +2675,7 @@ var TT_UZ = {
   errUnreachable:    'Serverga ulanib boʻlmadi. Qayta urinib koʻring.',
   errSignedOut:      'Seansingiz tugadi. Qaytadan kiring.',
   errFailed:         'Nimadir notoʻgʻri ketdi. Qayta urinib koʻring.',
+  errGuardian:       'Davom etish uchun shu katakchani belgilang.',
 
   // ---- the card sort ----
   sortLeft:    'Joylashtirilmagan kartalar',
@@ -2658,6 +2689,7 @@ var TT_UZ = {
   rfigMan:     'Erkak',
   rfigWoman:   'Ayol',
   rfigWiki:    'Vikipediyada oʻqish',
+  rfigWikiName: 'Vikipediya',
   // ---- the type code and its five spectrums ----
   rdetTypeH:   'Sizning turingiz',
   axMind:      'Ong', axMindLow: 'Ichga yoʻnalgan', axMindHigh: 'Tashqariga yoʻnalgan',
@@ -3105,6 +3137,11 @@ function renderAuth(openDialog){
       '<label class="authlab" for="authPass">' + esc(T('authPassword')) + '</label>' +
       '<input class="authin" id="authPass" type="password" required ' +
         'autocomplete="' + (signUp ? 'new-password' : 'current-password') + '">' +
+      (signUp
+        ? '<label class="authcheck" for="authGuardian">' +
+            '<input type="checkbox" id="authGuardian">' +
+            '<span>' + esc(T('authGuardian')) + '</span></label>'
+        : '') +
       '<p class="autherr" id="authErr" role="alert"></p>' +
       '<button class="btn" type="submit" id="authGo">' +
         esc(T(signUp ? 'authSignUp' : 'authSignIn')) + '</button>' +
@@ -3112,9 +3149,6 @@ function renderAuth(openDialog){
       '<button class="authprovider" type="button" id="authGoogle">' +
         '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.72-.06-1.42-.19-2.09H12v3.96h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.7 2.91-4.2 2.91-7.26z"/><path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.04H3.27v2.53A9.74 9.74 0 0 0 12 21.5z"/><path fill="#FBBC05" d="M6.51 13.57A5.86 5.86 0 0 1 6.2 12c0-.54.1-1.07.31-1.57V7.9H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.04 1.02 4.1l3.24-2.53z"/><path fill="#EA4335" d="M12 6.39c1.44 0 2.73.5 3.75 1.48l2.81-2.81C16.84 3.43 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.73 5.4l3.24 2.53C7.29 8.11 9.45 6.39 12 6.39z"/></svg>' +
         esc(T('authGoogle')) + '</button>' +
-      '<button class="authprovider" type="button" id="authApple">' +
-        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.7 12.7c0-2.15 1.76-3.2 1.84-3.25a4.03 4.03 0 0 0-3.18-1.72c-1.34-.14-2.64.8-3.32.8-.7 0-1.77-.78-2.9-.76a4.28 4.28 0 0 0-3.6 2.2c-1.55 2.68-.4 6.64 1.1 8.82.74 1.06 1.62 2.24 2.78 2.2 1.12-.05 1.54-.71 2.88-.71 1.34 0 1.72.71 2.9.68 1.2-.02 1.96-1.08 2.68-2.15a8.8 8.8 0 0 0 1.22-2.5 3.87 3.87 0 0 1-2.4-3.61zm-2.18-6.4c.61-.74 1.02-1.77.9-2.8-.88.04-1.95.59-2.58 1.32-.56.65-1.05 1.7-.92 2.7.98.08 1.98-.5 2.6-1.22z"/></svg>' +
-        esc(T('authApple')) + '</button>' +
       '<button class="linkbtn authswap" type="button" id="authSwap">' +
         esc(T(signUp ? 'authHaveYes' : 'authHaveNo')) + '</button>' +
       '<p class="authnote">' + esc(T('authNoName')) + '</p>' +
@@ -3131,13 +3165,23 @@ function renderAuth(openDialog){
     authMode = signUp ? 'signin' : 'signup';
     renderAuth(true);
   };
+  // Ticked, or not being asked because this is a sign-in. Nothing reads it
+  // afterwards and nothing stores it: it gates the two ways an account can be
+  // created from this dialog, and that is all it does.
+  function guardianOk(){
+    var box = document.getElementById('authGuardian');
+    if (!box || box.checked) return true;
+    var err = document.getElementById('authErr');
+    err.classList.remove('ok');
+    err.textContent = T('errGuardian');
+    box.focus();
+    return false;
+  }
+
   document.getElementById('authGoogle').onclick = function(){
+    if (!guardianOk()) return;
     this.disabled = true;
     NMAccount.signInWithProvider('google');
-  };
-  document.getElementById('authApple').onclick = function(){
-    this.disabled = true;
-    NMAccount.signInWithProvider('apple');
   };
 
   document.getElementById('authForm').onsubmit = function(ev){
@@ -3147,6 +3191,7 @@ function renderAuth(openDialog){
     var err = document.getElementById('authErr');
     var go = document.getElementById('authGo');
     err.textContent = '';
+    if (!guardianOk()) return;
     go.disabled = true;
     go.textContent = T('authWorking');
 
@@ -4428,6 +4473,7 @@ function resultFigureHtml(archKey){
   try { wiki = FIGURE_WIKI[archKey][side][TLANG] || FIGURE_WIKI[archKey][side].uz; }
   catch (e) { wiki = ''; }
   var pair = (typeof tmHasFigureVariants === 'function') && tmHasFigureVariants(archKey);
+  var wikiLabel = fv.who + ': ' + T('rfigWiki');
 
   return '<div class="rfig">' +
       (fv.art ? '<div class="rfigart"><img src="' + esc(fv.art) + '" alt="" loading="lazy"></div>' : '') +
@@ -4448,8 +4494,11 @@ function resultFigureHtml(archKey){
         '<h4>' + esc(fv.who) + '<small>' + esc(fv.years) + '</small></h4>' +
         '<p>' + esc(fv.why) + '</p>' +
         (wiki
-          ? '<a class="rfiglink" href="' + esc(wiki) + '" target="_blank" rel="noopener noreferrer">' +
-              esc(T('rfigWiki')) + ' →</a>'
+          ? '<a class="rfiglink" href="' + esc(wiki) + '" target="_blank" rel="noopener noreferrer"' +
+              ' aria-label="' + esc(wikiLabel) + '" title="' + esc(wikiLabel) + '">' +
+              '<img src="assets/ui/wikipedia-globe.png" width="32" height="32" alt="" aria-hidden="true">' +
+              '<span>' + esc(T('rfigWikiName')) + '</span>' +
+              '<i aria-hidden="true">\u2197</i></a>'
           : '') +
       '</div>' +
     '</div>';

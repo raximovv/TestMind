@@ -128,6 +128,7 @@ var TEST_RU = {
     rfigMan:     'Мужчина',
     rfigWoman:   'Женщина',
     rfigWiki:    'Читать в Википедии',
+    rfigWikiName: 'Википедия',
     // ---- the type code and its five spectrums ----
     rdetTypeH:   'Ваш тип',
     axMind:      'Сознание', axMindLow: 'Интроверт', axMindHigh: 'Экстраверт',
@@ -282,7 +283,6 @@ var TEST_RU = {
     authSignIn:  'Войти',
     authOr:      'или',
     authGoogle:  'Войти через Google',
-    authApple:   'Войти через Apple',
     authSignUp:  'Зарегистрироваться',
     authEmail:   'Email',
     authPassword:'Пароль',
@@ -290,6 +290,7 @@ var TEST_RU = {
     authSignOut: 'Выйти',
     authConfirm: 'Мы отправили письмо на вашу почту. Перейдите по ссылке, затем войдите здесь.',
     authNoName:  'Мы не спрашиваем имя, телефон или дату рождения. Для аккаунта нужны только email и пароль.',
+    authGuardian:'Если мне ещё нет 18 лет, я посоветовался с родителями или учителем.',
 
     errBadCredentials: 'Неверный email или пароль.',
     errEmailTaken:     'Этот email уже зарегистрирован. Войдите.',
@@ -300,6 +301,7 @@ var TEST_RU = {
     errUnreachable:    'Не удалось связаться с сервером. Попробуйте снова.',
     errSignedOut:      'Сеанс закончился. Войдите заново.',
     errFailed:         'Что-то пошло не так. Попробуйте снова.',
+    errGuardian:       'Отметьте это поле, чтобы продолжить.',
 
     // ---- the card sort ----
     sortLeft:    'Нераспределённые карточки',

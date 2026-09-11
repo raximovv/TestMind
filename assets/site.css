@@ -6,9 +6,12 @@
            font-weight:100 900;font-style:normal;font-display:swap}
 
 /* Every colour in the site goes through these tokens, and every one of them is
-   declared for both themes. The dark values are Naseeb Edu's own dark theme,
-   copied token for token -- which means the accent turns purple at night, just
-   as Edu's does, while the light theme stays bronze.
+   declared for both themes. The dark values are Naseeb Edu's own dark theme as
+   it stands on upstream/main: navy, --canvas #10202d over --surface #162936.
+   The accent is NOT Edu's pale blue, though. The Naseeb Mind card on Edu's own
+   landing page keeps Naseeb Mind's gold inside Edu's navy chrome, so that is
+   what this does: Edu's grounds, Naseeb Mind's identity, bronze by day and gold
+   by night.
 
    THREE STATES, NOT TWO. An explicit choice stamps data-theme on <html>. The
    default "system" setting stamps NOTHING, and there only prefers-color-scheme
@@ -23,6 +26,8 @@
   --lazur-deep:#6B5230;
   --lazur-press:#6B5230;
   --lazur-soft:#D9C7A4;
+  --soft-line:#D9C7A4;    /* the same tint used as a LINE, not a fill */
+  --line-strong:#E3DCCC;  /* a control outline, not a divider */
   --ink:#2B2620;   /* warm near-black text */
   --paper:#F4F0E8;   /* warm cream background */
   --card:#FDFCF9;
@@ -59,7 +64,9 @@
   --on-accent-muted:#3A4B57;               /* --accent */
   --lazur-press:#EFCB8A;         /* --accent-hover */
   --lazur-deep:#E3B86A;          /* --accent-deep: link and emphasis TEXT */
-  --lazur-soft:#1C3241;          /* --surface-soft */
+  --lazur-soft:#1C3241;
+  --soft-line:rgba(227,184,106,.45);  /* the accent as a ring: --surface-soft is a fill and vanishes as a line */
+  --line-strong:rgba(181,199,211,.34); /* Edu --border-strong: --border is a divider, this is an outline */          /* --surface-soft */
   --ink:#F7F7F7;                 /* --text */
   --paper:#10202D;               /* --canvas */
   --card:#162936;                /* --surface */
@@ -77,13 +84,13 @@
   --warm-ink:#E3B86A;
   --cool:#8FA9C0;
   --cool-ink:#9FB6CC;
-  --heroA:#1A1520;
-  --heroB:#121015;
+  --heroA:#16293A;
+  --heroB:#10202D;
   --lift:rgba(181,199,211,.075); /* --interactive-hover */
   --overlay:rgba(6,15,22,.76);    /* --overlay */
   --shadow-card:0 10px 30px rgba(0,0,0,.18);
-  /* Not Edu's: the account disc is navy by design, and #16233F disappears
-     against #201A25. Lifted until it reads as a disc again. */
+  /* The disc is navy on cream by design; on a navy page it would vanish, so at
+     night it takes the accent, which is what Edu's own avatar does. */
   --avatar:#E3B86A;
   --brand-ink:#E3B86A;   /* --accent-deep: --accent is unreadable on the bar */
     color-scheme:dark;
@@ -97,6 +104,8 @@
   --lazur-press:#EFCB8A;
   --lazur-deep:#E3B86A;
   --lazur-soft:#1C3241;
+  --soft-line:rgba(227,184,106,.45);  /* the accent as a ring: --surface-soft is a fill and vanishes as a line */
+  --line-strong:rgba(181,199,211,.34); /* Edu --border-strong: --border is a divider, this is an outline */
   --ink:#F7F7F7;
   --paper:#10202D;
   --card:#162936;
@@ -114,8 +123,8 @@
   --warm-ink:#E3B86A;
   --cool:#8FA9C0;
   --cool-ink:#9FB6CC;
-  --heroA:#1A1520;
-  --heroB:#121015;
+  --heroA:#16293A;
+  --heroB:#10202D;
   --lift:rgba(181,199,211,.075);
   --overlay:rgba(6,15,22,.76);
   --shadow-card:0 10px 30px rgba(0,0,0,.18);
@@ -217,7 +226,7 @@ img,svg{max-width:100%}
          font:inherit;font-size:14.5px;font-weight:600;line-height:1.2;
          text-decoration:none;cursor:pointer;white-space:nowrap;
          transition:background .15s ease,border-color .15s ease}
-.acctbtn:hover{background:var(--hoverbg);border-color:var(--lazur-soft)}
+.acctbtn:hover{background:var(--hoverbg);border-color:var(--soft-line)}
 .acctbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 /* Fixed 30px and flex:none. The disc is the thing that identifies the control
    at a glance, so it must not shrink when a long Russian name pushes on it. */
@@ -255,6 +264,7 @@ img,svg{max-width:100%}
   .acctnm{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
           overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
   .acctav{width:28px;height:28px}
+  .acctcar{display:none}
   .acctmenu{min-width:210px}
 }
 
@@ -517,8 +527,27 @@ section{padding:60px 0}
 /* Breathing room where an archetype has a second figure. */
 .afig + .afig{margin-top:18px}
 .afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam-a)}
-.afigwho span{font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
+.afigwho span{white-space:nowrap;
+  font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
 .afig p{margin:6px 0 0;color:var(--muted);font-size:15px}
+/* The way out to a real article about a real person. Mirrors .rfiglink on the
+   result screen, which offers the same link for the figure you matched.
+   Under the description, not beside the name: the reader meets the person
+   first, and the link is then a thing to press rather than a mark next to a
+   heading. The globe carries no alt text because the label beside it already
+   says Wikipedia -- announcing it twice is worse than not at all. */
+.afigwiki{display:inline-flex;align-items:center;gap:9px;margin-top:12px;
+  min-height:46px;box-sizing:border-box;padding:6px 13px 6px 9px;
+  border:1px solid var(--line-strong);border-radius:9px;background:var(--card);
+  color:var(--ink);font-family:var(--body);font-size:15px;font-weight:600;
+  line-height:1.2;text-decoration:none}
+/* The whole globe, never cropped: it is the part a reader recognises without
+   reading anything. */
+.afigwiki img{display:block;width:32px;height:32px;object-fit:contain;flex:none}
+/* Says the link leaves the site, in the family's own colour. */
+.afigwiki i{font-style:normal;font-size:17px;line-height:1;color:var(--fam-a)}
+.afigwiki:hover{background:var(--hoverbg);border-color:var(--fam-a);color:var(--fam-a)}
+.afigwiki:focus-visible{outline:3px solid var(--fam-a);outline-offset:3px}
 /* The name becomes a button only when site.js is there to make it one, so this
    has to undo every default a <button> brings and inherit the heading it sits
    in -- otherwise the name would change size and typeface the moment JS loads. */
@@ -655,7 +684,7 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 /* margin-top:auto drops this to the foot of the card, so the historical names
    line up across a row whatever length the description above them ran to. */
 .ftfig{font-size:12.5px;color:var(--muted);margin-top:auto;padding-top:12px;
-       border-top:1px solid rgba(0,0,0,.10);width:100%;max-width:28ch}
+       border-top:1px solid var(--line);width:100%;max-width:28ch}
 @media (max-width:620px){
   /* Two per row, not one: a 300px card per row would turn ten characters into a
      very long scroll, and the figures stay legible at half width because they
@@ -710,4 +739,3 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 @media (max-width:700px){
   .lifegrid{grid-template-columns:1fr}
 }
-

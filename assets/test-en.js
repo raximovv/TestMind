@@ -130,6 +130,7 @@ var TEST_EN = {
     rfigMan:     'Man',
     rfigWoman:   'Woman',
     rfigWiki:    'Read about them on Wikipedia',
+    rfigWikiName: 'Wikipedia',
     // ---- the type code and its five spectrums ----
     rdetTypeH:   'Your type',
     axMind:      'Mind', axMindLow: 'Introverted', axMindHigh: 'Extraverted',
@@ -285,7 +286,6 @@ var TEST_EN = {
     authSignIn:  'Sign in',
     authOr:      'or',
     authGoogle:  'Sign in with Google',
-    authApple:   'Sign in with Apple',
     authSignUp:  'Create account',
     authEmail:   'Email',
     authPassword:'Password',
@@ -293,6 +293,7 @@ var TEST_EN = {
     authSignOut: 'Sign out',
     authConfirm: 'We sent you an email. Follow the link, then sign in here.',
     authNoName:  'We do not ask for your name, phone number, or date of birth. The account needs only an email and password.',
+    authGuardian:'If I am under 18, I have asked a parent or teacher.',
 
     errBadCredentials: 'That email and password do not match.',
     errEmailTaken:     'That email already has an account. Sign in instead.',
@@ -303,6 +304,7 @@ var TEST_EN = {
     errUnreachable:    'Could not reach the server. Try again.',
     errSignedOut:      'Your session has ended. Sign in again.',
     errFailed:         'Something went wrong. Try again.',
+    errGuardian:       'Please tick this box to continue.',
 
     // ---- the card sort ----
     sortLeft:    'Cards still to place',
