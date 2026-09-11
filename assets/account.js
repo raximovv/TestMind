@@ -63,12 +63,50 @@ var NMAccount = (function () {
       // expires_in is seconds from now; store the absolute moment instead so a
       // tab left open overnight does not think it has an hour left.
       expires: Math.floor(Date.now() / 1000) + (payload.expires_in || 3600),
-      user: payload.user ? { id: payload.user.id, email: payload.user.email } : null,
+      user: payload.user ? {
+        id: payload.user.id,
+        email: payload.user.email,
+        name: displayName(payload.user),
+      } : null,
     });
     return session;
   }
 
+  // Whatever the account was given as a display name, if anything at all. The
+  // schema deliberately stores no name (see tools/supabase_schema.sql) and the
+  // sign-up form does not ask for one, so for most students this is empty and
+  // the header says "Hisobim". It is read here rather than guessed from the
+  // email so that a name set in the Supabase dashboard, or added to sign-up
+  // later, shows up with nothing else to change.
+  function displayName(user) {
+    var meta = user && user.user_metadata;
+    var name = meta && (meta.full_name || meta.name || meta.display_name);
+    return String(name || '').trim();
+  }
+
   session = readSession();
+
+  // Supabase's browser OAuth flow returns the short-lived session in the URL
+  // fragment. Consume it before the page paints so a Google redirect lands in
+  // the normal signed-in state without exposing tokens in the address bar.
+  function consumeOAuthRedirect() {
+    if (typeof location === 'undefined' || !location.hash) return;
+    var parts = location.hash.slice(1).split('&'), values = {}, i, pair;
+    for (i = 0; i < parts.length; i++) {
+      pair = parts[i].split('=');
+      if (pair[0]) values[decodeURIComponent(pair[0])] = decodeURIComponent(pair.slice(1).join('=') || '');
+    }
+    var access = values.access_token;
+    if (!access) return;
+    writeSession({
+      access: access,
+      refresh: values.refresh_token || '',
+      expires: Math.floor(Date.now() / 1000) + Number(values.expires_in || 3600),
+      user: null,
+    });
+    try { history.replaceState(null, document.title, location.pathname + location.search); } catch (e) {}
+  }
+  consumeOAuthRedirect();
 
   // ------------------------------------------------------------ requests --
   function request(path, options) {
@@ -188,6 +226,17 @@ var NMAccount = (function () {
         adopt(payload);
         return session.user;
       });
+    },
+
+    signInWithProvider: function (provider, redirectTo) {
+      provider = String(provider || '').toLowerCase();
+      if (provider !== 'google' && provider !== 'apple') {
+        return Promise.reject(apiError(400, null, 'failed'));
+      }
+      var target = redirectTo || (location.origin + location.pathname + '?auth=signin');
+      location.href = NM_URL + '/auth/v1/authorize?provider=' + encodeURIComponent(provider)
+        + '&redirect_to=' + encodeURIComponent(target);
+      return Promise.resolve();
     },
 
     signOut: function () {

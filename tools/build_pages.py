@@ -9,7 +9,7 @@ all three languages; only the prose differs (see i18n.py).
 test.html and everything in assets/ are shared, single-copy files at the root.
 Pages in ru/ and en/ reach them with ../, see localize().
 """
-import io, json, os, re, subprocess
+import hashlib, io, json, os, re, subprocess
 
 import i18n
 from i18n import S, LANGS, DIR, UP, HTML_LANG, OG_LOCALE, LANG_SHORT, LANG_FULL
@@ -74,7 +74,7 @@ BACK_ARROW = (u'<svg viewBox="0 0 16 16" width="13" height="13" aria-hidden="tru
               u'<path d="M10 3 L5 8 l5 5" fill="none" stroke="currentColor" '
               u'stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>')
 
-EMAIL = 'raximovrahim1@gmail.com'
+EMAIL = 'support@naseebedu.com'
 
 # The four counters on the home page. Counts, not decoration: they are read off
 # the response Sheet and typed in here, which is why they are one obvious tuple
@@ -93,6 +93,59 @@ FACTS = ('100+', '500+', '15+')
 # plain relative link, because the translated pages sit beside each other.
 # Kept as an explicit list rather than a clever rule so that adding a shared
 # asset is a deliberate act.
+# ---------- Cache busting ----------
+# Cloudflare serves assets with max-age=14400 while GitHub Pages revalidates the
+# HTML far more often, so a student who visited before a release gets NEW markup
+# against a FOUR-HOUR-OLD stylesheet. That is not a hypothetical: the header logo
+# rendered at its full 162x254 and "Kirish" appeared twice, because the pages had
+# .brandmark and .navlogin-mobile but the cached CSS did not. Stamping the file's
+# own content hash into the URL makes a changed file a different URL, so the
+# browser cannot serve the old one. Unchanged files keep their hash and stay cached.
+_HASHES = {}
+
+def _hash(rel):
+    if rel not in _HASHES:
+        path = os.path.join(OUT, rel.replace('/', os.sep))
+        with open(path, 'rb') as fh:
+            _HASHES[rel] = hashlib.md5(fh.read()).hexdigest()[:8]
+    return _HASHES[rel]
+
+
+def stamp(rel):
+    u"""assets/site.css -> assets/site.css?v=<8 hex of its contents>."""
+    return '%s?v=%s' % (rel, _hash(rel))
+
+
+# test.html is hand-written rather than generated, but its scripts go stale the
+# same way the stylesheet did, so the build restamps them in place. Idempotent:
+# any existing ?v= is stripped before the current hash is written back.
+def stamp_test_html():
+    path = os.path.join(OUT, 'test.html')
+    with io.open(path, encoding='utf-8') as fh:
+        html = fh.read()
+    before = html
+
+    def one(m):
+        return '<script src="%s"></script>' % stamp(m.group(1))
+    html = re.sub(r'<script src="(assets/[^"?]+)(?:\?v=[0-9a-f]+)?"></script>', one, html)
+
+    # The two deferred bundles are named in a JS array, not a tag.
+    def arr(m):
+        return "'%s'" % stamp(m.group(1))
+    html = re.sub(r"'(assets/(?:careers-data|recommend|matrix-art)\.js)(?:\?v=[0-9a-f]+)?'", arr, html)
+
+    # life-<lang>.js is built from a variable, so the hash cannot be per-file;
+    # all three are rebuilt together, so uz's hash stands for the set.
+    html = re.sub(r"'assets/life-'(\s*\+\s*TLANG\s*\+\s*)'\.js(?:\?v=[0-9a-f]+)?'",
+                  lambda m: "'assets/life-'%s'.js?v=%s'" % (m.group(1), _hash('assets/life-uz.js')),
+                  html)
+
+    if html != before:
+        with io.open(path, 'w', encoding='utf-8', newline='') as fh:
+            fh.write(html)
+    print('%-8s test.html script tags' % ('stamped' if html != before else 'ok'))
+
+
 ROOT_ONLY = ['test.html', 'assets/', 'guides/']
 _ROOT_RE = re.compile(r'(href|src)="(%s)' % '|'.join(
     re.escape(f) for f in ROOT_ONLY))
@@ -153,12 +206,18 @@ def head(lang, title, desc, fname, extra=u''):
 <link rel="icon" href="%s">
 <link rel="apple-touch-icon" href="%s">
 <link rel="canonical" href="%s">%s
+<script>
+// Before anything is painted. An explicit choice is stamped here; no choice
+// means no stamp, which is what leaves prefers-color-scheme in charge.
+(function(){try{var v=localStorage.getItem('naseebmind_theme_v1');
+if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v);}catch(e){}})();
+</script>
 <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="assets/site.css">%s
+<link rel="stylesheet" href="%s">%s
 </head>
 <body>
 """ % (HTML_LANG[lang], title, desc, title, desc, OG_LOCALE[lang], SITE, FAVICON, TOUCH_ICON,
-       url_for(lang, fname), alts, extra)
+       url_for(lang, fname), alts, stamp('assets/site.css'), extra)
 
 
 def langsw(lang, fname):
@@ -179,6 +238,19 @@ def langsw(lang, fname):
         S[lang]['nav.langlabel'], out)
 
 
+# Drawn into the page rather than injected by script, so the pill is complete
+# on first paint and stays complete with JavaScript switched off. Must match
+# PERSON in assets/acct-nav.js, which repaints this same slot.
+PERSON_ICON = (u'<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+               u'<circle cx="12" cy="8.2" r="3.5"/>'
+               u'<path d="M5 19.7c.5-3.9 3.4-5.9 7-5.9s6.5 2 7 5.9z"/></svg>')
+
+def amp(url):
+    u"""A bare & in an href only works because none of ours spells an entity.
+    Escaping it means nobody has to know that."""
+    return url.replace(u'&', u'&amp;')
+
+
 def nav(lang, fname, active=None):
     t = S[lang]
     items = [('index.html', t['nav.home']), ('obrazlar.html', t['nav.types']),
@@ -188,10 +260,15 @@ def nav(lang, fname, active=None):
     for href, label in items:
         cur = ' aria-current="page"' if href == active else ''
         links += u'\n    <a href="%s"%s>%s</a>' % (href, cur, label)
-    login_href = UP[lang] + 'test.html?' + (
-        'auth=signin' if lang == 'uz' else 'lang=%s&auth=signin' % lang)
-    links += u'\n    <a class="navlogin-mobile" href="%s">%s</a>' % (
-        login_href, t['nav.login'])
+    # The nav button IS the account control now, so the separate "Kirish"
+    # link that used to sit beside it has gone: it was the same word twice.
+    test_href = UP[lang] + 'test.html' + ('' if lang == 'uz' else '?lang=%s' % lang)
+    login_href = amp(test_href + ('?' if lang == 'uz' else '&') + 'auth=signin')
+    # The two menu items that lead somewhere else. assets/acct-nav.js reads them
+    # off the wrapper, so the language belongs here with the rest of the routing
+    # rather than being worked out again in JavaScript.
+    def view_href(view):
+        return amp(test_href + ('?' if lang == 'uz' else '&') + 'view=' + view)
     # The way back to the parent platform sits left of the brand, inside the
     # nav, where a back control is looked for. The nav row is full at 360px, so
     # below 820px the label is dropped and only the chevron stays -- the
@@ -207,12 +284,19 @@ def nav(lang, fname, active=None):
   <div class="navlinks">%(links)s
   </div>
   %(langsw)s
-  <a class="navlogin" href="%(login_href)s">%(login)s</a>
-  <a class="btn sm" href="test.html" data-cta>%(cta)s</a>
+  <button class="themesw" type="button" data-theme-toggle data-lang="%(lang)s" aria-pressed="false" aria-label="Tungi rejimga oʻtish"></button>
+  <div class="navacct" data-acct data-lang="%(lang)s"
+       data-login-href="%(login_href)s"
+       data-results-href="%(results_href)s"
+       data-resume-href="%(resume_href)s">
+    <a class="acctbtn" href="%(login_href)s"><span class="acctav" aria-hidden="true">%(person)s</span><span class="acctnm">%(login)s</span></a>
+  </div>
 </div></nav>
 """ % {'naseeb': NASEEB, 'arrow': BACK_ARROW, 'back': t['nav.back'],
        'links': links, 'langsw': langsw(lang, fname), 'login_href': login_href,
-       'login': t['nav.login'], 'cta': t['nav.cta']}
+       'lang': lang, 'person': PERSON_ICON,
+       'login': t['nav.login'],
+       'results_href': view_href('results'), 'resume_href': view_href('resume')}
 
 
 SOCIAL = u'<div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div>'
@@ -264,9 +348,19 @@ def footer(lang):
        'email': EMAIL, 'social': SOCIAL, 'disclaimer': t['foot.disclaimer']}
 
 
-SCRIPTS = u"""<script src="assets/characters.js"></script>
-<script src="assets/strings.js"></script>
-<script src="assets/site.js"></script>
+def scripts():
+    # account.js before header.js before site.js: the control needs the session
+    # to know which of its two faces to paint, and site.js mounts it.
+    return SCRIPTS % (stamp('assets/characters.js'), stamp('assets/strings.js'),
+                      stamp('assets/account.js'), stamp('assets/header.js'),
+                      stamp('assets/site.js'))
+
+
+SCRIPTS = u"""<script src="%s"></script>
+<script src="%s"></script>
+<script src="%s"></script>
+<script src="%s"></script>
+<script src="%s"></script>
 </body>
 </html>
 """
@@ -296,7 +390,6 @@ HOME = u"""<header class="hero" id="top">
     <a class="btn big" href="test.html" data-cta>%(nav.cta)s</a>
   </div>
   <div class="scene" id="scene" aria-hidden="true"></div>
-  <p class="scenecap">%(home.scenecap)s</p>
 </header>
 
 <section class="alt">
@@ -640,7 +733,7 @@ def build_page(lang, fname, tpl, tkey, dkey, with_close):
     elif fname == 'savollar.html':
         extra = faq_ld(body)
     html = head(lang, t[tkey], t[dkey], fname, extra) \
-         + nav(lang, fname) + body + footer(lang) + SCRIPTS
+         + nav(lang, fname) + body + footer(lang) + scripts()
     return localize(html, lang)
 
 
@@ -689,6 +782,7 @@ def write_sitemap(slugs):
 
 if __name__ == '__main__':
     build_all()
+    stamp_test_html()
     # Standalone run: pull the archetype slugs from the shipped characters.js so
     # the sitemap lists the same ten pages build_archetypes.py writes.
     import subprocess

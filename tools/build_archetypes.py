@@ -220,7 +220,7 @@ for lang in LANGS:
         title = t['arch.title'] % {'name': v['name']}
         desc = u'%s %s' % (v['lines'][0], v['strength'])
         html = bp.head(lang, title, desc, fname) + bp.nav(lang, fname, 'obrazlar.html') \
-             + body + bp.close(lang) + bp.footer(lang) + bp.SCRIPTS
+             + body + bp.close(lang) + bp.footer(lang) + bp.scripts()
         bp.write(OUT + DIR[lang] + fname, bp.localize(html, lang))
         count += 1
     print('wrote %2d archetype pages to %s' % (len(ARCH), DIR[lang] or './'))

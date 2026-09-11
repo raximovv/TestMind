@@ -491,7 +491,7 @@ function guideEmailHtml_(name){
   + '</td></tr>'
   + '<tr><td style="padding:22px 32px 26px;border-top:1px solid #E2EBEC;font-size:12px;line-height:1.6;color:#8A9AA0">'
   + 'Bu xatni oldingiz, chunki Naseeb Mind natijangizni koʻrgach, uni email orqali soʻradingiz.<br>'
-  + 'Savollar: <a href="mailto:raximovrahim1@gmail.com" style="color:#8A9AA0">raximovrahim1@gmail.com</a><br>'
+  + 'Savollar: <a href="mailto:support@naseebedu.com" style="color:#8A9AA0">support@naseebedu.com</a><br>'
   + 'Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.'
   + '</td></tr>'
   + '</table></td></tr></table></div>';

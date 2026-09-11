@@ -9,7 +9,9 @@ let pass = 0, fail = 0;
 const ok = (c, m) => { c ? (pass++, console.log('  PASS ' + m)) : (fail++, console.log('  FAIL ' + m)); };
 
 async function session(fakeNetworkFailure) {
-  const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
+  const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
   const page = await browser.newPage();
   await page.setViewport({ width: 390, height: 844 });
   const posts = [];
@@ -114,7 +116,7 @@ async function session(fakeNetworkFailure) {
   // through T(), so they never switched language. Any new literal reintroduces it.
   console.log('\n== no untranslated button labels ==');
   {
-    const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
     const UZ = ['Chop etish', 'Qaytadan', 'Havolani nusxalash', 'Rasm qilib saqlash'];
     for (const lang of ['ru', 'en']) {
       const page = await browser.newPage();
@@ -152,7 +154,7 @@ async function session(fakeNetworkFailure) {
   // .name came along with it. Catches the whole class, not one instance of it.
   console.log('\n== no Uzbek text left on the RU/EN result screen ==');
   {
-    const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
     const scan = () => {
       const out = [], w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
       let n;

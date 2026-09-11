@@ -20,7 +20,7 @@ const send = (m, p = {}, sid) => new Promise((res, rej) => {
 });
 (async () => {
   const prof = fs.mkdtempSync(path.join(os.tmpdir(), 'og-'));
-  const ch = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox',
+  const ch = spawn(CHROME, ['--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox', '--blink-settings=preferredColorScheme=1',
     '--disable-gpu', '--hide-scrollbars', '--allow-file-access-from-files',
     '--user-data-dir=' + prof, 'about:blank'], { stdio: 'ignore' });
   let info = null;
@@ -63,4 +63,6 @@ const send = (m, p = {}, sid) => new Promise((res, rej) => {
     'print("og.png  %dx%d  %.0f KB" % (Image.open(dst).size + (os.path.getsize(dst) / 1024.0,)))'
   ].join('\n'), tmp, DEST, String(W), String(H)], { stdio: 'inherit' });
   py.on('exit', c => process.exit(c || 0));
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
 })();

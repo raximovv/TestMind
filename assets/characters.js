@@ -9,7 +9,7 @@
 var FAMILIES = {
   lead: {name:'Yetakchilar',  c:'#0F6E8C', soft:'#E1EEF2', dark:'#12262F', lit:'#5FB4CE'},
   crea: {name:'Ijodkorlar',   c:'#6B4FA8', soft:'#EDE7F7', dark:'#221B36', lit:'#A98BE0'},
-  care: {name:'Gʻamxoʻrlar',  c:'#237A5E', soft:'#E2F1EC', dark:'#12271F', lit:'#5FC2A0'},
+  care: {name:'Gʻamxoʻrlar',  c:'#1F6E52', soft:'#E2F1EC', dark:'#12271F', lit:'#5FC2A0'},
   base: {name:'Ishonchlilar', c:'#A2731F', soft:'#F6EEDC', dark:'#2B2213', lit:'#D9AE52'}
 };
 

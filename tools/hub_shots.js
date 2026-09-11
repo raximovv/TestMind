@@ -35,8 +35,10 @@ async function shoot(page, name) {
 }
 
 (async () => {
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
   const browser = await puppeteer.launch({
-    executablePath: CHROME, headless: 'new', args: ['--no-sandbox'],
+    executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'],
   });
   const page = await browser.newPage();
   await page.setViewport({ width: WIDTH, height: 900 });
@@ -71,17 +73,14 @@ async function shoot(page, name) {
   await page.goto(BASE, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.chlist', { timeout: 10000 });
   ok((await page.$$('.chcard')).length === 6, 'signed-out students can see all six challenges');
-  ok(!!(await page.$('.toplogin')), 'the header offers account sign-in');
+  ok(await page.$eval('[data-acct] .acctnm', (e) => e.textContent.trim() === 'Kirish'),
+     'signed out, the header pill says Kirish');
   await page.click('.chgo');
   await page.waitForSelector('#authForm', { timeout: 10000 });
   ok(!!(await page.$('#authDialog [role="dialog"]')), 'create account opens in a modal');
   await shoot(page, '1-gate');
   await page.click('#authClose');
-  await page.evaluate(() => {
-    const link = [...document.querySelectorAll('.toplogin, .toplogin-mobile')]
-      .find(x => getComputedStyle(x).display !== 'none');
-    link.click();
-  });
+  await page.evaluate(() => document.querySelector('[data-acct] .acctbtn').click());
   ok(await page.evaluate(() => authMode === 'signin' && !!document.getElementById('authDialog')),
      'the header account link opens sign-in');
 
@@ -97,9 +96,21 @@ async function shoot(page, name) {
   // 2. The hub, untouched.
   await page.goto(BASE, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.chlist', { timeout: 10000 });
-  const cards = await page.$$eval('.chcard h3', (h) => h.map((x) => x.textContent));
+  const cards = await page.$$eval('.chcard h2', (h) => h.map((x) => x.textContent));
   console.log('  challenges on the hub: ' + cards.join(' | '));
   ok(cards.length === 6, 'the hub shows six challenges');
+  // No name on this stub account, and none is guessed from the email, so the
+  // pill falls back to "Hisobim" and opens a menu rather than a page.
+  ok(await page.$eval('[data-acct] .acctnm', (e) => e.textContent.trim() === 'Hisobim'),
+     'signed in, the pill says Hisobim');
+  ok(await page.$eval('[data-acct] .acctbtn', (e) => {
+    const b = e.getBoundingClientRect();
+    return e.tagName === 'BUTTON' && b.width > 0 && b.height >= 24;
+  }), 'the account button is a menu button and visible at phone width');
+  await page.click('[data-acct] .acctbtn');
+  ok(await page.$$eval('[data-acct] [role="menuitem"]', (m) => m.length === 3),
+     'and its menu holds the three items');
+  await page.keyboard.press('Escape');
   await shoot(page, '2-hub');
 
   // 3. A scale challenge.

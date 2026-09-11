@@ -94,7 +94,7 @@ function strip(buf) {
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'tm-pdf-'));
   const chrome = spawn(CHROME, [
-    '--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox',
+    '--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox', '--blink-settings=preferredColorScheme=1',
     '--disable-gpu', '--user-data-dir=' + profile, 'about:blank',
   ], { stdio: 'ignore' });
 
@@ -134,4 +134,6 @@ function strip(buf) {
   console.log('\n' + (slugs.length - bad) + '/' + slugs.length + ' written to ' + OUTDIR);
   if (bad) { console.error('fix the overflow above, those PDFs were NOT written'); process.exit(1); }
   process.exit(0);
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
 })();
