@@ -47,7 +47,9 @@ async function open(browser, lang){
 }
 
 (async () => {
-  const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
+  const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
 
   // ---------------------------------------------------------------- resume
   // The draft now has to carry `stage` as well as `plan`. Without it a resumed

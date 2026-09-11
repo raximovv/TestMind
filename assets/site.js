@@ -443,6 +443,29 @@ function buildBands(){
 /* ================= shared behaviour ================= */
 
 // If an unfinished test is saved on this device, say so on every start button.
+// The nav button is the account control. It ships signed-out ("Kirish"), because
+// that is what a first-time visitor and every crawler must see; if this device
+// has a session, the label and destination are swapped here.
+//
+// Reads the stored session directly rather than loading account.js: these pages
+// need one boolean, not a whole auth client, and account.js talks to Supabase on
+// load. A present refresh token, not the access token's expiry, is what says
+// "signed in" -- an expired access token is refreshed by the test page itself.
+/* The account control in the header. These are ordinary pages, not the test, so
+   "my results" and "carry on" are links to test.html and the module lets them
+   behave as links; only signing out happens here, and it happens in place so the
+   pill goes back to saying "Kirish" without a reload. */
+function mountAccountNav(){
+  if (typeof NMNav === 'undefined') return;
+  NMNav.mount({});
+}
+
+/* The light/dark switch beside it. The theme itself was already applied by
+   the inline script in <head>; this only wires the button. */
+function mountThemeSwitch(){
+  if (typeof NMTheme !== 'undefined') NMTheme.mount();
+}
+
 function markResumeCtas(){
   try {
     var d = JSON.parse(localStorage.getItem('testmind_draft_v1'));
@@ -640,6 +663,8 @@ function mountPage(){
   if ((v = document.getElementById('vg-future'))) v.innerHTML = vgFuture();
   mountFigures();
   markResumeCtas();
+  mountAccountNav();
+  mountThemeSwitch();
   // Last: the scenes above just changed the height of the page, and the spot is
   // measured against that height.
   mountLangSpot();

@@ -5,14 +5,125 @@
 @font-face{font-family:'Inter';src:url('fonts/inter.woff2') format('woff2');
            font-weight:100 900;font-style:normal;font-display:swap}
 
+/* Every colour in the site goes through these tokens, and every one of them is
+   declared for both themes. The dark values are Naseeb Edu's own dark theme,
+   copied token for token -- which means the accent turns purple at night, just
+   as Edu's does, while the light theme stays bronze.
+
+   THREE STATES, NOT TWO. An explicit choice stamps data-theme on <html>. The
+   default "system" setting stamps NOTHING, and there only prefers-color-scheme
+   separates light from dark. So the light values sit on bare :root, the dark
+   values are repeated under the media query (guarded, so an explicit light
+   choice beats a dark phone) and again under the dark stamp. Nothing may take a
+   colour that is only defined inside one of those blocks. */
 :root{
-  /* Naseeb Edu palette: warm cream ground, bronze primary, gold accent. The
-     variable names are kept (--lazur / --zar) because they are referenced in
-     ~60 places; only the values moved. */
-  --lazur:#8A6A3F; --lazur-deep:#6B5230; --ink:#2B2620; --paper:#F4F0E8;
-  --card:#FDFCF9; --line:#E3DCCC; --zar:#C9A961; --muted:#6E6558;
+  --lazur:#8A6A3F;   /* bronze, primary */
+  --on-accent:#fff;   /* ink on --lazur: dark accent on cream... */
+  --on-accent-muted:#DCD2BE;
+  --lazur-deep:#6B5230;
+  --lazur-press:#6B5230;
+  --lazur-soft:#D9C7A4;
+  --ink:#2B2620;   /* warm near-black text */
+  --paper:#F4F0E8;   /* warm cream background */
+  --card:#FDFCF9;
+  --line:#E3DCCC;
+  --zar:#C9A961;   /* gold accent, used sparingly */
+  --muted:#6E6558;
+  --avatar:#16233F;   /* the account disc: navy on cream, gold on navy */
+  --brand-ink:#8A6A3F;   /* the word "Mind" -- an ink, not the button ground */
+  --bar:rgba(255,255,255,.94);
+  --hoverbg:#F0EADD;   /* every hover in the header row */
+  --raised:#FFFEFB;   /* a card lifted off another card */
+  --inset:#E9E1D5;   /* a well pressed into the page */
+  --warm:#FBF3E4;   /* the amber notes: a caution, the cost of a strength */
+  --disabled:#CFC5B2;
+  --good:#237A5E;      /* a green ground: the finished tick, a rule */
+  --good-ink:#237A5E;  /* the same green as TEXT */
+  --warm-ink:#8A6520;  /* amber text on --warm */
+  --cool:#7C93A8;      /* the alternative-career dot */
+  --cool-ink:#55697C;  /* and the same idea as TEXT */
+  --heroA:#EFE9DC;  /* the hero gradient, top and bottom */
+  --heroB:#F4F0E8;
+  --lift:rgba(255,255,255,.6);   /* a card rising under the pointer */
+  --overlay:rgba(35,29,24,.56);
+  --shadow-card:0 8px 26px rgba(74,64,54,.07);
+
   --display:'Bitter', Georgia, serif; --body:'Inter','Segoe UI',system-ui,sans-serif;
+  color-scheme:light;
 }
+/* The phone is in dark mode and the reader has not overridden it. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+  --lazur:#E3B86A;
+  --on-accent:#10202D;   /* ...light accent on navy, so the ink flips */
+  --on-accent-muted:#3A4B57;               /* --accent */
+  --lazur-press:#EFCB8A;         /* --accent-hover */
+  --lazur-deep:#E3B86A;          /* --accent-deep: link and emphasis TEXT */
+  --lazur-soft:#1C3241;          /* --surface-soft */
+  --ink:#F7F7F7;                 /* --text */
+  --paper:#10202D;               /* --canvas */
+  --card:#162936;                /* --surface */
+  --line:rgba(181,199,211,.16);  /* --border */
+  --zar:#EFCB8A;                 /* --focus-color */
+  --muted:#B5C3CE;               /* --muted */
+  --raised:#213947;              /* --surface-raised */
+  --inset:#0C1923;               /* --surface-inset */
+  --hoverbg:#284452;             /* --surface-hover */
+  --bar:rgba(12,25,35,.94);       /* --sidebar */
+  --warm:#1C3241;                /* --surface-soft: there is no amber at night */
+  --disabled:#2A3F4D;
+  --good:#2E8B6B;                /* lifted: #237A5E sinks into --card */
+  --good-ink:#4FB08A;            /* lifted further: it has to read as TEXT */
+  --warm-ink:#E3B86A;
+  --cool:#8FA9C0;
+  --cool-ink:#9FB6CC;
+  --heroA:#1A1520;
+  --heroB:#121015;
+  --lift:rgba(181,199,211,.075); /* --interactive-hover */
+  --overlay:rgba(6,15,22,.76);    /* --overlay */
+  --shadow-card:0 10px 30px rgba(0,0,0,.18);
+  /* Not Edu's: the account disc is navy by design, and #16233F disappears
+     against #201A25. Lifted until it reads as a disc again. */
+  --avatar:#E3B86A;
+  --brand-ink:#E3B86A;   /* --accent-deep: --accent is unreadable on the bar */
+    color-scheme:dark;
+  }
+}
+/* The reader asked for dark, whatever the phone says. */
+:root[data-theme="dark"]{  /* the same values; see the block above */
+  --lazur:#E3B86A;
+  --on-accent:#10202D;
+  --on-accent-muted:#3A4B57;
+  --lazur-press:#EFCB8A;
+  --lazur-deep:#E3B86A;
+  --lazur-soft:#1C3241;
+  --ink:#F7F7F7;
+  --paper:#10202D;
+  --card:#162936;
+  --line:rgba(181,199,211,.16);
+  --zar:#EFCB8A;
+  --muted:#B5C3CE;
+  --raised:#213947;
+  --inset:#0C1923;
+  --hoverbg:#284452;
+  --bar:rgba(12,25,35,.94);
+  --warm:#1C3241;
+  --disabled:#2A3F4D;
+  --good:#2E8B6B;
+  --good-ink:#4FB08A;
+  --warm-ink:#E3B86A;
+  --cool:#8FA9C0;
+  --cool-ink:#9FB6CC;
+  --heroA:#1A1520;
+  --heroB:#121015;
+  --lift:rgba(181,199,211,.075);
+  --overlay:rgba(6,15,22,.76);
+  --shadow-card:0 10px 30px rgba(0,0,0,.18);
+  --avatar:#E3B86A;
+  --brand-ink:#E3B86A;
+  color-scheme:dark;
+}
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
 /* Russian and English produce single words far longer than any Uzbek one,
@@ -28,13 +139,13 @@ img,svg{max-width:100%}
 
 /* ---------- buttons ---------- */
 .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;
-     font-weight:600;cursor:pointer;background:var(--lazur);color:#fff;text-decoration:none;
+     font-weight:600;cursor:pointer;background:var(--lazur);color:var(--on-accent);text-decoration:none;
      transition:background .15s ease,transform .12s ease}
-.btn:hover{background:var(--lazur-deep)}
+.btn:hover{background:var(--lazur-press)}
 .btn:active{transform:translateY(1px)}
 .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
-.btn.ghost:hover{background:#F0EADD;border-color:var(--lazur)}
+.btn.ghost:hover{background:var(--hoverbg);border-color:var(--lazur)}
 .btn.sm{padding:9px 16px;font-size:14.5px}
 .btn.big{padding:16px 34px;font-size:18px;border-radius:12px}
 /* The arrow is decoration on top of the label, so it lives in CSS and not in the
@@ -49,7 +160,7 @@ img,svg{max-width:100%}
 .btn.big::after{content:"→" / ""}
 .btn.big:hover::after{transform:translateX(3px)}
 @media (prefers-reduced-motion:reduce){.btn.big:hover::after{transform:none}}
-.btn[disabled]{background:#CFC5B2;cursor:not-allowed}
+.btn[disabled]{background:var(--disabled);cursor:not-allowed}
 
 /* ---------- nav ---------- */
 /* Visually hidden, still read aloud. The back link shows the brand name only,
@@ -67,27 +178,105 @@ img,svg{max-width:100%}
           background:var(--card);font-size:13px;line-height:1.4;color:var(--muted);
           text-decoration:none;white-space:nowrap}
 .navback svg{flex:none}
-.navback:hover{color:var(--lazur-deep);background:#F0EADD}
+.navback:hover{color:var(--lazur-deep);background:var(--hoverbg)}
 .navback:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 
-.nav{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.94);
+.nav{position:sticky;top:0;z-index:20;background:var(--bar);
      backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
 .navin{display:flex;align-items:center;gap:18px;height:62px}
 .brand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);
        font-weight:700;font-size:23px;color:var(--ink);text-decoration:none;white-space:nowrap}
 .brandmark{display:block;width:auto;height:30px;object-fit:contain;flex:none}
-.brand b{color:var(--lazur);font-weight:700}
+.brand b{color:var(--brand-ink);font-weight:700}
+/* The mark is a navy silhouette on transparency: 1.15:1 against the dark
+   surface, which is invisible. Inverted to white at night, to match "Naseeb"
+   in the wordmark beside it. */
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .brandmark,
+  :root:not([data-theme="light"]) .startmark{filter:brightness(0) invert(1)}
+}
+:root[data-theme="dark"] .brandmark,
+:root[data-theme="dark"] .startmark{filter:brightness(0) invert(1)}
+
 .navlinks{display:flex;gap:22px;margin-left:auto}
 .navlinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;
             padding:4px 0;border-bottom:2px solid transparent}
 .navlinks a:hover{color:var(--lazur-deep)}
 .navlinks a[aria-current="page"]{color:var(--lazur-deep);font-weight:600;
                                  border-bottom-color:var(--lazur)}
-.navlogin{color:var(--lazur-deep);font-weight:600;font-size:14.5px;text-decoration:none;
-          white-space:nowrap;padding:7px 2px}
-.navlogin:hover{text-decoration:underline}
-.navlogin:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
-.navlogin-mobile{display:none}
+/* ---------- the account control ---------- */
+/* A warm beige pill with a navy disc on the left: signed out it holds a person
+   icon and "Kirish", signed in it holds the student's initial, their name and a
+   caret onto the menu. It replaced a solid bronze "Testni boshlash" button that
+   pointed at the test from the test, and that also meant the header's only
+   filled shape now sits on the hero where the action actually is. */
+.navacct{position:relative;flex:none}
+.acctbtn{display:inline-flex;align-items:center;gap:9px;max-width:230px;
+         margin:0;padding:5px 14px 5px 5px;border:1px solid var(--line);
+         border-radius:999px;background:var(--paper);color:var(--ink);
+         font:inherit;font-size:14.5px;font-weight:600;line-height:1.2;
+         text-decoration:none;cursor:pointer;white-space:nowrap;
+         transition:background .15s ease,border-color .15s ease}
+.acctbtn:hover{background:var(--hoverbg);border-color:var(--lazur-soft)}
+.acctbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+/* Fixed 30px and flex:none. The disc is the thing that identifies the control
+   at a glance, so it must not shrink when a long Russian name pushes on it. */
+.acctav{flex:none;display:inline-flex;align-items:center;justify-content:center;
+        width:30px;height:30px;border-radius:50%;background:var(--avatar);
+        color:var(--on-accent);font-size:13.5px;font-weight:700;overflow:hidden}
+.acctav svg{width:19px;height:19px;fill:currentColor}
+/* A name can be anything, and a nav row has a fixed budget. Ellipsis, never
+   wrap: a second line would make the whole sticky header taller. */
+.acctnm{overflow:hidden;text-overflow:ellipsis}
+.acctcar{flex:none;width:14px;height:14px;color:var(--muted)}
+
+.acctmenu{position:absolute;top:calc(100% + 9px);right:0;z-index:60;min-width:236px;
+          padding:7px;background:var(--card);border:1px solid var(--line);
+          border-radius:14px;box-shadow:0 16px 38px rgba(43,38,32,.17)}
+.acctmenu[hidden]{display:none}
+.acctitem{display:flex;align-items:center;gap:11px;width:100%;margin:0;
+          padding:9px 11px;border:0;border-radius:9px;background:none;
+          color:var(--ink);font:inherit;font-size:14.5px;line-height:1.35;
+          text-align:left;text-decoration:none;cursor:pointer}
+.acctitem:hover,.acctitem:focus{background:var(--paper);outline:none}
+.acctitem:focus-visible{outline:3px solid var(--zar);outline-offset:-1px}
+.acctitem svg{flex:none;width:18px;height:18px;fill:var(--lazur)}
+/* The sign-out glyph is drawn in strokes, so it needs the opposite treatment to
+   the two filled ones above it. */
+.acctitem svg.strokeico{fill:none;stroke:var(--lazur);stroke-width:1.75;
+                        stroke-linecap:round;stroke-linejoin:round}
+.acctsep{height:1px;margin:6px 4px;background:var(--line);border:0}
+
+/* Below this the name is hidden but still read aloud, so the button keeps its
+   accessible name rather than becoming a nameless circle. Four controls share
+   320px on a 360px phone; this is where the row stops fitting. */
+@media (max-width:430px){
+  .acctbtn{gap:5px;padding:4px 7px 4px 4px}
+  .acctnm{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+          overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+  .acctav{width:28px;height:28px}
+  .acctmenu{min-width:210px}
+}
+
+
+/* ---------- light / dark switch ----------
+   One icon button, shaped like the pills either side of it so the header reads
+   as a row of the same kind of control. The icon says what pressing it DOES:
+   a moon on a light page, a sun on a dark one. */
+.themesw{flex:none;display:inline-flex;align-items:center;justify-content:center;
+         width:32px;height:32px;padding:0;border:1px solid var(--line);
+         border-radius:999px;background:var(--card);color:var(--muted);
+         cursor:pointer;transition:background .15s ease,color .15s ease}
+.themesw:hover{color:var(--lazur-deep);background:var(--hoverbg)}
+.themesw:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+.themesw .ico{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;
+              stroke-linecap:round;stroke-linejoin:round}
+/* The moon is a solid shape; the sun is drawn in strokes. */
+.themesw[aria-pressed="false"] .ico{fill:currentColor;stroke:none}
+/* On a phone this is the control that has to give: it costs a whole extra
+   row of sticky header, which then covers the first thing on the page. The
+   phone's own dark setting still drives the site, so nothing is lost. */
+@media (max-width:820px){ .themesw{display:none} }
 
 /* Language switcher. Three short codes rather than a dropdown, because the whole
    control is then one tap on a phone and needs no JavaScript at all. */
@@ -96,9 +285,9 @@ img,svg{max-width:100%}
 .langsw a,.langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;
         font-weight:600;letter-spacing:.03em;line-height:1.55;text-decoration:none;
         color:var(--muted);white-space:nowrap}
-.langsw a:hover{color:var(--lazur-deep);background:#F0EADD}
+.langsw a:hover{color:var(--lazur-deep);background:var(--hoverbg)}
 .langsw a:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-.langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
+.langsw [aria-current="true"]{background:var(--lazur-press);color:var(--on-accent)}
 
 /* Between the phone rules below and a full desktop row there was nothing, and
    the desktop row does not fit in that space: brand + back + five links +
@@ -158,12 +347,9 @@ img,svg{max-width:100%}
   .langsw a,.langsw span{padding:5px 5px;font-size:11px}
   .navin .btn{margin-left:0}
   .navin .btn.sm{padding:9px 10px;font-size:13.5px}
-  .navin .btn.sm{display:none}
-  .navlogin{display:none}
-  .navlogin-mobile{display:inline}
 }
 /* ---------- page header ---------- */
-.phead{background:linear-gradient(180deg,#EFE9DC 0%,#F4F0E8 100%);
+.phead{background:linear-gradient(180deg,var(--heroA) 0%,var(--heroB) 100%);
        border-bottom:1px solid var(--line);padding:52px 0 46px;text-align:center}
 .phead h1{margin:0 0 12px}
 .phead .lead{margin:0 auto;max-width:640px}
@@ -186,7 +372,7 @@ section{padding:60px 0}
 .panel .ptext h2{margin-bottom:12px}
 .panel .ptext p{color:var(--muted);margin:0 0 20px;font-size:16.5px}
 .ptag{display:inline-block;font-size:12.5px;font-weight:600;letter-spacing:.5px;
-      text-transform:uppercase;color:var(--lazur-deep);background:#EFE7D8;
+      text-transform:uppercase;color:var(--lazur-deep);background:var(--inset);
       border-radius:99px;padding:5px 13px;margin-bottom:14px}
 .part{background:var(--paper);border:1px solid var(--line);border-radius:18px;
       padding:18px;display:flex;align-items:center;justify-content:center}
@@ -207,7 +393,7 @@ section{padding:60px 0}
 .fact{background:var(--card);border:1px solid var(--line);border-top:4px solid var(--lazur);
       border-radius:12px;padding:28px 22px;text-align:center}
 .fact:nth-child(2){border-top-color:var(--zar)}
-.fact:nth-child(3){border-top-color:#237A5E}
+.fact:nth-child(3){border-top-color:var(--good)}
 .factn{font-family:var(--display);font-weight:700;font-size:clamp(34px,5.4vw,46px);
        line-height:1.05;color:var(--ink)}
 /* The label is now two or three words rather than one, so it needs the line
@@ -217,30 +403,30 @@ section{padding:60px 0}
 /* ---------- character gallery ---------- */
 .fam{margin-bottom:38px}
 .famhead{display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap;
-         padding-bottom:10px;border-bottom:2px solid var(--famc)}
-.famname{font-family:var(--display);font-weight:700;font-size:21px;color:var(--famc);margin:0}
+         padding-bottom:10px;border-bottom:2px solid var(--fam-a)}
+.famname{font-family:var(--display);font-weight:700;font-size:21px;color:var(--fam-a);margin:0}
 .famnote{font-size:14px;color:var(--muted)}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(158px,1fr));gap:14px}
 .ccard{background:var(--card);border:1px solid var(--line);border-radius:14px;
        overflow:hidden;transition:transform .16s ease,box-shadow .16s ease}
 .ccard:hover{transform:translateY(-3px);box-shadow:0 8px 22px rgba(15,110,140,.10)}
-.cart{background:var(--famsoft);padding:14px 10px 0}
+.cart{background:var(--fam-g);padding:14px 10px 0}
 .cart svg{display:block;width:clamp(92px,44%,118px);height:auto;margin:0 auto}
 .cbody{padding:13px 15px 17px}
 .cname{font-family:var(--display);font-weight:700;font-size:clamp(15px,3.6vw,17px);
-       color:var(--famc);margin:0 0 5px;line-height:1.25}
+       color:var(--fam-a);margin:0 0 5px;line-height:1.25}
 .cline{font-size:13.5px;color:var(--ink);margin:0 0 8px;line-height:1.45}
 .cstr{font-size:13.5px;color:var(--muted);margin:0;line-height:1.45}
-.cwatch{font-size:13px;color:#7A5C22;background:#FBF3E4;border-radius:8px;
+.cwatch{font-size:13px;color:#7A5C22;background:var(--warm);border-radius:8px;
         padding:8px 10px;margin:9px 0 0;line-height:1.45}
 .cfig{font-size:12.5px;color:var(--muted);margin:9px 0 0;padding-top:9px;
       border-top:1px solid var(--line)}
-.cfig b{color:var(--famc);font-weight:600}
+.cfig b{color:var(--fam-a);font-weight:600}
 
 /* ---------- steps / why cards ---------- */
 .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px}
 .step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:24px}
-.stepn{width:38px;height:38px;border-radius:50%;background:var(--lazur);color:#fff;
+.stepn{width:38px;height:38px;border-radius:50%;background:var(--lazur);color:var(--on-accent);
        display:flex;align-items:center;justify-content:center;font-weight:700;font-size:17px;
        margin-bottom:14px}
 .step p{margin:0;color:var(--muted);font-size:15px}
@@ -264,11 +450,11 @@ section{padding:60px 0}
 /* ---------- closing band ---------- */
 .fnote{color:var(--muted);font-size:12.5px;white-space:nowrap}
 
-.close{text-align:center;background:var(--lazur-deep);color:#fff;padding:60px 20px}
-.close h2{color:#fff;margin-bottom:12px}
-.close p{color:#DCD2BE;margin:0 0 26px;font-size:17px}
-.close .btn{background:#fff;color:var(--lazur-deep)}
-.close .btn:hover{background:#F2ECE0}
+.close{text-align:center;background:var(--lazur-press);color:var(--on-accent);padding:60px 20px}
+.close h2{color:var(--on-accent);margin-bottom:12px}
+.close p{color:var(--on-accent-muted);margin:0 0 26px;font-size:17px}
+.close .btn{background:var(--card);color:var(--lazur-deep)}
+.close .btn:hover{background:var(--hoverbg)}
 
 /* ---------- footer ---------- */
 .foot{background:var(--paper);border-top:1px solid var(--line);padding:44px 0 30px}
@@ -293,7 +479,7 @@ section{padding:60px 0}
 .footbar a{color:var(--muted)}
 .socrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
 .soc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
-     border-radius:50%;background:var(--lazur);color:#fff;flex:0 0 auto}
+     border-radius:50%;background:var(--lazur);color:var(--on-accent);flex:0 0 auto}
 .soc svg{width:20px;height:20px;display:block}
 
 @media (prefers-reduced-motion: reduce){
@@ -302,14 +488,14 @@ section{padding:60px 0}
 }
 
 /* ---------- individual archetype page ---------- */
-.ahero{background:var(--famsoft);border-bottom:1px solid var(--line);padding:34px 0 0}
+.ahero{background:var(--fam-g);border-bottom:1px solid var(--line);padding:34px 0 0}
 .ahin{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:28px;align-items:end}
 .aart svg{display:block;width:100%;max-width:220px;height:auto;margin:0 auto}
 .ameta{padding-bottom:34px}
 .afam{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.6px;
-      text-transform:uppercase;color:#fff;background:var(--fam);border-radius:99px;
+      text-transform:uppercase;color:var(--fam-ink);background:var(--fam-a);border-radius:99px;
       padding:4px 13px;text-decoration:none;margin-bottom:12px}
-.ameta h1{color:var(--fam);margin:0 0 12px}
+.ameta h1{color:var(--fam-a);margin:0 0 12px}
 .alead{font-size:16.5px;line-height:1.55;margin:0 0 8px;max-width:56ch}
 @media (max-width:720px){
   .ahin{grid-template-columns:1fr;gap:6px;text-align:center}
@@ -321,16 +507,16 @@ section{padding:60px 0}
 .abox h2{font-size:13px;letter-spacing:.5px;text-transform:uppercase;margin:0 0 6px;
          font-family:var(--body);font-weight:700}
 .abox p{margin:0;font-size:16px;line-height:1.5}
-.abox.strong{background:var(--famsoft)}
-.abox.strong h2{color:var(--fam)}
-.abox.warn{background:#FBF3E4;border:1px solid #EBDCBB}
-.abox.warn h2{color:#8A6520}
+.abox.strong{background:var(--fam-g)}
+.abox.strong h2{color:var(--fam-a)}
+.abox.warn{background:var(--warm);border:1px solid #EBDCBB}
+.abox.warn h2{color:var(--warm-ink)}
 .asec{margin:34px 0 10px}
 .amuted{color:var(--muted);font-size:15px}
-.afig{border-left:3px solid var(--fam);padding:4px 0 4px 16px;margin:12px 0 0}
+.afig{border-left:3px solid var(--fam-a);padding:4px 0 4px 16px;margin:12px 0 0}
 /* Breathing room where an archetype has a second figure. */
 .afig + .afig{margin-top:18px}
-.afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam)}
+.afigwho{font-family:var(--display);font-weight:700;font-size:19px;color:var(--fam-a)}
 .afigwho span{font-family:var(--body);font-weight:400;font-size:13.5px;color:var(--muted);margin-left:6px}
 .afig p{margin:6px 0 0;color:var(--muted);font-size:15px}
 /* The name becomes a button only when site.js is there to make it one, so this
@@ -338,14 +524,14 @@ section{padding:60px 0}
    in -- otherwise the name would change size and typeface the moment JS loads. */
 .afigbtn{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;
   cursor:pointer;text-align:left;text-decoration:underline;
-  text-decoration-color:color-mix(in srgb,var(--fam) 35%,transparent);
+  text-decoration-color:color-mix(in srgb,var(--fam-a) 35%,transparent);
   text-underline-offset:3px;text-decoration-thickness:2px}
-.afigbtn:hover{text-decoration-color:var(--fam)}
-.afigbtn:focus-visible{outline:2px solid var(--fam);outline-offset:3px;border-radius:3px}
+.afigbtn:hover{text-decoration-color:var(--fam-a)}
+.afigbtn:focus-visible{outline:2px solid var(--fam-a);outline-offset:3px;border-radius:3px}
 /* Portrait pop-up: the picture and a dimmed backdrop, nothing else. Fixed, so
    the page underneath keeps its exact scroll position and layout. */
 .figpop{position:fixed;inset:0;z-index:70;display:flex;align-items:center;
-  justify-content:center;padding:24px;background:rgba(20,16,10,.72);cursor:zoom-out}
+  justify-content:center;padding:24px;background:var(--overlay);cursor:zoom-out}
 .figpop:focus{outline:none}
 /* Cut-outs on a transparent canvas, so no frame and no background -- the figure
    stands against the dim on its own. Capped by height rather than width because
@@ -355,11 +541,11 @@ section{padding:60px 0}
 /* The PDF guide offer on an archetype page. Wraps to a column on a phone so
    the button never gets squeezed next to the text. */
 .aguide{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:12px;
-        background:var(--famsoft,#F0EADD);border-radius:14px;padding:18px 20px}
+        background:var(--fam-g,var(--hoverbg));border-radius:14px;padding:18px 20px}
 .aguide>div{flex:1 1 260px;min-width:0}
 .aguide b{font-size:16px}
 .aguide p{margin:6px 0 0}
-.aguide .btn{background:var(--fam);white-space:nowrap}
+.aguide .btn{background:var(--fam-a);color:var(--fam-ink);white-space:nowrap}
 .aguide .btn:hover{filter:brightness(.92)}
 /* gallery cards become links */
 a.ccard{display:block;text-decoration:none;color:inherit}
@@ -376,7 +562,7 @@ table.dt tr:last-child td{border-bottom:0}
 table.dt td.num{color:var(--muted);width:44px;font-variant-numeric:tabular-nums}
 table.dt td.tr{white-space:nowrap;width:150px}
 table.dt td.tr b{color:var(--lazur-deep)}
-.rev{display:inline-block;font-size:11.5px;background:#F3E7D4;color:#8A6520;
+.rev{display:inline-block;font-size:11.5px;background:var(--warm);color:var(--warm-ink);
      border-radius:99px;padding:2px 8px;margin-left:4px}
 code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
      padding:1px 6px;font-size:14px}
@@ -388,7 +574,7 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 .rsch p{margin:0 0 14px;font-size:14.5px;color:var(--muted);line-height:1.5}
 .rschbtns{display:flex;gap:10px;flex-wrap:wrap}
 .rschdone{display:flex;gap:10px;align-items:flex-start}
-.rschdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;
+.rschdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--good);
                 color:#fff;display:flex;align-items:center;justify-content:center;
                 font-size:15px;font-weight:700}
 
@@ -413,7 +599,7 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 /* ---------- rovoq: arch-topped cards ---------- */
 /* A shallow arch on the top edge of a card, echoing the pishtoq of a madrasa.
    Applied only to the card families, so it reads as a motif and not as noise. */
-.ccard{border-radius:26px 26px 14px 14px;border-top:3px solid var(--famc)}
+.ccard{border-radius:26px 26px 14px 14px;border-top:3px solid var(--fam-a)}
 .step,.wcard{border-radius:24px 24px 14px 14px;border-top:3px solid var(--lazur)}
 .fact{border-radius:22px 22px 12px 12px}
 .faq details{border-radius:20px 20px 12px 12px}
@@ -425,16 +611,28 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
    than its box so the characters stay big on a phone instead of shrinking. That
    only works if the box CLIPS it - without overflow:hidden it paints over the
    section below. */
-.hero{background:linear-gradient(180deg,#EFE9DC 0%,#F4F0E8 100%);
+.hero{background:linear-gradient(180deg,var(--heroA) 0%,var(--heroB) 100%);
       border-bottom:1px solid var(--line);overflow:hidden}
-.scene{width:100%;height:clamp(244px,40vw,520px);overflow:hidden;margin-bottom:-4px}
+.scene{width:100%;height:clamp(244px,40vw,520px);overflow:hidden}
 .scene svg{display:block;width:100%;height:100%}
-.scenecap{margin:0;padding:10px 20px 16px;text-align:center;font-size:12.5px;
-          letter-spacing:.3px;color:var(--muted);background:#EDE7DA}
+
+/* ---------- the four archetype families ----------
+   characters.js gives each family two pairs: `c`/`soft` for a cream page and
+   `dark`/`lit` for a dark one, emitted as inline custom properties on the
+   elements below. Inline declarations beat any selector, so the theme cannot
+   overwrite them -- it points this indirection at the other pair instead.
+   --famc on the gallery pages, --fam on an archetype page; same colour. */
+.fam,.famband,.apage,.hero{--fam-g:var(--famsoft);--fam-a:var(--famc,var(--fam));--fam-ink:#fff}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) :is(.fam,.famband,.apage,.hero){
+    --fam-g:var(--famdark);--fam-a:var(--famlit);--fam-ink:#15121A}
+}
+:root[data-theme="dark"] :is(.fam,.famband,.apage,.hero){
+  --fam-g:var(--famdark);--fam-a:var(--famlit);--fam-ink:#15121A}
 
 /* ---------- family bands (Obrazlar page) ---------- */
-.famband{background:var(--famsoft);padding:52px 0 46px;border-bottom:1px solid var(--line)}
-.famtitle{font-family:var(--display);font-weight:700;color:var(--famc);text-align:center;
+.famband{background:var(--fam-g);padding:52px 0 46px;border-bottom:1px solid var(--line)}
+.famtitle{font-family:var(--display);font-weight:700;color:var(--fam-a);text-align:center;
           font-size:clamp(28px,5.6vw,50px);letter-spacing:-.5px;margin:0 0 6px}
 .famsub{text-align:center;color:var(--muted);font-size:15.5px;margin:0 0 30px}
 /* flex, not grid: a family of two should sit centred together rather than being
@@ -448,11 +646,11 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
 .ftype{flex:0 1 300px;display:flex;flex-direction:column;align-items:center;text-align:center;
        text-decoration:none;color:inherit;padding:20px 14px 22px;border-radius:22px 22px 14px 14px;
        transition:transform .16s ease,background .16s ease}
-.ftype:hover{transform:translateY(-4px);background:rgba(255,255,255,.6)}
+.ftype:hover{transform:translateY(-4px);background:var(--lift)}
 .ftype:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
 .ftart svg{display:block;width:clamp(168px,26vw,232px);height:auto;margin:0 auto}
 .ftname{font-family:var(--display);font-weight:700;font-size:clamp(18px,2.6vw,23px);
-        color:var(--famc);margin:12px 0 6px;line-height:1.2}
+        color:var(--fam-a);margin:12px 0 6px;line-height:1.2}
 .ftdesc{font-size:15px;color:var(--ink);line-height:1.5;max-width:28ch}
 /* margin-top:auto drops this to the foot of the card, so the historical names
    line up across a row whatever length the description above them ran to. */
@@ -476,11 +674,11 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
                color:var(--muted);margin-top:2px}
 .lifegrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px}
 .lifecol{border:1px solid var(--line);border-radius:14px;padding:14px 16px;background:var(--card)}
-.lifecol.good{border-left:4px solid #2E8B6B}
+.lifecol.good{border-left:4px solid var(--good)}
 .lifecol.watch{border-left:4px solid var(--zar)}
 .lifecol h4{margin:0 0 10px;font-size:14px;letter-spacing:.02em;text-transform:uppercase}
-.lifecol.good h4{color:#237A5E}
-.lifecol.watch h4{color:#8A6520}
+.lifecol.good h4{color:var(--good-ink)}
+.lifecol.watch h4{color:var(--warm-ink)}
 .lifecol ul{list-style:none;margin:0;padding:0}
 .lifecol li{margin:0 0 11px;font-size:14.5px;line-height:1.5}
 .lifecol li:last-child{margin-bottom:0}
@@ -498,12 +696,12 @@ code{background:var(--paper);border:1px solid var(--line);border-radius:5px;
          padding:3px 10px 3px 8px;border-radius:99px;background:var(--paper);
          border:1px solid var(--line)}
 .carband .dot{flex:0 0 auto;width:8px;height:8px;border-radius:50%}
-.carband .dot.strong{background:#2E8B6B}
+.carband .dot.strong{background:var(--good)}
 .carband .dot.explore{background:var(--zar)}
-.carband .dot.alternative{background:#7C93A8}
-.carband.strong{color:#256F55}
-.carband.explore{color:#8A6520}
-.carband.alternative{color:#5C7186}
+.carband .dot.alternative{background:var(--cool)}
+.carband.strong{color:var(--good-ink)}
+.carband.explore{color:var(--warm-ink)}
+.carband.alternative{color:var(--cool-ink)}
 /* 5px of air where the fill bar used to be. */
 .carwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
 .cardisc{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--paper);

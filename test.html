@@ -17,39 +17,359 @@
 <link rel="canonical" href="https://personality.naseebedu.com/test.html">
 <link rel="icon" href="assets/ui/icon.png">
 <link rel="apple-touch-icon" href="assets/ui/apple-touch-icon.png">
+<script>
+// Before anything is painted. An explicit choice is stamped here; no choice
+// means no stamp, which is what leaves prefers-color-scheme in charge.
+(function(){try{var v=localStorage.getItem('naseebmind_theme_v1');
+if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v);}catch(e){}})();
+</script>
 <link rel="preload" href="assets/fonts/inter.woff2" as="font" type="font/woff2" crossorigin>
 <style>
   /* Self-hosted so the page makes NO third-party request and renders on a slow
      school connection without waiting on fonts.googleapis.com. Both are variable
      fonts: one file per family covers every weight we use.
      Latin subset only: it is the subset that contains U+02BB, the ʻ in oʻ / gʻ. */
+  /* Montserrat, the face Naseeb Edu sets the type code and panel headings in.
+     Split latin/cyrillic so a Russian reader does not pay for glyphs they will
+     never see, and vice versa. */
+  @font-face{font-family:'Montserrat';src:url('assets/fonts/montserrat-latin.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,
+      U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2190,U+2191,U+2192,
+      U+2193,U+2212,U+2215,U+221E,U+FEFF,U+FFFD}
+  @font-face{font-family:'Montserrat';src:url('assets/fonts/montserrat-cyrillic.woff2') format('woff2');
+    font-weight:100 900;font-style:normal;font-display:swap;
+    unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116}
   @font-face{font-family:'Bitter';src:url('assets/fonts/bitter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
   @font-face{font-family:'Inter';src:url('assets/fonts/inter.woff2') format('woff2');
              font-weight:100 900;font-style:normal;font-display:swap}
-  /* Naseeb Edu palette: warm cream ground, bronze primary, gold accent.
+  /* Naseeb Mind's palette: warm cream ground, bronze primary, gold accent.
      Declared here because the test is a standalone page that does not load
-     site.css. */
+     site.css, so it has to be kept in step with the same tokens there.
+
+     There was briefly a switcher offering Naseeb Edu's palette and a night one.
+     The site has one palette again, so these are defined once and nothing is
+     stamped on <html>. */
   :root{
-    --lazur:#8A6A3F;      /* bronze, primary */
+    --lazur:#8A6A3F;   /* bronze, primary */
+    --on-accent:#fff;   /* ink on --lazur: dark accent on cream... */
     --lazur-deep:#6B5230;
-    --ink:#2B2620;        /* warm near-black text */
-    --paper:#F4F0E8;      /* warm cream background */
+    --lazur-press:#6B5230;
+    --lazur-soft:#D9C7A4;
+    --ink:#2B2620;   /* warm near-black text */
+    --paper:#F4F0E8;   /* warm cream background */
     --card:#FDFCF9;
     --line:#E3DCCC;
-    --zar:#C9A961;        /* gold accent, used sparingly */
+    --zar:#C9A961;   /* gold accent, used sparingly */
+    --muted:#6E6558;
+    --avatar:#16233F;   /* the account disc: navy on cream, gold on navy */
+    --brand-ink:#8A6A3F;   /* the word "Mind" -- an ink, not the button ground */
+    --bar:rgba(255,255,255,.94);
+    --hoverbg:#F0EADD;   /* every hover in the header row */   /* the sticky header's own ground */
+  
     --viol:#8A6BC1;       /* violet, disagree side of scale */
     --viol-soft:#DCD2EE;
-    --lazur-soft:#D9C7A4;
-    --muted:#6E6558;
     --artbg:#FFFFFF;      /* ground the characters are drawn against */
+    --raised:#FFFEFB;   /* a card lifted off another card */
+    --inset:#E9E1D5;    /* a well pressed into the page */
+    --warm:#FBF3E4;     /* the amber notes: a caution, the cost of a strength */
+    --warm-line:#EBDCBB;
+    --warm-ink:#6E5520;
+    --disabled:#B8C9CE;
+    --good:#237A5E;     /* a green ground */
+    --good-ink:#237A5E; /* the same green as TEXT */
+    --cool:#7C93A8;
+    --alarm:#8A3B1F;    /* a warning that is not an error */
+    --err:#9B2C2C;
+    --track:linear-gradient(90deg,#E7EFF1,#CBDFE6);
+    --trackbg:#E2EBEC;
+    --raxtrack:#BFD3DA;
+    --lift:rgba(255,255,255,.6);
+    --overlay:rgba(26,31,34,.46);
+    --overlay-deep:rgba(43,38,32,.55);
+    --shadow-card:0 16px 38px rgba(43,38,32,.17);
+    --shadow-modal:0 22px 70px rgba(23,28,31,.22);
     --display:'Bitter', Georgia, serif;
     --body:'Inter', 'Segoe UI', system-ui, sans-serif;
+    color-scheme:light;
   }
+  /* The phone is in dark mode and the reader has not overridden it. */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+    --lazur:#E3B86A;
+    --on-accent:#10202D;   /* ...light accent on navy, so the ink flips */               /* --accent */
+    --lazur-press:#EFCB8A;         /* --accent-hover */
+    --lazur-deep:#E3B86A;          /* --accent-deep: link and emphasis TEXT */
+    --lazur-soft:#1C3241;          /* --surface-soft */
+    --ink:#F7F7F7;                 /* --text */
+    --paper:#10202D;               /* --canvas */
+    --card:#162936;                /* --surface */
+    --line:rgba(181,199,211,.16);  /* --border */
+    --zar:#EFCB8A;                 /* --focus-color */
+    --muted:#B5C3CE;               /* --muted */
+    --raised:#213947;              /* --surface-raised */
+    --inset:#0C1923;               /* --surface-inset */
+    --hoverbg:#284452;             /* --surface-hover */
+    --bar:rgba(12,25,35,.94);       /* --sidebar */
+    --warm:#1C3241;                /* --surface-soft: there is no amber at night */
+    --warm-line:rgba(181,199,211,.22);
+    --warm-ink:#E3B86A;
+    --disabled:#2A3F4D;
+    --good:#2E8B6B;
+    --good-ink:#4FB08A;            /* lifted further: it has to read as TEXT */
+    --cool:#8FA9C0;
+    --alarm:#E8A77E;
+    --err:#E09088;                 /* Edu's --danger text */
+    --avatar:#E3B86A;                /* the account disc, lifted off --card */
+    --brand-ink:#E3B86A;           /* --accent-deep: --accent is unreadable on the bar */
+    /* The five-point scale: Edu lifts both ends off the dark surface rather
+       than keeping the colours it uses on cream. */
+    --viol:#6FBBD0;                /* --scale-neg */
+    --viol-soft:rgba(111,187,208,.45);
+    --track:linear-gradient(90deg,#1C3241,#284452);
+    --trackbg:#1C3241;
+    --raxtrack:#26404F;
+    --lift:rgba(181,199,211,.075); /* --interactive-hover */
+    --overlay:rgba(6,15,22,.76);    /* --overlay */
+    --overlay-deep:rgba(6,15,22,.84);
+    --shadow-card:0 10px 30px rgba(0,0,0,.28);
+    --shadow-modal:0 30px 100px rgba(0,0,0,.48);
+    /* The ten characters are painted FOR a cream ground, so their panel stays
+       light at night. A light rectangle in a dark page is the honest answer:
+       the alternative is cutting the figures out of the dark. */
+    --artbg:#E8E2D8;
+      color-scheme:dark;
+    }
+  }
+  /* The reader asked for dark, whatever the phone says. */
+  :root[data-theme="dark"]{  /* the same values; see the block above */
+    --lazur:#E3B86A;
+    --on-accent:#10202D;
+    --lazur-press:#EFCB8A;
+    --lazur-deep:#E3B86A;
+    --lazur-soft:#1C3241;
+    --ink:#F7F7F7;
+    --paper:#10202D;
+    --card:#162936;
+    --line:rgba(181,199,211,.16);
+    --zar:#EFCB8A;
+    --muted:#B5C3CE;
+    --raised:#213947;
+    --inset:#0C1923;
+    --hoverbg:#284452;
+    --bar:rgba(12,25,35,.94);
+    --warm:#1C3241;
+    --warm-line:rgba(181,199,211,.22);
+    --warm-ink:#E3B86A;
+    --disabled:#2A3F4D;
+    --good:#2E8B6B;
+    --good-ink:#4FB08A;
+    --cool:#8FA9C0;
+    --alarm:#E8A77E;
+    --err:#E09088;
+    --avatar:#E3B86A;
+    --brand-ink:#E3B86A;
+    --viol:#6FBBD0;
+    --viol-soft:rgba(111,187,208,.45);
+    --track:linear-gradient(90deg,#1C3241,#284452);
+    --trackbg:#1C3241;
+    --raxtrack:#26404F;
+    --lift:rgba(181,199,211,.075);
+    --overlay:rgba(6,15,22,.76);
+    --overlay-deep:rgba(6,15,22,.84);
+    --shadow-card:0 10px 30px rgba(0,0,0,.28);
+    --shadow-modal:0 30px 100px rgba(0,0,0,.48);
+    --artbg:#E8E2D8;
+    color-scheme:dark;
+  }
+  /* The illustrations are painted for a light ground, so their panel stays
+     light at night rather than the figures being cut out of the dark. */
+
+
   /* ---- full life-area detail on the result screen ----
      test.html is standalone and does not load site.css, so these rules are
      duplicated here deliberately. They mirror the archetype-page styling so a
      student sees the same thing in both places. */
+  /* ---- the fold's panels, matching Naseeb Edu ---- */
+  .rpanel{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .rpanel > header{min-height:56px;padding:13px 16px;display:flex;align-items:center;
+                   justify-content:space-between;gap:14px;border-bottom:1px solid var(--line)}
+  .rpanel > header h3{margin:0;font-family:'Montserrat',var(--body);font-size:15px;font-weight:700}
+  .rpanelbody{padding:16px}
+  .rbadge{display:inline-flex;align-items:center;min-height:24px;padding:3px 9px;
+          white-space:nowrap;border:1px solid var(--line);border-radius:999px;
+          background:var(--paper);color:var(--ink);font-size:9.5px;font-weight:700;
+          text-transform:uppercase;letter-spacing:.05em}
+  .rbadge.on{color:var(--lazur-deep);background:var(--lazur-soft);border-color:var(--lazur-soft)}
+  .rintro{margin:0 0 14px;color:var(--muted);font-size:12px;line-height:1.65}
+  .rintro strong{color:var(--ink)}
+  .rnote{margin:12px 0 0;color:var(--muted);font-size:11.5px;line-height:1.65}
+
+  /* ---- the four-letter code ---- */
+  .rtype{display:flex;justify-content:center;gap:clamp(8px,3vw,20px);margin:4px 0 18px;
+         font-family:'Montserrat',var(--body);font-size:clamp(40px,10vw,68px);
+         font-weight:700;line-height:1;letter-spacing:.04em}
+  .rtype span{color:var(--ink)}
+  /* A letter within 0.35 of the midpoint would flip if one or two answers had
+     gone the other way, so it is drawn lighter instead of standing in the same
+     confident type as the rest. */
+  .rtype span.soft{color:var(--muted);font-weight:500;opacity:.65}
+  .rtype small{font-size:.45em;vertical-align:super;letter-spacing:0}
+  .rtypename{margin:0 0 20px;font-family:'Montserrat',var(--body);
+             font-size:clamp(18px,4vw,24px);font-weight:600;text-align:center}
+  .rax{display:grid;gap:16px}
+  .raxh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+  .raxh b{font-size:12.5px;font-weight:600}
+  .raxh small{color:var(--muted);font-size:10px;font-style:italic}
+  .raxtrack{position:relative;height:6px;border-radius:3px;
+            background:linear-gradient(90deg,var(--raxtrack),var(--paper) 50%,var(--lazur-soft))}
+  .raxtrack::after{content:'';position:absolute;left:50%;top:-3px;bottom:-3px;
+                   width:1px;background:var(--line)}
+  .raxdot{position:absolute;top:50%;width:14px;height:14px;margin:-7px 0 0 -7px;
+          border-radius:50%;background:var(--ink);border:2px solid var(--card)}
+  .raxf{display:flex;justify-content:space-between;margin-top:5px;color:var(--muted);font-size:10px}
+  .raxf .on{color:var(--ink);font-weight:700}
+
+  /* ---- progress, above the results ---- */
+  .rprog{display:flex;align-items:center;justify-content:space-between;gap:22px;
+         flex-wrap:wrap;background:var(--card);border:1px solid var(--line);
+         border-radius:14px;padding:18px 20px;margin:22px 0 0}
+  .rprogl{min-width:0}
+  .rprogeyebrow{color:var(--muted);font-size:10px;font-weight:700;
+                letter-spacing:.09em;text-transform:uppercase}
+  .rprogl h2{margin:2px 0 4px;font-family:'Montserrat',var(--body);font-size:20px;font-weight:700}
+  .rprogl p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+  .rprogr{flex:1 1 260px;min-width:200px}
+  .rprogtop{display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+            font-size:12px;font-weight:700;margin-bottom:6px}
+  .rprogbar{height:7px;border-radius:999px;background:var(--line);overflow:hidden}
+  .rprogbar i{display:block;height:100%;background:var(--lazur);border-radius:inherit}
+  .rprogr small{display:block;margin-top:6px;color:var(--muted);font-size:11.5px}
+
+  /* The figure inside the results panel. Deliberately worded as "someone who had
+     this strength", never "you are this person". */
+  .rfig{display:flex;gap:16px;align-items:flex-start;margin-top:18px;padding-top:16px;
+        border-top:1px solid var(--line)}
+  .rfigart{flex:0 0 84px}
+  .rfigart img{display:block;width:84px;height:105px;object-fit:cover;
+               border-radius:10px;background:var(--lazur-soft)}
+  .rfigbody{flex:1 1 auto;min-width:0}
+  .rfigtop{display:flex;align-items:center;justify-content:space-between;gap:12px;
+           flex-wrap:wrap;margin-bottom:6px}
+  .rfiglbl{color:var(--muted);font-size:10px;font-weight:700;letter-spacing:.09em;
+           text-transform:uppercase}
+  /* Man first, then woman: the order the archetype pages already use. */
+  .rfigsw{display:inline-flex;gap:2px;padding:2px;background:var(--paper);
+          border:1px solid var(--line);border-radius:999px}
+  .rfigsw button{font:inherit;font-size:12px;font-weight:600;line-height:1;
+                 padding:6px 11px;border:0;border-radius:999px;background:none;
+                 color:var(--muted);cursor:pointer}
+  .rfigsw button.is-active{background:var(--lazur);color:var(--on-accent)}
+  .rfigsw button:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .rfig h4{margin:0 0 4px;font-family:var(--display);font-size:16px}
+  .rfig h4 small{margin-left:7px;font-family:var(--body);font-size:12.5px;
+                 font-weight:400;color:var(--muted)}
+  .rfig p{margin:0 0 8px;font-size:14px;line-height:1.55}
+  .rfiglink{display:inline-block;font-size:13.5px;font-weight:600;
+            color:var(--lazur-deep);text-decoration:none}
+  .rfiglink:hover{text-decoration:underline}
+  .rfiglink:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
+  @media (max-width:480px){
+    .rfig{flex-wrap:wrap}
+    .rfigart{flex:0 0 auto}
+  }
+
+  /* «Batafsil raqamlar» -- the fold under the summary lines. Bars, not a second
+     polygon: five traits have no fixed order, so a shape drawn from them changes
+     with the axis order while the answers stay the same. */
+  .rfold{margin-top:16px}
+  .rfold > summary{display:flex;align-items:center;gap:8px;padding:11px 14px;
+                   background:var(--paper);border:1px solid var(--line);border-radius:10px;
+                   cursor:pointer;list-style:none;font-size:14px;font-weight:700}
+  .rfold > summary::-webkit-details-marker{display:none}
+  .rfold > summary::before{content:'';width:0;height:0;flex:0 0 auto;
+                           border-left:6px solid var(--lazur);
+                           border-top:4.5px solid transparent;border-bottom:4.5px solid transparent;
+                           transition:transform .18s ease}
+  .rfold[open] > summary::before{transform:rotate(90deg)}
+  .rfold > summary:hover{border-color:var(--lazur)}
+  .rfold > summary:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .rfoldbody{display:grid;gap:18px;margin-top:16px}
+  .rblock h3{margin:0 0 4px;font-family:var(--display);font-size:16px}
+  .rblock > p.rnote{margin:0 0 10px;color:var(--muted);font-size:13px;line-height:1.55}
+  .rrows{display:grid;gap:8px}
+  .rrow{display:grid;grid-template-columns:minmax(0,1fr) 90px 74px;gap:10px;align-items:center}
+  .rrow b{display:block;font-size:14px;font-weight:600}
+  .rrow small{display:block;color:var(--muted);font-size:12px;line-height:1.4}
+  .rbar{height:7px;border-radius:999px;background:var(--line);overflow:hidden}
+  .rbar i{display:block;height:100%;background:var(--lazur);border-radius:999px}
+  .rtag{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+        color:var(--muted);text-align:right}
+  .rtag.top{color:var(--lazur-deep)}
+  @media (max-width:560px){
+    .rrow{grid-template-columns:minmax(0,1fr) 64px;row-gap:2px}
+    .rtag{grid-column:1 / -1;text-align:left}
+  }
+  /* The count of solved puzzles, given its own weight so the number is read as a
+     count and the sentence beside it as the caveat. */
+  .rmx{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+  .rmx b{font-family:var(--display);font-size:30px;line-height:1;color:var(--lazur-deep)}
+  .rmx b span{font-size:17px;color:var(--muted)}
+  .rmx strong{display:block;font-size:15px}
+  @media (prefers-reduced-motion:reduce){ .rfold > summary::before{transition:none} }
+
+  /* ---------- «Sizning natijangiz»: the whole sitting on one card ----------
+     Ported from the Naseeb Edu results panel. The shape and the lines say the
+     same thing twice on purpose: the polygon is read at a glance, the lines are
+     what a student can repeat to a parent. */
+  .rsum{background:var(--card);border:1px solid var(--line);border-radius:16px;
+        padding:20px;margin:22px 0}
+  .rsumhead{display:flex;align-items:center;justify-content:space-between;gap:12px;
+            padding-bottom:14px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+  .rsumhead h2{margin:0;font-family:var(--display);font-size:19px}
+  .rsumcode{flex:0 0 auto;background:var(--lazur-soft);color:var(--lazur-deep);
+            font-weight:700;font-size:12.5px;letter-spacing:.08em;
+            padding:5px 11px;border-radius:999px}
+  .rsumsplit{display:grid;grid-template-columns:minmax(240px,320px) minmax(0,1fr);
+             gap:20px;align-items:center}
+  @media (max-width:760px){ .rsumsplit{grid-template-columns:minmax(0,1fr)} }
+  .rsumlines{display:grid;gap:9px;margin:0}
+  .rsumlines > div{display:grid;grid-template-columns:136px minmax(0,1fr);gap:12px;
+                   align-items:baseline;padding-bottom:8px;border-bottom:1px solid var(--line)}
+  .rsumlines > div:last-child{border-bottom:none;padding-bottom:0}
+  .rsumlines dt{color:var(--muted);font-size:10px;font-weight:700;
+                letter-spacing:.09em;text-transform:uppercase;line-height:1.4}
+  .rsumlines dd{margin:0;font-size:14.5px;font-weight:600;line-height:1.45}
+  @media (max-width:520px){ .rsumlines > div{grid-template-columns:minmax(0,1fr);gap:2px} }
+
+  /* The polygon. Faint fill and a thin outline on purpose: a radius twice as
+     long draws FOUR times the area, so a middling profile can look dramatic.
+     Every ring stays visible so the scale can be read, and the numbers ship
+     underneath rather than instead. */
+  .rpoly{margin:0;display:grid;gap:8px;justify-items:center}
+  .rpoly svg{width:100%;max-width:330px;height:auto}
+  .rpoly .ring{fill:none;stroke:var(--line);stroke-width:1;opacity:.9}
+  .rpoly .ring.edge{stroke:var(--lazur-soft);stroke-width:1.4;opacity:1}
+  .rpoly .spoke{stroke:var(--line);stroke-width:1;opacity:.55}
+  /* Translucent, NOT the flat soft tone it used to be: an opaque fill hid every
+     ring that fell inside the shape, so the reader lost the scale exactly where
+     the shape was worth measuring. At 22% the rings read straight through. */
+  .rpoly .shape{fill:var(--lazur);fill-opacity:.22;stroke:var(--lazur);
+                stroke-width:2;stroke-linejoin:round}
+  .rpoly .vertex{fill:var(--card);stroke:var(--lazur);stroke-width:2;
+                 cursor:pointer;transition:r .12s ease}
+  .rpoly .vertex.on{fill:var(--lazur);r:6}
+  /* A transparent disc over each vertex: the visible circle is only 4.5px, which
+     is far below any usable pointer target, and on a phone the tap has to land. */
+  .rpoly .hit{fill:transparent;cursor:pointer}
+  .rpoly .axlbl{fill:var(--muted);font-size:10px;font-weight:700;letter-spacing:.04em}
+  .rpoly .axlbl.on{fill:var(--lazur-deep)}
+  .rpoly figcaption{color:var(--muted);font-size:12px;line-height:1.5;text-align:center;
+                    max-width:310px;min-height:54px}
+  .rpoly figcaption b{color:var(--ink)}
+  @media (prefers-reduced-motion:reduce){ .rpoly .vertex{transition:none} }
+
   .lifetop{font-family:var(--display);font-size:clamp(21px,5vw,26px);font-weight:700;
            margin:34px 0 2px;text-align:center}
   .lifetopsub{margin:0 0 6px;text-align:center;color:var(--muted);font-size:14.5px}
@@ -60,11 +380,11 @@
                  color:var(--muted);margin-top:2px}
   .lifegrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
   .lifecol{border:1px solid var(--line);border-radius:14px;padding:13px 15px;background:var(--card)}
-  .lifecol.good{border-left:4px solid #2E8B6B}
+  .lifecol.good{border-left:4px solid var(--good)}
   .lifecol.watch{border-left:4px solid var(--zar)}
   .lifecol h4{margin:0 0 9px;font-size:13px;letter-spacing:.02em;text-transform:uppercase}
-  .lifecol.good h4{color:#237A5E}
-  .lifecol.watch h4{color:#8A6520}
+  .lifecol.good h4{color:var(--good-ink)}
+  .lifecol.watch h4{color:var(--warm-ink)}
   .lifecol ul{list-style:none;margin:0;padding:0}
   .lifecol li{margin:0 0 10px;font-size:14px;line-height:1.5;color:var(--muted)}
   .lifecol li:last-child{margin-bottom:0}
@@ -77,7 +397,7 @@
   .carhead{display:flex;align-items:baseline;gap:10px}
   .carname{font-weight:600}
   .carpct{margin-left:auto;font-variant-numeric:tabular-nums;font-weight:700;color:var(--lazur-deep)}
-  .carbar{height:7px;border-radius:4px;background:#EDE6D8;margin:5px 0 6px;overflow:hidden}
+  .carbar{height:7px;border-radius:4px;background:var(--inset);margin:5px 0 6px;overflow:hidden}
   .carbar i{display:block;height:100%;border-radius:4px;
             background:linear-gradient(90deg,var(--lazur),var(--lazur-deep))}
   /* career-interest profile. */
@@ -97,17 +417,17 @@
               border-top:1px solid var(--line);font-size:15px;line-height:1.45}
   .recgrid li:first-child{border-top:0}
   .dot{flex:0 0 auto;width:10px;height:10px;border-radius:50%;margin-top:5px}
-  .dot.strong{background:#2E8B6B}
+  .dot.strong{background:var(--good)}
   .dot.explore{background:var(--zar)}
-  .dot.alternative{background:#7C93A8}
+  .dot.alternative{background:var(--cool)}
   .recname{flex:1 1 auto}
   .recedu{flex:0 0 auto;font-size:12px;color:var(--muted);white-space:nowrap;margin-top:2px}
   .reckey{display:flex;gap:14px;flex-wrap:wrap;margin:10px 0 0;font-size:12.5px;color:var(--muted)}
   .reckey span{display:flex;align-items:center;gap:6px}
   .recwhy{margin:14px 0 0;padding:13px 15px;border-radius:12px;background:var(--paper);
           border-left:4px solid var(--lazur);font-size:14.5px;line-height:1.6}
-  .recconf{margin:12px 0 0;padding:13px 15px;border-radius:12px;background:#FBF3E4;
-           border:1px solid #EBDCBB;font-size:14.5px;line-height:1.6;color:#6E5520}
+  .recconf{margin:12px 0 0;padding:13px 15px;border-radius:12px;background:var(--warm);
+           border:1px solid var(--warm-line);font-size:14.5px;line-height:1.6;color:var(--warm-ink)}
   .recempty{margin:12px 0 0;font-size:14.5px;line-height:1.6;color:var(--muted)}
   @media (max-width:430px){
   }
@@ -133,15 +453,24 @@
            background:var(--card);font-size:13px;line-height:1.4;color:var(--muted);
            text-decoration:none;white-space:nowrap}
   .navback svg{flex:none}
-  .navback:hover{color:var(--lazur-deep);background:#F0EADD}
+  .navback:hover{color:var(--lazur-deep);background:var(--hoverbg)}
 
-  .topnav{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.94);
+  .topnav{position:sticky;top:0;z-index:30;background:var(--bar);
           backdrop-filter:saturate(150%) blur(8px);border-bottom:1px solid var(--line)}
   .topnavin{max-width:1340px;margin:0 auto;padding:0 22px;display:flex;align-items:center;gap:18px;height:62px}
   .topbrand{display:inline-flex;align-items:center;gap:8px;font-family:var(--display);
             font-weight:700;font-size:23px;color:var(--ink);text-decoration:none;white-space:nowrap}
   .brandmark{display:block;width:auto;height:30px;object-fit:contain;flex:none}
-  .topbrand b{color:var(--lazur);font-weight:700}
+  .topbrand b{color:var(--brand-ink);font-weight:700}
+  /* The mark is a navy silhouette on transparency: 1.15:1 against the dark
+     surface, which is invisible. Inverted to white at night, to match "Naseeb"
+     in the wordmark beside it. */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .brandmark,
+    :root:not([data-theme="light"]) .startmark{filter:brightness(0) invert(1)}
+  }
+  :root[data-theme="dark"] .brandmark,
+  :root[data-theme="dark"] .startmark{filter:brightness(0) invert(1)}
   .toplinks{display:flex;gap:22px;margin-left:auto}
   .toplinks a{font-size:15px;color:var(--muted);text-decoration:none;white-space:nowrap;
               padding:4px 0;border-bottom:2px solid transparent}
@@ -163,21 +492,95 @@
   .langsw a,.langsw span{padding:3px 9px;border-radius:999px;font-size:12.5px;font-weight:600;
                letter-spacing:.03em;line-height:1.55;color:var(--muted);white-space:nowrap;
                text-decoration:none}
-  .langsw a:hover{color:var(--lazur-deep);background:#F0EADD}
+  .langsw a:hover{color:var(--lazur-deep);background:var(--hoverbg)}
   .langsw a:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .langsw [aria-current="true"]{background:var(--lazur-deep);color:#fff}
+  .langsw [aria-current="true"]{background:var(--lazur-press);color:var(--on-accent)}
   .langsw .off{opacity:.45}
-  /* Same CTA as every other page's nav, so the bar looks identical when you land
-     on the test rather than emptier on the right. Mirrors .btn.sm in site.css. */
-  .topcta{display:inline-block;background:var(--lazur);color:#fff;text-decoration:none;
-          border-radius:10px;padding:9px 16px;font-weight:600;font-size:14.5px;white-space:nowrap}
-  .topcta:hover{background:var(--lazur-deep)}
-  .topcta:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .toplogin{color:var(--lazur-deep);font-weight:600;font-size:14.5px;text-decoration:none;
-            white-space:nowrap;padding:7px 2px}
-  .toplogin:hover{text-decoration:underline}
-  .toplogin:focus-visible{outline:3px solid var(--zar);outline-offset:3px;border-radius:4px}
-  .toplogin-mobile{display:none}
+  /* ---------- the four archetype families ----------
+     characters.js gives each family two pairs: `c`/`soft` for a cream page and
+     `dark`/`lit` for a dark one, emitted as inline custom properties on .hero.
+     Inline declarations beat any selector, so the theme cannot overwrite them --
+     it points this indirection at the other pair instead. */
+  .hero{--fam-g:var(--famsoft);--fam-a:var(--fam);--fam-ink:#fff}
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]) .hero{
+      --fam-g:var(--famdark);--fam-a:var(--famlit);--fam-ink:#15121A}
+  }
+  :root[data-theme="dark"] .hero{
+    --fam-g:var(--famdark);--fam-a:var(--famlit);--fam-ink:#15121A}
+
+  /* ---------- light / dark switch ----------
+     One icon button, shaped like the pills either side of it so the header reads
+     as a row of the same kind of control. The icon says what pressing it DOES:
+     a moon on a light page, a sun on a dark one. Mirrors site.css, which this
+     page does not load. */
+  .themesw{flex:none;display:inline-flex;align-items:center;justify-content:center;
+           width:32px;height:32px;padding:0;border:1px solid var(--line);
+           border-radius:999px;background:var(--card);color:var(--muted);
+           cursor:pointer;transition:background .15s ease,color .15s ease}
+  .themesw:hover{color:var(--lazur-deep);background:var(--hoverbg)}
+  .themesw:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .themesw .ico{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:1.9;
+                stroke-linecap:round;stroke-linejoin:round}
+  .themesw[aria-pressed="false"] .ico{fill:currentColor;stroke:none}
+  /* On a phone this is the control that has to give: it costs a whole extra
+     row of sticky header, which then covers the first thing on the page. The
+     phone's own dark setting still drives the site, so nothing is lost. */
+  @media (max-width:820px){ .themesw{display:none} }
+
+  /* ---------- the account control ---------- */
+  /* A warm beige pill with a navy disc on the left: signed out it holds a person
+     icon and "Kirish", signed in it holds the student's initial, their name and a
+     caret onto the menu. It replaced a solid bronze "Testni boshlash" button that
+     pointed at the test from the test, and that also meant the header's only
+     filled shape now sits on the hero where the action actually is. */
+  .navacct{position:relative;flex:none}
+  .acctbtn{display:inline-flex;align-items:center;gap:9px;max-width:230px;
+           margin:0;padding:5px 14px 5px 5px;border:1px solid var(--line);
+           border-radius:999px;background:var(--paper);color:var(--ink);
+           font:inherit;font-size:14.5px;font-weight:600;line-height:1.2;
+           text-decoration:none;cursor:pointer;white-space:nowrap;
+           transition:background .15s ease,border-color .15s ease}
+  .acctbtn:hover{background:var(--hoverbg);border-color:var(--lazur-soft)}
+  .acctbtn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  /* Fixed 30px and flex:none. The disc is the thing that identifies the control
+     at a glance, so it must not shrink when a long Russian name pushes on it. */
+  .acctav{flex:none;display:inline-flex;align-items:center;justify-content:center;
+          width:30px;height:30px;border-radius:50%;background:var(--avatar);
+          color:var(--on-accent);font-size:13.5px;font-weight:700;overflow:hidden}
+  .acctav svg{width:19px;height:19px;fill:currentColor}
+  /* A name can be anything, and a nav row has a fixed budget. Ellipsis, never
+     wrap: a second line would make the whole sticky header taller. */
+  .acctnm{overflow:hidden;text-overflow:ellipsis}
+  .acctcar{flex:none;width:14px;height:14px;color:var(--muted)}
+
+  .acctmenu{position:absolute;top:calc(100% + 9px);right:0;z-index:60;min-width:236px;
+            padding:7px;background:var(--card);border:1px solid var(--line);
+            border-radius:14px;box-shadow:var(--shadow-card)}
+  .acctmenu[hidden]{display:none}
+  .acctitem{display:flex;align-items:center;gap:11px;width:100%;margin:0;
+            padding:9px 11px;border:0;border-radius:9px;background:none;
+            color:var(--ink);font:inherit;font-size:14.5px;line-height:1.35;
+            text-align:left;text-decoration:none;cursor:pointer}
+  .acctitem:hover,.acctitem:focus{background:var(--paper);outline:none}
+  .acctitem:focus-visible{outline:3px solid var(--zar);outline-offset:-1px}
+  .acctitem svg{flex:none;width:18px;height:18px;fill:var(--lazur)}
+  /* The sign-out glyph is drawn in strokes, so it needs the opposite treatment to
+     the two filled ones above it. */
+  .acctitem svg.strokeico{fill:none;stroke:var(--lazur);stroke-width:1.75;
+                          stroke-linecap:round;stroke-linejoin:round}
+  .acctsep{height:1px;margin:6px 4px;background:var(--line);border:0}
+
+  /* Below this the name is hidden but still read aloud, so the button keeps its
+     accessible name rather than becoming a nameless circle. Four controls share
+     320px on a 360px phone; this is where the row stops fitting. */
+  @media (max-width:430px){
+    .acctbtn{gap:5px;padding:4px 7px 4px 4px}
+    .acctnm{position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+            overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+    .acctav{width:28px;height:28px}
+    .acctmenu{min-width:210px}
+  }
   /* Mirrors the same band in site.css, which this page does not load. Between
      the phone rules below and the full row there was nothing, and the full row
      does not fit in that space -- the Uzbek bar measures ~1050px -- so it ran
@@ -211,13 +614,6 @@
     .navback{padding:5px 7px}
     .langsw{padding:1px;gap:1px;margin-left:auto}
     .langsw a,.langsw span{padding:5px 6px;font-size:11.5px}
-    /* Dropped on a phone. This is the test page: a "start the test" button
-       here does nothing a student wants, and it was the last 119px keeping
-       the switcher from fitting on one row. It stays on desktop, where it
-       costs nothing and keeps the bar looking like every other page's. */
-    .topcta{display:none}
-    .toplogin{display:none}
-    .toplogin-mobile{display:inline}
     .toplinks{order:3;flex:1 1 100%;margin-left:0;gap:16px;overflow-x:auto;
               padding-bottom:2px;-webkit-overflow-scrolling:touch}
     .toplinks a{font-size:14.5px}
@@ -252,14 +648,14 @@
   p{margin:0 0 12px}
   .muted{color:var(--muted);font-size:14px}
   /* text-decoration:none matters: .btn is used on <a> too (PDF, Telegram). */
-  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:#fff;text-decoration:none}
-  .btn:hover{background:var(--lazur-deep)}
+  .btn{display:inline-block;border:0;border-radius:10px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;background:var(--lazur);color:var(--on-accent);text-decoration:none}
+  .btn:hover{background:var(--lazur-press)}
   .btn:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .btn[disabled]{background:#B8C9CE;cursor:not-allowed}
+  .btn[disabled]{background:var(--disabled);cursor:not-allowed}
   .btn.ghost{background:transparent;color:var(--lazur-deep);border:1px solid var(--line)}
   .btn.ghost:hover{border-color:var(--lazur)}
   .nav{display:flex;justify-content:flex-end;align-items:center;gap:14px;flex-wrap:wrap;margin:8px 0 0}
-  .navmsg{margin:0;font-size:14px;color:#8A3B1F}
+  .navmsg{margin:0;font-size:14px;color:var(--alarm)}
   /* Scroll room below the questions: the last row on a page has to be able to rise
      to wherever the pointer is, and the browser will not scroll past the end.
      min-height, not height, so the content inside can never be clipped. */
@@ -288,7 +684,7 @@
   .navr{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
   .sharebox{margin-bottom:16px;text-align:center}
   .shareimg{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;margin-bottom:10px}
-  .ptrack{height:8px;background:#E2EBEC;border-radius:4px;overflow:hidden}
+  .ptrack{height:8px;background:var(--trackbg);border-radius:4px;overflow:hidden}
   .pfill{height:100%;background:linear-gradient(90deg,var(--lazur),var(--zar));width:0%;transition:width .3s ease;border-radius:5px}
   .item{padding:18px 0;border-bottom:1px solid var(--line);transition:opacity .25s ease}
   .item:last-of-type{border-bottom:0}
@@ -298,7 +694,7 @@
   .item.done{opacity:.45}
   .item{scroll-margin:20px 0}
   .item.done:hover,.item.done:focus-within{opacity:1}
-  .item.warn .qtext{color:#8A3B1F}
+  .item.warn .qtext{color:var(--alarm)}
   .qtext{font-weight:600;font-size:17.5px;line-height:1.35;margin-bottom:6px}
   .qhelp{font-size:14px;color:var(--muted);margin:0 0 10px}
   /* ---- 5-point circle scale: Qoʻshilmayman -> Qoʻshilaman ---- */
@@ -351,8 +747,8 @@
   .poles{display:flex;justify-content:space-between;gap:10px;font-size:12.5px;
          color:var(--muted);margin-bottom:7px}
   .track{position:relative;height:10px;border-radius:5px;
-         background:linear-gradient(90deg,#E7EFF1,#CBDFE6)}
-  .midzone{position:absolute;left:37.5%;width:25%;top:0;bottom:0;background:#FFFFFF;opacity:.5}
+         background:var(--track)}
+  .midzone{position:absolute;left:37.5%;width:25%;top:0;bottom:0;background:var(--card);opacity:.5}
   .knob{position:absolute;top:50%;width:18px;height:18px;border-radius:50%;background:var(--lazur);
         border:3px solid #fff;box-shadow:0 1px 5px rgba(11,32,39,.25);transform:translate(-50%,-50%)}
   .trait{padding:18px 0;border-bottom:1px solid var(--line)}
@@ -372,11 +768,11 @@
   .more p{font-size:13.5px;color:var(--muted);margin:10px 0 0}
   /* ---- result hero: the screenshot moment ---- */
   .hero{background:var(--card);border:1px solid var(--line);border-radius:18px;overflow:hidden;margin-bottom:16px}
-  .herotop{position:relative;background:var(--famsoft);padding:14px 16px 0;text-align:center}
+  .herotop{position:relative;background:var(--fam-g);padding:14px 16px 0;text-align:center}
   .herotop::after{content:'';position:absolute;left:0;right:0;bottom:0;height:6px;
-                  background:repeating-linear-gradient(135deg,var(--fam) 0 7px,transparent 7px 14px);opacity:.5}
+                  background:repeating-linear-gradient(135deg,var(--fam-a) 0 7px,transparent 7px 14px);opacity:.5}
   .famtag{display:inline-block;font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
-          color:#fff;background:var(--fam);border-radius:99px;padding:4px 13px}
+          color:#fff;background:var(--fam-a);border-radius:99px;padding:4px 13px}
   .herotop svg{display:block;width:236px;max-width:68vw;height:auto;margin:2px auto 0}
   .herointro{padding:20px 22px 0;text-align:center}
   .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
@@ -387,22 +783,22 @@
      the first box on a phone. */
   .herobody{padding:0 22px 22px;text-align:center}
   .archname{font-family:var(--display);font-weight:700;font-size:clamp(26px,7vw,34px);line-height:1.15;
-            color:var(--fam);margin:0 0 4px}
+            color:var(--fam-a);margin:0 0 4px}
   .archwho{font-size:13px;color:var(--muted);margin:0 0 14px}
   .archlines{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:10px}
   .archlines li{font-size:15.5px;line-height:1.5}
-  .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--famsoft);
+  .strength{margin:16px 0 0;padding:12px 14px;border-radius:11px;background:var(--fam-g);
             font-size:15px;line-height:1.45}
-  .strength b{color:var(--fam)}
+  .strength b{color:var(--fam-a)}
   /* Naming the cost of a strength is what stops the result reading as a horoscope. */
-  .watch{margin:10px 0 0;padding:12px 14px;border-radius:11px;background:#FBF3E4;
-         border:1px solid #EBDCBB;font-size:15px;line-height:1.45;text-align:left}
-  .watch b{color:#8A6520}
+  .watch{margin:10px 0 0;padding:12px 14px;border-radius:11px;background:var(--warm);
+         border:1px solid var(--warm-line);font-size:15px;line-height:1.45;text-align:left}
+  .watch b{color:var(--warm-ink)}
   /* .note styled the near-tie box and had no other user; it went with it. */
   .figure{margin:18px 0 0;padding:16px 0 0;border-top:1px solid var(--line);text-align:left}
   .figlbl{font-size:11.5px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
           color:var(--muted);margin-bottom:6px}
-  .figwho{font-family:var(--display);font-weight:700;font-size:18px;color:var(--fam)}
+  .figwho{font-family:var(--display);font-weight:700;font-size:18px;color:var(--fam-a)}
   .figyr{font-family:var(--body);font-weight:400;font-size:13px;color:var(--muted);margin-left:6px}
   .figwhy{margin:5px 0 0;font-size:14.5px;color:var(--muted);line-height:1.5}
   /* ================= the hub, the gate, and the two new interactions =================
@@ -425,13 +821,13 @@
           padding:16px 16px 16px 14px}
   /* A finished challenge stays legible rather than greying out: a student
      rereading what they already answered should not feel it has been retired. */
-  .chcard.is-done{border-color:var(--lazur-soft);background:#FBF8F1}
+  .chcard.is-done{border-color:var(--lazur-soft);background:var(--raised)}
   .chnum{flex:0 0 34px;height:34px;border-radius:50%;display:grid;place-items:center;
          font-family:var(--display);font-weight:700;font-size:16px;
          background:var(--lazur-soft);color:var(--lazur-deep)}
-  .chcard.is-done .chnum{background:var(--lazur);color:#fff}
+  .chcard.is-done .chnum{background:var(--lazur);color:var(--on-accent)}
   .chbody{flex:1 1 auto;min-width:0}
-  .chbody h3{margin:2px 0 4px;font-family:var(--display);font-size:19px}
+  .chbody h2{margin:2px 0 4px;font-family:var(--display);font-size:19px}
   .chbody p{margin:0;color:var(--muted);font-size:14.5px;line-height:1.5}
   .chmeta{margin-top:6px !important;font-size:13px;color:var(--lazur-deep)}
   .chside{flex:0 0 auto;display:flex;flex-direction:column;align-items:flex-end;gap:8px}
@@ -454,12 +850,12 @@
   /* ---- the account gate and modal ---- */
   body.modal-open{overflow:hidden}
   .authoverlay{position:fixed;inset:0;z-index:100;display:flex;align-items:center;justify-content:center;
-               padding:18px;background:rgba(26,31,34,.46);backdrop-filter:blur(4px)}
+               padding:18px;background:var(--overlay);backdrop-filter:blur(4px)}
   .authdialog{position:relative;width:min(100%,500px);max-height:calc(100vh - 36px);overflow:auto;
               background:var(--card);border:1px solid var(--line);border-radius:20px;
-              box-shadow:0 22px 70px rgba(23,28,31,.22);padding:34px 40px 32px}
+              box-shadow:var(--shadow-modal);padding:34px 40px 32px}
   .authclose{position:absolute;right:14px;top:14px;width:38px;height:38px;border-radius:50%;
-             border:1px solid var(--line);background:#fff;color:var(--muted);font:inherit;
+             border:1px solid var(--line);background:var(--card);color:var(--muted);font:inherit;
              font-size:25px;line-height:1;cursor:pointer}
   .authclose:hover{background:var(--paper);color:var(--ink)}
   .authclose:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
@@ -469,11 +865,20 @@
   .authcard{max-width:none;margin:0;display:flex;flex-direction:column}
   .authlab{font-size:13.5px;color:var(--muted);margin:0 0 5px}
   .authin{font:inherit;font-size:16px;padding:13px 14px;margin:0 0 16px;
-          border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink);width:100%}
+          border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);width:100%}
   .authin:focus{outline:2px solid var(--lazur);outline-offset:1px;border-color:var(--lazur)}
-  .autherr{margin:0 0 12px;min-height:1.2em;font-size:14px;color:#9B2C2C}
+  .autherr{margin:0 0 12px;min-height:1.2em;font-size:14px;color:var(--err)}
   .autherr.ok{color:var(--lazur-deep)}
   .authcard .btn{width:100%;border-radius:999px;padding:14px 22px}
+  .author{display:flex;align-items:center;gap:12px;margin:18px 0 12px;color:var(--muted);font-size:13px}
+  .author:before,.author:after{content:"";height:1px;background:var(--line);flex:1}
+  .authprovider{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+                padding:11px 16px;border:1px solid var(--line);border-radius:999px;background:var(--card);
+                color:var(--ink);font:inherit;font-size:14px;font-weight:600;cursor:pointer}
+  .authprovider + .authprovider{margin-top:9px}
+  .authprovider:hover{background:var(--paper)}
+  .authprovider:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
+  .authprovider svg{width:20px;height:20px;flex:none}
   .authswap{margin:14px auto 0;font-size:14px}
   .authnote{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
   @media (max-width:520px){
@@ -492,7 +897,7 @@
              color:var(--muted);font-family:var(--body);font-weight:600}
   .sortslots{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;min-height:34px}
   .sortcard{font:inherit;font-size:14px;line-height:1.35;text-align:left;cursor:pointer;
-            background:#fff;border:1px solid var(--line);border-radius:10px;
+            background:var(--card);border:1px solid var(--line);border-radius:10px;
             padding:9px 11px;max-width:100%;color:var(--ink)}
   .sortcard:hover{border-color:var(--lazur)}
   .sortcard.picked{border-color:var(--lazur);background:var(--lazur-soft);
@@ -516,7 +921,7 @@
   .mxgrid svg{width:100%;height:auto;display:block}
   .mxopts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(340px,92vw)}
   .mxopt{position:relative;cursor:pointer;border:1px solid var(--line);border-radius:10px;
-         background:#fff;color:var(--ink);display:grid;place-items:center;padding:4px}
+         background:var(--card);color:var(--ink);display:grid;place-items:center;padding:4px}
   .mxopt input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
   .mxopt:hover{border-color:var(--lazur)}
   .mxopt.sel{border-color:var(--lazur);background:var(--lazur-soft);
@@ -573,8 +978,8 @@
   .tnlist{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:7px}
   .tnlist li{font-size:15.5px;color:var(--ink)}
   .tnarrow{display:inline-block;width:20px;font-weight:700}
-  .tnarrow.up{color:#237A5E}
-  .tnarrow.dn{color:#A2731F}
+  .tnarrow.up{color:var(--good-ink)}
+  .tnarrow.dn{color:var(--warm-ink)}
   .thennow p{font-size:15px;color:var(--muted);margin:0}
   .tnarch{margin-top:10px !important;color:var(--ink) !important}
   .capture{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px;margin-bottom:16px}
@@ -599,11 +1004,11 @@
   }
   .capnote{font-size:12.5px;color:var(--muted);margin:12px 0 0;line-height:1.45}
   .caplang{font-size:13.5px;line-height:1.5;margin:0 0 14px;padding:9px 12px;
-           border-radius:9px;background:#FBF3E4;border:1px solid #EBDCBB;color:#6E5520}
+           border-radius:9px;background:var(--warm);border:1px solid var(--warm-line);color:var(--warm-ink)}
   .capmsg{font-size:14px;margin:10px 0 0;min-height:1px}
-  .capmsg.err{color:#8A3B1F}
+  .capmsg.err{color:var(--alarm)}
   .capdone{display:flex;gap:10px;align-items:flex-start}
-  .capdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:#237A5E;color:#fff;
+  .capdone .tick{flex:0 0 auto;width:26px;height:26px;border-radius:50%;background:var(--good);color:#fff;
                  display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:700}
   /* Full site footer, mirrored from site.css so every page, including the test,
      ends the same way (the test page does not load site.css). */
@@ -623,7 +1028,7 @@
   .footbar a{color:var(--muted)}
   .socrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
   .soc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
-       border-radius:50%;background:var(--lazur);color:#fff;flex:0 0 auto}
+       border-radius:50%;background:var(--lazur);color:var(--on-accent);flex:0 0 auto}
   .soc svg{width:20px;height:20px;display:block}
   /* ---------------------------------------------------------------------------
      Wide layout. The page fills the screen: cards, bands and the question rows
@@ -702,10 +1107,10 @@
      picks a figure and gives an age; nothing here touches the score, which was
      already calculated before this opened. */
   .fcwrap{position:fixed;inset:0;z-index:60;display:flex;align-items:center;
-          justify-content:center;padding:18px;background:rgba(43,38,32,.55);
+          justify-content:center;padding:18px;background:var(--overlay-deep);
           overflow-y:auto}
   .fcbox{background:var(--card);border-radius:22px 22px 16px 16px;border-top:3px solid var(--lazur);
-         box-shadow:0 18px 60px rgba(43,38,32,.28);max-width:520px;width:100%;
+         box-shadow:var(--shadow-modal);max-width:520px;width:100%;
          padding:26px 22px 22px;margin:auto}
   .fclead{margin:0 0 18px;font-size:16px;line-height:1.5;color:var(--muted);text-align:center}
   .fcrow{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:18px}
@@ -721,19 +1126,19 @@
   .fccard img{display:block;width:100%;max-width:150px;height:auto}
   .fcopt input:hover + .fccard{border-color:var(--zar)}
   .fcopt input:focus-visible + .fccard{outline:3px solid var(--zar);outline-offset:2px}
-  .fcopt input:checked + .fccard{border-color:var(--lazur);background:#F3EADB}
+  .fcopt input:checked + .fccard{border-color:var(--lazur);background:var(--hoverbg)}
   /* Selection is a border AND a tick, never colour alone. The tick is drawn here
      rather than baked into the artwork, so an unselected card can never show one. */
   .fctick{position:absolute;top:8px;right:8px;width:26px;height:26px;border-radius:50%;
-          background:var(--lazur);color:#fff;display:none;align-items:center;
+          background:var(--lazur);color:var(--on-accent);display:none;align-items:center;
           justify-content:center;font-size:15px;font-weight:700;line-height:1}
   .fcopt input:checked + .fccard .fctick{display:flex}
   .fcage{margin-bottom:6px}
   .fcage label{display:block;font-weight:600;font-size:15px;margin-bottom:6px}
   .fcage input{width:110px;padding:11px 12px;font:inherit;font-size:16px;
-               border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+               border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
   .fcage input:focus-visible{outline:3px solid var(--zar);outline-offset:2px}
-  .fcerr{min-height:20px;margin:6px 0 0;font-size:13.5px;color:#9B2C1E}
+  .fcerr{min-height:20px;margin:6px 0 0;font-size:13.5px;color:var(--err)}
   .fcgo{width:100%;margin-top:10px}
   @media (max-width:380px){
     .fcbox{padding:20px 14px 16px}
@@ -754,7 +1159,6 @@
     <a href="obrazlar.html">Obrazlar</a>
     <a href="test.html" aria-current="page">Shaxsiyat testi</a>
     <a href="savollar.html">Savollar</a>
-    <a class="toplogin-mobile" href="test.html?auth=signin">Kirish</a>
   </div>
   <!-- Rebuilt by localiseChrome() once the language is known, because which pill
        is current depends on ?lang=. This is the no-JS fallback. -->
@@ -763,8 +1167,15 @@
     <a href="test.html?lang=ru" hreflang="ru" lang="ru" title="Русский">RU</a>
     <a href="test.html?lang=en" hreflang="en" lang="en" title="English">EN</a>
   </div>
-  <a class="toplogin" href="test.html?auth=signin">Kirish</a>
-  <a class="topcta" href="test.html">Testni boshlash</a>
+  <button class="themesw" type="button" data-theme-toggle data-lang="uz"
+          aria-pressed="false" aria-label="Tungi rejimga oʻtish"></button>
+  <!-- One control, not two. "Testni boshlash" pointed at the page you were
+       already on. Signed out this is the way in; signed in it carries the name
+       and the menu. Drawn here, icon and all, so it is complete on first paint;
+       assets/header.js repaints it once the session is known. -->
+  <div class="navacct" data-acct data-lang="uz" data-login-href="test.html?auth=signin">
+    <a class="acctbtn" href="test.html?auth=signin"><span class="acctav" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><circle cx="12" cy="8.2" r="3.5"/><path d="M5 19.7c.5-3.9 3.4-5.9 7-5.9s6.5 2 7 5.9z"/></svg></span><span class="acctnm">Kirish</span></a>
+  </div>
 </div></nav>
 <div class="wrap">
   <main id="app"></main>
@@ -784,7 +1195,7 @@
       <li><a href="maktablar.html">Maktablar va ota-onalar uchun</a></li>
     </ul></div>
     <div class="footcol"><h2>Bogʻlanish</h2><ul>
-      <li><a href="mailto:raximovrahim1@gmail.com">raximovrahim1@gmail.com</a></li>
+      <li><a href="mailto:support@naseebedu.com">support@naseebedu.com</a></li>
     </ul>
       <div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div></div>
   </div>
@@ -799,16 +1210,19 @@
   </div>
 </div></footer>
 
-<script src="assets/characters.js"></script>
-<script src="assets/strings.js"></script>
-<script src="assets/test-ru.js"></script>
-<script src="assets/test-en.js"></script>
-<script src="assets/career.js"></script>
-<script src="assets/values.js"></script>
-<script src="assets/school.js"></script>
-<script src="assets/wil.js"></script>
-<script src="assets/matrix.js"></script>
-<script src="assets/account.js"></script>
+<script src="assets/characters.js?v=100242de"></script>
+<script src="assets/strings.js?v=4cb528e7"></script>
+<script src="assets/test-ru.js?v=cae0cc06"></script>
+<script src="assets/test-en.js?v=da4185d5"></script>
+<script src="assets/career.js?v=ae52d57f"></script>
+<script src="assets/values.js?v=66d7d5e6"></script>
+<script src="assets/school.js?v=410a10d2"></script>
+<script src="assets/wil.js?v=2c40338b"></script>
+<script src="assets/matrix.js?v=18519e1d"></script>
+<script>var MATRIX_ART_SRC = "assets/matrix-art.js";</script>
+<script src="assets/figure-wiki.js?v=8afd3ca2"></script>
+<script src="assets/account.js?v=711bd93c"></script>
+<script src="assets/header.js?v=fc5c5d8e"></script>
 <script id="tm-logic">
 // ---------- Naseeb Mind v1.0 logic (frozen items + draft key) ----------
 var LABELS = ['Qoʻshilmayman','Biroz qoʻshilmayman','Betarafman','Biroz qoʻshilaman','Qoʻshilaman'];
@@ -971,9 +1385,10 @@ var MATRIX_START = ITEMS.length;
   if (typeof MATRIX_ITEMS === 'undefined') return;
   for (var i = 0; i < MATRIX_ITEMS.length; i++){
     var m = MATRIX_ITEMS[i];
-    // The puzzle itself is figural, so there is no `t` to translate: grid and
-    // options are SVG drawn in currentColor and inherit the page palette.
-    ITEMS.push({ sec: 'm', mid: m.id, grid: m.grid, options: m.options,
+    // The puzzle itself is figural, so there is no `t` to translate. The tiles
+    // are NOT here: they are 66 KB of SVG in matrix-art.js, fetched when the
+    // challenge opens, and attached to these items by applyMatrixArt().
+    ITEMS.push({ sec: 'm', mid: m.id, grid: null, options: null,
                  answer: m.answer, difficulty: m.difficulty });
   }
 })();
@@ -2025,12 +2440,44 @@ var TLANG = (function(){
 // that is seconds of staring at nothing, for data they may never reach. Same
 // treatment as the life packs: fetched in the background while the questions
 // are being answered.
+/* ---- the reasoning tiles, fetched on demand ----
+   matrix.js carries the answers and the count, which is all the hub needs to
+   list challenge 6. The tiles are 66 KB of SVG that most students reach last,
+   if at all, so they are fetched when the challenge is opened rather than being
+   part of what every student waits on before the first question. */
+var matrixArtState = 'idle';   // idle | loading | ready | failed
+function applyMatrixArt(){
+  if (typeof MATRIX_ART === 'undefined') return false;
+  for (var i = MATRIX_START; i < MATRIX_START + MATRIX_COUNT; i++){
+    var art = MATRIX_ART[ITEMS[i].mid];
+    if (!art) return false;
+    ITEMS[i].grid = art.grid;
+    ITEMS[i].options = art.options;
+  }
+  return true;
+}
+function loadMatrixArt(then){
+  if (matrixArtState === 'ready') return then(true);
+  if (matrixArtState === 'loading') return;
+  matrixArtState = 'loading';
+  var el = document.createElement('script');
+  el.src = MATRIX_ART_SRC;
+  el.onload = function(){
+    matrixArtState = applyMatrixArt() ? 'ready' : 'failed';
+    then(matrixArtState === 'ready');
+  };
+  // A failed load must not strand the student inside an empty challenge: they
+  // are sent back to the hub with everything else still working.
+  el.onerror = function(){ matrixArtState = 'failed'; then(false); };
+  document.head.appendChild(el);
+}
+
 var recReady = false, recWaiting = null;
 (function loadTaxonomy(){
   var need = 2, i;
   function done(){ if (--need === 0){ recReady = true;
     if (recWaiting){ recWaiting(); recWaiting = null; } } }
-  var srcs = ['assets/careers-data.js', 'assets/recommend.js'];
+  var srcs = ['assets/careers-data.js?v=02e404b9', 'assets/recommend.js?v=3532bd24'];
   for (i = 0; i < srcs.length; i++){
     var s = document.createElement('script');
     s.src = srcs[i];
@@ -2048,7 +2495,7 @@ var recReady = false, recWaiting = null;
 var lifeReady = false, lifeWaiting = null;
 (function loadLife(){
   var s = document.createElement('script');
-  s.src = 'assets/life-' + TLANG + '.js';
+  s.src = 'assets/life-' + TLANG + '.js?v=883422b1';
   s.onload = function(){
     lifeReady = true;
     if (lifeWaiting) { lifeWaiting(); lifeWaiting = null; }
@@ -2178,6 +2625,9 @@ var TT_UZ = {
   authHaveNo:  'Hisobingiz yoʻqmi? Roʻyxatdan oʻting',
   authHaveYes: 'Hisobingiz bormi? Kiring',
   authSignIn:  'Kirish',
+  authOr:      'yoki',
+  authGoogle:  'Google orqali kirish',
+  authApple:   'Apple orqali kirish',
   authSignUp:  'Roʻyxatdan oʻtish',
   authEmail:   'Email',
   authPassword:'Parol',
@@ -2204,9 +2654,64 @@ var TT_UZ = {
   sortPlace:   'Endi bu kartani qaysi darajaga qoʻyishni tanlang.',
   sortMove:    '«%1» kartasini koʻchirish',
 
+  rfigLbl:     'Shu kuchga ega boʻlgan inson',
+  rfigMan:     'Erkak',
+  rfigWoman:   'Ayol',
+  rfigWiki:    'Vikipediyada oʻqish',
+  // ---- the type code and its five spectrums ----
+  rdetTypeH:   'Sizning turingiz',
+  axMind:      'Ong', axMindLow: 'Ichga yoʻnalgan', axMindHigh: 'Tashqariga yoʻnalgan',
+  axEnergy:    'Quvvat', axEnergyLow: 'Kuzatuvchi', axEnergyHigh: 'Sezgir',
+  axNature:    'Tabiat', axNatureLow: 'Mantiqiy', axNatureHigh: 'His-tuygʻuli',
+  axTactics:   'Uslub', axTacticsLow: 'Moslashuvchan', axTacticsHigh: 'Rejali',
+  axIdentity:  'Oʻzlik', axIdentityLow: 'Hayajonli', axIdentityHigh: 'Ishonchli',
+  axEither:    'ikki tomonga ham boʻlishi mumkin',
+  axNote1:     'Bitta harf oʻrtaga juda yaqin va boshqa kuni teskari chiqishi mumkin. Bu oddiy hol: kod - taxallus, yuqoridagi shkala esa haqiqiy javob.',
+  axNoteN:     '%1 ta harf oʻrtaga juda yaqin va boshqa kuni teskari chiqishi mumkin. Bu oddiy hol: kod - taxallus, yuqoridagi shkala esa haqiqiy javob.',
+  traitLead_ES:'Qiyin paytda qanchalik barqaror turasiz.',
+  traitLead_E: 'Odamlardan qancha quvvat olasiz.',
+  traitLead_O: 'Yangi gʻoya, sanʼat va notanish narsaga ishtiyoqingiz.',
+  traitLead_A: 'Qanchalik oson ishonasiz, yordam berasiz va yon bosasiz.',
+  traitLead_C: 'Qanday rejalashtirasiz, tartibga solasiz va oxiriga yetkazasiz.',
+  rsumStrongest:'Eng kuchli',
+  rsumHighest: 'Eng yuqori',
+  schoolFacets:'Uddalayman %1/5 · yoqadi %2/5 · qiyinligi %3/5',
+  rdetSchoolNote:'Bu fanlar sizga qanday tuyulishi - bahoyingiz bilan bir xil emas. Ikkisi orasidagi farq oʻqituvchi bilan gaplashishga arziydi.',
+  // ---- progress ----
+  progEyebrow: 'Sizning yoʻlingiz',
+  progUnlocked:'Ochildi',
+  progOf:      '%2 tadan %1 tasi ochildi',
+  progLeft:    'Yana %1 ta sinov qoldi.',
+  progAll:     'Hammasi bajarildi.',
+  progQuestions:'%2 ta sinovda jami %1 ta savol',
+  // ---- «Batafsil raqamlar» ----
+  rsumFold:    'Batafsil raqamlar',
+  rsumTop:     'Eng yuqori',
+  rsumLower:   'Pastroq',
+  rsumHigher:  'Yuqori',
+  rsumMiddle:  'Oʻrtacha',
+  rsumLowerBand:'Past',
+  rdetPersonality: 'Bu bugun qanday javob berganingizni koʻrsatadi, nimaga qodir ekaningizni emas. Beshtasining hech birida yaxshi yoki yomon tomon yoʻq.',
+  rdetInterests:   'Eng kuchli uchtangiz: %1. Holland kodlari kasblarni guruhlash uchun butun dunyoda ishlatiladi, shuning uchun oʻqituvchi shu yerdan roʻyxat tuza oladi.',
+  rdetValues:      'Siz uchun eng muhimi: %1. Qadriyat qobiliyat emas: bir xil qiziqishga ega ikki oʻquvchi ishdan butunlay boshqa narsa kutishi mumkin.',
+  rdetSchool:      'Umuman eng kuchlisi: %1. Har bir fan uch xil soʻralgan - nimani uddalaysiz, nima yoqadi va nima qiyin - chunki bu uchtasi bir-biridan ajraladi, va ular kelishmagan joy eng foydali qismi.',
+  rdetWil:         'Eng yuqori ikki qadriyatingiz: %1. O*NET kasblarni shu oltitasi boʻyicha guruhlaydi, shuning uchun oʻqituvchi shu ikkitasidan izlaydi.',
+  rdetMatrixSub:   'Oʻn ikkita jumboq, vaqt cheklovisiz.',
+  // ---- the results summary panel ----
+  rsumH:       'Sizning natijangiz',
+  rsumHex:     'Hollandning olti burchagi: yonma-yon turgan nuqtalar bir-biriga eng yaqin, shuning uchun bir tomonga ogʻgan shakl haqiqiy belgi.',
+  rsumOf:      '%1 / %2',
+  rsumLead_personality:   'Sizning obrazingiz',
+  rsumLead_interests:     'Nima sizga yoqadi',
+  rsumLead_values:        'Ishdan nima kutasiz',
+  rsumLead_school:        'Qayerda kuchlisiz',
+  rsumLead_workimportance:'Nimadan voz kechmaysiz',
+  rsumLead_reasoning:     'Qoidani topish',
   // ---- reasoning ----
   mxPuzzle:    'Jumboq %1 / %2',
   mxNotIq:     'Bu IQ testi emas va bu yerda IQ ball yoʻq. Bu faqat nechta jumboqni yechganingiz. Oʻzbek namunasi boʻyicha meʼyor yoʻq, shuning uchun ball chiqarish notoʻgʻri boʻlardi.',
+  mxArtLoading:'Jumboqlar yuklanmoqda...',
+  mxArtFailed: 'Jumboqlarni yuklab boʻlmadi. Internetni tekshirib, qaytadan urinib koʻring.',
   mxBandStrong:     'Kuchli',
   mxBandMixed:      'Oʻrtacha',
   mxBandDeveloping: 'Rivojlanmoqda'
@@ -2227,6 +2732,7 @@ var CHROME = {
           'maktablar.html': ['Школам и родителям', 'ru/maktablar.html']},
     cta: 'Пройти тест',
     login: 'Войти',
+    account: 'Аккаунт',
     langlabel: 'Язык сайта',
     back: 'Вернуться на сайт Naseeb Edu',
     title: 'Бесплатный тест личности | Naseeb Mind',
@@ -2252,6 +2758,7 @@ var CHROME = {
           'maktablar.html': ['For schools and parents', 'en/maktablar.html']},
     cta: 'Take the test',
     login: 'Log in',
+    account: 'Account',
     langlabel: 'Site language',
     back: 'Back to the Naseeb Edu site',
     title: 'Free personality test | Naseeb Mind',
@@ -2300,12 +2807,18 @@ function localiseChrome(){
   }
 
   var C = CHROME[TLANG];
-  var accountLinks = document.querySelectorAll('.toplogin, .toplogin-mobile');
+  // The account control is repainted, not relabelled: signed in it is a
+  // different control with a menu under it, not the same pill with another word
+  // in it. Its wording lives in assets/header.js in all three languages; what
+  // it needs from here is which language, and where the sign-in link goes.
   var loginHref = 'test.html' + (TLANG === 'uz' ? '?auth=signin' : '?lang=' + TLANG + '&auth=signin');
-  for (i = 0; i < accountLinks.length; i++){
-    accountLinks[i].textContent = C ? C.login : 'Kirish';
-    accountLinks[i].setAttribute('href', loginHref);
+  var acct = document.querySelector('[data-acct]');
+  if (acct){
+    acct.setAttribute('data-lang', TLANG);
+    acct.setAttribute('data-login-href', loginHref);
   }
+  var th = document.querySelector('[data-theme-toggle]');
+  if (th) th.setAttribute('data-lang', TLANG);
   if (!C) return;                       // Uzbek: the remaining static markup is already right
 
   var a, links = document.querySelectorAll('.toplinks a:not(.toplogin-mobile), .foot a');
@@ -2317,8 +2830,6 @@ function localiseChrome(){
     var tr = C.foot[a.textContent.trim()];
     if (tr) a.textContent = tr;
   }
-  var cta = document.querySelector('.topcta');
-  if (cta){ cta.textContent = C.cta; cta.setAttribute('href', 'test.html?lang=' + TLANG); }
   var vh = document.querySelector('.navback .vh');
   if (vh) vh.textContent = C.back;
   // .footbar span is in this list because the legal disclaimer lives in a bare
@@ -2453,13 +2964,18 @@ function finishChallenge(){
   if (c) saveAttempt(c);
   if (c && c.key === 'personality') currentPersonalityTs = Date.now();
   state.challenge = null;
-  // Six of six means the result is finally worth showing; anything less returns
-  // to the hub, because a partial result would be read as the real one.
-  state.view = allChallengesDone(state.answers) ? 'result' : 'hub';
+  // Always the hub. The summary panel there has just grown by one line, which is
+  // the feedback for having finished this challenge; the full archetype report
+  // stays one button away rather than being sprung at the end.
+  state.view = 'hub';
   render();
 }
 
 function render(){
+  // Every screen change goes through here, including the ones that follow a
+  // sign-in or a sign-out, so this is the one place the nav button has to be
+  // brought back in step with the session.
+  markAccountNav();
   if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn()) return renderAuth();
   if (state.view === 'result') return renderReport();
   var c = currentChallenge();
@@ -2490,7 +3006,7 @@ function renderHub(){
       '<li class="chcard' + (finished ? ' is-done' : '') + '">' +
         '<div class="chnum" aria-hidden="true">' + c.n + '</div>' +
         '<div class="chbody">' +
-          '<h3>' + esc(challengeTitle(c)) + '</h3>' +
+          '<h2>' + esc(challengeTitle(c)) + '</h2>' +
           '<p>' + esc(challengeBlurb(c)) + '</p>' +
           '<p class="chmeta">' + esc(challengeSize(c)) + '</p>' +
         '</div>' +
@@ -2513,6 +3029,8 @@ function renderHub(){
               '<button class="btn" type="button" id="hubSignUp">' + esc(T('authSignUp')) + '</button>' +
               '<button class="linkbtn" type="button" id="hubSignIn">' + esc(T('authSignIn')) + '</button>' +
             '</div>') +
+    (done ? progressHtml() : '') +
+    resultSummaryHtml() +
     '<ol class="chlist">' + cards + '</ol>' +
     '<div class="nav">' +
       (left === 0
@@ -2521,6 +3039,8 @@ function renderHub(){
     '</div>' +
     '<div class="tailspace" aria-hidden="true"></div>';
 
+  wirePolygon();
+  wireResultFigure();
   var buttons = app.querySelectorAll('.chgo');
   for (i = 0; i < buttons.length; i++){
     buttons[i].onclick = function(){
@@ -2588,6 +3108,13 @@ function renderAuth(openDialog){
       '<p class="autherr" id="authErr" role="alert"></p>' +
       '<button class="btn" type="submit" id="authGo">' +
         esc(T(signUp ? 'authSignUp' : 'authSignIn')) + '</button>' +
+      '<div class="author" aria-hidden="true">' + esc(T('authOr')) + '</div>' +
+      '<button class="authprovider" type="button" id="authGoogle">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M21.35 12.23c0-.72-.06-1.42-.19-2.09H12v3.96h5.24a4.48 4.48 0 0 1-1.94 2.94v2.45h3.14c1.84-1.7 2.91-4.2 2.91-7.26z"/><path fill="#34A853" d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.92-3.31.92-2.55 0-4.71-1.72-5.49-4.04H3.27v2.53A9.74 9.74 0 0 0 12 21.5z"/><path fill="#FBBC05" d="M6.51 13.57A5.86 5.86 0 0 1 6.2 12c0-.54.1-1.07.31-1.57V7.9H3.27A9.75 9.75 0 0 0 2.25 12c0 1.57.38 3.04 1.02 4.1l3.24-2.53z"/><path fill="#EA4335" d="M12 6.39c1.44 0 2.73.5 3.75 1.48l2.81-2.81C16.84 3.43 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.73 5.4l3.24 2.53C7.29 8.11 9.45 6.39 12 6.39z"/></svg>' +
+        esc(T('authGoogle')) + '</button>' +
+      '<button class="authprovider" type="button" id="authApple">' +
+        '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M16.7 12.7c0-2.15 1.76-3.2 1.84-3.25a4.03 4.03 0 0 0-3.18-1.72c-1.34-.14-2.64.8-3.32.8-.7 0-1.77-.78-2.9-.76a4.28 4.28 0 0 0-3.6 2.2c-1.55 2.68-.4 6.64 1.1 8.82.74 1.06 1.62 2.24 2.78 2.2 1.12-.05 1.54-.71 2.88-.71 1.34 0 1.72.71 2.9.68 1.2-.02 1.96-1.08 2.68-2.15a8.8 8.8 0 0 0 1.22-2.5 3.87 3.87 0 0 1-2.4-3.61zm-2.18-6.4c.61-.74 1.02-1.77.9-2.8-.88.04-1.95.59-2.58 1.32-.56.65-1.05 1.7-.92 2.7.98.08 1.98-.5 2.6-1.22z"/></svg>' +
+        esc(T('authApple')) + '</button>' +
       '<button class="linkbtn authswap" type="button" id="authSwap">' +
         esc(T(signUp ? 'authHaveYes' : 'authHaveNo')) + '</button>' +
       '<p class="authnote">' + esc(T('authNoName')) + '</p>' +
@@ -2603,6 +3130,14 @@ function renderAuth(openDialog){
   document.getElementById('authSwap').onclick = function(){
     authMode = signUp ? 'signin' : 'signup';
     renderAuth(true);
+  };
+  document.getElementById('authGoogle').onclick = function(){
+    this.disabled = true;
+    NMAccount.signInWithProvider('google');
+  };
+  document.getElementById('authApple').onclick = function(){
+    this.disabled = true;
+    NMAccount.signInWithProvider('apple');
   };
 
   document.getElementById('authForm').onsubmit = function(ev){
@@ -2647,18 +3182,84 @@ document.addEventListener('keydown', function(ev){
   if (ev.key === 'Escape' && document.getElementById('authDialog')) renderAuth(false);
 });
 
+/* The account control, shared with every other page (assets/header.js). This
+   is the only host that answers its own menu: "my results" and "carry on" are
+   views of a page already open, so they change the screen instead of loading
+   one. */
+var acctNav = null;
 function wireTopLogin(){
-  var links = document.querySelectorAll('.toplogin, .toplogin-mobile');
-  for (var i = 0; i < links.length; i++) links[i].onclick = function(ev){
-    ev.preventDefault();
-    if (typeof NMAccount !== 'undefined' && NMAccount.signedIn()){
-      state.view = 'hub';
+  if (typeof NMNav === 'undefined') return;
+  acctNav = NMNav.mount({
+    onResults: showSavedResults,
+    onResume: resumeCurrentTest,
+    // The session is gone by the time this runs, so everything scored from it
+    // has to go with it -- otherwise the next student on a shared school
+    // computer opens the hub on somebody else's answers.
+    onSignOut: function(){
+      state.answers = new Array(ITEMS.length).fill(0);
+      state.challenge = null; state.view = 'hub';
+      accountHistory = []; currentPersonalityTs = 0;
+      clearDraft();
       render();
-      return;
     }
+  });
+  // Signed out the pill is a link to ?auth=signin. Opening the dialog in place
+  // is the same destination without the page load. Delegated, because the
+  // control repaints itself and the anchor is not the same node for long.
+  var box = document.querySelector('[data-acct]');
+  if (box) box.addEventListener('click', function(ev){
+    var el = ev.target;
+    while (el && el !== box && !(el.className && String(el.className).indexOf('acctbtn') >= 0))
+      el = el.parentNode;
+    if (!el || el === box || el.tagName !== 'A') return;
+    ev.preventDefault();
     authMode = 'signin';
     renderAuth(true);
-  };
+  });
+}
+
+/** Brings the header back in step with the session. Called from render(). */
+function markAccountNav(){
+  if (acctNav) acctNav.refresh();
+}
+
+/** "Natijalarim": the hub is where results live, so this is the hub with the
+    summary panel brought into view. Nothing finished yet means there is no
+    panel to scroll to, and the top of the hub is the honest answer. */
+function showSavedResults(){
+  state.challenge = null;
+  state.view = 'hub';
+  render();
+  var panel = document.querySelector('.rsum');
+  if (panel) panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  else window.scrollTo({ top: 0, behavior: 'auto' });
+}
+
+/** "Testni davom ettirish": the first challenge that is not finished, opened at
+    the page they stopped on -- openChallenge() already resumes rather than
+    restarting. Everything finished means there is nothing to continue, so it
+    falls back to the results. */
+function resumeCurrentTest(){
+  var i, c;
+  // A challenge part way through beats one not started: that is the one they
+  // are actually in the middle of.
+  for (i = 0; i < CHALLENGES.length; i++){
+    c = CHALLENGES[i];
+    if (challengeDone(c, state.answers)) continue;
+    if (challengeStarted(c, state.answers)){ openChallenge(c.key); return; }
+  }
+  for (i = 0; i < CHALLENGES.length; i++){
+    c = CHALLENGES[i];
+    if (!challengeDone(c, state.answers)){ openChallenge(c.key); return; }
+  }
+  showSavedResults();
+}
+
+/** Any answer at all in this challenge. */
+function challengeStarted(c, answers){
+  var plan = c.plan(), j;
+  for (j = 0; j < plan.length; j++) if (answers[plan[j]]) return true;
+  return false;
 }
 
 /* ---------------- talking to the account ----------------
@@ -3142,6 +3743,30 @@ function paintPicked(){
    three answers the remaining nine differently, and the count would stop meaning
    what it means. */
 function renderMatrix(){
+  // The tiles may not be here yet. Say so and paint as soon as they land.
+  if (matrixArtState !== 'ready'){
+    var done = false;
+    loadMatrixArt(function(ok){
+      done = true;
+      // The fetch outlives the screen: a student can finish or leave the
+      // challenge while it is in flight, and by the time it lands there may be
+      // nothing to paint into. Drawing then would blow up on a null challenge.
+      if (!currentChallenge() || state.view !== 'challenge') return;
+      if (ok) return renderMatrix();
+      app.innerHTML = challengeHeader(currentChallenge()) +
+        '<p class="navmsg">' + esc(T('mxArtFailed')) + '</p>';
+      wireHubBack();
+    });
+    if (matrixArtState !== 'ready'){
+      if (!done){
+        app.innerHTML = challengeHeader(currentChallenge()) +
+          '<p class="navmsg">' + esc(T('mxArtLoading')) + '</p>';
+        wireHubBack();
+      }
+      return;
+    }
+  }
+
   var c = currentChallenge();
   var p = state.page;
   var idx = state.plan[p];
@@ -3405,6 +4030,515 @@ function careerHtml(answers){
          '<p class="lifetopsub">' + esc(T('careerResSub')) + '</p>' +
          '<section class="cfull">' + out + '</section>';
 }
+
+/* ---------------- «Sizning natijangiz» ----------------
+   The whole sitting on one card: the interest hexagon, and one line per
+   challenge the student actually finished. Ported from the Naseeb Edu results
+   panel so a student who meets both platforms recognises the same summary. */
+
+/** A profile shape with as many sides as the instrument has scales.
+ *
+ *  Two things this drawing gets wrong if you let it:
+ *   - AREA LIES. Twice the radius is FOUR times the area, so a middling profile
+ *     can look dramatic. Guarded by a faint fill, a thin outline, every ring left
+ *     visible so the scale reads, and the numbers shipped underneath.
+ *   - THE ORDER SHAPES THE SHAPE. Reordering the axes changes the silhouette
+ *     without changing the data. Here the order is Holland's own hexagon, where
+ *     neighbours are the most alike, so the shape is meaningful -- but it is
+ *     still a picture of the profile, never evidence about it. */
+function polygonHtml(axes, caption){
+  // Wider than tall on purpose: the left and right labels sit OUTSIDE the shape
+  // and need room inside the viewBox, rather than relying on overflow.
+  var W = 360, H = 268, cx = W / 2, cy = H / 2, rMax = 84;
+  var rings = [0.25, 0.5, 0.75, 1], i;
+  var pointAt = function(index, t){
+    var a = (Math.PI * 2 * index) / axes.length - Math.PI / 2;
+    return [cx + Math.cos(a) * rMax * t, cy + Math.sin(a) * rMax * t];
+  };
+  var fix = function(n){ return n.toFixed(1); };
+  var ringPath = function(t){
+    var pts = [];
+    for (var k = 0; k < axes.length; k++) pts.push(pointAt(k, t).map(fix).join(','));
+    return pts.join(' ');
+  };
+  // 1..5 onto 0..1, so the centre reads as "lowest", not "none".
+  var norm = function(v){ return Math.max(0, Math.min(1, (v - 1) / 4)); };
+
+  var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + esc(caption) + '">';
+  for (i = 0; i < rings.length; i++)
+    svg += '<polygon class="ring' + (rings[i] === 1 ? ' edge' : '') + '" points="' +
+           ringPath(rings[i]) + '"/>';
+  for (i = 0; i < axes.length; i++){
+    var e = pointAt(i, 1);
+    svg += '<line class="spoke" x1="' + cx + '" y1="' + cy + '" x2="' + fix(e[0]) +
+           '" y2="' + fix(e[1]) + '"/>';
+  }
+  var shape = [];
+  for (i = 0; i < axes.length; i++) shape.push(pointAt(i, norm(axes[i].value)).map(fix).join(','));
+  svg += '<polygon class="shape" points="' + shape.join(' ') + '"/>';
+  for (i = 0; i < axes.length; i++){
+    var v = pointAt(i, norm(axes[i].value)), l = pointAt(i, 1.24);
+    var anchor = Math.abs(l[0] - cx) < 6 ? 'middle' : (l[0] > cx ? 'start' : 'end');
+    var tip = axes[i].label + ' — ' + axes[i].value.toFixed(1) + ' / 5';
+    svg += '<circle class="vertex" data-ax="' + i + '" cx="' + fix(v[0]) + '" cy="' + fix(v[1]) + '" r="4.5"/>' +
+           '<text class="axlbl" data-ax="' + i + '" x="' + fix(l[0]) + '" y="' + fix(l[1]) + '" ' +
+             'text-anchor="' + anchor + '" dominant-baseline="middle">' + esc(axes[i].short) + '</text>' +
+           // Last, so it sits above the drawing and takes the pointer itself.
+           '<circle class="hit" data-ax="' + i + '" data-tip="' + esc(tip) + '" ' +
+             'cx="' + fix(v[0]) + '" cy="' + fix(v[1]) + '" r="15"><title>' + esc(tip) + '</title></circle>';
+  }
+  svg += '</svg>';
+  return '<figure class="rpoly">' + svg +
+         '<figcaption data-caption="' + esc(caption) + '">' + esc(caption) + '</figcaption></figure>';
+}
+
+/** Point at a corner and the caption says which scale it is and what it scored.
+ *  The shape alone cannot be read off to that precision, and the alternative --
+ *  printing six numbers around the edge -- crowds the corners into noise. */
+function wirePolygon(){
+  var fig = document.querySelector('.rpoly');
+  if (!fig) return;
+  var cap = fig.querySelector('figcaption');
+  var base = cap.getAttribute('data-caption');
+  var mark = function(index, on){
+    var sel = '[data-ax="' + index + '"]', k;
+    var els = fig.querySelectorAll('.vertex' + sel + ', .axlbl' + sel);
+    for (k = 0; k < els.length; k++) els[k].classList.toggle('on', on);
+  };
+  var hits = fig.querySelectorAll('.hit'), j;
+  var show = function(el){
+    var i = el.getAttribute('data-ax');
+    mark(i, true);
+    cap.innerHTML = '<b>' + esc(el.getAttribute('data-tip')) + '</b>';
+  };
+  var clear = function(el){
+    mark(el.getAttribute('data-ax'), false);
+    cap.textContent = base;
+  };
+  for (j = 0; j < hits.length; j++){
+    hits[j].addEventListener('mouseenter', function(){ show(this); });
+    hits[j].addEventListener('mouseleave', function(){ clear(this); });
+    // Touch has no hover: a tap holds the reading until the next tap elsewhere.
+    hits[j].addEventListener('click', function(){ show(this); });
+  }
+}
+
+/** Rank the keys of a {key: number} map, highest first, ties broken by the
+ *  instrument's own order so the same scores always produce the same list. */
+function rankScores(scores, order){
+  return order.slice().filter(function(k){ return typeof scores[k] === 'number'; })
+    .sort(function(a, b){ return (scores[b] - scores[a]) || (order.indexOf(a) - order.indexOf(b)); });
+}
+
+/** The one line a student repeats to a parent. Labels, never raw numbers. */
+function headlineFor(key, arch){
+  var a = state.answers, names, ranked, i, out;
+  if (key === 'personality') return arch ? arch.name : '';
+  if (key === 'interests'){
+    ranked = rankScores(scoreCareer(a), CAREER_SCALES).slice(0, 3);
+    out = []; for (i = 0; i < ranked.length; i++) out.push(tmRiasecName(ranked[i]));
+    return out.join(' · ');
+  }
+  if (key === 'values'){
+    names = (typeof VALUE_LANGS !== 'undefined' && (VALUE_LANGS[TLANG] || VALUE_LANGS.uz).names) || {};
+    ranked = rankScores(scoreValues(a), VALUE_DIMS).slice(0, 3);
+    out = []; for (i = 0; i < ranked.length; i++) out.push(names[ranked[i]] || ranked[i]);
+    return out.join(' · ');
+  }
+  if (key === 'school'){
+    names = (typeof SCHOOL_LANGS !== 'undefined' && (SCHOOL_LANGS[TLANG] || SCHOOL_LANGS.uz).names) || {};
+    var fits = {}, sc = scoreSchool(a);
+    for (i = 0; i < SCHOOL_SUBJECTS.length; i++)
+      if (sc[SCHOOL_SUBJECTS[i]]) fits[SCHOOL_SUBJECTS[i]] = sc[SCHOOL_SUBJECTS[i]].fit;
+    ranked = rankScores(fits, SCHOOL_SUBJECTS).slice(0, 3);
+    out = []; for (i = 0; i < ranked.length; i++) out.push(names[ranked[i]] || ranked[i]);
+    return out.join(' · ');
+  }
+  if (key === 'workimportance'){
+    names = (typeof WIL_LANGS !== 'undefined' && (WIL_LANGS[TLANG] || WIL_LANGS.uz).names) || {};
+    ranked = rankScores(scoreWil(a), WIL_VALUES).slice(0, 2);
+    out = []; for (i = 0; i < ranked.length; i++) out.push(names[ranked[i]] || ranked[i]);
+    return out.join(' · ');
+  }
+  if (key === 'reasoning'){
+    var m = scoreMatrix(a);
+    if (!m || typeof m.correct !== 'number') return '';
+    // A band and the raw count behind it. NEVER a quotient: there is no Uzbek
+    // sample behind these twelve puzzles, and a number that looks like an IQ
+    // gets believed like one.
+    var bandKey = { strong: 'mxBandStrong', mixed: 'mxBandMixed', developing: 'mxBandDeveloping' }[m.band];
+    return (bandKey ? T(bandKey) : '') + ' · ' + T('rsumOf', m.correct, m.total);
+  }
+  return '';
+}
+
+/** One labelled bar per scale. rows are [label, lead, value 1..5, tag, isTop]. */
+function resultRowsHtml(rows){
+  var h = '<div class="rrows">', i, r, pct;
+  for (i = 0; i < rows.length; i++){
+    r = rows[i];
+    // 1..5 onto 0..100, so the bar starts empty at "lowest" rather than at none.
+    pct = Math.max(0, Math.min(100, ((r[2] - 1) / 4) * 100));
+    h += '<div class="rrow">' +
+           '<div><b>' + esc(r[0]) + '</b>' +
+             (r[1] ? '<small>' + esc(r[1]) + '</small>' : '') + '</div>' +
+           '<div class="rbar"><i style="width:' + pct.toFixed(0) + '%"></i></div>' +
+           '<span class="rbadge' + (r[4] ? ' on' : '') + '">' + esc(r[3]) + '</span>' +
+         '</div>';
+  }
+  return h + '</div>';
+}
+
+/** The numbers behind one challenge's headline, as its own panel. */
+function challengeDetailHtml(c){
+  var a = state.answers, i, rows = [], names, leads, ranked, top, badge = '';
+  var TOP = T('rsumTop'), LOW = T('rsumLower');
+  var has = function(list, k){ return list.indexOf(k) !== -1; };
+  var join = function(list, name){
+    var out = [], n;
+    for (n = 0; n < list.length; n++) out.push(name(list[n]));
+    return out.join(' · ');
+  };
+
+  if (c.key === 'personality'){
+    var sc = scoreAnswers(a);
+    for (i = 0; i < TRAIT_ORDER.length; i++){
+      var tk = TRAIT_ORDER[i];
+      rows.push([TRAITS[tk], T('traitLead_' + tk), sc[tk], bandWord(sc[tk]), false]);
+    }
+    // No polygon here on purpose: the five traits have no fixed order, so the
+    // silhouette would change with the axis order while the answers stayed the
+    // same -- a shape that looks like evidence and is not. Bars carry it honestly.
+    return rpanel(challengeTitle(c), '', resultRowsHtml(rows) +
+      '<p class="rnote">' + esc(T('rdetPersonality')) + '</p>');
+  }
+
+  if (c.key === 'interests'){
+    var means = scoreCareer(a);
+    leads = (CAREER_META && CAREER_META.scaleLeads) || {};
+    top = rankScores(means, CAREER_SCALES).slice(0, 3);
+    badge = top.join('');
+    for (i = 0; i < CAREER_SCALES.length; i++){
+      var k = CAREER_SCALES[i];
+      rows.push([tmRiasecName(k), leads[k] || '', means[k], has(top, k) ? TOP : LOW, has(top, k)]);
+    }
+    // No hexagon here: the summary above already carries it, and drawing the
+    // same shape twice on one page is noise, not emphasis.
+    return rpanel(challengeTitle(c), badge,
+      '<p class="rintro">' + T('rdetInterests', '<strong>' + esc(join(top, tmRiasecName)) + '</strong>') + '</p>' +
+      resultRowsHtml(rows));
+  }
+
+  if (c.key === 'values'){
+    names = (typeof VALUE_LANGS !== 'undefined' && (VALUE_LANGS[TLANG] || VALUE_LANGS.uz).names) || {};
+    var vname = function(k){ return names[k] || k; };
+    var vs = scoreValues(a);
+    ranked = rankScores(vs, VALUE_DIMS);
+    top = ranked.slice(0, 3);
+    for (i = 0; i < ranked.length; i++)
+      rows.push([vname(ranked[i]), '', vs[ranked[i]], has(top, ranked[i]) ? TOP : LOW, has(top, ranked[i])]);
+    return rpanel(challengeTitle(c), '',
+      '<p class="rintro">' + T('rdetValues', '<strong>' + esc(join(top, vname)) + '</strong>') + '</p>' +
+      resultRowsHtml(rows));
+  }
+
+  if (c.key === 'school'){
+    names = (typeof SCHOOL_LANGS !== 'undefined' && (SCHOOL_LANGS[TLANG] || SCHOOL_LANGS.uz).names) || {};
+    var sname = function(k){ return names[k] || k; };
+    var sch = scoreSchool(a), fits = {};
+    for (i = 0; i < SCHOOL_SUBJECTS.length; i++)
+      if (sch[SCHOOL_SUBJECTS[i]]) fits[SCHOOL_SUBJECTS[i]] = sch[SCHOOL_SUBJECTS[i]].fit;
+    ranked = rankScores(fits, SCHOOL_SUBJECTS);
+    top = ranked.slice(0, 3);
+    for (i = 0; i < ranked.length; i++){
+      var sk = ranked[i], r = sch[sk];
+      // Each subject was asked three ways and the three come apart: the places
+      // they disagree are the useful part, so all three are shown, not the mean.
+      var sub = T('schoolFacets', fmt1(r.ability), fmt1(r.interest), fmt1(r.cost));
+      rows.push([sname(sk), sub, fits[sk], has(top, sk) ? T('rsumStrongest') : LOW, has(top, sk)]);
+    }
+    return rpanel(challengeTitle(c), '',
+      '<p class="rintro">' + T('rdetSchool', '<strong>' + esc(join(top, sname)) + '</strong>') + '</p>' +
+      resultRowsHtml(rows) + '<p class="rnote">' + esc(T('rdetSchoolNote')) + '</p>');
+  }
+
+  if (c.key === 'workimportance'){
+    names = (typeof WIL_LANGS !== 'undefined' && (WIL_LANGS[TLANG] || WIL_LANGS.uz).names) || {};
+    leads = (typeof WIL_LANGS !== 'undefined' && (WIL_LANGS[TLANG] || WIL_LANGS.uz).leads) || {};
+    var wname = function(k){ return names[k] || k; };
+    var wv = scoreWil(a);
+    ranked = rankScores(wv, WIL_VALUES);
+    top = ranked.slice(0, 2);
+    for (i = 0; i < ranked.length; i++)
+      rows.push([wname(ranked[i]), leads[ranked[i]] || '', wv[ranked[i]],
+                 has(top, ranked[i]) ? T('rsumHighest') : LOW, has(top, ranked[i])]);
+    return rpanel(challengeTitle(c), '',
+      '<p class="rintro">' + T('rdetWil', '<strong>' + esc(join(top, wname)) + '</strong>') + '</p>' +
+      resultRowsHtml(rows));
+  }
+
+  if (c.key === 'reasoning'){
+    var m = scoreMatrix(a);
+    if (!m || typeof m.correct !== 'number') return '';
+    var bandKey = { strong:'mxBandStrong', mixed:'mxBandMixed', developing:'mxBandDeveloping' }[m.band];
+    var head = '<div class="rmx"><b>' + m.correct + '<span> / ' + m.total + '</span></b>' +
+                 '<div><strong>' + esc(bandKey ? T(bandKey) : '') + '</strong>' +
+                 '<p class="rnote" style="margin:2px 0 0">' + esc(T('rdetMatrixSub')) + '</p></div>' +
+               '</div>';
+    // The most important sentence on this panel. Everything else here describes
+    // preferences, where there is no better answer; this one has right answers,
+    // and a student will read it as a verdict on how clever they are unless it
+    // says otherwise, plainly.
+    return rpanel(challengeTitle(c), m.correct + ' / ' + m.total,
+      head + '<p class="rnote">' + esc(T('mxNotIq')) + '</p>');
+  }
+  return '';
+}
+
+/** One decimal, for the three ways a subject was asked. */
+function fmt1(v){ return (typeof v === 'number' ? v : 0).toFixed(1); }
+
+/** Higher / in the middle / lower. No direction is described as the better one. */
+function bandWord(v){
+  return v >= 3.6 ? T('rsumHigher') : (v <= 2.4 ? T('rsumLowerBand') : T('rsumMiddle'));
+}
+
+/* ---- the four-letter code, ported from Naseeb Edu's typecode.js ----
+   The mapping is 16Personalities': their published theory says they dropped
+   Jung's cognitive functions as unmeasurable and rebalanced the Big Five. Note
+   the two reversals -- high Agreeableness is FEELING, and Emotional steadiness
+   drives the Assertive/Turbulent suffix, an axis Jung does not have at all. */
+var TYPE_AXES = [
+  { trait:'E',  low:'I', high:'E', key:'axMind' },
+  { trait:'O',  low:'S', high:'N', key:'axEnergy' },
+  { trait:'A',  low:'T', high:'F', key:'axNature' },
+  { trait:'C',  low:'P', high:'J', key:'axTactics' },
+  { trait:'ES', low:'T', high:'A', key:'axIdentity' }
+];
+// Trait means run 1..5, so the midpoint is 3. Within 0.35 of it a letter would
+// flip on one or two different answers, which the UI marks rather than printing
+// all five in the same confident type.
+var TYPE_MIDPOINT = 3, TYPE_BORDERLINE = 0.35;
+
+function typeCodeOf(scores){
+  var letters = {}, borderline = [], i, ax, v;
+  for (i = 0; i < TYPE_AXES.length; i++){
+    ax = TYPE_AXES[i]; v = scores[ax.trait];
+    letters[ax.trait] = v >= TYPE_MIDPOINT ? ax.high : ax.low;
+    if (Math.abs(v - TYPE_MIDPOINT) <= TYPE_BORDERLINE) borderline.push(ax.trait);
+  }
+  var four = '';
+  for (i = 0; i < 4; i++) four += letters[TYPE_AXES[i].trait];
+  return { code: four + '-' + letters.ES, four: four,
+           letters: letters, borderline: borderline };
+}
+
+function rpanel(title, badge, body){
+  return '<section class="rpanel"><header><h3>' + esc(title) + '</h3>' +
+      (badge ? '<span class="rbadge on">' + esc(badge) + '</span>' : '') +
+    '</header><div class="rpanelbody">' + body + '</div></section>';
+}
+
+/** «Sizning turingiz»: the code, its name, and the five spectrums behind it. */
+function typePanelHtml(arch){
+  var sc = scoreAnswers(state.answers);
+  var t = typeCodeOf(sc), i, ax, html = '';
+  for (i = 0; i < TYPE_AXES.length; i++){
+    ax = TYPE_AXES[i];
+    var soft = t.borderline.indexOf(ax.trait) !== -1;
+    html += '<span' + (soft ? ' class="soft"' : '') + '>' +
+            (ax.trait === 'ES' ? '<small>-' + t.letters.ES + '</small>' : t.letters[ax.trait]) +
+            '</span>';
+  }
+  var axes = '';
+  for (i = 0; i < TYPE_AXES.length; i++){
+    ax = TYPE_AXES[i];
+    var v = sc[ax.trait], pct = ((v - 1) / 4) * 100;
+    var chosen = t.letters[ax.trait];
+    var lowName = T(ax.key + 'Low'), highName = T(ax.key + 'High');
+    axes += '<div class="raxrow">' +
+        '<div class="raxh"><b>' + esc(T(ax.key)) + '</b>' +
+          (t.borderline.indexOf(ax.trait) !== -1
+            ? '<small>' + esc(T('axEither')) + '</small>' : '') +
+        '</div>' +
+        '<div class="raxtrack" role="img" aria-label="' +
+          esc(T(ax.key) + ': ' + lowName + ' — ' + highName) + '">' +
+          '<span class="raxdot" style="left:' + pct.toFixed(1) + '%"></span>' +
+        '</div>' +
+        '<div class="raxf">' +
+          '<span' + (chosen === ax.low ? ' class="on"' : '') + '>' + esc(lowName) + '</span>' +
+          '<span' + (chosen === ax.high ? ' class="on"' : '') + '>' + esc(highName) + '</span>' +
+        '</div>' +
+      '</div>';
+  }
+  var note = t.borderline.length
+    ? '<p class="rnote">' + esc(T(t.borderline.length === 1 ? 'axNote1' : 'axNoteN',
+                                 t.borderline.length)) + '</p>'
+    : '';
+  return rpanel(T('rdetTypeH'), t.code,
+    '<p class="rtype">' + html + '</p>' +
+    '<p class="rtypename">' + esc(arch ? arch.name : '') + '</p>' +
+    '<div class="rax">' + axes + '</div>' + note);
+}
+
+/** «Qancha ochildi»: how far through the six a student is. */
+function progressHtml(){
+  var done = 0, questions = 0, i, c;
+  for (i = 0; i < CHALLENGES.length; i++){
+    c = CHALLENGES[i];
+    if (challengeDone(c, state.answers)) done++;
+    questions += c.plan().length;
+  }
+  var pct = CHALLENGES.length ? (done / CHALLENGES.length) * 100 : 0;
+  var left = CHALLENGES.length - done;
+  return '<section class="rprog">' +
+      '<div class="rprogl">' +
+        '<span class="rprogeyebrow">' + esc(T('progEyebrow')) + '</span>' +
+        '<h2>' + esc(T('progOf', done, CHALLENGES.length)) + '</h2>' +
+        '<p>' + esc(left ? T('progLeft', left) : T('progAll')) + '</p>' +
+      '</div>' +
+      '<div class="rprogr">' +
+        '<div class="rprogtop"><b>' + esc(T('progUnlocked')) + '</b>' +
+          '<strong>' + Math.round(pct) + '%</strong></div>' +
+        '<div class="rprogbar"><i style="width:' + pct.toFixed(0) + '%"></i></div>' +
+        '<small>' + esc(T('progQuestions', questions, CHALLENGES.length)) + '</small>' +
+      '</div>' +
+    '</section>';
+}
+
+/* Which side the reader last asked for, on this device only. The report asks the
+   question outright on every run; inside the panel it is a switch instead,
+   because the panel appears before the test is finished and must not interrupt. */
+var RFIG_KEY = 'naseebmind_figure_side_v1';
+function figureSide(){
+  try { var v = localStorage.getItem(RFIG_KEY); if (v === 'female' || v === 'male') return v; }
+  catch (e) {}
+  return 'male';
+}
+function setFigureSide(v){ try { localStorage.setItem(RFIG_KEY, v); } catch (e) {} }
+
+/** A real person who had the same strength, with a way out to read about them.
+ *  Never a summary of our own: the point is that the student goes and reads. */
+function resultFigureHtml(archKey){
+  if (!archKey || typeof getFigureVariant !== 'function') return '';
+  var side = figureSide();
+  var fv = getFigureVariant(archKey, side);
+  if (!fv || !fv.who) return '';
+  var wiki = '';
+  try { wiki = FIGURE_WIKI[archKey][side][TLANG] || FIGURE_WIKI[archKey][side].uz; }
+  catch (e) { wiki = ''; }
+  var pair = (typeof tmHasFigureVariants === 'function') && tmHasFigureVariants(archKey);
+
+  return '<div class="rfig">' +
+      (fv.art ? '<div class="rfigart"><img src="' + esc(fv.art) + '" alt="" loading="lazy"></div>' : '') +
+      '<div class="rfigbody">' +
+        '<div class="rfigtop">' +
+          '<span class="rfiglbl">' + esc(T('rfigLbl')) + '</span>' +
+          (pair
+            ? '<span class="rfigsw" role="group" aria-label="' + esc(T('rfigLbl')) + '">' +
+                '<button type="button" data-side="male"' +
+                  (side === 'male' ? ' class="is-active" aria-pressed="true"' : ' aria-pressed="false"') +
+                  '>' + esc(T('rfigMan')) + '</button>' +
+                '<button type="button" data-side="female"' +
+                  (side === 'female' ? ' class="is-active" aria-pressed="true"' : ' aria-pressed="false"') +
+                  '>' + esc(T('rfigWoman')) + '</button>' +
+              '</span>'
+            : '') +
+        '</div>' +
+        '<h4>' + esc(fv.who) + '<small>' + esc(fv.years) + '</small></h4>' +
+        '<p>' + esc(fv.why) + '</p>' +
+        (wiki
+          ? '<a class="rfiglink" href="' + esc(wiki) + '" target="_blank" rel="noopener noreferrer">' +
+              esc(T('rfigWiki')) + ' →</a>'
+          : '') +
+      '</div>' +
+    '</div>';
+}
+
+/** The switch redraws only the panel, so the page does not jump under the reader. */
+function wireResultFigure(){
+  var sw = document.querySelector('.rfigsw');
+  if (!sw) return;
+  var buttons = sw.querySelectorAll('button'), i;
+  for (i = 0; i < buttons.length; i++) buttons[i].onclick = function(){
+    setFigureSide(this.getAttribute('data-side'));
+    var panel = document.querySelector('.rsum');
+    if (!panel) return;
+    var open = !!(panel.querySelector('.rfold') || {}).open;
+    panel.outerHTML = resultSummaryHtml();
+    // outerHTML replaced the node, so everything inside it needs rewiring.
+    var fold = document.querySelector('.rsum .rfold');
+    if (fold && open) fold.open = true;
+    wirePolygon();
+    wireResultFigure();
+  };
+}
+
+/** «Batafsil raqamlar»: the evidence under the headline lines. */
+function resultFoldHtml(){
+  var body = '', i, c;
+  for (i = 0; i < CHALLENGES.length; i++){
+    c = CHALLENGES[i];
+    if (!challengeDone(c, state.answers)) continue;
+    // The code panel sits in front of the personality bars, as it does on
+    // Naseeb Edu: the nickname first, the five spectrums behind it second.
+    if (c.key === 'personality') body += typePanelHtml(archetypeOf(scoreAnswers(state.answers)));
+    body += challengeDetailHtml(c);
+  }
+  if (!body) return '';
+  return '<details class="rfold"><summary>' + esc(T('rsumFold')) + '</summary>' +
+           '<div class="rfoldbody">' + body + '</div>' +
+         '</details>';
+}
+
+/** The panel. Returns '' when nothing is finished, so a student who reached the
+ *  result page through a single challenge gets no summary rather than an empty box. */
+function resultSummaryHtml(arch){
+  var rows = '', i, c, line, shown = 0;
+  // The hub calls this with nothing: it has no archetype in hand, and working it
+  // out here keeps the caller from having to score the personality bank first.
+  var pc = challengeBy('personality');
+  var archKey = null;
+  if (pc && challengeDone(pc, state.answers)){
+    var pScores = scoreAnswers(state.answers);
+    if (!arch) arch = archetypeOf(pScores);
+    archKey = archetypeKeyOf(pScores);
+  }
+  for (i = 0; i < CHALLENGES.length; i++){
+    c = CHALLENGES[i];
+    if (!challengeDone(c, state.answers)) continue;
+    line = headlineFor(c.key, arch);
+    if (!line) continue;
+    shown++;
+    rows += '<div><dt>' + esc(T('rsumLead_' + c.key)) + '</dt><dd>' + esc(line) + '</dd></div>';
+  }
+  if (!shown) return '';
+
+  // The hexagon only appears when the interests challenge is finished: drawing
+  // six axes from a handful of answers would be a shape built out of nothing.
+  var poly = '', code = '';
+  var interests = challengeBy('interests');
+  if (interests && challengeDone(interests, state.answers)){
+    var means = scoreCareer(state.answers), axes = [];
+    for (i = 0; i < CAREER_SCALES.length; i++)
+      axes.push({ key: CAREER_SCALES[i], short: CAREER_SCALES[i],
+                  label: tmRiasecName(CAREER_SCALES[i]), value: means[CAREER_SCALES[i]] });
+    poly = polygonHtml(axes, T('rsumHex'));
+    code = rankScores(means, CAREER_SCALES).slice(0, 3).join('');
+  }
+
+  return '<section class="rsum">' +
+      '<div class="rsumhead"><h2>' + esc(T('rsumH')) + '</h2>' +
+        (code ? '<span class="rsumcode">' + esc(code) + '</span>' : '') +
+      '</div>' +
+      '<div class="rsumsplit">' + poly +
+        '<dl class="rsumlines">' + rows + '</dl>' +
+      '</div>' +
+      resultFigureHtml(archKey) +
+      resultFoldHtml() +
+    '</section>';
+}
+
 
 function recLang(){ return TAXONOMY_NAMES[TLANG] ? TLANG : 'uz'; }
 
@@ -3757,7 +4891,10 @@ function paintReport(s, arch, archKey, figureGender, age, restored){
   // The hero comes first and carries no numbers: a teenager should see who they are
   // before they see any score. The five scores live one tap away, under «Batafsil».
   var html =
-    '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft + '">' +
+    // All four, not two: the dark pair is what the theme switches to. See the
+    // family rule in the stylesheet above.
+    '<div class="hero" style="--fam:' + fam.c + ';--famsoft:' + fam.soft +
+      ';--famdark:' + fam.dark + ';--famlit:' + fam.lit + '">' +
       // .herotop is the tinted panel with the art, unchanged. What is new is
       // .herocol around everything else: on a wide screen .hero becomes a flex
       // row, so the panel is a full-height column on the left and ALL the text
@@ -3795,6 +4932,7 @@ function paintReport(s, arch, archKey, figureGender, age, restored){
       '</div>' +      // .herobody
       '</div>' +      // .herocol
     '</div>' +
+    resultSummaryHtml(arch) +
     thenAndNowHtml(s, archKey) +
     // Empty until the language pack is in, filled by lifeFill(), either
     // immediately or on arrival.
@@ -3854,6 +4992,8 @@ function paintReport(s, arch, archKey, figureGender, age, restored){
     // reader must understand, and inline it stayed Uzbek in all three languages.
     '<p class="muted" style="text-align:center;margin:0">' + T('discShort') + '</p>';
   app.innerHTML = html;
+  wirePolygon();
+  wireResultFigure();
   // Recorded only after the page is built, so «Oʻshanda va hozir» compares against
   // the earlier result rather than the one just produced.
   if (!restored) saveHistory({ ts: Date.now(), s: s, key: archKey });
@@ -3994,6 +5134,9 @@ function renderResume(d){
 function boot(){
   localiseChrome();
   wireTopLogin();
+  // The theme was already applied by the inline script in <head>; this only
+  // wires the button. localiseChrome() has just set its language.
+  if (typeof NMTheme !== 'undefined') NMTheme.mount();
   // A finished result wins over a draft: the draft is already gone by then, and
   // this is what makes the language pills work on the result screen.
   var r = takeLanguageSwitch() ? loadResult() : null;
@@ -4021,17 +5164,33 @@ function boot(){
   state.challenge = null;
   state.view = 'hub';
   var authRequest = /[?&]auth=(signin|signup)/.exec(location.search);
-  if (typeof NMAccount !== 'undefined' && !NMAccount.signedIn() && authRequest){
-    authMode = authRequest[1];
+  // The header menu on every other page points here: ?view=results for the hub's
+  // result panel, ?view=resume for the challenge they are part way through. Both
+  // need a session, so a signed-out visitor gets the dialog instead and lands
+  // where they were going once they are in.
+  var viewRequest = /[?&]view=(results|resume)/.exec(location.search);
+  var signedIn = typeof NMAccount !== 'undefined' && NMAccount.signedIn();
+  if (!signedIn && (authRequest || viewRequest)){
+    authMode = authRequest ? authRequest[1] : 'signin';
     renderAuth(true);
   } else {
+    // A ?view= request is acted on below, once pullSaved() has said which
+    // challenges are actually finished.
     render();
   }
   // Anything saved to the account outranks this device's draft, but it arrives
   // over the network, so the hub paints first and corrects itself when the rows
   // land rather than holding a blank screen until they do.
   if (typeof NMAccount !== 'undefined' && NMAccount.signedIn()){
-    pullSaved().then(function(){ if (state.view === 'hub') render(); });
+    pullSaved().then(function(){
+      if (state.view === 'hub') render();
+      // Now, not before: resuming has to know which challenges are finished, and
+      // that is what just arrived.
+      if (viewRequest && state.view === 'hub'){
+        if (viewRequest[1] === 'resume') resumeCurrentTest();
+        else showSavedResults();
+      }
+    });
   }
 }
 

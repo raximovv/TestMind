@@ -85,6 +85,15 @@ async function fullRun(pattern) {
     await next.click();
     await new Promise(r => setTimeout(r, 60));
   }
+  // Finishing the last challenge lands on the HUB, not on the report: the
+  // results now live on the hub and grow there, and the full archetype report is
+  // one button away rather than sprung at the end. So the walk above ends at the
+  // hub, and this is the click a student makes to reach the report.
+  const toReport = await p.$('#hubResult');
+  if (toReport) {
+    await toReport.click();
+    await new Promise(r => setTimeout(r, 300));
+  }
   await settleFigureChoice(p);
   await new Promise(r => setTimeout(r, 300));
   return { p, errs };
@@ -118,7 +127,9 @@ async function answer(p, i, v) {
 }
 
 (async () => {
-  browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox'] });
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
+  browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new', args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
 
   console.log('\n== full run through the real UI ==');
   {

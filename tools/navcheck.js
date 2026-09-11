@@ -41,12 +41,12 @@ const PROBE = `(() => {
   const brand = document.querySelector('.brand');
   const sw = document.querySelector('.langsw');
   const cta = document.querySelector('.navin > .btn');
-  const login = document.querySelector('.navin > .navlogin');
+  const acct = document.querySelector('.navin > .navacct');
   const links = [...document.querySelectorAll('.navlinks a')];
   // Group into visual rows by overlapping vertical span. Comparing raw .top
   // would report three rows for three items of different heights sitting side
   // by side, which is what a first attempt at this did.
-  const boxes = [brand, sw, login, cta].filter(Boolean).map(r)
+  const boxes = [brand, sw, acct, cta].filter(Boolean).map(r)
     .filter(b => b.width > 0 && b.height > 0)
     .sort((a, b) => a.top - b.top);
   const bands = [];
@@ -75,6 +75,8 @@ const PROBE = `(() => {
     swCurrent: sw ? (sw.querySelector('[aria-current="true"]') || {}).textContent : null,
     swLinks: sw ? [...sw.querySelectorAll('a')].map(a => a.getAttribute('href')) : [],
     navLinkCount: links.length,
+    acct: acct ? { w: Math.round(r(acct).width), h: Math.round(r(acct).height),
+                   text: acct.textContent.trim() } : null,
     // The Obrazlar page builds its ten characters client-side from
     // characters.js + strings.js, so it is the one place where a translation
     // can be correct in the file and still wrong on screen.
@@ -99,7 +101,7 @@ const once = name => new Promise(r => events.set(name, r));
 async function main() {
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), 'tm-nav-'));
   const chrome = spawn(CHROME, [
-    '--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox',
+    '--headless=new', '--remote-debugging-port=' + PORT, '--no-sandbox', '--blink-settings=preferredColorScheme=1',
     '--disable-gpu', '--hide-scrollbars', '--user-data-dir=' + profile,
     'about:blank',
   ], { stdio: 'ignore' });
@@ -167,8 +169,12 @@ async function main() {
         problems.push(`${at}: switcher offers ${d.swLinks.length} other languages, expected 2`);
       if (!d.swCurrent)
         problems.push(`${at}: switcher does not mark the current language`);
-      if (d.navLinkCount !== 6)
-        problems.push(`${at}: ${d.navLinkCount} nav links, expected 6`);
+      if (!d.acct || d.acct.w === 0 || d.acct.h === 0)
+        problems.push(`${at}: the account button is missing or hidden`);
+      else if (d.acct.h < 24)
+        problems.push(`${at}: account button only ${d.acct.h}px tall`);
+      if (d.navLinkCount !== 4)
+        problems.push(`${at}: ${d.navLinkCount} nav links, expected 4`);
       // 24px is the tap target the switcher must not fall below on a phone.
       if (width === 360 && d.swItems.some(i => i.h < 24))
         problems.push(`${at}: switcher item only ${Math.min(...d.swItems.map(i => i.h))}px tall`);
@@ -216,4 +222,6 @@ async function main() {
   process.exit(problems.length ? 1 : 0);
 }
 
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
 main().catch(e => { console.error(e); process.exit(1); });

@@ -80,7 +80,6 @@ S['uz'] = {
     'home.desc': u'Oʻzbek tilidagi oltita bepul sinov: shaxsiyat, qiziqishlar, ish qadriyatlari, maktab, ishda muhim jihatlar va mantiq. Hisobingiz natijalarni saqlaydi.',
     'home.h1': u'Siz qaysi obrazsiz?',
     'home.lead': u'Oltita bosqich orqali nega ayrim ishlar sizga oson, ayrimlari qiyin ekanini tushunasiz.',
-    'home.scenecap': u'Islom sivilizatsiyasi markazi · Toshkent',
 
     'home.num.h2': u'Raqamlarda',
     'home.num.lead': u'Naseeb Mind endi ishga tushdi. Bu raqamlarni oʻsib borishini shu yerda ochiq koʻrsatib boramiz.',
@@ -363,7 +362,6 @@ S['ru'] = {
     'home.desc': u'Шесть бесплатных тестов: личность, интересы, рабочие ценности, школа, важное в работе и логика. Аккаунт сохраняет ваши результаты.',
     'home.h1': u'Какой у вас образ?',
     'home.lead': u'Шесть коротких тестов помогут понять, почему одно даётся вам легко, а другое трудно.',
-    'home.scenecap': u'Центр исламской цивилизации · Ташкент',
 
     'home.num.h2': u'В цифрах',
     'home.num.lead': u'Naseeb Mind только что запустился. Мы будем открыто показывать здесь, как растут эти цифры.',
@@ -628,7 +626,6 @@ S['en'] = {
     'home.desc': u'Six free challenges for students aged 13-18: personality, interests, work values, school, what matters at work, and reasoning. Your account saves the results.',
     'home.h1': u'Which character are you?',
     'home.lead': u'Six short challenges help explain why some things come easily to you and others do not.',
-    'home.scenecap': u'Center of Islamic Civilization · Tashkent',
 
     'home.num.h2': u'In numbers',
     'home.num.lead': u'Naseeb Mind has just launched. We will report these numbers openly here as they grow.',

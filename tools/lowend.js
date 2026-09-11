@@ -61,8 +61,10 @@ async function measure(browser, path) {
 }
 
 (async () => {
+// Headless Chrome here prefers dark; this pins the browser to light so the
+// harness tests one known theme. tools/darkmode.js covers the other.
   const browser = await puppeteer.launch({ executablePath: CHROME, headless: 'new',
-                                           args: ['--no-sandbox'] });
+                                           args: ['--no-sandbox', '--blink-settings=preferredColorScheme=1'] });
 
   console.log('\n== the test page on a cheap phone (360px, 4x slower CPU, slow 4G) ==');
   const { page, load, paint, bytes, heavy } = await measure(browser, 'test.html');
@@ -98,8 +100,12 @@ async function measure(browser, path) {
     // and confirm the tap really lands on the option, not on something above it
     const stolen = opts.filter(o => {
       const r = o.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > innerHeight) return false;      // off-screen, can't test
-      const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      // elementFromPoint is probed at the CENTRE, so the centre is what has to be
+      // on screen. Guarding on r.top let through options straddling the fold,
+      // which returned null and were counted as intercepted.
+      const cy = r.top + r.height / 2;
+      if (cy < 0 || cy > innerHeight) return false;               // off-screen, can't test
+      const hit = document.elementFromPoint(r.left + r.width / 2, cy);
       return !(hit && o.contains(hit));
     }).length;
     return { n: opts.length, min: Math.min(...sizes), max: Math.max(...sizes), stolen };
