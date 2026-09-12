@@ -299,7 +299,7 @@ def nav(lang, fname, active=None):
        'results_href': view_href('results'), 'resume_href': view_href('resume')}
 
 
-SOCIAL = u'<div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div>'
+SOCIAL = u'<div class="socrow"><a class="soc" href="https://t.me/naseeb_edu" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Naseeb Edu — Telegram"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></a><a class="soc" href="https://www.instagram.com/naseeb_edu/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Naseeb Edu — Instagram"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></a><a class="soc" href="https://www.youtube.com/@naseeb_edu" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Naseeb Edu — YouTube"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></a><a class="soc" href="https://linkedin.com/company/naseeb-edu" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="Naseeb Edu — LinkedIn"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2" fill="#fff"/><path fill="#fff" d="M3.2 8.5h3.6V21H3.2zM9 8.5h3.5v1.7c.8-1.3 2-2 3.7-2 3.4 0 4.8 2.1 4.8 5.7V21h-3.6v-6.3c0-1.9-.4-3.2-2.2-3.2-1.9 0-2.6 1.3-2.6 3.2V21H9z"/></svg></a></div>'
 
 
 def footer(lang):
@@ -329,15 +329,14 @@ def footer(lang):
     </ul>
       %(social)s</div>
   </div>
+  <div class="footbar">
+    <span>© 2026 Naseeb Mind</span>
+  </div>
   <nav class="legalnav" aria-label="%(legal_label)s">
     <a href="terms.html">%(terms)s</a>
     <a href="privacy.html">%(privacy)s</a>
     <a href="accessibility.html">%(accessibility)s</a>
   </nav>
-  <div class="footbar">
-    <span>© 2026 Naseeb Mind</span>
-    <span>%(disclaimer)s</span>
-  </div>
 </div></footer>
 """ % {'home': t['nav.home'], 'types10': t['foot.types10'],
        'test': t['foot.test'], 'cta': t['nav.cta'], 'note': note,
@@ -345,7 +344,7 @@ def footer(lang):
        'privacy': t['foot.privacy'], 'terms': t['foot.terms'],
        'accessibility': t['foot.accessibility'], 'legal_label': t['foot.legal_label'],
        'schools': t['foot.schools'], 'contact': t['foot.contact'], 'naseeb': NASEEB,
-       'email': EMAIL, 'social': SOCIAL, 'disclaimer': t['foot.disclaimer']}
+       'email': EMAIL, 'social': SOCIAL}
 
 
 def scripts():
@@ -524,6 +523,9 @@ PRIVACY = u"""<header class="phead"><div class="wrap">
   <p class="legaldate">%(priv.updated)s</p>
   <h2>%(priv.h.stored)s</h2>
   <p>%(priv.p.stored)s</p>
+
+  <h2>%(priv.h.demographic)s</h2>
+  <p>%(priv.p.demographic)s</p>
 
   <h2>%(priv.h.agefig)s</h2>
   <p>%(priv.p.agefig)s</p>

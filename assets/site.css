@@ -480,7 +480,7 @@ section{padding:60px 0}
            text-decoration:none;overflow-wrap:anywhere}
 .footcol a:hover{color:var(--lazur-deep);text-decoration:underline}
 .legaldate{margin:-4px 0 30px;color:var(--muted);font-size:13px}
-.legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+.legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:12px;padding-top:0}
 .legalnav a{display:inline-block;padding:4px 0;font-size:14px;color:var(--muted);text-decoration:none}
 .legalnav a:hover{color:var(--lazur-deep);text-decoration:underline}
 .footbar{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
@@ -491,6 +491,9 @@ section{padding:60px 0}
 .soc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
      border-radius:50%;background:var(--lazur);color:var(--on-accent);flex:0 0 auto}
 .soc svg{width:20px;height:20px;display:block}
+.footcol a.soc{display:inline-flex;padding:0;color:var(--on-accent);text-decoration:none}
+.footcol a.soc:hover{background:var(--lazur-deep);text-decoration:none}
+.footcol a.soc:focus-visible{outline:3px solid var(--zar);outline-offset:3px}
 
 @media (prefers-reduced-motion: reduce){
   *{transition:none !important;animation:none !important}
