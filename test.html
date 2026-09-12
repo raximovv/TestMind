@@ -837,7 +837,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
            text-decoration:underline;cursor:pointer}
   .linkbtn:hover{color:var(--ink)}
 
-  .chlist{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+  .chlist{list-style:none;margin:0;padding:0;display:grid;gap:16px;grid-template-columns:repeat(2,minmax(0,1fr))}
   .chcard{display:flex;gap:14px;align-items:flex-start;
           background:var(--card);border:1px solid var(--line);border-radius:14px;
           padding:16px 16px 16px 14px}
@@ -864,6 +864,51 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
             margin-top:4px}
   }
 
+  /* Illustrated challenge hub. The whole card is the existing start button's hit area. */
+  .hubhead{position:relative;text-align:center;margin:8px 0 26px;padding:0 140px 20px}
+  .hubhead h1{font-size:clamp(32px,4.3vw,54px);line-height:1.15;margin:0}
+  .hubhead .hubsub{font-size:19px;margin-top:12px}
+  .hubcount{position:absolute;right:0;bottom:0;color:var(--muted);font-size:14px}
+  .hubdots{display:flex;justify-content:flex-end;gap:10px;margin-top:8px}
+  .hubdots i{width:10px;height:10px;border:2px solid var(--line);border-radius:50%}
+  .hubdots i.is-done{background:var(--zar);border-color:var(--zar)}
+  .chcard{position:relative;display:grid;grid-template-columns:46% 54%;align-items:stretch;gap:0;padding:0;
+    overflow:hidden;border:0;border-radius:13px;background:var(--ch-color);color:#fff;min-height:218px}
+  .chcard.is-done{background:var(--ch-color)}
+  .chcard[data-kind="personality"]{--ch-color:#12324c}
+  .chcard[data-kind="interests"]{--ch-color:#096371}
+  .chcard[data-kind="values"]{--ch-color:#993b25}
+  .chcard[data-kind="school"]{--ch-color:#195c86}
+  .chcard[data-kind="workimportance"]{--ch-color:#455027}
+  .chcard[data-kind="reasoning"]{--ch-color:#452657}
+  .chbody{display:flex;flex-direction:column;padding:22px 23px;min-width:0}
+  .chnum,.chcard.is-done .chnum{display:block;flex:none;width:auto;height:auto;border-radius:0;
+    background:none;color:#fff;font:14px var(--body);opacity:.75;margin-bottom:10px}
+  .chbody h2{font-size:clamp(22px,2.3vw,30px);line-height:1.13;margin:0 0 9px;color:#fff}
+  .chbody p{font-size:14px;color:#fff;line-height:1.45}
+  .chside{align-items:flex-start;gap:6px;margin-top:auto;padding-top:15px}
+  .chdone,.chpart{color:#fff;font-size:12px}
+  .chgo{border:1px solid rgba(255,255,255,.85);border-radius:999px;background:transparent;
+    color:#fff;padding:8px 19px;font-size:14px;min-height:40px;box-shadow:none}
+  .chgo::after{content:"";position:absolute;inset:0;z-index:1}
+  .chgo:hover{background:rgba(255,255,255,.14);color:#fff;transform:none}
+  .chcard:focus-within{outline:3px solid var(--zar);outline-offset:4px}
+  .chgo:focus-visible{outline:2px solid #fff;outline-offset:3px}
+  .chgo .charrow{margin-left:10px}
+  .chart{position:absolute;right:0;top:0;width:54%;height:100%;object-fit:cover;display:block}
+  .chprogress{height:3px;width:100%;background:rgba(255,255,255,.25);border-radius:3px;overflow:hidden}
+  .chprogress i{display:block;height:100%;background:#fff}
+  @media(max-width:1000px){
+    .chbody{padding:20px 17px}.chcard{grid-template-columns:54% 46%}.chart{width:46%}
+    .hubhead{padding:0 0 4px}.hubcount{position:static;margin-top:18px}.hubdots{justify-content:center}
+  }
+  @media(max-width:700px){
+    .chlist{grid-template-columns:1fr;gap:14px}.chcard{grid-template-columns:54% 46%;min-height:210px}
+    .chbody h2{font-size:25px}.chbody{padding:20px}
+    .chside{width:auto;flex-direction:column;align-items:flex-start;margin-top:auto}
+    .hubhead .hubsub{font-size:16px}.hubhead h1{font-size:34px}
+  }
+
   .chhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 4px}
   .chhnum{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
   .starthead.chstart{margin:4px 0 22px}
@@ -884,6 +929,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .authdialog h2{margin:3px 38px 8px;text-align:center;font-size:clamp(27px,6vw,36px)}
   .authdialogsub{margin:0 auto 24px;max-width:38ch;text-align:center;color:var(--muted);
                  font-size:14.5px;line-height:1.5}
+  .authcode{letter-spacing:.28em;text-align:center;font-size:24px;font-variant-numeric:tabular-nums}
   .authcard{max-width:none;margin:0;display:flex;flex-direction:column}
   .authlab{font-size:13.5px;color:var(--muted);margin:0 0 5px}
   .authin{font:inherit;font-size:16px;padding:13px 14px;margin:0 0 16px;
@@ -903,6 +949,16 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .authprovider svg{width:20px;height:20px;flex:none}
   .authswap{margin:14px auto 0;font-size:14px}
   .authnote{margin:14px 0 0;font-size:13px;color:var(--muted);line-height:1.5}
+  .profiledialog{width:min(100%,620px)}
+  .profiledialog h2{margin-left:22px;margin-right:22px}
+  .profilegrid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  .profilefield{min-width:0}
+  .profilefield.full{grid-column:1/-1}
+  .profilein{margin-bottom:14px}
+  .profileactions{display:flex;align-items:center;gap:12px;margin-top:4px}
+  .profileactions .btn{flex:1}
+  .profileskip{font-size:14px;white-space:nowrap}
+  .profilenote{margin:16px 0 12px;text-align:center;color:var(--muted);font-size:14px;line-height:1.5}
   /* The parental acknowledgment. A real <label> wrapping a real checkbox, so
      the whole sentence is the target -- a 20px box is a poor thing to ask a
      phone user to hit. */
@@ -914,6 +970,8 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   @media (max-width:520px){
     .authoverlay{padding:10px;align-items:flex-end}
     .authdialog{max-height:calc(100vh - 20px);padding:30px 22px 24px;border-radius:20px 20px 12px 12px}
+    .profilegrid{grid-template-columns:1fr}.profilefield.full{grid-column:auto}
+    .profileactions{align-items:stretch;flex-direction:column}.profileskip{padding:8px}
   }
 
   /* ---- challenge 5, the card sort ---- */
@@ -1050,7 +1108,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .footcol a{display:inline-block;padding:4px 0;font-size:14.5px;color:var(--muted);text-decoration:none;overflow-wrap:anywhere}
   .footcol a:hover{color:var(--lazur-deep);text-decoration:underline}
   .legaldate{margin:-4px 0 30px;color:var(--muted);font-size:13px}
-  .legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:30px;padding-top:20px;border-top:1px solid var(--line)}
+  .legalnav{display:flex;flex-wrap:wrap;gap:10px 28px;margin-top:12px;padding-top:0}
   .legalnav a{display:inline-block;padding:4px 0;font-size:14px;color:var(--muted);text-decoration:none}
   .legalnav a:hover{color:var(--lazur-deep);text-decoration:underline}
   .footbar{margin-top:32px;padding-top:20px;border-top:1px solid var(--line);
@@ -1060,6 +1118,9 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
   .soc{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;
        border-radius:50%;background:var(--lazur);color:var(--on-accent);flex:0 0 auto}
   .soc svg{width:20px;height:20px;display:block}
+  .footcol a.soc{display:inline-flex;padding:0;color:var(--on-accent);text-decoration:none}
+  .footcol a.soc:hover{background:var(--lazur-deep);text-decoration:none}
+  .footcol a.soc:focus-visible{outline:3px solid var(--zar);outline-offset:3px}
   /* ---------------------------------------------------------------------------
      Wide layout. The page fills the screen: cards, bands and the question rows
      all run the full width. Running TEXT does not: a paragraph set 1100px wide
@@ -1227,23 +1288,22 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
     <div class="footcol"><h2>Bogʻlanish</h2><ul>
       <li><a href="mailto:support@naseebedu.com">support@naseebedu.com</a></li>
     </ul>
-      <div class="socrow" aria-hidden="true"><span class="soc" title="Telegram"><svg viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></span><span class="soc" title="Instagram"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></span><span class="soc" title="Facebook"><svg viewBox="0 0 24 24"><path fill="#fff" d="M13.4 21v-7.1h2.38l.36-2.77H13.4V9.35c0-.8.22-1.35 1.38-1.35h1.47V5.52c-.25-.03-1.13-.11-2.15-.11-2.13 0-3.58 1.3-3.58 3.68v2.05H8.13v2.77h2.39V21z"/></svg></span><span class="soc" title="YouTube"><svg viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></span><span class="soc" title="TikTok"><svg viewBox="0 0 24 24"><path fill="#fff" d="M16.6 3c.28 1.9 1.35 3.16 3.4 3.32v2.4c-1.18.11-2.2-.27-3.4-.98v5.55c0 4.05-4.41 5.31-6.18 2.41-1.14-1.87-.44-5.15 3.23-5.28v2.53c-.28.05-.58.12-.85.22-.82.32-1.28 1.14-1.05 1.99.24.88 1.36 1.53 2.26.9.55-.38.7-1 .7-1.66V3z"/></svg></span></div></div>
+      <div class="socrow"><a class="soc" href="https://t.me/naseeb_edu" target="_blank" rel="noopener noreferrer" title="Telegram" aria-label="Naseeb Edu — Telegram"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="#fff" d="M9.78 18.65l.28-4.23 7.68-6.92c.34-.31-.07-.46-.52-.19L7.74 13.3 3.64 12c-.88-.25-.89-.86.2-1.3l15.97-6.16c.73-.33 1.43.18 1.15 1.3l-2.72 12.81c-.19.91-.74 1.13-1.5.71L12.6 16.3l-1.99 1.93c-.23.23-.42.42-.83.42z"/></svg></a><a class="soc" href="https://www.instagram.com/naseeb_edu/" target="_blank" rel="noopener noreferrer" title="Instagram" aria-label="Naseeb Edu — Instagram"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="12" cy="12" r="3.6" fill="none" stroke="#fff" stroke-width="1.9"/><circle cx="16.6" cy="7.4" r="1.15" fill="#fff"/></svg></a><a class="soc" href="https://www.youtube.com/@naseeb_edu" target="_blank" rel="noopener noreferrer" title="YouTube" aria-label="Naseeb Edu — YouTube"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><path fill="#fff" d="M21.58 8.2a2.47 2.47 0 0 0-1.74-1.75C18.3 6.03 12 6.03 12 6.03s-6.3 0-7.84.42A2.47 2.47 0 0 0 2.42 8.2 25.9 25.9 0 0 0 2 12a25.9 25.9 0 0 0 .42 3.8 2.47 2.47 0 0 0 1.74 1.75c1.54.42 7.84.42 7.84.42s6.3 0 7.84-.42a2.47 2.47 0 0 0 1.74-1.75A25.9 25.9 0 0 0 22 12a25.9 25.9 0 0 0-.42-3.8z"/><path fill="var(--lazur)" d="M10.05 14.85l5.2-2.85-5.2-2.85z"/></svg></a><a class="soc" href="https://linkedin.com/company/naseeb-edu" target="_blank" rel="noopener noreferrer" title="LinkedIn" aria-label="Naseeb Edu — LinkedIn"><svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><circle cx="5" cy="5" r="2" fill="#fff"/><path fill="#fff" d="M3.2 8.5h3.6V21H3.2zM9 8.5h3.5v1.7c.8-1.3 2-2 3.7-2 3.4 0 4.8 2.1 4.8 5.7V21h-3.6v-6.3c0-1.9-.4-3.2-2.2-3.2-1.9 0-2.6 1.3-2.6 3.2V21H9z"/></svg></a></div></div>
+  </div>
+  <div class="footbar">
+    <span>© 2026 Naseeb Mind</span>
   </div>
   <nav class="legalnav" aria-label="Huquqiy maʼlumotlar">
     <a href="terms.html">Foydalanish shartlari</a>
     <a href="privacy.html">Maxfiylik</a>
     <a href="accessibility.html">Qulay foydalanish</a>
   </nav>
-  <div class="footbar">
-    <span>© 2026 Naseeb Mind</span>
-    <span>Natija maslahat xarakteriga ega, tibbiy yoki psixologik tashxis emas.</span>
-  </div>
 </div></footer>
 
 <script src="assets/characters.js?v=100242de"></script>
 <script src="assets/strings.js?v=4cb528e7"></script>
-<script src="assets/test-ru.js?v=da44e481"></script>
-<script src="assets/test-en.js?v=2ac30d4f"></script>
+<script src="assets/test-ru.js?v=0aea96b1"></script>
+<script src="assets/test-en.js?v=e20e9db4"></script>
 <script src="assets/career.js?v=ae52d57f"></script>
 <script src="assets/values.js?v=66d7d5e6"></script>
 <script src="assets/school.js?v=410a10d2"></script>
@@ -1251,7 +1311,7 @@ if(v==='dark'||v==='light')document.documentElement.setAttribute('data-theme',v)
 <script src="assets/matrix.js?v=18519e1d"></script>
 <script>var MATRIX_ART_SRC = "assets/matrix-art.js";</script>
 <script src="assets/figure-wiki.js?v=8afd3ca2"></script>
-<script src="assets/account.js?v=19f7a656"></script>
+<script src="assets/account.js?v=1be7c2b2"></script>
 <script src="assets/header.js?v=fc5c5d8e"></script>
 <script id="tm-logic">
 // ---------- Naseeb Mind v1.0 logic (frozen items + draft key) ----------
@@ -1984,6 +2044,8 @@ var state = { answers: new Array(ITEMS.length).fill(0), page: 0,
               plan: CORE_PLAN.slice(), stage: STAGE_P_TOPUP,
               // null means the hub is on screen rather than a challenge.
               challenge: null, view: 'hub' };
+var accountProfile = null;
+var profileOpen = false;
 function pageCount(){
   var size = (typeof challengePageSize === 'function')
     ? challengePageSize(state.challenge ? challengeBy(state.challenge) : null) : PAGE_SIZE;
@@ -2620,8 +2682,15 @@ var TT_UZ = {
   mid:         'Oʻrta',
 
   // ---- the six challenges ----
-  hubH:        'Oltita sinov',
-  hubSub:      'Har birini alohida yechasiz. Xohlagan tartibda, xohlagan vaqtda. Javoblaringiz saqlanadi.',
+  hubH:        'Oʻzingizni kashf eting',
+  hubSub:      'Oltita bosqich. Istalganidan boshlang.',
+  hubComplete: '%1 / %2 yakunlandi',
+  hubBrief_personality: 'Sizga xos tomonlarni kashf eting.',
+  hubBrief_interests: 'Sizni nima qiziqtirishini biling.',
+  hubBrief_values: 'Ishdan nimalar kutishingizni biling.',
+  hubBrief_school: 'Maktabdagi hislaringizni tushuning.',
+  hubBrief_workimportance: 'Ishdagi ustuvorliklaringizni aniqlang.',
+  hubBrief_reasoning: 'Naqshlar orasidagi bogʻlanishni toping.',
   hubStart:    'Boshlash',
   hubResume:   'Davom etish',
   hubRetake:   'Qayta yechish',
@@ -2662,9 +2731,25 @@ var TT_UZ = {
   authPassword:'Parol',
   authWorking: 'Kutib turing',
   authSignOut: 'Chiqish',
-  authConfirm: 'Emailingizga xat yubordik. Havolani bosing, keyin shu yerdan kiring.',
-  authNoName:  'Ism, telefon va tugʻilgan sana soʻralmaydi. Hisob uchun faqat email va parol.',
+  authConfirm: 'Emailingizga tasdiqlash kodi yuborildi.',
+  authCodeH: 'Emailni tasdiqlang',
+  authCodeSub: 'Emailingizga yuborilgan 6 xonali kodni kiriting.',
+  authCode: 'Tasdiqlash kodi',
+  authVerify: 'Tasdiqlash',
+  authResend: 'Kodni qayta yuborish',
+  authBack: 'Orqaga',
+  authNoName:  'Testni boshlashdan oldin ism va maktabga oid maʼlumotlar kerak boʻladi. Ular faqat statistika uchun; telefon va tugʻilgan sana soʻralmaydi.',
   authGuardian:'18 yoshga toʻlmagan boʻlsam, ota-onam yoki oʻqituvchim bilan maslahatlashdim.',
+
+  profileH: 'Maʼlumotlaringiz',
+  profileSub: 'Testni boshlash uchun quyidagi maʼlumotlarni toʻldiring.',
+  profileNote: 'Faqat statistika uchun, natijaga taʼsir qilmaydi. Maydonlar majburiy; Keyinroq — test keyin boshlanadi.',
+  profileFirst: 'Ism', profileLast: 'Familiya', profileCountry: 'Davlat',
+  profileRegion: 'Viloyat', profileDistrict: 'Tuman', profileSchool: 'Maktab',
+  profileGrade: 'Sinf', profilePlaceholder: 'Kiriting',
+  profileSave: 'Saqlash', profileLater: 'Keyinroq', profileSaving: 'Saqlanmoqda…',
+  profileRequired: 'Testni boshlash uchun barcha maydonlarni toʻldiring.',
+  profileError: 'Saqlab boʻlmadi. Qayta urinib koʻring.',
 
   errBadCredentials: 'Email yoki parol notoʻgʻri.',
   errEmailTaken:     'Bu email allaqachon roʻyxatdan oʻtgan. Kiring.',
@@ -2676,6 +2761,7 @@ var TT_UZ = {
   errSignedOut:      'Seansingiz tugadi. Qaytadan kiring.',
   errFailed:         'Nimadir notoʻgʻri ketdi. Qayta urinib koʻring.',
   errGuardian:       'Davom etish uchun shu katakchani belgilang.',
+  errBadCode:        'Kod notoʻgʻri yoki muddati tugagan.',
 
   // ---- the card sort ----
   sortLeft:    'Joylashtirilmagan kartalar',
@@ -2864,10 +2950,6 @@ function localiseChrome(){
   }
   var vh = document.querySelector('.navback .vh');
   if (vh) vh.textContent = C.back;
-  // .footbar span is in this list because the legal disclaimer lives in a bare
-  // <span> down there, and every earlier selector only reached headings, list
-  // items and paragraphs -- so the one line that must be understood was the one
-  // line left in Uzbek on a Russian page.
   var heads = document.querySelectorAll('.foot h2, .foot h3, .footcol h2, .footcol h3, .foot p, .foot li, .footbar span');
   for (i = 0; i < heads.length; i++){
     var txt = heads[i].childNodes.length === 1 ? heads[i].textContent.trim() : null;
@@ -3022,57 +3104,54 @@ function render(){
 // ------------------------------------------------------------------ the hub --
 function renderHub(){
   var done = 0, i;
-  var cards = '';
+  var cards = '', dots = '';
   for (i = 0; i < CHALLENGES.length; i++){
     var c = CHALLENGES[i];
     var finished = challengeDone(c, state.answers);
     if (finished) done++;
+    dots += '<i' + (finished ? ' class="is-done"' : '') + '></i>';
     var answered = c.answered(state.answers);
     var total = challengeTotal(c, state.answers);
     var started = answered > 0 && !finished;
     var action = finished ? T('hubRetake') : (started ? T('hubResume') : T('hubStart'));
     var status = finished
-      ? '<span class="chdone">' + esc(T('hubDone')) + '</span>'
+      ? '<span class="chdone">&#10003; ' + esc(T('hubDone')) + '</span>'
       : (started ? '<span class="chpart">' + esc(T('hubOf', answered, total)) + '</span>' : '');
     cards +=
-      '<li class="chcard' + (finished ? ' is-done' : '') + '">' +
-        '<div class="chnum" aria-hidden="true">' + c.n + '</div>' +
+      '<li data-kind="' + esc(c.key) + '" class="chcard' + (finished ? ' is-done' : '') + '">' +
         '<div class="chbody">' +
-          '<h2>' + esc(challengeTitle(c)) + '</h2>' +
-          '<p>' + esc(challengeBlurb(c)) + '</p>' +
-          '<p class="chmeta">' + esc(challengeSize(c)) + '</p>' +
-        '</div>' +
+          '<div class="chnum" aria-hidden="true">0' + c.n + '</div>' +
+          '<h2 id="ch-title-' + esc(c.key) + '">' + esc(challengeTitle(c)) + '</h2>' +
+          '<p>' + esc(T('hubBrief_' + c.key)) + '</p>' +
         '<div class="chside">' + status +
-          '<button class="btn chgo" data-ch="' + esc(c.key) + '">' + esc(action) + '</button>' +
-        '</div>' +
+          (started ? '<span class="chprogress" aria-hidden="true"><i style="width:' + Math.min(100, Math.round(answered / total * 100)) + '%"></i></span>' : '') +
+          '<button type="button" class="btn chgo" data-ch="' + esc(c.key) + '" aria-label="' + esc(action + ': ' + challengeTitle(c)) + '">' + esc(action) + '<span class="charrow" aria-hidden="true">&#8594;</span></button>' +
+        '</div></div>' +
+        '<img class="chart" src="assets/challenges/' + esc(c.key) + '.webp" width="640" height="640" alt="" decoding="async">' +
       '</li>';
   }
   var left = CHALLENGES.length - done;
-  var user = (typeof NMAccount !== 'undefined' && NMAccount.user()) || null;
-
   app.innerHTML =
-    '<div class="starthead">' + BRAND_MARK +
+    '<div class="hubhead">' +
       '<h1>' + esc(T('hubH')) + '</h1>' +
       '<p class="hubsub">' + esc(T('hubSub')) + '</p>' +
+      '<div class="hubcount" role="status">' + esc(T('hubComplete', done, CHALLENGES.length)) +
+        '<div class="hubdots" aria-hidden="true">' + dots + '</div></div>' +
     '</div>' +
-    (user ? '<p class="hubwho">' + esc(user.email || '') +
-            ' <button class="linkbtn" id="signOut">' + esc(T('authSignOut')) + '</button></p>' :
-            '<div class="hubwho hubauth">' +
-              '<button class="btn" type="button" id="hubSignUp">' + esc(T('authSignUp')) + '</button>' +
-              '<button class="linkbtn" type="button" id="hubSignIn">' + esc(T('authSignIn')) + '</button>' +
-            '</div>') +
-    (done ? progressHtml() : '') +
     resultSummaryHtml() +
     '<ol class="chlist">' + cards + '</ol>' +
-    '<div class="nav">' +
-      (left === 0
-        ? '<button class="btn" id="hubResult">' + esc(T('hubResult')) + '</button>'
-        : '<p class="navmsg">' + esc(T('hubLeft', left)) + '</p>') +
-    '</div>' +
-    '<div class="tailspace" aria-hidden="true"></div>';
+    (left === 0 ? '<div class="nav"><button class="btn" id="hubResult">' + esc(T('hubResult')) + '</button></div>' : '');
 
   wirePolygon();
   wireResultFigure();
+  function ensureProfileForTest(){
+    if (typeof NMAccount !== 'undefined' && NMAccount.signedIn() &&
+        (!accountProfile || !accountProfile.profile_completed)){
+      renderProfile(true);
+      return false;
+    }
+    return true;
+  }
   var buttons = app.querySelectorAll('.chgo');
   for (i = 0; i < buttons.length; i++){
     buttons[i].onclick = function(){
@@ -3081,6 +3160,7 @@ function renderHub(){
         renderAuth(true);
         return;
       }
+      if (!ensureProfileForTest()) return;
       openChallenge(this.getAttribute('data-ch'));
     };
   }
@@ -3209,22 +3289,214 @@ function renderAuth(openDialog){
       // until they click the link.
       if (signUp && result && result.confirm){
         done();
-        err.classList.add('ok');
-        err.textContent = T('authConfirm');
+        renderAuthCode(email, pass);
         return;
       }
       state.view = 'hub';
       document.body.classList.remove('modal-open');
       // Anything already saved server-side wins over this device's draft: a
       // student signing in on a new phone should find their work, not a blank.
-      pullSaved().then(render, render);
+      pullSaved().then(function(){
+        render();
+        maybeShowProfile(signUp);
+      }, render);
     }, fail);
   };
   window.setTimeout(function(){ document.getElementById('authEmail').focus(); }, 0);
 }
 
+function renderAuthCode(email, password){
+  var existing = document.getElementById('authDialog');
+  if (existing) existing.remove();
+  document.body.classList.add('modal-open');
+  app.insertAdjacentHTML('beforeend',
+    '<div class="authoverlay" id="authDialog">' +
+      '<section class="authdialog" role="dialog" aria-modal="true" aria-labelledby="authDialogTitle">' +
+      '<button class="authclose" id="authCodeClose" type="button" aria-label="' + esc(T('authClose')) + '">&times;</button>' +
+      '<h2 id="authDialogTitle">' + esc(T('authCodeH')) + '</h2>' +
+      '<p class="authdialogsub">' + esc(T('authCodeSub')) + '</p>' +
+      '<form class="authcard" id="authCodeForm" novalidate>' +
+      '<label class="authlab" for="authCodeInput">' + esc(T('authCode')) + '</label>' +
+      '<input class="authin authcode" id="authCodeInput" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required>' +
+      '<p class="autherr" id="authCodeErr" role="alert"></p>' +
+      '<button class="btn" type="submit" id="authCodeGo">' + esc(T('authVerify')) + '</button>' +
+      '<button class="linkbtn authswap" type="button" id="authCodeResend">' + esc(T('authResend')) + '</button>' +
+      '<button class="linkbtn authswap" type="button" id="authCodeBack">' + esc(T('authBack')) + '</button>' +
+      '</form>' +
+      '</section>' +
+    '</div>');
+  var err = document.getElementById('authCodeErr');
+  var go = document.getElementById('authCodeGo');
+  var close = function(){ document.body.classList.remove('modal-open'); renderAuth(false); };
+  document.getElementById('authCodeClose').onclick = close;
+  document.getElementById('authCodeBack').onclick = function(){ authMode = 'signup'; renderAuth(true); };
+  document.getElementById('authDialog').onclick = function(ev){ if (ev.target === this) close(); };
+  document.getElementById('authCodeResend').onclick = function(){
+    var resend = this;
+    resend.disabled = true;
+    err.classList.remove('ok');
+    err.textContent = T('authWorking');
+    NMAccount.signUp(email, password).then(function(result){
+      err.classList.add('ok');
+      err.textContent = result && result.confirm ? T('authConfirm') : T('authConfirm');
+      resend.disabled = false;
+    }).catch(function(){
+      err.classList.remove('ok');
+      err.textContent = T('errFailed');
+      resend.disabled = false;
+    });
+  };
+  document.getElementById('authCodeForm').onsubmit = function(ev){
+    ev.preventDefault();
+    var token = document.getElementById('authCodeInput').value.replace(/\D/g, '');
+    err.classList.remove('ok');
+    err.textContent = '';
+    if (!/^\d{6}$/.test(token)) {
+      err.textContent = T('errBadCode');
+      return;
+    }
+    go.disabled = true;
+    go.textContent = T('authWorking');
+    NMAccount.verifyEmailOtp(email, token).then(function(){
+      state.view = 'hub';
+      document.body.classList.remove('modal-open');
+      pullSaved().then(function(){ render(); maybeShowProfile(true); }, function(){ render(); });
+    }).catch(function(e){
+      go.disabled = false;
+      go.textContent = T('authVerify');
+      var key = 'err' + (e && e.code ? e.code.replace(/(^|-)([a-z])/g, function(m, d, ch){ return ch.toUpperCase(); }) : 'BadCode');
+      err.textContent = T(key) || T('errBadCode');
+    });
+  };
+  window.setTimeout(function(){ document.getElementById('authCodeInput').focus(); }, 0);
+}
+
+// --------------------------------------------------------- profile onboarding
+// This is deliberately a small, optional step after account creation. It is
+// kept separate from the answer data so these fields can only describe the
+// audience in aggregate; they never enter scoring or the anonymous research
+// copy sent for test improvement.
+function profileReady(p){
+  return Boolean(p && p.profile_completed);
+}
+
+function profileField(id, key, autocomplete, full){
+  var p = accountProfile || {};
+  var map = {profileFirst:'first_name', profileLast:'last_name', profileCountry:'country',
+             profileRegion:'region', profileDistrict:'district', profileSchool:'school',
+             profileGrade:'grade'};
+  return '<div class="profilefield' + (full ? ' full' : '') + '">' +
+    '<label class="authlab" for="' + id + '">' + esc(T(key)) + '</label>' +
+    '<input class="authin profilein" id="' + id + '" type="text" maxlength="120" aria-required="true"' +
+      ' autocomplete="' + autocomplete + '" placeholder="' + esc(T('profilePlaceholder')) + '" value="' +
+      esc(p[map[id]] || '') + '">' +
+    '</div>';
+}
+
+function renderProfile(){
+  var existing = document.getElementById('profileDialog');
+  if (existing) existing.remove();
+  profileOpen = true;
+  document.body.classList.add('modal-open');
+  var p = accountProfile || {};
+  app.insertAdjacentHTML('beforeend',
+    '<div class="authoverlay" id="profileDialog">' +
+      '<section class="authdialog profiledialog" role="dialog" aria-modal="true" aria-labelledby="profileDialogTitle">' +
+      '<button class="authclose" id="profileClose" type="button" aria-label="' + esc(T('authClose')) + '">&times;</button>' +
+      '<h2 id="profileDialogTitle">' + esc(T('profileH')) + '</h2>' +
+      '<p class="authdialogsub">' + esc(T('profileSub')) + '</p>' +
+      '<form class="authcard" id="profileForm" novalidate>' +
+        '<div class="profilegrid">' +
+          profileField('profileFirst', 'profileFirst', 'given-name') +
+          profileField('profileLast', 'profileLast', 'family-name') +
+          profileField('profileCountry', 'profileCountry', 'country-name') +
+          profileField('profileRegion', 'profileRegion', 'address-level1') +
+          profileField('profileDistrict', 'profileDistrict', 'address-level2') +
+          profileField('profileSchool', 'profileSchool', 'organization') +
+          profileField('profileGrade', 'profileGrade', 'off') +
+        '</div>' +
+        '<p class="profilenote">' + esc(T('profileNote')) + '</p>' +
+        '<p class="autherr" id="profileErr" role="alert"></p>' +
+        '<div class="profileactions"><button class="btn" type="submit" id="profileSave">' + esc(T('profileSave')) + '</button>' +
+          '<button class="linkbtn profileskip" type="button" id="profileLater">' + esc(T('profileLater')) + '</button></div>' +
+      '</form>' +
+      '</section>' +
+    '</div>');
+
+  function value(id){ return String(document.getElementById(id).value || '').trim(); }
+  function close(){
+    profileOpen = false;
+    document.body.classList.remove('modal-open');
+    var dialog = document.getElementById('profileDialog');
+    if (dialog) dialog.remove();
+    render();
+  }
+  function finish(skipped){
+    var err = document.getElementById('profileErr'), save = document.getElementById('profileSave');
+    if (!err || !save) return;
+    err.textContent = '';
+    if (!skipped) {
+      var required = ['profileFirst','profileLast','profileCountry','profileRegion',
+                      'profileDistrict','profileSchool','profileGrade'];
+      for (var ri = 0; ri < required.length; ri++) {
+        if (!value(required[ri])) {
+          err.textContent = T('profileRequired');
+          document.getElementById(required[ri]).focus();
+          return;
+        }
+      }
+    }
+    save.disabled = true;
+    save.textContent = T('profileSaving');
+    var payload = {
+      first_name: skipped ? (p.first_name || '') : value('profileFirst'),
+      last_name: skipped ? (p.last_name || '') : value('profileLast'),
+      country: skipped ? (p.country || '') : value('profileCountry'),
+      region: skipped ? (p.region || '') : value('profileRegion'),
+      district: skipped ? (p.district || '') : value('profileDistrict'),
+      school: skipped ? (p.school || '') : value('profileSchool'),
+      grade: skipped ? (p.grade || '') : value('profileGrade'),
+      profile_completed: !skipped,
+      profile_skipped: Boolean(skipped),
+      updated_at: new Date().toISOString()
+    };
+    NMAccount.setProfile(payload).then(function(){
+      accountProfile = Object.assign({}, accountProfile || {}, payload);
+      close();
+    }).catch(function(){
+      // The step is optional. If the profile table is temporarily unavailable,
+      // honour “Later” locally so a student is never trapped behind an
+      // infrastructure error; a completed profile, however, stays on screen
+      // until it can be saved rather than pretending the data was collected.
+      if (skipped) {
+        accountProfile = Object.assign({}, accountProfile || {}, payload);
+        close();
+        return;
+      }
+      save.disabled = false;
+      save.textContent = T('profileSave');
+      err.textContent = T('profileError');
+    });
+  }
+  document.getElementById('profileForm').onsubmit = function(ev){ ev.preventDefault(); finish(false); };
+  document.getElementById('profileLater').onclick = function(){ finish(true); };
+  document.getElementById('profileClose').onclick = function(){ finish(true); };
+  document.getElementById('profileDialog').onclick = function(ev){ if (ev.target === this) finish(true); };
+  window.setTimeout(function(){ document.getElementById('profileFirst').focus(); }, 0);
+}
+
+function maybeShowProfile(force){
+  if (profileOpen || typeof NMAccount === 'undefined' || !NMAccount.signedIn()) return;
+  // A missing profile normally means the migration/trigger is not applied yet;
+  // show it only after an explicit registration so existing students do not see
+  // a prompt on every visit while the administrator fixes the schema.
+  if (force || (accountProfile && !profileReady(accountProfile) && !accountProfile.profile_skipped))
+    renderProfile(force);
+}
+
 document.addEventListener('keydown', function(ev){
   if (ev.key === 'Escape' && document.getElementById('authDialog')) renderAuth(false);
+  if (ev.key === 'Escape' && document.getElementById('profileDialog')) document.getElementById('profileLater').click();
 });
 
 /* The account control, shared with every other page (assets/header.js). This
@@ -3317,8 +3589,10 @@ function pullSaved(){
   return Promise.all([
     NMAccount.attempts().catch(function(){ return []; }),
     NMAccount.progress().catch(function(){ return []; }),
+    NMAccount.profile().catch(function(){ return null; }),
   ]).then(function(both){
     var attempts = both[0] || [], progress = both[1] || [], i;
+    accountProfile = both[2] || null;
     accountHistory = [];
     for (i = 0; i < attempts.length; i++){
       var hist = attempts[i], hs = hist.scores, hts = Date.parse(hist.completed_at || '') || 0;
@@ -5233,9 +5507,10 @@ function boot(){
   if (typeof NMAccount !== 'undefined' && NMAccount.signedIn()){
     pullSaved().then(function(){
       if (state.view === 'hub') render();
+      maybeShowProfile(false);
       // Now, not before: resuming has to know which challenges are finished, and
       // that is what just arrived.
-      if (viewRequest && state.view === 'hub'){
+      if (viewRequest && state.view === 'hub' && !profileOpen){
         if (viewRequest[1] === 'resume') resumeCurrentTest();
         else showSavedResults();
       }

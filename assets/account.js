@@ -73,11 +73,7 @@ var NMAccount = (function () {
   }
 
   // Whatever the account was given as a display name, if anything at all. The
-  // schema deliberately stores no name (see tools/supabase_schema.sql) and the
-  // sign-up form does not ask for one, so for most students this is empty and
-  // the header says "Hisobim". It is read here rather than guessed from the
-  // email so that a name set in the Supabase dashboard, or added to sign-up
-  // later, shows up with nothing else to change.
+  // optional statistical profile below is separate from this header fallback.
   function displayName(user) {
     var meta = user && user.user_metadata;
     var name = meta && (meta.full_name || meta.name || meta.display_name);
@@ -218,6 +214,21 @@ var NMAccount = (function () {
       });
     },
 
+    verifyEmailOtp: function (email, token) {
+      return request('/auth/v1/verify', {
+        method: 'POST',
+        body: { email: email, token: String(token || '').trim(), type: 'email' },
+      }).then(function (payload) {
+        if (!payload || !payload.access_token) throw apiError(400, null, 'bad-code');
+        adopt(payload);
+        return session.user;
+      }).catch(function (error) {
+        if (error && error.nm && (error.status === 400 || error.code === 'failed'))
+          throw apiError(error.status || 400, null, 'bad-code');
+        throw error;
+      });
+    },
+
     signIn: function (email, password) {
       return request('/auth/v1/token?grant_type=password', {
         method: 'POST',
@@ -258,15 +269,34 @@ var NMAccount = (function () {
     },
 
     profile: function () {
-      return authed(rest + '/profiles?select=figure,language&limit=1')
-        .then(function (rows) { return (rows && rows[0]) || null; });
+      return authed(rest + '/profiles?select=id,figure,language,first_name,last_name,country,region,district,school,grade,profile_completed,profile_skipped&limit=1')
+        .then(function (rows) {
+          var row = (rows && rows[0]) || null;
+          // OAuth redirects only carry tokens, not the user object. The owner id
+          // returned by the RLS-protected profile row is enough to PATCH it.
+          if (row && row.id && (!session.user || !session.user.id))
+            session.user = { id: row.id, email: session.user && session.user.email || '', name: '' };
+          return row;
+        });
     },
 
     setProfile: function (patch) {
-      return authed(rest + '/profiles?id=eq.' + encodeURIComponent(session.user.id), {
+      var profileId = session && session.user && session.user.id;
+      if (!profileId) return Promise.reject(apiError(401, null, 'signed-out'));
+      return authed(rest + '/profiles?id=eq.' + encodeURIComponent(profileId), {
         method: 'PATCH',
         body: patch,
         prefer: 'return=minimal',
+      }).then(function (value) {
+        // Keep the account pill in sync immediately after the optional profile
+        // step, without exposing the school fields through the header API.
+        if (session && session.user && patch) {
+          var first = String(patch.first_name || '').trim();
+          var last = String(patch.last_name || '').trim();
+          session.user.name = (first + ' ' + last).trim();
+          writeSession(session);
+        }
+        return value;
       });
     },
 

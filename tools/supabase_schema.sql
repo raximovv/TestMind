@@ -2,12 +2,9 @@
 --
 -- WHY THIS FILE IS SHORT
 -- ----------------------
--- Everything a student types is one of three things: an email and password,
--- which Supabase's own auth.users holds and this schema never copies; the
--- answers to a challenge; and where they got to in a challenge they have not
--- finished. That is all. There is no name, no phone, no address, no birth date
--- and no birth year, which is the same rule the anonymous test has always
--- followed and the reason this can be handed to a fourteen year old.
+-- Everything a student types is an email/password, challenge answers and
+-- optional school-profile fields. The profile fields are collected only for
+-- aggregate statistics; the site never asks for a phone number or birth date.
 --
 -- ROW LEVEL SECURITY IS THE WHOLE SECURITY MODEL
 -- ----------------------------------------------
@@ -26,15 +23,37 @@
 -- absence below is the enforcement, not an oversight.
 
 -- ---------------------------------------------------------------- profiles --
--- Display preferences only. Both columns change what the result page SHOWS; a
--- student who changes either is not a different person and their attempts are
--- untouched.
+-- Display preferences and optional statistical context. Profile fields are
+-- protected by the same owner-only RLS as the answers and are never used to
+-- calculate a student's result.
 create table if not exists public.profiles (
   id         uuid primary key references auth.users(id) on delete cascade,
   figure     text check (figure in ('male', 'female')),
   language   text check (language in ('uz', 'ru', 'en')) default 'uz',
+  first_name text,
+  last_name  text,
+  country    text,
+  region     text,
+  district   text,
+  school     text,
+  grade      text,
+  profile_completed boolean not null default false,
+  profile_skipped boolean not null default false,
+  updated_at timestamptz not null default now(),
   created_at timestamptz not null default now()
 );
+
+-- Safe to run against an existing project as well as a new one.
+alter table public.profiles add column if not exists first_name text;
+alter table public.profiles add column if not exists last_name text;
+alter table public.profiles add column if not exists country text;
+alter table public.profiles add column if not exists region text;
+alter table public.profiles add column if not exists district text;
+alter table public.profiles add column if not exists school text;
+alter table public.profiles add column if not exists grade text;
+alter table public.profiles add column if not exists profile_completed boolean not null default false;
+alter table public.profiles add column if not exists profile_skipped boolean not null default false;
+alter table public.profiles add column if not exists updated_at timestamptz not null default now();
 
 alter table public.profiles enable row level security;
 
